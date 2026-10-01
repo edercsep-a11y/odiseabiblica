@@ -331,11 +331,11 @@ export default function OdiseaBiblica() {
       <div className="relative z-10 h-full flex flex-col">
         <div className="border-b-2 border-slate-200 pb-4 mb-6 flex justify-between items-end">
           <div>
-            <h2 className="text-indigo-600 font-black text-[10px] tracking-[0.4em] uppercase mb-1">PROGRAMA DE ENTRENAMIENTO MULTIVERSAL</h2>
+            <h2 className="text-indigo-600 font-black text-[10px] tracking-widest md:tracking-[0.4em] uppercase mb-1">PROGRAMA DE ENTRENAMIENTO MULTIVERSAL</h2>
             <h1 className="text-2xl font-black text-slate-900 tracking-widest uppercase">LA ODISEA BÍBLICA</h1>
           </div>
           <div className="text-right">
-            <p className="text-[8px] text-slate-500 font-mono uppercase tracking-[0.2em] mb-1">FECHA ESTELAR: {new Date().toLocaleDateString()}</p>
+            <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest md:tracking-[0.2em] mb-1">FECHA ESTELAR: {new Date().toLocaleDateString()}</p>
             <p className="text-[10px] text-amber-700 font-bold uppercase tracking-widest border border-amber-300 bg-amber-50 px-3 py-1 rounded inline-block">DOC. CONFIDENCIAL</p>
           </div>
         </div>
@@ -418,7 +418,7 @@ export default function OdiseaBiblica() {
             <div className="text-center mb-8">
               <Globe className="w-16 h-16 text-amber-500 mx-auto mb-4 animate-pulse drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]"/>
               <h1 className="text-3xl font-black text-white uppercase tracking-widest drop-shadow-lg">LA ODISEA BÍBLICA</h1>
-              <p className="text-indigo-400 text-[10px] font-bold uppercase tracking-[0.3em] mt-2">SISTEMA DE GESTIÓN DOCENTE</p>
+              <p className="text-indigo-400 text-[10px] font-bold uppercase tracking-widest md:tracking-[0.3em] mt-2">SISTEMA DE GESTIÓN DOCENTE</p>
             </div>
 
             {authView === 'login' || authView === 'register' ? (
@@ -498,8 +498,8 @@ export default function OdiseaBiblica() {
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute inset-0 bg-[linear-gradient(rgba(14,165,233,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(14,165,233,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_20%,transparent_100%)]"></div>
             <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/20 animate-[scanline_8s_linear_infinite] shadow-[0_0_15px_rgba(6,182,212,0.5)]"></div>
-            <div className="absolute top-4 left-6 text-cyan-500/40 font-mono text-[10px] uppercase tracking-[0.4em] hidden md:block">SYS.INIT // ODISEA_PROTOCOL_V8.0<br/><span className="text-indigo-500/50">CONEXIÓN: ESTABLE</span></div>
-            <div className="absolute bottom-4 right-6 text-cyan-500/40 font-mono text-[10px] uppercase tracking-[0.4em] hidden md:block text-right">USER: RECLUTA_01 // ACCESS: GRANTED<br/><span className="animate-pulse text-emerald-500/50">CÓDICE DE MISIÓN ACTIVO</span></div>
+            <div className="absolute top-4 left-6 text-cyan-500/40 font-mono text-[10px] uppercase tracking-widest md:tracking-[0.4em] hidden md:block">SYS.INIT // ODISEA_PROTOCOL_V8.0<br/><span className="text-indigo-500/50">CONEXIÓN: ESTABLE</span></div>
+            <div className="absolute bottom-4 right-6 text-cyan-500/40 font-mono text-[10px] uppercase tracking-widest md:tracking-[0.4em] hidden md:block text-right">USER: RECLUTA_01 // ACCESS: GRANTED<br/><span className="animate-pulse text-emerald-500/50">CÓDICE DE MISIÓN ACTIVO</span></div>
             <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-indigo-600/20 rounded-full blur-[150px]"></div>
             <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-cyan-600/10 rounded-full blur-[150px]"></div>
           </div>
@@ -518,8 +518,8 @@ export default function OdiseaBiblica() {
                 <div className="w-12 h-12 md:w-20 md:h-20 mx-auto bg-cyan-950/40 rounded-2xl border border-cyan-500/30 flex items-center justify-center mb-2 md:mb-4 shadow-[0_0_20px_rgba(34,211,238,0.2)]">
                   <Hexagon className="w-6 h-6 md:w-12 md:h-12 text-cyan-400 animate-pulse"/>
                 </div>
-                <h2 className="text-xl md:text-2xl font-black text-white uppercase tracking-[0.2em]">CÓDICE</h2>
-                <p className="text-[8px] md:text-[10px] text-cyan-400 font-mono font-black uppercase tracking-[0.4em] mt-1 bg-cyan-900/30 py-1 rounded inline-block px-2 md:px-3 border border-cyan-500/20">MANUAL TÁCTICO</p>
+                <h2 className="text-xl md:text-2xl font-black text-white uppercase tracking-widest md:tracking-[0.2em]">CÓDICE</h2>
+                <p className="text-[8px] md:text-[10px] text-cyan-400 font-mono font-black uppercase tracking-widest md:tracking-[0.4em] mt-1 bg-cyan-900/30 py-1 rounded inline-block px-2 md:px-3 border border-cyan-500/20">MANUAL TÁCTICO</p>
               </div>
               <div className="overflow-x-auto md:overflow-y-auto p-2 md:p-4 flex flex-row md:flex-col gap-2 custom-scrollbar mt-2 md:mt-4">
                 {[
@@ -547,7 +547,7 @@ export default function OdiseaBiblica() {
                   <div className="text-center mb-12">
                     <MonitorPlay className="w-20 h-20 text-cyan-400 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] animate-[float-3d_4s_ease-in-out_infinite]"/>
                     <h3 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-cyan-300 uppercase tracking-tighter drop-shadow-lg mb-4">INMERSIÓN TOTAL</h3>
-                    <p className="text-cyan-400 text-sm md:text-lg font-mono tracking-[0.4em] uppercase bg-cyan-950/40 inline-block px-6 py-2 rounded-full border border-cyan-500/30">NO ES UNA CLASE. ES UN SIMULADOR.</p>
+                    <p className="text-cyan-400 text-sm md:text-lg font-mono tracking-widest md:tracking-[0.4em] uppercase bg-cyan-950/40 inline-block px-6 py-2 rounded-full border border-cyan-500/30">NO ES UNA CLASE. ES UN SIMULADOR.</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8 preserve-3d">
                     <div className="group bg-[#0a0c16]/90 backdrop-blur border border-cyan-900/50 p-8 rounded-3xl hover:border-cyan-400 transition-all duration-500 shadow-[0_0_30px_rgba(34,211,238,0.05)] hover:shadow-[0_0_40px_rgba(34,211,238,0.2)]">
@@ -569,7 +569,7 @@ export default function OdiseaBiblica() {
                   <div className="flex flex-col md:flex-row items-center justify-between mb-12 border-b border-blue-900/40 pb-6 gap-6 text-center md:text-left">
                     <div>
                       <h3 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-400 uppercase tracking-tighter drop-shadow-lg mb-2">FACCIONES SAGRADAS</h3>
-                      <p className="text-blue-400 text-xs font-mono tracking-[0.4em] uppercase">Mecánica Core: Interdependencia Positiva</p>
+                      <p className="text-blue-400 text-xs font-mono tracking-widest md:tracking-[0.4em] uppercase">Mecánica Core: Interdependencia Positiva</p>
                     </div>
                     <div className="bg-blue-950/40 border border-blue-500/40 px-6 py-4 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.2)]">
                       <p className="text-white font-black text-sm uppercase tracking-widest">"SI UNO CAE, EL CLAN CAE."</p>
@@ -595,7 +595,7 @@ export default function OdiseaBiblica() {
                 <div className="animate-in fade-in slide-in-from-right-8 duration-500 max-w-5xl mx-auto h-full flex flex-col justify-center">
                   <div className="text-center mb-14">
                     <h3 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600 uppercase tracking-tighter drop-shadow-lg mb-4">ECONOMÍA DE XP</h3>
-                    <p className="text-amber-500 text-sm font-mono tracking-[0.4em] uppercase bg-amber-950/30 inline-block px-6 py-2 rounded-full border border-amber-500/30">COMPETENCIA MULTIVERSAL</p>
+                    <p className="text-amber-500 text-sm font-mono tracking-widest md:tracking-[0.4em] uppercase bg-amber-950/30 inline-block px-6 py-2 rounded-full border border-amber-500/30">COMPETENCIA MULTIVERSAL</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                     <div className="space-y-4 preserve-3d">
@@ -642,7 +642,7 @@ export default function OdiseaBiblica() {
                     <div className="group bg-[#0a0c16]/90 backdrop-blur border-2 border-[#1e293b] hover:border-emerald-500/80 p-8 rounded-3xl transition-all duration-500 shadow-lg hover:shadow-[0_0_40px_rgba(16,185,129,0.2)]">
                       <div className="flex items-start justify-between mb-6">
                         <div className="w-12 h-12 bg-emerald-950/50 rounded-xl flex items-center justify-center border border-emerald-500/50 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.4)]"><Map className="w-6 h-6"/></div>
-                        <span className="bg-emerald-900/40 text-emerald-300 text-[9px] font-black tracking-[0.2em] uppercase px-3 py-1 rounded border border-emerald-700">Misión Primaria</span>
+                        <span className="bg-emerald-900/40 text-emerald-300 text-[9px] font-black tracking-widest md:tracking-[0.2em] uppercase px-3 py-1 rounded border border-emerald-700">Misión Primaria</span>
                       </div>
                       <h4 className="text-2xl font-black text-white uppercase tracking-widest mb-3">Misiones de Vida</h4>
                       <p className="text-slate-400 text-sm leading-relaxed">Ejemplo: Al estudiar a los sacerdotes, no copiamos teoría aburrida. Cada estudiante dibuja su propio "Pectoral" y se compromete a <strong className="text-emerald-300">interceder y proteger a un compañero</strong> específico del salón.</p>
@@ -650,7 +650,7 @@ export default function OdiseaBiblica() {
                     <div className="group bg-[#0a0c16]/90 backdrop-blur border-2 border-[#1e293b] hover:border-indigo-500/80 p-8 rounded-3xl transition-all duration-500 shadow-lg hover:shadow-[0_0_40px_rgba(79,70,229,0.2)]">
                       <div className="flex items-start justify-between mb-6">
                         <div className="w-12 h-12 bg-indigo-950/50 rounded-xl flex items-center justify-center border border-indigo-500/50 text-indigo-400 shadow-[0_0_15px_rgba(79,70,229,0.4)]"><Scale className="w-6 h-6"/></div>
-                        <span className="bg-indigo-900/40 text-indigo-300 text-[9px] font-black tracking-[0.2em] uppercase px-3 py-1 rounded border border-indigo-700">Misión Core</span>
+                        <span className="bg-indigo-900/40 text-indigo-300 text-[9px] font-black tracking-widest md:tracking-[0.2em] uppercase px-3 py-1 rounded border border-indigo-700">Misión Core</span>
                       </div>
                       <h4 className="text-2xl font-black text-white uppercase tracking-widest mb-3">El Tribunal Oral</h4>
                       <p className="text-slate-400 text-sm leading-relaxed">Usamos los errores bíblicos (el ego de Gedeón, la ira de Sansón) para <strong className="text-indigo-300">juzgar casos reales de bullying o egoísmo</strong> en el aula. Debatimos oralmente y el salón entero vota con sus paletas.</p>
@@ -676,25 +676,25 @@ export default function OdiseaBiblica() {
           {!startGlobalCinematic ? (
             <div className="relative z-10 text-center flex flex-col items-center animate-in fade-in duration-1000">
               <Globe className="w-16 h-16 text-amber-500 mb-6 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)] animate-pulse"/>
-              <p className="text-amber-500 text-xs md:text-sm tracking-[0.2em] font-bold uppercase text-center leading-relaxed mb-8">INSTRUCCIÓN GM: 1) ACTIVA EL AUDIO EN LA ESQUINA SUPERIOR. <br/>2) LUEGO INICIA LA SECUENCIA.</p>
-              <button onClick={() => setStartGlobalCinematic(true)} className="bg-transparent border border-slate-600 text-white hover:bg-slate-900 px-8 py-3 rounded-full font-bold uppercase tracking-[0.2em] transition-all cursor-pointer shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:shadow-[0_0_30px_rgba(245,158,11,0.4)]">INICIAR SECUENCIA ÉPICA</button>
+              <p className="text-amber-500 text-xs md:text-sm tracking-widest md:tracking-[0.2em] font-bold uppercase text-center leading-relaxed mb-8">INSTRUCCIÓN GM: 1) ACTIVA EL AUDIO EN LA ESQUINA SUPERIOR. <br/>2) LUEGO INICIA LA SECUENCIA.</p>
+              <button onClick={() => setStartGlobalCinematic(true)} className="bg-transparent border border-slate-600 text-white hover:bg-slate-900 px-8 py-3 rounded-full font-bold uppercase tracking-widest md:tracking-[0.2em] transition-all cursor-pointer shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:shadow-[0_0_30px_rgba(245,158,11,0.4)]">INICIAR SECUENCIA ÉPICA</button>
             </div>
           ) : (
             <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none bg-black overflow-hidden">
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=2000')] bg-cover bg-center opacity-40 animate-[slowZoom_35s_linear_forwards]"></div>
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-screen animate-[slowZoom_20s_linear_infinite_alternate]"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80 z-10"></div>
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 1s' }}><p className="text-2xl md:text-4xl text-slate-300 uppercase tracking-[0.4em] font-light drop-shadow-lg">El tiempo y el espacio...</p><p className="text-xl md:text-2xl text-amber-500/70 uppercase tracking-[0.6em] font-light mt-6">se han fracturado.</p></div>
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 8s' }}><p className="text-3xl md:text-5xl text-amber-500 uppercase tracking-[0.2em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,1)]">EL AULA HA DESAPARECIDO.</p><p className="text-xl md:text-2xl text-amber-200 uppercase tracking-[0.4em] font-light mt-6">Olviden quiénes creían ser.</p></div>
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 15s' }}><p className="text-3xl md:text-5xl text-indigo-400 uppercase tracking-[0.3em] font-bold drop-shadow-[0_0_30px_rgba(129,140,248,0.8)]">DESDE LAS SOMBRAS DEL PASADO...</p><p className="text-lg md:text-2xl text-indigo-200 uppercase tracking-[0.4em] font-light mt-6 leading-relaxed">Su verdadero destino los reclama.<br/>La sangre de reyes y profetas despierta.</p></div>
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 23s' }}><p className="text-2xl md:text-4xl text-slate-100 uppercase tracking-[0.5em] font-light drop-shadow-2xl">Siete linajes se levantarán del polvo.</p><p className="text-3xl md:text-5xl text-amber-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,1)] mt-6">HOY, EL DESIERTO EXIGE SU PODER.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 1s' }}><p className="text-2xl md:text-4xl text-slate-300 uppercase tracking-widest md:tracking-[0.4em] font-light drop-shadow-lg">El tiempo y el espacio...</p><p className="text-xl md:text-2xl text-amber-500/70 uppercase tracking-widest md:tracking-[0.6em] font-light mt-6">se han fracturado.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 8s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-amber-500 uppercase tracking-widest md:tracking-[0.2em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,1)]">EL AULA HA DESAPARECIDO.</p><p className="text-xl md:text-2xl text-amber-200 uppercase tracking-widest md:tracking-[0.4em] font-light mt-6">Olviden quiénes creían ser.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 15s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-indigo-400 uppercase tracking-widest md:tracking-[0.3em] font-bold drop-shadow-[0_0_30px_rgba(129,140,248,0.8)]">DESDE LAS SOMBRAS DEL PASADO...</p><p className="text-lg md:text-2xl text-indigo-200 uppercase tracking-widest md:tracking-[0.4em] font-light mt-6 leading-relaxed">Su verdadero destino los reclama.<br/>La sangre de reyes y profetas despierta.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 23s' }}><p className="text-2xl md:text-4xl text-slate-100 uppercase tracking-widest md:tracking-[0.5em] font-light drop-shadow-2xl">Siete linajes se levantarán del polvo.</p><p className="text-2xl md:text-4xl lg:text-5xl text-amber-500 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,1)] mt-6">HOY, EL DESIERTO EXIGE SU PODER.</p></div>
               <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 4s ease-out forwards 31s' }}>
                 <Globe className="w-24 h-24 text-amber-500 mx-auto mb-8 drop-shadow-[0_0_40px_rgba(245,158,11,0.8)] animate-pulse" />
-                <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-amber-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(245,158,11,1)]">LA ODISEA BÍBLICA</h1>
-                <p className="text-amber-500 mt-6 text-xl md:text-3xl tracking-[0.6em] font-bold uppercase drop-shadow-md">FORJANDO LÍDERES EN EL DESIERTO</p>
+                <h1 className="text-6xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-amber-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(245,158,11,1)]">LA ODISEA BÍBLICA</h1>
+                <p className="text-amber-500 mt-6 text-xl md:text-3xl tracking-widest md:tracking-[0.6em] font-bold uppercase drop-shadow-md">FORJANDO LÍDERES EN EL DESIERTO</p>
               </div>
-              <div className="absolute bottom-20 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 35s' }}>
-                <button onClick={() => { setStartGlobalCinematic(false); setView('selector'); }} className="bg-[#0f0a06]/80 border-2 border-amber-500 text-amber-300 px-12 py-6 font-black uppercase tracking-[0.5em] text-xl transition-all shadow-[0_0_50px_rgba(245,158,11,0.8)] hover:scale-110 hover:shadow-[0_0_80px_rgba(245,158,11,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL CAMPAMENTO <ChevronRight className="w-8 h-8"/></button>
+              <div className="absolute bottom-8 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 35s' }}>
+                <button onClick={() => { setStartGlobalCinematic(false); setView('selector'); }} className="bg-[#0f0a06]/80 border-2 border-amber-500 text-amber-300 px-12 py-6 font-black uppercase tracking-widest md:tracking-[0.5em] text-xl transition-all shadow-[0_0_50px_rgba(245,158,11,0.8)] hover:scale-110 hover:shadow-[0_0_80px_rgba(245,158,11,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL CAMPAMENTO <ChevronRight className="w-8 h-8"/></button>
               </div>
             </div>
           )}
@@ -709,9 +709,9 @@ export default function OdiseaBiblica() {
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"><div className="w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[120px]"></div></div>
           <div className="relative z-10 text-center w-full max-w-4xl">
             <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-2 tracking-tighter uppercase drop-shadow-xl">EL CAMPAMENTO BASE</h1>
-            <p className="text-indigo-400 text-xs md:text-sm tracking-[0.4em] font-black uppercase mb-12 drop-shadow">GESTOR DE BASE DE DATOS COOPERATIVA</p>
+            <p className="text-indigo-400 text-xs md:text-sm tracking-widest md:tracking-[0.4em] font-black uppercase mb-12 drop-shadow">GESTOR DE BASE DE DATOS COOPERATIVA</p>
             <div className="bg-[#0f111a]/80 backdrop-blur-md rounded-[2rem] p-8 md:p-12 mb-8 shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-[#2a2e45] relative mx-auto w-full max-w-4xl">
-              <p className="text-amber-500 font-black uppercase tracking-[0.2em] text-xs md:text-sm mb-10 flex justify-center items-center gap-2"><Users className="w-4 h-4"/> SELECCIONA TU SALÓN</p>
+              <p className="text-amber-500 font-black uppercase tracking-widest md:tracking-[0.2em] text-xs md:text-sm mb-10 flex justify-center items-center gap-2"><Users className="w-4 h-4"/> SELECCIONA TU SALÓN</p>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 {Object.keys(scores).map(aula => (
@@ -730,7 +730,7 @@ export default function OdiseaBiblica() {
                     <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-indigo-300/50"></div>
                     <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-indigo-300/50"></div>
                     <span className="text-2xl md:text-4xl font-black text-white tracking-widest mb-4 drop-shadow-md">{aula}</span>
-                    <span className="bg-transparent border-2 border-indigo-300/50 text-[10px] text-indigo-200 font-bold tracking-[0.3em] uppercase px-4 py-2 rounded-full group-hover:bg-indigo-400 group-hover:text-black group-hover:border-indigo-400 transition-colors">PROYECTAR CLASE</span>
+                    <span className="bg-transparent border-2 border-indigo-300/50 text-[10px] text-indigo-200 font-bold tracking-widest md:tracking-[0.3em] uppercase px-4 py-2 rounded-full group-hover:bg-indigo-400 group-hover:text-black group-hover:border-indigo-400 transition-colors">PROYECTAR CLASE</span>
                   </button>
                 ))}
               </div>
@@ -750,13 +750,13 @@ export default function OdiseaBiblica() {
               </div>
             </div>
             <div className="flex flex-col gap-4 items-center justify-center mt-4">
-              <button onClick={() => setView('global_ranking')} className="bg-gradient-to-r from-orange-600 to-amber-500 text-white px-12 py-5 font-black uppercase tracking-[0.2em] text-sm md:text-base transition-all shadow-[0_0_40px_rgba(245,158,11,0.5)] hover:shadow-[0_0_60px_rgba(245,158,11,0.8)] hover:scale-105 flex items-center justify-center gap-3 rounded-full cursor-pointer border-2 border-amber-300"><Globe className="w-6 h-6"/> VER CLASIFICACIÓN GLOBAL MULTIVERSO</button>
+              <button onClick={() => setView('global_ranking')} className="bg-gradient-to-r from-orange-600 to-amber-500 text-white px-12 py-5 font-black uppercase tracking-widest md:tracking-[0.2em] text-sm md:text-base transition-all shadow-[0_0_40px_rgba(245,158,11,0.5)] hover:shadow-[0_0_60px_rgba(245,158,11,0.8)] hover:scale-105 flex items-center justify-center gap-3 rounded-full cursor-pointer border-2 border-amber-300"><Globe className="w-6 h-6"/> VER CLASIFICACIÓN GLOBAL MULTIVERSO</button>
               <button onClick={() => setView('archivos_misiones')} className="bg-[#05060b] border border-indigo-500/50 text-indigo-400 hover:text-white hover:bg-indigo-900/50 px-10 py-4 font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-3 rounded-full cursor-pointer shadow-[0_0_20px_rgba(79,70,229,0.2)] hover:shadow-[0_0_30px_rgba(79,70,229,0.5)]"><Scroll className="w-5 h-5"/> CENTRO DE DESCARGAS (DOSSIERS DE MISIONES)</button>
               <button onClick={() => setShowInstructions(true)} className="bg-[#05060b] border border-cyan-500/50 text-cyan-400 hover:text-white hover:bg-cyan-900/50 px-10 py-4 font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-3 rounded-full cursor-pointer mt-2 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]"><Hexagon className="w-5 h-5"/> MANUAL TÁCTICO DEL JUEGO (INSTRUCCIONES)</button>
             </div>
             
             <div className="mt-16 border-t border-[#2a2e45] pt-6 flex flex-col items-center justify-center">
-              <p className="text-slate-500 text-[10px] uppercase tracking-[0.2em] font-mono">Desarrollado y Diseñado Originalmente por:</p>
+              <p className="text-slate-500 text-[10px] uppercase tracking-widest md:tracking-[0.2em] font-mono">Desarrollado y Diseñado Originalmente por:</p>
               <p className="text-indigo-400 font-black text-sm uppercase tracking-widest mt-1">Prof. Eder Carrasco</p>
               <p className="text-amber-500 text-[10px] font-bold mt-1 bg-amber-900/20 px-3 py-1 rounded-full border border-amber-500/20">De profe a profe Oficial</p>
             </div>
@@ -773,7 +773,7 @@ export default function OdiseaBiblica() {
             <button onClick={() => setView('selector')} className="absolute top-0 left-0 text-slate-500 hover:text-amber-500 bg-[#161827] border border-[#2a2e45] px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> VOLVER</button>
             <Globe className="w-16 h-16 text-amber-500 mb-4 drop-shadow-[0_0_30px_rgba(245,158,11,0.6)]"/>
             <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase mb-4 drop-shadow-2xl">SALÓN DE LA FAMA</h1>
-            <span className="border border-amber-900/50 text-amber-500 px-6 py-2 rounded-full text-[10px] font-bold tracking-[0.4em] uppercase mb-12 shadow-sm bg-[#18110b]">TORNEO UNIVERSAL • TODO 1RO DE SECUNDARIA</span>
+            <span className="border border-amber-900/50 text-amber-500 px-6 py-2 rounded-full text-[10px] font-bold tracking-widest md:tracking-[0.4em] uppercase mb-12 shadow-sm bg-[#18110b]">TORNEO UNIVERSAL • TODO 1RO DE SECUNDARIA</span>
             <div className="w-full space-y-4 pb-20">
               {(() => {
                 const globalTotals = clansData.map(clan => {
@@ -865,8 +865,8 @@ export default function OdiseaBiblica() {
 
           <main className="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
             <div className="text-center mb-12">
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-[0.2em] uppercase mb-2 drop-shadow-lg">CAMPAMENTO BASE</h2>
-              <span className="border border-indigo-900/50 text-indigo-400 px-4 py-1 rounded-full text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase bg-[#0f111a]">TERCER BIMESTRE - CÓDICE DEL RECLUTA</span>
+              <h2 className="text-4xl md:text-5xl font-black text-white tracking-widest md:tracking-[0.2em] uppercase mb-2 drop-shadow-lg">CAMPAMENTO BASE</h2>
+              <span className="border border-indigo-900/50 text-indigo-400 px-4 py-1 rounded-full text-[10px] md:text-xs font-bold tracking-widest md:tracking-[0.4em] uppercase bg-[#0f111a]">TERCER BIMESTRE - CÓDICE DEL RECLUTA</span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
@@ -890,8 +890,8 @@ export default function OdiseaBiblica() {
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="text-center mb-10">
                   <Crown className="w-16 h-16 text-amber-500 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(245,158,11,0.5)]"/>
-                  <h2 className="text-4xl font-black text-slate-300 tracking-[0.2em] uppercase mb-2">LA GRAN ASAMBLEA</h2>
-                  <p className="text-slate-500 text-xs tracking-[0.3em] font-bold uppercase">CIRCUITO PEDAGÓGICO DE INICIO</p>
+                  <h2 className="text-4xl font-black text-slate-300 tracking-widest md:tracking-[0.2em] uppercase mb-2">LA GRAN ASAMBLEA</h2>
+                  <p className="text-slate-500 text-xs tracking-widest md:tracking-[0.3em] font-bold uppercase">CIRCUITO PEDAGÓGICO DE INICIO</p>
                 </div>
                 {sorteoPaso === 'config' && (
                   <div className="bg-[#0f111a] border border-[#1e293b] p-8 rounded-2xl max-w-2xl mx-auto text-center shadow-xl">
@@ -920,15 +920,15 @@ export default function OdiseaBiblica() {
                       />
                     </div>
 
-                    <button onClick={sortearClanes} className="w-full bg-[#18110a] hover:bg-[#24170c] border-2 border-amber-600 text-amber-500 hover:text-amber-400 px-8 py-5 rounded-xl font-black uppercase tracking-[0.2em] transition-all hover:scale-[1.02] flex justify-center items-center gap-3 cursor-pointer"><Play className="w-5 h-5"/> INICIAR INMERSIÓN</button>
+                    <button onClick={sortearClanes} className="w-full bg-[#18110a] hover:bg-[#24170c] border-2 border-amber-600 text-amber-500 hover:text-amber-400 px-8 py-5 rounded-xl font-black uppercase tracking-widest md:tracking-[0.2em] transition-all hover:scale-[1.02] flex justify-center items-center gap-3 cursor-pointer"><Play className="w-5 h-5"/> INICIAR INMERSIÓN</button>
                   </div>
                 )}
                 {sorteoPaso === 'cine' && (
                   <div className="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center">
                     <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=2000')] bg-cover bg-center opacity-40 mix-blend-overlay animate-[slowZoom_12s_linear_forwards]"></div>
-                    <div className="absolute text-center" style={{ opacity: 0, animation: 'cinematicText 3s ease-out forwards 1s' }}><p className="text-3xl text-slate-300 uppercase tracking-[0.5em] font-light">La suerte está echada...</p></div>
-                    <div className="absolute text-center" style={{ opacity: 0, animation: 'cinematicText 3s ease-out forwards 4s' }}><p className="text-4xl text-amber-500 uppercase tracking-[0.3em] font-black">El destino los llama...</p></div>
-                    <div className="absolute text-center" style={{ opacity: 0, animation: 'cinematicTextStay 4s ease-out forwards 7s' }}><p className="text-5xl text-white uppercase tracking-[0.3em] font-bold drop-shadow-[0_0_30px_rgba(245,158,11,0.8)]">QUE SURJAN LOS LINAJES.</p></div>
+                    <div className="absolute text-center" style={{ opacity: 0, animation: 'cinematicText 3s ease-out forwards 1s' }}><p className="text-3xl text-slate-300 uppercase tracking-widest md:tracking-[0.5em] font-light">La suerte está echada...</p></div>
+                    <div className="absolute text-center" style={{ opacity: 0, animation: 'cinematicText 3s ease-out forwards 4s' }}><p className="text-4xl text-amber-500 uppercase tracking-widest md:tracking-[0.3em] font-black">El destino los llama...</p></div>
+                    <div className="absolute text-center" style={{ opacity: 0, animation: 'cinematicTextStay 4s ease-out forwards 7s' }}><p className="text-5xl text-white uppercase tracking-widest md:tracking-[0.3em] font-bold drop-shadow-[0_0_30px_rgba(245,158,11,0.8)]">QUE SURJAN LOS LINAJES.</p></div>
                   </div>
                 )}
                 {sorteoPaso === 'result' && (
@@ -966,7 +966,7 @@ export default function OdiseaBiblica() {
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div className="mb-10 text-center">
                   <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase mb-2 drop-shadow-lg">ARCHIVOS CLASIFICADOS</h2>
-                  <p className="text-slate-500 text-xs tracking-[0.3em] font-bold uppercase">LO QUE ENFRENTAREMOS ESTE BIMESTRE</p>
+                  <p className="text-slate-500 text-xs tracking-widest md:tracking-[0.3em] font-bold uppercase">LO QUE ENFRENTAREMOS ESTE BIMESTRE</p>
                 </div>
                 <div className="space-y-6 max-w-5xl mx-auto">
                   {[
@@ -998,7 +998,7 @@ export default function OdiseaBiblica() {
                         <div className="w-full h-px bg-white/10 mb-6 relative">
                           <div className={`absolute left-0 top-0 h-full w-12 ${mission.iconBg} group-hover:w-full transition-all duration-1000`}></div>
                         </div>
-                        <p className={`${mission.textClass} font-black text-xs md:text-sm tracking-[0.3em] uppercase mb-4`}>TEMA: {mission.tema}</p>
+                        <p className={`${mission.textClass} font-black text-xs md:text-sm tracking-widest md:tracking-[0.3em] uppercase mb-4`}>TEMA: {mission.tema}</p>
                         <p className="text-slate-300 text-lg md:text-xl italic leading-relaxed font-serif drop-shadow-sm">{mission.desc}</p>
                         
                         {mission.action && (
@@ -1018,7 +1018,7 @@ export default function OdiseaBiblica() {
               <div className="animate-in fade-in duration-500">
                 <div className="mb-10 text-center">
                   <h2 className="text-4xl md:text-5xl font-black text-indigo-400 tracking-tighter uppercase mb-2 drop-shadow-[0_0_20px_rgba(129,140,248,0.5)]">ASAMBLEA SAGRADA DE LOS 7 CLANES</h2>
-                  <p className="text-slate-500 text-xs tracking-[0.3em] font-bold uppercase">CONOCIENDO NUESTRA HERENCIA Y DESTINO</p>
+                  <p className="text-slate-500 text-xs tracking-widest md:tracking-[0.3em] font-bold uppercase">CONOCIENDO NUESTRA HERENCIA Y DESTINO</p>
                 </div>
                 <div className="flex justify-center gap-2 flex-wrap mb-10 max-w-6xl mx-auto">
                   {clansData.map((c, i) => (
@@ -1238,7 +1238,7 @@ export default function OdiseaBiblica() {
                 <div className="mb-10 text-center">
                   <Flame className="w-16 h-16 text-emerald-500 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(16,185,129,0.5)]"/>
                   <h2 className="text-5xl font-black text-white tracking-tighter uppercase mb-4">MISIÓN 1: LOS SACERDOTES</h2>
-                  <p className="text-emerald-500 text-[10px] tracking-[0.4em] font-bold uppercase border border-emerald-900/50 bg-emerald-950/20 inline-block px-4 py-1 rounded-full">PRIMERA ASIGNACIÓN OFICIAL</p>
+                  <p className="text-emerald-500 text-[10px] tracking-widest md:tracking-[0.4em] font-bold uppercase border border-emerald-900/50 bg-emerald-950/20 inline-block px-4 py-1 rounded-full">PRIMERA ASIGNACIÓN OFICIAL</p>
                 </div>
                 <div className="bg-[#0f111a] border border-[#1e293b] rounded-2xl p-8 space-y-8 relative overflow-hidden shadow-2xl">
                   <div className="absolute top-0 left-0 w-2 h-full bg-emerald-500"></div>
@@ -1319,23 +1319,23 @@ export default function OdiseaBiblica() {
           {!startMision1Cinematic ? (
             <div className="z-10 flex-grow flex flex-col items-center justify-center text-center animate-in fade-in duration-1000 px-4">
               <Shield className="w-24 h-24 text-amber-500 mb-6 drop-shadow-[0_0_30px_rgba(245,158,11,0.5)] animate-pulse"/>
-              <p className="text-amber-600 text-xs tracking-[0.3em] uppercase mb-4 font-bold">INSTRUCCIÓN GM: 1) ACTIVA EL AUDIO EN LA ESQUINA. 2) INICIA LA SECUENCIA.</p>
-              <button onClick={() => setStartMision1Cinematic(true)} className="bg-gradient-to-b from-amber-700 to-amber-900 border-2 border-amber-500 text-amber-100 px-8 py-4 uppercase tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(245,158,11,0.6)] rounded-full cursor-pointer">Iniciar Secuencia Misión 1</button>
+              <p className="text-amber-600 text-xs tracking-widest md:tracking-[0.3em] uppercase mb-4 font-bold">INSTRUCCIÓN GM: 1) ACTIVA EL AUDIO EN LA ESQUINA. 2) INICIA LA SECUENCIA.</p>
+              <button onClick={() => setStartMision1Cinematic(true)} className="bg-gradient-to-b from-amber-700 to-amber-900 border-2 border-amber-500 text-amber-100 px-8 py-4 uppercase tracking-widest md:tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(245,158,11,0.6)] rounded-full cursor-pointer">Iniciar Secuencia Misión 1</button>
               <button onClick={() => setView('campamento_base')} className="mt-6 text-slate-500 text-[10px] tracking-widest uppercase hover:text-white cursor-pointer">Volver al Campamento</button>
             </div>
           ) : m1Fase === 0 ? (
             <div key="cinematica-m1" className="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none bg-black">
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541845157-a6d2d100c931?q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-color-dodge animate-[slowZoom_25s_linear_forwards]"></div>
-              <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 2s' }}><p className="text-2xl text-amber-500 uppercase tracking-[0.4em] font-light">El Sinaí arde en llamas...</p></div>
-              <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 7s' }}><p className="text-3xl text-orange-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_20px_rgba(234,88,12,0.8)]">DIOS ES PERFECTO. NOSOTROS NO.</p></div>
-              <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 12s' }}><p className="text-xl text-amber-200 uppercase tracking-[0.4em] font-light">Quien se acerque sin pureza, perecerá.</p></div>
+              <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 2s' }}><p className="text-2xl text-amber-500 uppercase tracking-widest md:tracking-[0.4em] font-light">El Sinaí arde en llamas...</p></div>
+              <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 7s' }}><p className="text-3xl text-orange-500 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_20px_rgba(234,88,12,0.8)]">DIOS ES PERFECTO. NOSOTROS NO.</p></div>
+              <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 12s' }}><p className="text-xl text-amber-200 uppercase tracking-widest md:tracking-[0.4em] font-light">Quien se acerque sin pureza, perecerá.</p></div>
               <div className="absolute inset-0 bg-white z-[100]" style={{ opacity: 0, animation: 'cinematicText 2s ease-out forwards 19s' }}></div>
               <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 4s ease-out forwards 20s' }}>
-                <h1 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 to-amber-600 tracking-tighter uppercase drop-shadow-[0_0_50px_rgba(245,158,11,1)]">EL TABERNÁCULO</h1>
-                <p className="text-amber-500 mt-4 text-lg md:text-2xl tracking-[0.5em] font-bold uppercase">SANTIDAD Y SACRIFICIO</p>
+                <h1 className="text-6xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 to-amber-600 tracking-tighter uppercase drop-shadow-[0_0_50px_rgba(245,158,11,1)]">EL TABERNÁCULO</h1>
+                <p className="text-amber-500 mt-4 text-lg md:text-2xl tracking-widest md:tracking-[0.5em] font-bold uppercase">SANTIDAD Y SACRIFICIO</p>
               </div>
-              <div className="absolute bottom-20 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 1s ease-out forwards 23s' }}>
-                <button onClick={() => setM1Fase(1)} className="bg-amber-900/80 border-2 border-amber-400 text-amber-200 px-10 py-5 font-black uppercase tracking-[0.4em] text-xl transition-all shadow-[0_0_40px_rgba(245,158,11,0.5)] hover:scale-110 flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-sm">CRUZAR EL VELO <ChevronRight className="w-8 h-8"/></button>
+              <div className="absolute bottom-8 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 1s ease-out forwards 23s' }}>
+                <button onClick={() => setM1Fase(1)} className="bg-amber-900/80 border-2 border-amber-400 text-amber-200 px-10 py-5 font-black uppercase tracking-widest md:tracking-[0.4em] text-xl transition-all shadow-[0_0_40px_rgba(245,158,11,0.5)] hover:scale-110 flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-sm">CRUZAR EL VELO <ChevronRight className="w-8 h-8"/></button>
               </div>
             </div>
           ) : (
@@ -1364,7 +1364,7 @@ export default function OdiseaBiblica() {
                   <div className="max-w-4xl mx-auto mt-10 md:mt-20 animate-in zoom-in duration-500">
                     <div className="bg-[#0a0b16] border border-slate-800 rounded-3xl p-8 md:p-14 flex flex-col items-center text-center shadow-[0_0_50px_rgba(245,158,11,0.05)]">
                       <Shield className="w-16 h-16 text-amber-500 mb-6 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
-                      <h3 className="text-3xl md:text-5xl font-black text-amber-500 uppercase tracking-widest mb-8">MISIÓN CENTRAL</h3>
+                      <h3 className="text-2xl md:text-4xl lg:text-5xl font-black text-amber-500 uppercase tracking-widest mb-8">MISIÓN CENTRAL</h3>
                       <p className="text-slate-300 italic text-lg md:text-xl leading-relaxed max-w-3xl font-serif">"Descifraremos los planos del Tabernáculo y el rol vital del sacerdote como el puente definitivo entre un Dios Santo y un pueblo imperfecto."</p>
                     </div>
                   </div>
@@ -1392,7 +1392,7 @@ export default function OdiseaBiblica() {
                       <button onClick={() => setM1SubTab('decodificador')} className="absolute top-6 right-6 md:top-10 md:right-10 bg-amber-600 hover:bg-amber-500 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2 shadow-[0_0_20px_rgba(217,119,6,0.4)] hover:shadow-[0_0_30px_rgba(217,119,6,0.6)] transition-all hover:scale-105 cursor-pointer z-10"><Key className="w-5 h-5"/> DECODIFICADOR</button>
                       <div className="text-center mb-12 relative z-0">
                         <h3 className="text-3xl md:text-4xl font-black text-indigo-400 uppercase tracking-widest mb-3">ESQUEMA GENERAL DEL SANTUARIO</h3>
-                        <p className="text-slate-400 text-[10px] md:text-xs tracking-[0.3em] uppercase font-bold">TRANSCRIPCIÓN OBLIGATORIA EN CUADERNO</p>
+                        <p className="text-slate-400 text-[10px] md:text-xs tracking-widest md:tracking-[0.3em] uppercase font-bold">TRANSCRIPCIÓN OBLIGATORIA EN CUADERNO</p>
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                         <div className="border border-amber-900/50 bg-[#120a05] rounded-2xl p-8 shadow-lg relative overflow-hidden">
@@ -1426,7 +1426,7 @@ export default function OdiseaBiblica() {
 
                 {m1SubTab === 'decodificador' && (
                   <div className="w-full h-full flex flex-col items-center mt-6 animate-in zoom-in duration-500">
-                    <h3 className="text-3xl md:text-5xl font-black text-white uppercase tracking-[0.2em] md:tracking-[0.3em] mb-4 text-center drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">DECODIFICADOR DEL PECTORAL</h3>
+                    <h3 className="text-2xl md:text-4xl lg:text-5xl font-black text-white uppercase tracking-widest md:tracking-[0.2em] md:tracking-widest md:tracking-[0.3em] mb-4 text-center drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">DECODIFICADOR DEL PECTORAL</h3>
                     <p className="text-amber-500 text-[10px] md:text-xs font-bold uppercase tracking-widest text-center mb-8 max-w-3xl border border-amber-900/50 bg-[#18110a] p-4 rounded-xl shadow-inner">
                       ⚠️ NORMAS DEL DECODIFICADOR: La ruleta decidirá el orden de participación. Cuando sea el turno de un Clan, deberá intentar adivinar una letra de la tribu correspondiente. <strong className="text-amber-300">Si acierta, sigue jugando. Si se equivoca, pierde automáticamente -10 XP y su turno termina.</strong>
                     </p>
@@ -1452,7 +1452,7 @@ export default function OdiseaBiblica() {
 
                     {ruletaM1Orden.length > 0 && !ruletaM1Girando && (
                       <div className="mb-12 w-full max-w-5xl bg-[#111424] border border-indigo-900/50 p-6 rounded-2xl shadow-xl animate-in slide-in-from-top-4">
-                        <p className="text-center text-indigo-400 font-black text-xs uppercase tracking-[0.3em] mb-4">ORDEN ESTABLECIDO POR LA PROVIDENCIA</p>
+                        <p className="text-center text-indigo-400 font-black text-xs uppercase tracking-widest md:tracking-[0.3em] mb-4">ORDEN ESTABLECIDO POR LA PROVIDENCIA</p>
                         <div className="flex flex-wrap justify-center gap-3">
                           {ruletaM1Orden.map((c, i) => (
                             <div key={c.id} className="bg-black border border-indigo-500/30 px-4 py-2 rounded-lg flex items-center gap-2">
@@ -1510,7 +1510,7 @@ export default function OdiseaBiblica() {
                               ))}
                             </div>
                             {!activeAhorcadoClan && !isSolved && !stoneProgress[activeStone] && (
-                              <p className="text-center text-slate-600 font-bold uppercase tracking-[0.3em] mb-8 animate-pulse text-xs md:text-sm">ESPERANDO SELECCIÓN...</p>
+                              <p className="text-center text-slate-600 font-bold uppercase tracking-widest md:tracking-[0.3em] mb-8 animate-pulse text-xs md:text-sm">ESPERANDO SELECCIÓN...</p>
                             )}
                             <div className="flex flex-col items-center gap-3 mb-10">
                               {['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'].map((row, i) => (
@@ -1538,7 +1538,7 @@ export default function OdiseaBiblica() {
                                 </div>
                               ))}
                             </div>
-                            <button onClick={() => {setActiveStone(null); setGuessedLetters([]); setActiveAhorcadoClan(null);}} className="w-full bg-[#1a202c] hover:bg-[#2d3748] text-white py-5 rounded-xl font-black text-sm md:text-base uppercase tracking-[0.2em] transition-colors cursor-pointer border-2 border-[#4a5568] shadow-lg">CERRAR Y CAMBIAR DE PIEDRA</button>
+                            <button onClick={() => {setActiveStone(null); setGuessedLetters([]); setActiveAhorcadoClan(null);}} className="w-full bg-[#1a202c] hover:bg-[#2d3748] text-white py-5 rounded-xl font-black text-sm md:text-base uppercase tracking-widest md:tracking-[0.2em] transition-colors cursor-pointer border-2 border-[#4a5568] shadow-lg">CERRAR Y CAMBIAR DE PIEDRA</button>
                           </div>
                         </div>
                       );
@@ -1718,25 +1718,25 @@ export default function OdiseaBiblica() {
             {!startMision2Cinematic && m2Fase === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center animate-in fade-in duration-1000 max-w-2xl mx-auto px-4">
                 <ShieldAlert className="w-24 h-24 text-red-600 mb-6 drop-shadow-[0_0_30px_rgba(220,38,38,0.5)] animate-pulse"/>
-                <p className="text-red-500 text-xs tracking-[0.3em] uppercase mb-4 font-bold">INSTRUCCIÓN GM: 1) ACTIVA EL AUDIO EN LA ESQUINA. 2) INICIA LA SECUENCIA.</p>
-                <button onClick={() => setStartMision2Cinematic(true)} className="bg-gradient-to-b from-red-700 to-red-900 border-2 border-red-500 text-red-100 px-8 py-4 uppercase tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(220,38,38,0.6)] rounded-full cursor-pointer">Iniciar Intro Cómic</button>
+                <p className="text-red-500 text-xs tracking-widest md:tracking-[0.3em] uppercase mb-4 font-bold">INSTRUCCIÓN GM: 1) ACTIVA EL AUDIO EN LA ESQUINA. 2) INICIA LA SECUENCIA.</p>
+                <button onClick={() => setStartMision2Cinematic(true)} className="bg-gradient-to-b from-red-700 to-red-900 border-2 border-red-500 text-red-100 px-8 py-4 uppercase tracking-widest md:tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(220,38,38,0.6)] rounded-full cursor-pointer">Iniciar Intro Cómic</button>
                 <button onClick={() => setView('campamento_base')} className="mt-6 text-slate-500 text-[10px] tracking-widest uppercase hover:text-white cursor-pointer">Volver al Campamento</button>
               </div>
             ) : m2Fase === 0 ? (
               <div key="cinematica-m2" className="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none bg-black">
                 <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-color-dodge animate-[slowZoom_45s_linear_forwards]"></div>
-                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 2s' }}><p className="text-lg md:text-2xl text-white border-y-2 border-red-600 py-2 uppercase tracking-[0.5em] font-bold shadow-[0_0_20px_rgba(220,38,38,0.5)]">ESTUDIOS BÍBLICOS PRESENTA</p></div>
-                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 7s' }}><p className="text-3xl md:text-5xl text-amber-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_30px_rgba(245,158,11,0.8)]">UNA NACIÓN SIN RUMBO...</p></div>
+                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 2s' }}><p className="text-lg md:text-2xl text-white border-y-2 border-red-600 py-2 uppercase tracking-widest md:tracking-[0.5em] font-bold shadow-[0_0_20px_rgba(220,38,38,0.5)]">ESTUDIOS BÍBLICOS PRESENTA</p></div>
+                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 7s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-amber-500 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_30px_rgba(245,158,11,0.8)]">UNA NACIÓN SIN RUMBO...</p></div>
                 <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 13s' }}><div className="bg-white text-black px-6 py-3 border-4 border-black shadow-[8px_8px_0_rgba(220,38,38,1)] transform -rotate-2"><p className="text-2xl md:text-3xl uppercase tracking-widest font-black">"En esos días no había rey en Israel..."</p></div></div>
                 <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 19s' }}><div className="bg-red-600 text-white px-6 py-3 border-4 border-black shadow-[8px_8px_0_rgba(255,255,255,1)] transform rotate-2"><p className="text-3xl md:text-4xl uppercase tracking-widest font-black">"...y cada uno hacía lo que bien le parecía."</p></div></div>
-                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 25s' }}><p className="text-4xl md:text-6xl text-white uppercase tracking-[0.2em] font-black drop-shadow-[0_0_40px_rgba(220,38,38,1)]">Y LA OSCURIDAD LO CONSUMIÓ TODO.</p></div>
+                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 25s' }}><p className="text-4xl md:text-6xl text-white uppercase tracking-widest md:tracking-[0.2em] font-black drop-shadow-[0_0_40px_rgba(220,38,38,1)]">Y LA OSCURIDAD LO CONSUMIÓ TODO.</p></div>
                 <div className="absolute inset-0 bg-red-600 z-[100]" style={{ opacity: 0, animation: 'cinematicText 1.5s ease-out forwards 31s' }}></div>
                 <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 10s ease-out forwards 32s' }}>
-                  <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-red-500 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(220,38,38,1)]" style={{ WebkitTextStroke: '2px black' }}>LA ERA DEL CAOS</h1>
-                  <p className="text-red-500 mt-4 text-lg md:text-2xl tracking-[0.5em] font-bold uppercase bg-black/80 inline-block px-6 py-3 border border-red-900/50 shadow-2xl">EL TRIBUNAL DE LOS JUECES</p>
+                  <h1 className="text-6xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-red-500 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(220,38,38,1)]" style={{ WebkitTextStroke: '2px black' }}>LA ERA DEL CAOS</h1>
+                  <p className="text-red-500 mt-4 text-lg md:text-2xl tracking-widest md:tracking-[0.5em] font-bold uppercase bg-black/80 inline-block px-6 py-3 border border-red-900/50 shadow-2xl">EL TRIBUNAL DE LOS JUECES</p>
                 </div>
-                <div className="absolute bottom-20 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 38s' }}>
-                  <button onClick={() => setM2Fase(1)} className="bg-red-900/80 border-2 border-red-500 text-white px-10 py-5 font-black uppercase tracking-[0.4em] text-xl transition-all shadow-[0_0_40px_rgba(220,38,38,0.8)] hover:scale-110 flex items-center gap-4 cursor-pointer rounded-xl backdrop-blur-sm transform hover:-rotate-1">VER PROPÓSITO <ChevronRight className="w-8 h-8"/></button>
+                <div className="absolute bottom-8 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 38s' }}>
+                  <button onClick={() => setM2Fase(1)} className="bg-red-900/80 border-2 border-red-500 text-white px-10 py-5 font-black uppercase tracking-widest md:tracking-[0.4em] text-xl transition-all shadow-[0_0_40px_rgba(220,38,38,0.8)] hover:scale-110 flex items-center gap-4 cursor-pointer rounded-xl backdrop-blur-sm transform hover:-rotate-1">VER PROPÓSITO <ChevronRight className="w-8 h-8"/></button>
                 </div>
               </div>
             ) : null}
@@ -1864,7 +1864,7 @@ export default function OdiseaBiblica() {
               <div className="max-w-4xl mx-auto mt-6 space-y-6 animate-in zoom-in duration-500 pb-20">
                 <div className="bg-[#0b0c16] border border-orange-900/50 rounded-2xl p-6 md:p-10 shadow-[0_0_40px_rgba(245,158,11,0.1)] relative">
                   <div className="text-center mb-6">
-                    <h3 className="text-3xl md:text-5xl font-black text-amber-500 uppercase tracking-widest mb-4">EL TRIBUNAL DE LOS JUECES</h3>
+                    <h3 className="text-2xl md:text-4xl lg:text-5xl font-black text-amber-500 uppercase tracking-widest mb-4">EL TRIBUNAL DE LOS JUECES</h3>
                     <p className="text-slate-300 text-sm bg-black/50 p-4 rounded border border-slate-800 inline-block">Se presentará un Caos Escolar. <strong className="text-white">TODOS</strong> los clanes tienen 2 minutos para debatir en susurros y preparar su DEFENSA ORAL.</p>
                   </div>
                   <div className="bg-red-950/20 border border-red-600/50 p-4 rounded-xl text-center max-w-xl mx-auto mb-8 shadow-inner">
@@ -1989,7 +1989,7 @@ export default function OdiseaBiblica() {
                           {evaluandoTribunal && (
                             <div className="text-center py-16 animate-in zoom-in duration-500">
                               <Scale className="w-24 h-24 text-amber-500 mx-auto mb-8 animate-[pulse_1.5s_ease-in-out_infinite] drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]"/>
-                              <h3 className="text-2xl md:text-4xl font-black text-white uppercase tracking-[0.3em] mb-4">LA PROVIDENCIA ESTÁ JUZGANDO</h3>
+                              <h3 className="text-2xl md:text-4xl font-black text-white uppercase tracking-widest md:tracking-[0.3em] mb-4">LA PROVIDENCIA ESTÁ JUZGANDO</h3>
                               <p className="text-amber-500 text-xs md:text-sm font-bold tracking-widest uppercase flex items-center justify-center gap-3"><Loader2 className="w-5 h-5 animate-spin"/> Evaluando los principios del clan...</p>
                             </div>
                           )}
@@ -1997,8 +1997,8 @@ export default function OdiseaBiblica() {
                           {resultadoJuicio === 'aprobado' && (
                             <div className="bg-emerald-950/20 border-2 border-emerald-500 p-8 md:p-12 rounded-2xl text-center shadow-[0_0_60px_rgba(16,185,129,0.2)] animate-in slide-in-from-bottom-8">
                               <CheckCircle2 className="w-20 h-20 text-emerald-400 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(16,185,129,0.8)]"/>
-                              <h3 className="text-3xl md:text-5xl font-black text-emerald-400 uppercase tracking-widest mb-4">VEREDICTO APROBADO</h3>
-                              <p className="text-emerald-100 text-xs font-black tracking-[0.4em] uppercase mb-10 bg-emerald-900/60 inline-block px-6 py-3 rounded-full shadow-lg border border-emerald-500/50">+50 XP OTORGADOS A {kaganClan}</p>
+                              <h3 className="text-2xl md:text-4xl lg:text-5xl font-black text-emerald-400 uppercase tracking-widest mb-4">VEREDICTO APROBADO</h3>
+                              <p className="text-emerald-100 text-xs font-black tracking-widest md:tracking-[0.4em] uppercase mb-10 bg-emerald-900/60 inline-block px-6 py-3 rounded-full shadow-lg border border-emerald-500/50">+50 XP OTORGADOS A {kaganClan}</p>
                               <div className="bg-[#050a07] border-2 border-emerald-800 p-8 rounded-2xl mb-10 shadow-inner relative">
                                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#050a07] border border-emerald-800 px-4 py-1 rounded-full"><p className="text-emerald-500 font-black text-[10px] uppercase tracking-widest"><Scroll className="w-4 h-4 inline mr-2 -mt-1"/>FALLO DEL GAME MASTER</p></div>
                                 <p className="text-white font-serif italic text-2xl md:text-3xl leading-relaxed mt-4 drop-shadow-md">"La defensa oral ha sido contundente. El clan ha demostrado actuar bajo los principios de la Providencia, priorizando el bien común sobre el ego."</p>
@@ -2021,8 +2021,8 @@ export default function OdiseaBiblica() {
                           {resultadoJuicio === 'rechazado' && (
                             <div className="bg-red-950/20 border-2 border-red-600 p-8 md:p-12 rounded-2xl text-center shadow-[0_0_60px_rgba(220,38,38,0.2)] animate-in slide-in-from-bottom-8">
                               <X className="w-20 h-20 text-red-500 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(220,38,38,0.8)]"/>
-                              <h3 className="text-3xl md:text-5xl font-black text-red-500 uppercase tracking-widest mb-4">EL CIELO RECHAZA ESTA DEFENSA</h3>
-                              <p className="text-red-200 text-xs font-black tracking-[0.4em] uppercase mb-10 bg-red-900/60 inline-block px-6 py-3 rounded-full shadow-lg border border-red-500/50">-30 XP RESTADOS A {kaganClan}</p>
+                              <h3 className="text-2xl md:text-4xl lg:text-5xl font-black text-red-500 uppercase tracking-widest mb-4">EL CIELO RECHAZA ESTA DEFENSA</h3>
+                              <p className="text-red-200 text-xs font-black tracking-widest md:tracking-[0.4em] uppercase mb-10 bg-red-900/60 inline-block px-6 py-3 rounded-full shadow-lg border border-red-500/50">-30 XP RESTADOS A {kaganClan}</p>
                               <div className="bg-[#110505] border border-red-800 p-8 rounded-2xl mb-10 shadow-inner">
                                 <p className="text-red-500 font-black text-[10px] uppercase tracking-widest mb-4 border-b border-red-900/50 pb-2"><AlertTriangle className="w-4 h-4 inline mr-2 -mt-1"/>MOTIVO BÍBLICO DEL RECHAZO:</p>
                                 <p className="text-slate-300 text-lg md:text-xl leading-relaxed">{razonFallo}</p>
@@ -2057,27 +2057,27 @@ export default function OdiseaBiblica() {
             <div className="z-10 flex-grow flex flex-col items-center justify-center text-center animate-in fade-in duration-1000 max-w-2xl mx-auto px-4 w-full h-full">
               <Crown className="w-24 h-24 text-purple-500 mb-6 drop-shadow-[0_0_30px_rgba(168,85,247,0.5)] animate-pulse"/>
               <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-widest mb-4">MISIÓN 3: LOS REYES</h1>
-              <p className="text-purple-400 text-xs md:text-sm tracking-[0.3em] uppercase mb-10 font-bold border border-purple-900/50 bg-purple-950/30 px-6 py-4 rounded-xl">INSTRUCCIÓN GM: <br/><br/>1) ACTIVA EL AUDIO EN LA ESQUINA.<br/>2) INICIA LA CINEMÁTICA ÉPICA.</p>
-              <button onClick={() => setStartMision3Cinematic(true)} className="bg-gradient-to-b from-purple-700 to-purple-950 border-2 border-purple-400 text-purple-100 px-10 py-5 uppercase tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(168,85,247,0.6)] rounded-full cursor-pointer flex items-center justify-center gap-3"><Swords className="w-6 h-6"/> Iniciar Cinemática Épica</button>
+              <p className="text-purple-400 text-xs md:text-sm tracking-widest md:tracking-[0.3em] uppercase mb-10 font-bold border border-purple-900/50 bg-purple-950/30 px-6 py-4 rounded-xl">INSTRUCCIÓN GM: <br/><br/>1) ACTIVA EL AUDIO EN LA ESQUINA.<br/>2) INICIA LA CINEMÁTICA ÉPICA.</p>
+              <button onClick={() => setStartMision3Cinematic(true)} className="bg-gradient-to-b from-purple-700 to-purple-950 border-2 border-purple-400 text-purple-100 px-10 py-5 uppercase tracking-widest md:tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(168,85,247,0.6)] rounded-full cursor-pointer flex items-center justify-center gap-3"><Swords className="w-6 h-6"/> Iniciar Cinemática Épica</button>
               <button onClick={() => { setView('campamento_base'); setStartMision3Cinematic(false); setM3Fase(0); }} className="mt-8 text-slate-500 text-[10px] tracking-widest uppercase hover:text-white cursor-pointer transition-colors border-b border-transparent hover:border-white">Volver al Campamento Base</button>
             </div>
           ) : m3Fase === 0 ? (
             <div key="cinematica-m3" className="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none bg-[#05020a] overflow-hidden">
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1604095593719-74d3e8e19c35?q=80&w=2000')] bg-cover bg-center opacity-20 mix-blend-luminosity animate-[slowZoom_40s_linear_forwards]"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#05020a] via-[#05020a]/80 to-transparent z-10"></div>
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 1s' }}><p className="text-2xl md:text-4xl text-slate-300 uppercase tracking-[0.5em] font-light drop-shadow-lg">La anarquía destrozó a la nación...</p></div>
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 6s' }}><p className="text-3xl md:text-5xl text-purple-400 uppercase tracking-[0.4em] font-bold drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">El pueblo se cansó de lo invisible.</p></div>
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 11s' }}><p className="text-5xl md:text-7xl text-red-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(239,68,68,1)]">«¡DANOS UN REY!»</p><p className="text-xl md:text-3xl text-red-300 uppercase tracking-[0.5em] font-bold mt-4">«Para ser como las demás naciones»</p></div>
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 17s' }}><p className="text-3xl md:text-5xl text-slate-400 uppercase tracking-[0.4em] font-light">Rechazaron a la Providencia...</p></div>
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 23s' }}><p className="text-4xl md:text-6xl text-amber-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]">POR CORONAS DE ORO QUE CIEGAN...</p><p className="text-2xl md:text-4xl text-slate-200 uppercase tracking-[0.4em] font-bold mt-4">Y espadas que traicionan.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 1s' }}><p className="text-2xl md:text-4xl text-slate-300 uppercase tracking-widest md:tracking-[0.5em] font-light drop-shadow-lg">La anarquía destrozó a la nación...</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 6s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-purple-400 uppercase tracking-widest md:tracking-[0.4em] font-bold drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">El pueblo se cansó de lo invisible.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 11s' }}><p className="text-5xl md:text-7xl text-red-500 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(239,68,68,1)]">«¡DANOS UN REY!»</p><p className="text-xl md:text-3xl text-red-300 uppercase tracking-widest md:tracking-[0.5em] font-bold mt-4">«Para ser como las demás naciones»</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 17s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-slate-400 uppercase tracking-widest md:tracking-[0.4em] font-light">Rechazaron a la Providencia...</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 23s' }}><p className="text-4xl md:text-6xl text-amber-500 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]">POR CORONAS DE ORO QUE CIEGAN...</p><p className="text-2xl md:text-4xl text-slate-200 uppercase tracking-widest md:tracking-[0.4em] font-bold mt-4">Y espadas que traicionan.</p></div>
               <div className="absolute inset-0 bg-purple-950 z-[100]" style={{ opacity: 0, animation: 'cinematicText 1.5s ease-out forwards 29s' }}></div>
               <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 3s ease-out forwards 30s' }}>
                 <Crown className="w-24 h-24 text-amber-400 mx-auto mb-8 drop-shadow-[0_0_40px_rgba(251,191,36,1)] animate-[pulse_2s_ease-in-out_infinite]" />
-                <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 to-amber-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(245,158,11,0.8)]" style={{ WebkitTextStroke: '2px rgba(0,0,0,0.8)' }}>EL ASCENSO DE LA CORONA</h1>
-                <p className="text-purple-400 mt-6 text-xl md:text-3xl tracking-[0.6em] font-bold uppercase bg-black/80 inline-block px-8 py-3 border border-purple-900/50 shadow-2xl rounded-full">MISIÓN 3: LOS REYES DE ISRAEL</p>
+                <h1 className="text-6xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 to-amber-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(245,158,11,0.8)]" style={{ WebkitTextStroke: '2px rgba(0,0,0,0.8)' }}>EL ASCENSO DE LA CORONA</h1>
+                <p className="text-purple-400 mt-6 text-xl md:text-3xl tracking-widest md:tracking-[0.6em] font-bold uppercase bg-black/80 inline-block px-8 py-3 border border-purple-900/50 shadow-2xl rounded-full">MISIÓN 3: LOS REYES DE ISRAEL</p>
               </div>
-              <div className="absolute bottom-20 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 32s' }}>
-                <button onClick={() => { setM3Fase(1); setM3SubTab('archivo'); }} className="bg-gradient-to-r from-purple-900 to-[#1a0b2e] border-2 border-amber-500 text-amber-300 px-12 py-5 font-black uppercase tracking-[0.4em] text-xl transition-all shadow-[0_0_50px_rgba(168,85,247,0.6)] hover:scale-110 hover:shadow-[0_0_70px_rgba(245,158,11,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL SALÓN DEL TRONO <ChevronRight className="w-8 h-8"/></button>
+              <div className="absolute bottom-8 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 32s' }}>
+                <button onClick={() => { setM3Fase(1); setM3SubTab('archivo'); }} className="bg-gradient-to-r from-purple-900 to-[#1a0b2e] border-2 border-amber-500 text-amber-300 px-12 py-5 font-black uppercase tracking-widest md:tracking-[0.4em] text-xl transition-all shadow-[0_0_50px_rgba(168,85,247,0.6)] hover:scale-110 hover:shadow-[0_0_70px_rgba(245,158,11,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL SALÓN DEL TRONO <ChevronRight className="w-8 h-8"/></button>
               </div>
             </div>
           ) : (
@@ -2101,7 +2101,7 @@ export default function OdiseaBiblica() {
                   <div className="max-w-7xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-700">
                     <div className="text-center mb-8">
                       <MonitorPlay className="w-16 h-16 text-indigo-400 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(79,70,229,0.6)] animate-pulse"/>
-                      <h2 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-indigo-300 tracking-widest uppercase mb-2 drop-shadow-lg">ARCHIVO AUDIOVISUAL DE LA CORONA</h2>
+                      <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-indigo-300 tracking-widest uppercase mb-2 drop-shadow-lg">ARCHIVO AUDIOVISUAL DE LA CORONA</h2>
                       <p className="text-indigo-400 text-xs font-bold tracking-widest uppercase">REGISTRO HISTÓRICO DE LOS REYES DE ISRAEL</p>
                     </div>
                     
@@ -2219,7 +2219,7 @@ export default function OdiseaBiblica() {
                     <div className="text-center mb-32 relative z-20">
                       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-purple-900/30 blur-[120px] pointer-events-none"></div>
                       <h2 className="text-6xl md:text-[110px] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-slate-300 to-purple-600 tracking-tighter uppercase mb-6 drop-shadow-[0_0_30px_rgba(147,51,234,0.5)] leading-none">CRÓNICAS DEL TRONO</h2>
-                      <p className="text-amber-500 text-lg md:text-2xl tracking-[0.6em] md:tracking-[1em] uppercase font-black drop-shadow-md">LINAJES DE SANGRE Y FUEGO</p>
+                      <p className="text-amber-500 text-lg md:text-2xl tracking-widest md:tracking-[1em] uppercase font-black drop-shadow-md">LINAJES DE SANGRE Y FUEGO</p>
                       <p className="text-slate-400 mt-6 font-serif italic text-xl animate-pulse">Da un clic sobre las imágenes para revelar sus secretos...</p>
                     </div>
 
@@ -2232,7 +2232,7 @@ export default function OdiseaBiblica() {
 
                       {/* NODO 1: SAÚL */}
                       <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between mb-40 group">
-                        <div className="md:w-1/2 flex justify-center md:justify-end md:pr-24 mb-10 md:mb-0">
+                        <div className="md:w-1/3 flex justify-center md:justify-end md:pr-16 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('saul')} className="relative w-64 h-64 md:w-96 md:h-96 rounded-full border-4 md:border-8 border-red-900/80 shadow-[0_0_80px_rgba(220,38,38,0.5)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_120px_rgba(220,38,38,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-red-900/60 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['saul'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
                             <img src="/images/saul.jpg" alt="Saúl" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['saul'] ? 'scale-100' : 'scale-125'}`}/>
@@ -2243,12 +2243,12 @@ export default function OdiseaBiblica() {
                         </div>
                         {/* Conector Central */}
                         <div className="absolute left-1/2 -translate-x-1/2 w-12 h-12 md:w-20 md:h-20 rounded-full bg-red-600 border-4 md:border-8 border-black shadow-[0_0_40px_rgba(220,38,38,1)] hidden md:flex items-center justify-center z-20"><span className="text-black font-black text-4xl">1</span></div>
-                        <div className="md:w-1/2 md:pl-24 text-center md:text-left z-30">
-                          <h3 className="text-7xl md:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">SAÚL</h3>
+                        <div className="md:w-2/3 md:pl-16 text-center md:text-left z-30">
+                          <h3 className="text-5xl md:text-7xl lg:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">SAÚL</h3>
                           <p className="text-red-500 text-xl md:text-2xl font-black uppercase tracking-widest mb-6 border-b-4 border-red-900/50 pb-4 inline-block">EL GUERRERO INSEGURO</p>
                           <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['saul'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
                             <div className="overflow-hidden">
-                              <div className="bg-[#0f071a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-red-500/50 shadow-[0_0_50px_rgba(220,38,38,0.3)] relative mt-4 space-y-6">
+                              <div className="bg-[#0f071a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-red-500/50 shadow-[0_0_50px_rgba(220,38,38,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-3 gap-6 w-full">
                                 <div className="bg-black/50 p-6 rounded-3xl border border-red-900/50">
                                   <span className="inline-block bg-slate-800 text-slate-300 px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-3">Contexto</span>
                                   <p className="text-slate-200 text-lg md:text-2xl leading-relaxed font-serif">Elegido por su imponente estatura física. El pueblo quería un líder militar que luciera fuerte como los reyes paganos.</p>
@@ -2264,7 +2264,7 @@ export default function OdiseaBiblica() {
                                 </div>
                                 
                                 {/* PREGUNTA REFLEXIVA Y PUNTAJE */}
-                                <div className="mt-10 relative group">
+                                <div className="mt-10 xl:col-span-3 relative group">
                                   <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-red-600 rounded-[2.5rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700"></div>
                                   <div className="relative bg-[#05010a]/95 backdrop-blur-3xl p-8 md:p-10 rounded-[2.5rem] border border-purple-500/30 shadow-[inset_0_0_40px_rgba(168,85,247,0.1)] text-left overflow-hidden">
                                     <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -2276,7 +2276,7 @@ export default function OdiseaBiblica() {
                                       </div>
                                       <div className="flex-grow">
                                         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-                                          <h5 className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-300 font-black uppercase tracking-[0.3em] text-xl md:text-2xl drop-shadow-lg">EL DESAFÍO DEL REY</h5>
+                                          <h5 className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-300 font-black uppercase tracking-widest md:tracking-[0.3em] text-xl md:text-2xl drop-shadow-lg">EL DESAFÍO DEL REY</h5>
                                           <span className="bg-purple-900/40 text-purple-300 px-4 py-1.5 rounded-full text-xs font-black tracking-widest border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.3)] animate-bounce">+ 150 XP</span>
                                         </div>
                                         
@@ -2285,7 +2285,7 @@ export default function OdiseaBiblica() {
                                         </div>
                                         
                                         <div className="bg-[#0a0514] p-5 rounded-2xl border border-[#1a112c]">
-                                          <p className="text-purple-400/70 text-[10px] font-black uppercase tracking-[0.2em] mb-4 flex items-center gap-2"><Crosshair className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE:</p>
+                                          <p className="text-purple-400/70 text-[10px] font-black uppercase tracking-widest md:tracking-[0.2em] mb-4 flex items-center gap-2"><Crosshair className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE:</p>
                                           <div className="flex flex-wrap gap-3">
                                             {clansData.map(c => (
                                               <button key={c.id} onClick={(e) => { e.stopPropagation(); updateScore(c.id, 150); }} className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${c.border.replace('border-', 'bg-').replace('/50', '/10')} hover:${c.border.replace('border-', 'bg-').replace('/50', '/40')} border border-slate-700 hover:border-white text-slate-300 hover:text-white flex items-center gap-3 cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:-translate-y-1`}>
@@ -2307,7 +2307,7 @@ export default function OdiseaBiblica() {
 
                       {/* NODO 2: DAVID */}
                       <div className="relative z-10 w-full flex flex-col md:flex-row-reverse items-center justify-between mb-40 group">
-                        <div className="md:w-1/2 flex justify-center md:justify-start md:pl-24 mb-10 md:mb-0">
+                        <div className="md:w-1/3 flex justify-center md:justify-start md:pl-16 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('david')} className="relative w-72 h-72 md:w-[400px] md:h-[400px] rounded-full border-4 md:border-8 border-emerald-600/80 shadow-[0_0_100px_rgba(16,185,129,0.5)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_150px_rgba(16,185,129,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-emerald-900/50 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['david'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
                             <img src="/images/david.jpg" alt="David" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['david'] ? 'scale-100' : 'scale-125'}`}/>
@@ -2317,12 +2317,12 @@ export default function OdiseaBiblica() {
                           </div>
                         </div>
                         <div className="absolute left-1/2 -translate-x-1/2 w-12 h-12 md:w-20 md:h-20 rounded-full bg-emerald-500 border-4 md:border-8 border-black shadow-[0_0_50px_rgba(16,185,129,1)] hidden md:flex items-center justify-center z-20"><span className="text-black font-black text-4xl">2</span></div>
-                        <div className="md:w-1/2 md:pr-24 text-center md:text-right z-30">
-                          <h3 className="text-7xl md:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">DAVID</h3>
+                        <div className="md:w-2/3 md:pr-16 text-center md:text-right z-30">
+                          <h3 className="text-5xl md:text-7xl lg:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">DAVID</h3>
                           <p className="text-emerald-400 text-xl md:text-2xl font-black uppercase tracking-widest mb-6 border-b-4 border-emerald-900/50 pb-4 inline-block">EL CORAZÓN DE LEÓN</p>
                           <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['david'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
                             <div className="overflow-hidden">
-                              <div className="bg-[#051a0f]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.3)] relative mt-4 space-y-6 text-left">
+                              <div className="bg-[#051a0f]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-3 gap-6 w-full text-left">
                                 <div className="bg-black/50 p-6 rounded-3xl border border-emerald-900/50">
                                   <span className="inline-block bg-slate-800 text-slate-300 px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-3">Contexto</span>
                                   <p className="text-slate-200 text-lg md:text-2xl leading-relaxed font-serif">Un pastor invisible y arpista que unificó a las 12 tribus en un imperio invencible, recibiendo el pacto del "Linaje Eterno".</p>
@@ -2338,7 +2338,7 @@ export default function OdiseaBiblica() {
                                 </div>
 
                                 {/* PREGUNTA REFLEXIVA Y PUNTAJE */}
-                                <div className="mt-10 relative group">
+                                <div className="mt-10 xl:col-span-3 relative group">
                                   <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-emerald-600 rounded-[2.5rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700"></div>
                                   <div className="relative bg-[#05010a]/95 backdrop-blur-3xl p-8 md:p-10 rounded-[2.5rem] border border-purple-500/30 shadow-[inset_0_0_40px_rgba(168,85,247,0.1)] text-left overflow-hidden">
                                     <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -2350,7 +2350,7 @@ export default function OdiseaBiblica() {
                                       </div>
                                       <div className="flex-grow">
                                         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-                                          <h5 className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-300 font-black uppercase tracking-[0.3em] text-xl md:text-2xl drop-shadow-lg">EL DESAFÍO DEL REY</h5>
+                                          <h5 className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-300 font-black uppercase tracking-widest md:tracking-[0.3em] text-xl md:text-2xl drop-shadow-lg">EL DESAFÍO DEL REY</h5>
                                           <span className="bg-purple-900/40 text-purple-300 px-4 py-1.5 rounded-full text-xs font-black tracking-widest border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.3)] animate-bounce">+ 150 XP</span>
                                         </div>
                                         
@@ -2359,7 +2359,7 @@ export default function OdiseaBiblica() {
                                         </div>
                                         
                                         <div className="bg-[#0a0514] p-5 rounded-2xl border border-[#1a112c]">
-                                          <p className="text-purple-400/70 text-[10px] font-black uppercase tracking-[0.2em] mb-4 flex items-center gap-2"><Crosshair className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE:</p>
+                                          <p className="text-purple-400/70 text-[10px] font-black uppercase tracking-widest md:tracking-[0.2em] mb-4 flex items-center gap-2"><Crosshair className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE:</p>
                                           <div className="flex flex-wrap gap-3">
                                             {clansData.map(c => (
                                               <button key={c.id} onClick={(e) => { e.stopPropagation(); updateScore(c.id, 150); }} className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${c.border.replace('border-', 'bg-').replace('/50', '/10')} hover:${c.border.replace('border-', 'bg-').replace('/50', '/40')} border border-slate-700 hover:border-white text-slate-300 hover:text-white flex items-center gap-3 cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:-translate-y-1`}>
@@ -2381,7 +2381,7 @@ export default function OdiseaBiblica() {
 
                       {/* NODO 3: SALOMÓN */}
                       <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between mb-48 group">
-                        <div className="md:w-1/2 flex justify-center md:justify-end md:pr-24 mb-10 md:mb-0">
+                        <div className="md:w-1/3 flex justify-center md:justify-end md:pr-16 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('salomon')} className="relative w-72 h-72 md:w-[450px] md:h-[450px] rounded-full border-4 md:border-8 border-blue-600/80 shadow-[0_0_120px_rgba(59,130,246,0.6)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_180px_rgba(59,130,246,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-blue-900/50 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['salomon'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
                             <img src="/images/salomon.jpg" alt="Salomón" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['salomon'] ? 'scale-100' : 'scale-125'}`}/>
@@ -2391,12 +2391,12 @@ export default function OdiseaBiblica() {
                           </div>
                         </div>
                         <div className="absolute left-1/2 -translate-x-1/2 w-16 h-16 md:w-24 md:h-24 rounded-full bg-blue-500 border-4 md:border-8 border-black shadow-[0_0_60px_rgba(59,130,246,1)] hidden md:flex items-center justify-center z-20"><Crown className="w-8 h-8 md:w-12 md:h-12 text-black"/></div>
-                        <div className="md:w-1/2 md:pl-24 text-center md:text-left z-30">
-                          <h3 className="text-7xl md:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">SALOMÓN</h3>
+                        <div className="md:w-2/3 md:pl-16 text-center md:text-left z-30">
+                          <h3 className="text-5xl md:text-7xl lg:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">SALOMÓN</h3>
                           <p className="text-blue-400 text-xl md:text-2xl font-black uppercase tracking-widest mb-6 border-b-4 border-blue-900/50 pb-4 inline-block">EL ARQUITECTO CORRUPTO</p>
                           <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['salomon'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
                             <div className="overflow-hidden">
-                              <div className="bg-[#07101a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-blue-500/50 shadow-[0_0_50px_rgba(59,130,246,0.3)] relative mt-4 space-y-6">
+                              <div className="bg-[#07101a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-blue-500/50 shadow-[0_0_50px_rgba(59,130,246,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-3 gap-6 w-full">
                                 <div className="bg-black/50 p-6 rounded-3xl border border-blue-900/50">
                                   <span className="inline-block bg-slate-800 text-slate-300 px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-3">Contexto</span>
                                   <p className="text-slate-200 text-lg md:text-2xl leading-relaxed font-serif">Inició brillante. Pide sabiduría y construye el majestuoso Primer Templo, llevando a Israel a la cúspide de su poder.</p>
@@ -2412,7 +2412,7 @@ export default function OdiseaBiblica() {
                                 </div>
 
                                 {/* PREGUNTA REFLEXIVA Y PUNTAJE */}
-                                <div className="mt-10 relative group">
+                                <div className="mt-10 xl:col-span-3 relative group">
                                   <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-[2.5rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700"></div>
                                   <div className="relative bg-[#05010a]/95 backdrop-blur-3xl p-8 md:p-10 rounded-[2.5rem] border border-purple-500/30 shadow-[inset_0_0_40px_rgba(168,85,247,0.1)] text-left overflow-hidden">
                                     <div className="absolute -top-10 -right-10 w-40 h-40 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -2424,7 +2424,7 @@ export default function OdiseaBiblica() {
                                       </div>
                                       <div className="flex-grow">
                                         <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-                                          <h5 className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-300 font-black uppercase tracking-[0.3em] text-xl md:text-2xl drop-shadow-lg">EL DESAFÍO DEL REY</h5>
+                                          <h5 className="text-transparent bg-clip-text bg-gradient-to-r from-purple-300 to-indigo-300 font-black uppercase tracking-widest md:tracking-[0.3em] text-xl md:text-2xl drop-shadow-lg">EL DESAFÍO DEL REY</h5>
                                           <span className="bg-purple-900/40 text-purple-300 px-4 py-1.5 rounded-full text-xs font-black tracking-widest border border-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.3)] animate-bounce">+ 150 XP</span>
                                         </div>
                                         
@@ -2433,7 +2433,7 @@ export default function OdiseaBiblica() {
                                         </div>
                                         
                                         <div className="bg-[#0a0514] p-5 rounded-2xl border border-[#1a112c]">
-                                          <p className="text-purple-400/70 text-[10px] font-black uppercase tracking-[0.2em] mb-4 flex items-center gap-2"><Crosshair className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE:</p>
+                                          <p className="text-purple-400/70 text-[10px] font-black uppercase tracking-widest md:tracking-[0.2em] mb-4 flex items-center gap-2"><Crosshair className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE:</p>
                                           <div className="flex flex-wrap gap-3">
                                             {clansData.map(c => (
                                               <button key={c.id} onClick={(e) => { e.stopPropagation(); updateScore(c.id, 150); }} className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${c.border.replace('border-', 'bg-').replace('/50', '/10')} hover:${c.border.replace('border-', 'bg-').replace('/50', '/40')} border border-slate-700 hover:border-white text-slate-300 hover:text-white flex items-center gap-3 cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:-translate-y-1`}>
@@ -2463,7 +2463,7 @@ export default function OdiseaBiblica() {
                           <Flame className="w-16 h-16 md:w-24 md:h-24 text-red-500 animate-bounce"/>
                         </div>
                         <h3 className="text-7xl md:text-[140px] font-black text-transparent bg-clip-text bg-gradient-to-b from-red-400 to-red-800 uppercase tracking-tighter mt-12 mb-6 drop-shadow-[0_0_50px_rgba(220,38,38,0.8)] leading-none">930 a.C.</h3>
-                        <p className="text-white text-2xl md:text-4xl font-black uppercase tracking-[0.4em] bg-red-950/80 px-16 py-6 rounded-full border-4 border-red-500/50 shadow-[0_0_60px_rgba(220,38,38,0.5)] backdrop-blur-xl mb-12">LA NACIÓN SE FRACTURA</p>
+                        <p className="text-white text-2xl md:text-4xl font-black uppercase tracking-widest md:tracking-[0.4em] bg-red-950/80 px-16 py-6 rounded-full border-4 border-red-500/50 shadow-[0_0_60px_rgba(220,38,38,0.5)] backdrop-blur-xl mb-12">LA NACIÓN SE FRACTURA</p>
                         
                         <div className="max-w-4xl w-full bg-[#110505]/95 backdrop-blur-md p-8 md:p-10 rounded-[3rem] border border-red-900/50 shadow-2xl relative z-30">
                            <div className="flex flex-col gap-6">
@@ -2498,15 +2498,15 @@ export default function OdiseaBiblica() {
                          <div onClick={() => toggleNode('israel')} className="w-full bg-[#050b14]/95 backdrop-blur-3xl border-4 border-cyan-500/50 rounded-[4rem] p-8 md:p-14 shadow-[0_0_100px_rgba(6,182,212,0.2)] relative overflow-hidden group cursor-pointer hover:border-cyan-400 transition-all duration-700">
                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-cyan-950/90 pointer-events-none"></div>
                            <div className="relative z-10 text-center">
-                              <h3 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 to-cyan-600 uppercase tracking-widest mb-6 drop-shadow-xl">ISRAEL</h3>
-                              <p className="text-cyan-400 text-sm md:text-lg font-black uppercase tracking-[0.4em] mb-12 bg-cyan-950/80 inline-block px-8 py-3 rounded-full border-2 border-cyan-800 shadow-xl">REINO DEL NORTE (10 TRIBUS)</p>
+                              <h3 className="text-6xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 to-cyan-600 uppercase tracking-widest mb-6 drop-shadow-xl">ISRAEL</h3>
+                              <p className="text-cyan-400 text-sm md:text-lg font-black uppercase tracking-widest md:tracking-[0.4em] mb-12 bg-cyan-950/80 inline-block px-8 py-3 rounded-full border-2 border-cyan-800 shadow-xl">REINO DEL NORTE (10 TRIBUS)</p>
                               
                               <div className="w-full aspect-video rounded-[3rem] overflow-hidden mb-12 border-8 border-cyan-900 shadow-[0_0_60px_rgba(6,182,212,0.4)] relative">
                                 <img src="https://images.unsplash.com/photo-1504307651254-35680f356f12?q=80&w=1000&auto=format&fit=crop" alt="Profetas de Fuego" className={`w-full h-full object-cover transition-transform duration-[3s] ${expandedNodes['israel'] ? 'scale-100' : 'scale-125'}`}/>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                                 <div className="absolute bottom-0 w-full p-8 text-left">
                                   <h4 className="text-white font-black uppercase tracking-widest text-3xl md:text-4xl mb-2 drop-shadow-2xl">PROFETAS DE FUEGO</h4>
-                                  <p className="text-cyan-300 text-sm md:text-lg uppercase font-black tracking-[0.3em] drop-shadow-lg">ELÍAS • ELISEO • AMÓS • OSEAS</p>
+                                  <p className="text-cyan-300 text-sm md:text-lg uppercase font-black tracking-widest md:tracking-[0.3em] drop-shadow-lg">ELÍAS • ELISEO • AMÓS • OSEAS</p>
                                 </div>
                                 <div className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-700 ${expandedNodes['israel'] ? 'opacity-0' : 'opacity-100'}`}>
                                   <span className="bg-black/80 text-white font-black uppercase tracking-widest px-8 py-4 rounded-full border-2 border-cyan-500/50 shadow-2xl backdrop-blur-md text-xl">VER MÁS</span>
@@ -2530,7 +2530,7 @@ export default function OdiseaBiblica() {
                                   </div>
 
                                   {/* PREGUNTA REFLEXIVA Y PUNTAJE */}
-                                  <div className="mt-10 relative group">
+                                  <div className="mt-10 xl:col-span-3 relative group">
                                     <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 to-indigo-600 rounded-[2.5rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700"></div>
                                     <div className="relative bg-[#05010a]/95 backdrop-blur-3xl p-8 md:p-10 rounded-[2.5rem] border border-cyan-500/30 shadow-[inset_0_0_40px_rgba(6,182,212,0.1)] text-left overflow-hidden">
                                       <div className="absolute -top-10 -right-10 w-40 h-40 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -2542,7 +2542,7 @@ export default function OdiseaBiblica() {
                                         </div>
                                         <div className="flex-grow">
                                           <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-                                            <h5 className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300 font-black uppercase tracking-[0.3em] text-xl md:text-2xl drop-shadow-lg">EL DESAFÍO DEL REY</h5>
+                                            <h5 className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-300 font-black uppercase tracking-widest md:tracking-[0.3em] text-xl md:text-2xl drop-shadow-lg">EL DESAFÍO DEL REY</h5>
                                             <span className="bg-cyan-900/40 text-cyan-300 px-4 py-1.5 rounded-full text-xs font-black tracking-widest border border-cyan-500/30 shadow-[0_0_15px_rgba(6,182,212,0.3)] animate-bounce">+ 150 XP</span>
                                           </div>
                                           
@@ -2551,7 +2551,7 @@ export default function OdiseaBiblica() {
                                           </div>
                                           
                                           <div className="bg-[#0a0514] p-5 rounded-2xl border border-[#1a112c]">
-                                            <p className="text-cyan-400/70 text-[10px] font-black uppercase tracking-[0.2em] mb-4 flex items-center gap-2"><Crosshair className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE:</p>
+                                            <p className="text-cyan-400/70 text-[10px] font-black uppercase tracking-widest md:tracking-[0.2em] mb-4 flex items-center gap-2"><Crosshair className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE:</p>
                                             <div className="flex flex-wrap gap-3">
                                               {clansData.map(c => (
                                                 <button key={c.id} onClick={(e) => { e.stopPropagation(); updateScore(c.id, 150); }} className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${c.border.replace('border-', 'bg-').replace('/50', '/10')} hover:${c.border.replace('border-', 'bg-').replace('/50', '/40')} border border-slate-700 hover:border-white text-slate-300 hover:text-white flex items-center gap-3 cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:-translate-y-1`}>
@@ -2577,15 +2577,15 @@ export default function OdiseaBiblica() {
                          <div onClick={() => toggleNode('juda')} className="w-full bg-[#140b05]/95 backdrop-blur-3xl border-4 border-amber-500/50 rounded-[4rem] p-8 md:p-14 shadow-[0_0_100px_rgba(245,158,11,0.2)] relative overflow-hidden group cursor-pointer hover:border-amber-400 transition-all duration-700">
                            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-amber-950/90 pointer-events-none"></div>
                            <div className="relative z-10 text-center">
-                              <h3 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600 uppercase tracking-widest mb-6 drop-shadow-xl">JUDÁ</h3>
-                              <p className="text-amber-500 text-sm md:text-lg font-black uppercase tracking-[0.4em] mb-12 bg-amber-950/80 inline-block px-8 py-3 rounded-full border-2 border-amber-800 shadow-xl">REINO DEL SUR (2 TRIBUS)</p>
+                              <h3 className="text-6xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600 uppercase tracking-widest mb-6 drop-shadow-xl">JUDÁ</h3>
+                              <p className="text-amber-500 text-sm md:text-lg font-black uppercase tracking-widest md:tracking-[0.4em] mb-12 bg-amber-950/80 inline-block px-8 py-3 rounded-full border-2 border-amber-800 shadow-xl">REINO DEL SUR (2 TRIBUS)</p>
                               
                               <div className="w-full aspect-video rounded-[3rem] overflow-hidden mb-12 border-8 border-amber-900 shadow-[0_0_60px_rgba(245,158,11,0.4)] relative">
                                 <img src="https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=1000&auto=format&fit=crop" alt="Profetas Mesiánicos" className={`w-full h-full object-cover transition-transform duration-[3s] ${expandedNodes['juda'] ? 'scale-100' : 'scale-125'}`}/>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                                 <div className="absolute bottom-0 w-full p-8 text-left">
                                   <h4 className="text-white font-black uppercase tracking-widest text-3xl md:text-4xl mb-2 drop-shadow-2xl">PROFETAS MESIÁNICOS</h4>
-                                  <p className="text-amber-300 text-sm md:text-lg uppercase font-black tracking-[0.3em] drop-shadow-lg">ISAÍAS • JEREMÍAS • MIQUEAS</p>
+                                  <p className="text-amber-300 text-sm md:text-lg uppercase font-black tracking-widest md:tracking-[0.3em] drop-shadow-lg">ISAÍAS • JEREMÍAS • MIQUEAS</p>
                                 </div>
                                 <div className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-700 ${expandedNodes['juda'] ? 'opacity-0' : 'opacity-100'}`}>
                                   <span className="bg-black/80 text-white font-black uppercase tracking-widest px-8 py-4 rounded-full border-2 border-amber-500/50 shadow-2xl backdrop-blur-md text-xl">VER MÁS</span>
@@ -2609,7 +2609,7 @@ export default function OdiseaBiblica() {
                                   </div>
 
                                   {/* PREGUNTA REFLEXIVA Y PUNTAJE */}
-                                  <div className="mt-10 relative group">
+                                  <div className="mt-10 xl:col-span-3 relative group">
                                     <div className="absolute inset-0 bg-gradient-to-r from-amber-600 to-red-600 rounded-[2.5rem] blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-700"></div>
                                     <div className="relative bg-[#05010a]/95 backdrop-blur-3xl p-8 md:p-10 rounded-[2.5rem] border border-amber-500/30 shadow-[inset_0_0_40px_rgba(245,158,11,0.1)] text-left overflow-hidden">
                                       <div className="absolute -top-10 -right-10 w-40 h-40 bg-amber-600/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -2621,7 +2621,7 @@ export default function OdiseaBiblica() {
                                         </div>
                                         <div className="flex-grow">
                                           <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-                                            <h5 className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-300 font-black uppercase tracking-[0.3em] text-xl md:text-2xl drop-shadow-lg">EL DESAFÍO DEL REY</h5>
+                                            <h5 className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-orange-300 font-black uppercase tracking-widest md:tracking-[0.3em] text-xl md:text-2xl drop-shadow-lg">EL DESAFÍO DEL REY</h5>
                                             <span className="bg-amber-900/40 text-amber-300 px-4 py-1.5 rounded-full text-xs font-black tracking-widest border border-amber-500/30 shadow-[0_0_15px_rgba(245,158,11,0.3)] animate-bounce">+ 150 XP</span>
                                           </div>
                                           
@@ -2630,7 +2630,7 @@ export default function OdiseaBiblica() {
                                           </div>
                                           
                                           <div className="bg-[#0a0514] p-5 rounded-2xl border border-[#1a112c]">
-                                            <p className="text-amber-400/70 text-[10px] font-black uppercase tracking-[0.2em] mb-4 flex items-center gap-2"><Crosshair className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE:</p>
+                                            <p className="text-amber-400/70 text-[10px] font-black uppercase tracking-widest md:tracking-[0.2em] mb-4 flex items-center gap-2"><Crosshair className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE:</p>
                                             <div className="flex flex-wrap gap-3">
                                               {clansData.map(c => (
                                                 <button key={c.id} onClick={(e) => { e.stopPropagation(); updateScore(c.id, 150); }} className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${c.border.replace('border-', 'bg-').replace('/50', '/10')} hover:${c.border.replace('border-', 'bg-').replace('/50', '/40')} border border-slate-700 hover:border-white text-slate-300 hover:text-white flex items-center gap-3 cursor-pointer shadow-lg hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:-translate-y-1`}>
@@ -2668,11 +2668,11 @@ export default function OdiseaBiblica() {
                              <img src="/images/jesus.jpg" alt="Jesús de Nazaret" className="w-full h-full object-cover rounded-full border-8 border-yellow-500 shadow-[0_0_80px_rgba(250,204,21,1)] relative z-10" />
                           </div>
                           
-                          <p className="text-yellow-500 font-black uppercase tracking-[0.6em] md:tracking-[1em] text-lg md:text-2xl mb-8"><Key className="w-8 h-8 inline-block mr-4"/> EL HILO CONDUCTOR DIVINO</p>
-                          <h3 className="text-7xl md:text-9xl lg:text-[140px] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-200 to-yellow-600 uppercase tracking-tighter mb-16 drop-shadow-[0_0_40px_rgba(250,204,21,0.5)] leading-none">JESÚS DE NAZARET</h3>
+                          <p className="text-yellow-500 font-black uppercase tracking-widest md:tracking-[1em] text-lg md:text-2xl mb-8"><Key className="w-8 h-8 inline-block mr-4"/> EL HILO CONDUCTOR DIVINO</p>
+                          <h3 className="text-5xl md:text-7xl lg:text-9xl lg:text-[140px] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-200 to-yellow-600 uppercase tracking-tighter mb-16 drop-shadow-[0_0_40px_rgba(250,204,21,0.5)] leading-none">JESÚS DE NAZARET</h3>
                           
                           <div className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-700 ${expandedNodes['promesa'] ? 'opacity-0' : 'opacity-100'}`}>
-                              <span className="bg-black/90 text-yellow-400 font-black uppercase tracking-[0.5em] px-12 py-6 rounded-full border-4 border-yellow-500/50 shadow-[0_0_50px_rgba(234,179,8,0.8)] backdrop-blur-xl text-2xl md:text-4xl animate-bounce mt-[200px]">DESCUBRIR EL PACTO FINAL</span>
+                              <span className="bg-black/90 text-yellow-400 font-black uppercase tracking-widest md:tracking-[0.5em] px-12 py-6 rounded-full border-4 border-yellow-500/50 shadow-[0_0_50px_rgba(234,179,8,0.8)] backdrop-blur-xl text-2xl md:text-4xl animate-bounce mt-[200px]">DESCUBRIR EL PACTO FINAL</span>
                           </div>
 
                           <div className={`grid transition-all duration-1000 ease-in-out w-full ${expandedNodes['promesa'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-20'}`}>
@@ -2692,7 +2692,7 @@ export default function OdiseaBiblica() {
                                   </p>
                                   <div className="inline-flex items-center justify-center gap-6 md:gap-10 bg-gradient-to-r from-yellow-950 to-black border-4 border-yellow-500/80 px-8 md:px-16 py-6 md:py-8 rounded-full shadow-[0_0_80px_rgba(234,179,8,0.3)] mt-6">
                                     <Crown className="w-12 h-12 md:w-16 md:h-16 text-yellow-400 drop-shadow-[0_0_20px_rgba(250,204,21,0.8)]"/>
-                                    <span className="text-yellow-200 font-black uppercase tracking-[0.2em] md:tracking-[0.4em] text-2xl md:text-4xl">EL LEÓN DE LA TRIBU DE JUDÁ</span>
+                                    <span className="text-yellow-200 font-black uppercase tracking-widest md:tracking-[0.2em] md:tracking-widest md:tracking-[0.4em] text-2xl md:text-4xl">EL LEÓN DE LA TRIBU DE JUDÁ</span>
                                   </div>
                                 </div>
 
@@ -2711,7 +2711,7 @@ export default function OdiseaBiblica() {
                     <div className="bg-[#120703] border border-amber-900/50 rounded-3xl p-8 md:p-12 relative shadow-[0_0_50px_rgba(245,158,11,0.15)] flex flex-col items-center text-center">
                       <Scroll className="w-20 h-20 text-amber-500 mb-6 drop-shadow-[0_0_30px_rgba(245,158,11,0.8)]"/>
                       <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600 uppercase tracking-widest mb-4">EL RETO DE INVESTIGACIÓN</h2>
-                      <p className="text-amber-500 text-xs md:text-sm font-bold tracking-[0.3em] uppercase bg-amber-950/40 inline-block px-6 py-2 rounded border border-amber-900/50 mb-8">ANÁLISIS DEL REINO DIVIDIDO</p>
+                      <p className="text-amber-500 text-xs md:text-sm font-bold tracking-widest md:tracking-[0.3em] uppercase bg-amber-950/40 inline-block px-6 py-2 rounded border border-amber-900/50 mb-8">ANÁLISIS DEL REINO DIVIDIDO</p>
                       
                       <div className="bg-[#0a0502] border border-amber-900/30 p-6 md:p-8 rounded-2xl w-full text-left mb-10 shadow-inner">
                         <p className="text-white italic text-lg md:text-xl leading-relaxed font-serif border-l-4 border-amber-600 pl-4">"Investiguen a los Reyes de Israel. <strong className="text-amber-300 font-sans font-black not-italic uppercase">Pero no a los principales (Saúl, David y Salomón)</strong>, sino al resto de los monarcas que gobernaron el Norte y el Sur hasta el exilio."</p>
@@ -2751,7 +2751,7 @@ export default function OdiseaBiblica() {
                       </div>
                       
                       <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-600 uppercase tracking-widest mb-4 relative z-10">METACOGNICIÓN FINAL</h2>
-                      <p className="text-emerald-500 text-xs md:text-sm font-bold tracking-[0.3em] uppercase bg-emerald-950/40 inline-block px-6 py-2 rounded-full border border-emerald-900/50 mb-10 relative z-10">CIERRE DE LA MISIÓN 3</p>
+                      <p className="text-emerald-500 text-xs md:text-sm font-bold tracking-widest md:tracking-[0.3em] uppercase bg-emerald-950/40 inline-block px-6 py-2 rounded-full border border-emerald-900/50 mb-10 relative z-10">CIERRE DE LA MISIÓN 3</p>
                       
                       <div className="w-full space-y-6 relative z-10 text-left">
                         
@@ -2790,7 +2790,7 @@ export default function OdiseaBiblica() {
                       <div className="mt-12 pt-8 border-t border-emerald-900/40 w-full relative z-10 flex flex-col items-center">
                         <button onClick={() => { setM3SubTab('archivo'); setM3Fase(0); setStartMision3Cinematic(false); setView('campamento_base'); }} className="group relative px-10 py-5 rounded-full overflow-hidden shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(16,185,129,0.6)] hover:scale-105 transition-all duration-300 border border-emerald-500/50 cursor-pointer">
                           <div className="absolute inset-0 bg-emerald-600 opacity-20 group-hover:opacity-40 transition-opacity"></div>
-                          <span className="relative z-10 flex items-center gap-3 text-emerald-400 group-hover:text-white font-black uppercase tracking-[0.2em] transition-colors">
+                          <span className="relative z-10 flex items-center gap-3 text-emerald-400 group-hover:text-white font-black uppercase tracking-widest md:tracking-[0.2em] transition-colors">
                             MISIÓN COMPLETADA: RETORNAR A BASE <ChevronRight className="w-5 h-5"/>
                           </span>
                         </button>
@@ -2849,9 +2849,9 @@ export default function OdiseaBiblica() {
 
           <div className="relative z-10 text-center">
             <div className="text-8xl md:text-[10rem] mb-6 animate-[shofar-pulse_1.5s_ease-in-out_infinite]">📯</div>
-            <h2 className="text-5xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-300 to-amber-600 uppercase tracking-[0.3em] mb-4 drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]">¡SHOFAR!</h2>
+            <h2 className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-300 to-amber-600 uppercase tracking-widest md:tracking-[0.3em] mb-4 drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]">¡SHOFAR!</h2>
             <div className="bg-red-600 text-white px-8 py-4 rounded-xl inline-block mb-8 shadow-[0_0_40px_rgba(220,38,38,0.6)] animate-pulse">
-              <p className="text-2xl md:text-4xl font-black uppercase tracking-[0.4em]">SILENCIO TÁCTICO ABSOLUTO</p>
+              <p className="text-2xl md:text-4xl font-black uppercase tracking-widest md:tracking-[0.4em]">SILENCIO TÁCTICO ABSOLUTO</p>
             </div>
             <p className="text-amber-500/60 text-sm mb-12 font-mono tracking-widest uppercase">Llamadas de Shofar hoy: <span className="text-white font-black text-lg">{shofarLlamadas}</span></p>
             <div className="flex gap-4 justify-center">
@@ -2879,7 +2879,7 @@ export default function OdiseaBiblica() {
               
               <Scroll className="w-16 h-16 text-indigo-500 mb-4 drop-shadow-[0_0_30px_rgba(99,102,241,0.6)]"/>
               <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter uppercase mb-4 drop-shadow-2xl text-center">ARCHIVOS DE LA CORONA</h1>
-              <p className="text-indigo-400 text-xs md:text-sm tracking-[0.4em] font-bold uppercase mb-12 text-center bg-indigo-950/30 px-6 py-2 rounded-full border border-indigo-900/50">MATERIAL CONFIDENCIAL DESCARGABLE (PDF)</p>
+              <p className="text-indigo-400 text-xs md:text-sm tracking-widest md:tracking-[0.4em] font-bold uppercase mb-12 text-center bg-indigo-950/30 px-6 py-2 rounded-full border border-indigo-900/50">MATERIAL CONFIDENCIAL DESCARGABLE (PDF)</p>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full px-4">
                 {/* Mision 1 Card */}
@@ -2887,7 +2887,7 @@ export default function OdiseaBiblica() {
                   <Shield className="w-12 h-12 text-amber-500 mb-6 group-hover:scale-110 transition-transform drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]"/>
                   <h3 className="text-white font-black text-xl uppercase tracking-widest mb-2">MISIÓN 1: SACERDOTES</h3>
                   <p className="text-slate-400 text-xs mb-6">El Pectoral del Juicio y la Intercesión.</p>
-                  <span className="text-[9px] text-amber-400 font-bold uppercase tracking-[0.2em] border border-amber-500/50 px-4 py-2 rounded-full bg-amber-950/30">ABRIR DOSSIER</span>
+                  <span className="text-[9px] text-amber-400 font-bold uppercase tracking-widest md:tracking-[0.2em] border border-amber-500/50 px-4 py-2 rounded-full bg-amber-950/30">ABRIR DOSSIER</span>
                 </div>
 
                 {/* Mision 2 Card */}
@@ -2895,7 +2895,7 @@ export default function OdiseaBiblica() {
                   <ShieldAlert className="w-12 h-12 text-red-500 mb-6 group-hover:scale-110 transition-transform drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]"/>
                   <h3 className="text-white font-black text-xl uppercase tracking-widest mb-2">MISIÓN 2: JUECES</h3>
                   <p className="text-slate-400 text-xs mb-6">El Tribunal, el Caos y la Responsabilidad.</p>
-                  <span className="text-[9px] text-red-400 font-bold uppercase tracking-[0.2em] border border-red-500/50 px-4 py-2 rounded-full bg-red-950/30">ABRIR DOSSIER</span>
+                  <span className="text-[9px] text-red-400 font-bold uppercase tracking-widest md:tracking-[0.2em] border border-red-500/50 px-4 py-2 rounded-full bg-red-950/30">ABRIR DOSSIER</span>
                 </div>
 
                 {/* Mision 3 Card */}
@@ -2903,7 +2903,7 @@ export default function OdiseaBiblica() {
                   <Crown className="w-12 h-12 text-purple-500 mb-6 group-hover:scale-110 transition-transform drop-shadow-[0_0_15px_rgba(168,85,247,0.5)]"/>
                   <h3 className="text-white font-black text-xl uppercase tracking-widest mb-2">MISIÓN 3: REYES</h3>
                   <p className="text-slate-400 text-xs mb-6">El Archivo de la Corona y el Liderazgo.</p>
-                  <span className="text-[9px] text-purple-400 font-bold uppercase tracking-[0.2em] border border-purple-500/50 px-4 py-2 rounded-full bg-purple-950/30">ABRIR DOSSIER</span>
+                  <span className="text-[9px] text-purple-400 font-bold uppercase tracking-widest md:tracking-[0.2em] border border-purple-500/50 px-4 py-2 rounded-full bg-purple-950/30">ABRIR DOSSIER</span>
                 </div>
               </div>
             </div>
@@ -3104,33 +3104,33 @@ export default function OdiseaBiblica() {
           <div className="relative z-20 text-center max-w-6xl w-full flex flex-col items-center perspective-1000">
             {/* BADGE: CRÓNICAS DEL TRONO */}
             <div className="animate-in slide-in-from-top-12 fade-in duration-[1s] fill-mode-both">
-              <span className="text-white/60 text-[10px] md:text-xs font-black uppercase tracking-[0.5em] mb-2 block drop-shadow-md">CRÓNICAS DEL TRONO</span>
+              <span className="text-white/60 text-[10px] md:text-xs font-black uppercase tracking-widest md:tracking-[0.5em] mb-2 block drop-shadow-md">CRÓNICAS DEL TRONO</span>
               <div className="w-1 h-12 mx-auto mb-6" style={{ background: `linear-gradient(to bottom, transparent, ${desafiosM3[activeDesafio].glow}, transparent)` }}></div>
             </div>
 
             {/* TITLE */}
-            <h2 className="text-5xl md:text-7xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-slate-500 uppercase tracking-[0.3em] mb-4 drop-shadow-2xl animate-in zoom-in-90 fade-in duration-[1.5s] delay-300 fill-mode-both" style={{ textShadow: `0 0 50px ${desafiosM3[activeDesafio].glow}` }}>{desafiosM3[activeDesafio].title}</h2>
+            <h2 className="text-5xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-slate-500 uppercase tracking-widest md:tracking-[0.3em] mb-4 drop-shadow-2xl animate-in zoom-in-90 fade-in duration-[1.5s] delay-300 fill-mode-both" style={{ textShadow: `0 0 50px ${desafiosM3[activeDesafio].glow}` }}>{desafiosM3[activeDesafio].title}</h2>
             
             {/* 150 PUNTOS BADGE */}
             <div className="animate-in fade-in slide-in-from-bottom-4 duration-[1s] delay-500 fill-mode-both mb-8">
                <div className="inline-flex items-center gap-3 bg-black/80 border border-white/20 px-8 py-2 rounded-full shadow-[0_0_30px_rgba(255,255,255,0.1)] backdrop-blur-md relative overflow-hidden group">
                   <div className="absolute inset-0 opacity-20 animate-[pulse_2s_ease-in-out_infinite]" style={{ backgroundColor: desafiosM3[activeDesafio].glow }}></div>
                   <Target className="w-6 h-6 text-white animate-[spin_10s_linear_infinite]"/>
-                  <span className="text-white font-black tracking-[0.4em] uppercase text-sm md:text-xl relative z-10 drop-shadow-md">150 PUNTOS EN JUEGO</span>
+                  <span className="text-white font-black tracking-widest md:tracking-[0.4em] uppercase text-sm md:text-xl relative z-10 drop-shadow-md">150 PUNTOS EN JUEGO</span>
                </div>
             </div>
             
             {/* FASE 1: INVITACIÓN */}
             {desafioPaso === 'invitacion' && (
               <div className="mt-16 animate-in zoom-in fade-in duration-[1s] delay-700 fill-mode-both flex flex-col items-center">
-                <p className="text-white/80 text-xl md:text-3xl font-black uppercase tracking-[0.4em] mb-12 animate-[pulse_3s_ease-in-out_infinite] drop-shadow-lg text-center">
+                <p className="text-white/80 text-xl md:text-3xl font-black uppercase tracking-widest md:tracking-[0.4em] mb-12 animate-[pulse_3s_ease-in-out_infinite] drop-shadow-lg text-center">
                   ¿QUÉ CLAN ESTÁ LISTO <br/>PARA EL DESAFÍO?
                 </p>
                 <button onClick={() => setDesafioPaso('pregunta')} 
                         className="group relative px-16 py-6 rounded-full overflow-hidden shadow-[0_0_60px_rgba(255,255,255,0.2)] hover:shadow-[0_0_100px_rgba(255,255,255,0.5)] hover:scale-110 transition-all duration-500 border border-white/40 cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
                   <div className="absolute inset-0 opacity-30 group-hover:opacity-60 transition-opacity" style={{ backgroundColor: desafiosM3[activeDesafio].glow }}></div>
-                  <span className="relative z-10 flex items-center gap-4 text-white font-black uppercase tracking-[0.4em] text-xl md:text-2xl drop-shadow-2xl">
+                  <span className="relative z-10 flex items-center gap-4 text-white font-black uppercase tracking-widest md:tracking-[0.4em] text-xl md:text-2xl drop-shadow-2xl">
                     <AlertTriangle className="w-8 h-8 animate-pulse text-amber-300"/> 
                     REVELAR LA PREGUNTA
                   </span>
@@ -3146,12 +3146,12 @@ export default function OdiseaBiblica() {
                   <div className="absolute left-0 top-0 w-3 h-full" style={{ backgroundColor: desafiosM3[activeDesafio].glow, boxShadow: `0 0 30px ${desafiosM3[activeDesafio].glow}` }}></div>
                   <div className="absolute right-0 top-0 w-3 h-full" style={{ backgroundColor: desafiosM3[activeDesafio].glow, boxShadow: `0 0 30px ${desafiosM3[activeDesafio].glow}` }}></div>
                   
-                  <p className="text-white text-3xl md:text-5xl leading-[1.4] font-serif italic max-w-4xl mx-auto drop-shadow-2xl relative z-10">
+                  <p className="text-white text-2xl md:text-4xl lg:text-5xl leading-[1.4] font-serif italic max-w-4xl mx-auto drop-shadow-2xl relative z-10">
                     "{desafiosM3[activeDesafio].text}"
                   </p>
                 </div>
                 
-                <p className="text-white/60 text-xs md:text-sm font-black uppercase tracking-[0.4em] mt-8 mb-6 animate-[pulse_2s_ease-in-out_infinite] animate-in fade-in duration-1000 delay-[500ms] fill-mode-both">
+                <p className="text-white/60 text-xs md:text-sm font-black uppercase tracking-widest md:tracking-[0.4em] mt-8 mb-6 animate-[pulse_2s_ease-in-out_infinite] animate-in fade-in duration-1000 delay-[500ms] fill-mode-both">
                   PREPAREN SUS PALETAS. ¿QUÉ CLAN DESEA RESPONDER?
                 </p>
                 
@@ -3193,8 +3193,8 @@ export default function OdiseaBiblica() {
             <div className="z-10 flex-grow flex flex-col items-center justify-center text-center animate-in fade-in duration-1000 max-w-2xl mx-auto px-4 w-full h-full">
               <Flame className="w-24 h-24 text-fuchsia-500 mb-6 drop-shadow-[0_0_30px_rgba(217,70,239,0.5)] animate-pulse"/>
               <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-widest mb-4">MISIÓN 4: LOS PROFETAS</h1>
-              <p className="text-fuchsia-400 text-xs md:text-sm tracking-[0.3em] uppercase mb-10 font-bold border border-fuchsia-900/50 bg-fuchsia-950/30 px-6 py-4 rounded-xl">INSTRUCCIÓN GM: <br/><br/>1) ACTIVA LA BSO EN LA ESQUINA.<br/>2) INICIA LA POESÍA CINEMÁTICA.</p>
-              <button onClick={() => setStartMision4Cinematic(true)} className="bg-gradient-to-b from-fuchsia-700 to-fuchsia-950 border-2 border-fuchsia-400 text-fuchsia-100 px-10 py-5 uppercase tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(217,70,239,0.6)] rounded-full cursor-pointer flex items-center justify-center gap-3"><Wand2 className="w-6 h-6"/> Iniciar Cinemática</button>
+              <p className="text-fuchsia-400 text-xs md:text-sm tracking-widest md:tracking-[0.3em] uppercase mb-10 font-bold border border-fuchsia-900/50 bg-fuchsia-950/30 px-6 py-4 rounded-xl">INSTRUCCIÓN GM: <br/><br/>1) ACTIVA LA BSO EN LA ESQUINA.<br/>2) INICIA LA POESÍA CINEMÁTICA.</p>
+              <button onClick={() => setStartMision4Cinematic(true)} className="bg-gradient-to-b from-fuchsia-700 to-fuchsia-950 border-2 border-fuchsia-400 text-fuchsia-100 px-10 py-5 uppercase tracking-widest md:tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(217,70,239,0.6)] rounded-full cursor-pointer flex items-center justify-center gap-3"><Wand2 className="w-6 h-6"/> Iniciar Cinemática</button>
               <button onClick={() => { setView('campamento_base'); setStartMision4Cinematic(false); setM4Fase(0); }} className="mt-8 text-slate-500 text-[10px] tracking-widest uppercase hover:text-white cursor-pointer transition-colors border-b border-transparent hover:border-white">Volver al Campamento Base</button>
             </div>
           ) : m4Fase === 0 ? (
@@ -3202,24 +3202,24 @@ export default function OdiseaBiblica() {
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1487147264018-f9d7f52479e0?q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-luminosity animate-[slowZoom_50s_linear_forwards]"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-[#030105] via-[#030105]/70 to-transparent z-10"></div>
               
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 2s' }}><p className="text-3xl md:text-5xl text-slate-300 uppercase tracking-[0.4em] font-light drop-shadow-lg">Los reyes se corrompieron.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 2s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-slate-300 uppercase tracking-widest md:tracking-[0.4em] font-light drop-shadow-lg">Los reyes se corrompieron.</p></div>
               
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 10s' }}><p className="text-4xl md:text-6xl text-fuchsia-400 uppercase tracking-[0.4em] font-bold drop-shadow-[0_0_30px_rgba(217,70,239,0.8)]">La corona de Israel se oxidó.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 10s' }}><p className="text-4xl md:text-6xl text-fuchsia-400 uppercase tracking-widest md:tracking-[0.4em] font-bold drop-shadow-[0_0_30px_rgba(217,70,239,0.8)]">La corona de Israel se oxidó.</p></div>
               
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 18s' }}><p className="text-2xl md:text-4xl text-slate-400 uppercase tracking-[0.5em] font-light leading-relaxed">Y el pueblo...<br/>El pueblo olvidó quién era.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 18s' }}><p className="text-2xl md:text-4xl text-slate-400 uppercase tracking-widest md:tracking-[0.5em] font-light leading-relaxed">Y el pueblo...<br/>El pueblo olvidó quién era.</p></div>
               
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 28s' }}><p className="text-4xl md:text-6xl text-amber-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]">Pero la voz del Cielo no guarda silencio.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 28s' }}><p className="text-4xl md:text-6xl text-amber-500 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]">Pero la voz del Cielo no guarda silencio.</p></div>
               
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 9s ease-out forwards 38s' }}><p className="text-3xl md:text-5xl text-fuchsia-300 uppercase tracking-[0.4em] font-light drop-shadow-lg">Del polvo y la oscuridad,<br/>se levantaron llamas humanas.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 9s ease-out forwards 38s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-fuchsia-300 uppercase tracking-widest md:tracking-[0.4em] font-light drop-shadow-lg">Del polvo y la oscuridad,<br/>se levantaron llamas humanas.</p></div>
 
               <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 6s ease-out forwards 49s' }}>
                 <Flame className="w-24 h-24 text-fuchsia-500 mx-auto mb-8 drop-shadow-[0_0_40px_rgba(217,70,239,1)] animate-[pulse_2s_ease-in-out_infinite]" />
-                <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-fuchsia-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(217,70,239,1)]">LOS PROFETAS</h1>
-                <p className="text-fuchsia-400 mt-6 text-xl md:text-3xl tracking-[0.6em] font-bold uppercase drop-shadow-md">VOCES CONTRA EL IMPERIO</p>
+                <h1 className="text-6xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-fuchsia-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(217,70,239,1)]">LOS PROFETAS</h1>
+                <p className="text-fuchsia-400 mt-6 text-xl md:text-3xl tracking-widest md:tracking-[0.6em] font-bold uppercase drop-shadow-md">VOCES CONTRA EL IMPERIO</p>
               </div>
 
               <div className="absolute bottom-16 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 3s ease-out forwards 55s' }}>
-                <button onClick={() => setM4Fase(1)} className="bg-[#120516]/90 border-2 border-fuchsia-500 text-fuchsia-300 px-10 py-5 font-black uppercase tracking-[0.4em] text-lg transition-all shadow-[0_0_40px_rgba(217,70,239,0.6)] hover:scale-110 hover:shadow-[0_0_60px_rgba(217,70,239,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL FUEGO <ChevronRight className="w-6 h-6"/></button>
+                <button onClick={() => setM4Fase(1)} className="bg-[#120516]/90 border-2 border-fuchsia-500 text-fuchsia-300 px-10 py-5 font-black uppercase tracking-widest md:tracking-[0.4em] text-lg transition-all shadow-[0_0_40px_rgba(217,70,239,0.6)] hover:scale-110 hover:shadow-[0_0_60px_rgba(217,70,239,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL FUEGO <ChevronRight className="w-6 h-6"/></button>
               </div>
             </div>
           ) : (
@@ -3248,7 +3248,7 @@ export default function OdiseaBiblica() {
                   <div className="max-w-7xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-700">
                     <div className="text-center mb-8">
                       <Flame className="w-16 h-16 text-fuchsia-500 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(217,70,239,0.6)] animate-[pulse_2s_ease-in-out_infinite]"/>
-                      <h2 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-fuchsia-300 tracking-widest uppercase mb-2 drop-shadow-lg">ARCHIVO AUDIOVISUAL DE YAHVEH</h2>
+                      <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-fuchsia-300 tracking-widest uppercase mb-2 drop-shadow-lg">ARCHIVO AUDIOVISUAL DE YAHVEH</h2>
                       <p className="text-fuchsia-400 text-xs font-bold tracking-widest uppercase">REGISTRO HISTÓRICO: ¿QUIÉNES SON LOS PROFETAS?</p>
                     </div>
                     
