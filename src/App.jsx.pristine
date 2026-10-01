@@ -1,0 +1,1549 @@
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import {
+  ChevronRight, Play, Trophy, AlertTriangle, Map, Key, Skull, Target, Crosshair,
+  Crown, MonitorPlay, ShieldAlert, Scroll, Shield, Flame,
+  Wand2, Compass, CheckCircle2, Users, Settings, Plus, X, Sparkles, UserPlus, BookOpen, Globe,
+  Music, Volume2, Eye, Zap, RefreshCw, Scale, Hourglass, Loader2, Gamepad2, GraduationCap, Hexagon, Layers,
+  Swords, Heart, Timer, Pause, RotateCcw
+} from 'lucide-react';
+import { clansData, unassignedStudentsDB, defaultRoster, defaultScores, pectoralStones, casosTribunal } from './data.js';
+
+// ─── STORAGE HELPERS ────────────────────────────────────────────
+const STORAGE_KEY_SCORES = 'odiseaScoresV30';
+const STORAGE_KEY_ROSTER = 'odiseaRosterV30';
+
+function loadFromStorage(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch { return fallback; }
+}
+
+// ─── MAIN COMPONENT ─────────────────────────────────────────────
+export default function OdiseaBiblica() {
+  // ── Navigation ──
+  const [view, setView] = useState('intro_master');
+  const [selectedClass, setSelectedClass] = useState(null);
+
+  // ── Core Data ──
+  const [roster, setRoster] = useState(() => loadFromStorage(STORAGE_KEY_ROSTER, defaultRoster));
+  const [scores, setScores] = useState(() => loadFromStorage(STORAGE_KEY_SCORES, defaultScores));
+
+  // ── Campamento Base ──
+  const [activeTab, setActiveTab] = useState(1);
+  const [showClans, setShowClans] = useState(false);
+  const [clanSubTab, setClanSubTab] = useState(0);
+
+  // ── Sorteo ──
+  const [sorteoGrupos, setSorteoGrupos] = useState(7);
+  const [sorteoMiembros, setSorteoMiembros] = useState(3);
+  const [sorteoPaso, setSorteoPaso] = useState('config');
+  const [startGlobalCinematic, setStartGlobalCinematic] = useState(false);
+
+  // ── Instructions ──
+  const [showInstructions, setShowInstructions] = useState(false);
+  const [instructionTab, setInstructionTab] = useState(1);
+
+  // ── Misión 1 ──
+  const [startMision1Cinematic, setStartMision1Cinematic] = useState(false);
+  const [m1Fase, setM1Fase] = useState(0);
+  const [m1SubTab, setM1SubTab] = useState('proposito');
+  const [activeStone, setActiveStone] = useState(null);
+  const [guessedLetters, setGuessedLetters] = useState([]);
+  const [activeAhorcadoClan, setActiveAhorcadoClan] = useState(null);
+  const [stoneProgress, setStoneProgress] = useState({});
+
+  // ── Misión 2 ──
+  const [startMision2Cinematic, setStartMision2Cinematic] = useState(false);
+  const [m2Fase, setM2Fase] = useState(0);
+  const [tribunalPaso, setTribunalPaso] = useState('inicio');
+  const [kaganClan, setKaganClan] = useState('ESPERANDO...');
+  const [kaganNum, setKaganNum] = useState('?');
+  const [casoIndice, setCasoIndice] = useState(0);
+  const [casoActivo, setCasoActivo] = useState(null);
+  const [evaluandoTribunal, setEvaluandoTribunal] = useState(false);
+  const [resultadoJuicio, setResultadoJuicio] = useState(null);
+  const [razonFallo, setRazonFallo] = useState('');
+  const [poolTribunal, setPoolTribunal] = useState([]);
+  const [votoPopularEmitido, setVotoPopularEmitido] = useState(false);
+
+  // ── Misión 3 ──
+  const [startMision3Cinematic, setStartMision3Cinematic] = useState(false);
+  const [m3Fase, setM3Fase] = useState(0);
+  const [m3SubTab, setM3SubTab] = useState('codice');
+
+  // ── Timer & Shofar ──
+  const [timerSeconds, setTimerSeconds] = useState(25 * 60);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [showShofarPlayer, setShowShofarPlayer] = useState(false);
+  const [shofarLlamadas, setShofarLlamadas] = useState(0);
+  const [shofarBlast, setShofarBlast] = useState(false);
+
+  // ── Persist scores & roster ──
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY_SCORES, JSON.stringify(scores));
+      localStorage.setItem(STORAGE_KEY_ROSTER, JSON.stringify(roster));
+    } catch (e) { console.error('Error guardando datos', e); }
+  }, [scores, roster]);
+
+  // ── Countdown timer ──
+  useEffect(() => {
+    if (!timerRunning || timerSeconds <= 0) return;
+    const id = setInterval(() => setTimerSeconds(s => s - 1), 1000);
+    return () => clearInterval(id);
+  }, [timerRunning, timerSeconds]);
+
+  const formatTime = (s) => {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${m.toString().padStart(2,'0')}:${sec.toString().padStart(2,'0')}`;
+  };
+
+  // ── Helpers ──
+  const updateScore = (clanId, points, aulaTarget = selectedClass) => {
+    if (!aulaTarget || !clanId) return;
+    setScores(prev => ({
+      ...prev,
+      [aulaTarget]: { ...prev[aulaTarget], [clanId]: (prev[aulaTarget][clanId] || 0) + points }
+    }));
+  };
+
+  const resetToHome = () => {
+    setView('selector');
+    setStartMision1Cinematic(false); setStartMision2Cinematic(false); setStartMision3Cinematic(false);
+    setStartGlobalCinematic(false); setShowInstructions(false);
+    setM1Fase(0); setM2Fase(0); setM3Fase(0);
+  };
+
+  const sortearClanes = () => {
+    if (!selectedClass) return;
+    setSorteoPaso('cine');
+    setTimeout(() => {
+      let pool = [...unassignedStudentsDB[selectedClass]];
+      let shuffled = pool.sort(() => 0.5 - Math.random());
+      let newRoster = { c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] };
+      let clanIds = clansData.slice(0, Number(sorteoGrupos)).map(c => c.id);
+      clanIds.forEach(cId => {
+        for (let i = 0; i < Number(sorteoMiembros); i++) {
+          if (shuffled.length > 0) newRoster[cId].push(shuffled.pop().toUpperCase());
+          else newRoster[cId].push(`RECLUTA ${Math.floor(Math.random()*100)}`);
+        }
+      });
+      setRoster(prev => ({ ...prev, [selectedClass]: newRoster }));
+      setSorteoPaso('result');
+    }, 12000);
+  };
+
+  const procesarVeredicto = (esAprobado) => {
+    setEvaluandoTribunal(true);
+    setTimeout(() => {
+      setEvaluandoTribunal(false);
+      const clanId = clansData.find(c => c.name.toUpperCase() === kaganClan)?.id;
+      if (esAprobado) {
+        setResultadoJuicio('aprobado');
+        if (clanId) updateScore(clanId, 50);
+      } else {
+        setResultadoJuicio('rechazado');
+        setRazonFallo("La Providencia detecta una defensa que carece de fundamento bíblico, empatía o valores de liderazgo. Un verdadero juez busca el bien común, no excusar el egoísmo. Veredicto Denegado.");
+        if (clanId) updateScore(clanId, -30);
+      }
+    }, 4000);
+  };
+
+  const isMissionActive = (view === 'mision1' && m1Fase > 0) || (view === 'mision2' && m2Fase > 0) || (view === 'mision3' && m3Fase > 0);
+
+  // ═══════════════════════════════════════════════════════════════
+  // ── RENDER ─────────────────────────────────────────────────────
+  // ═══════════════════════════════════════════════════════════════
+  return (
+    <div className="min-h-screen bg-[#030408] text-slate-200 font-sans overflow-x-hidden flex flex-col">
+
+      {/* ── GM Skip Button ── */}
+      <button onClick={resetToHome} className="fixed top-2 left-2 z-[99999] opacity-10 hover:opacity-100 text-[10px] bg-black border border-slate-700 text-slate-500 px-2 py-1 rounded cursor-pointer transition-opacity">GM SKIP</button>
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── INSTRUCTIONS MODAL ──────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {showInstructions && (
+        <div className="fixed inset-0 z-[99999] bg-[#020308]/95 backdrop-blur-2xl flex items-center justify-center p-2 sm:p-6 animate-in fade-in zoom-in-95 duration-500 overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none overflow-hidden">
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(14,165,233,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(14,165,233,0.03)_1px,transparent_1px)] bg-[size:50px_50px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_20%,transparent_100%)]"></div>
+            <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/20 animate-[scanline_8s_linear_infinite] shadow-[0_0_15px_rgba(6,182,212,0.5)]"></div>
+            <div className="absolute top-4 left-6 text-cyan-500/40 font-mono text-[10px] uppercase tracking-[0.4em] hidden md:block">SYS.INIT // ODISEA_PROTOCOL_V8.0<br/><span className="text-indigo-500/50">CONEXIÓN: ESTABLE</span></div>
+            <div className="absolute bottom-4 right-6 text-cyan-500/40 font-mono text-[10px] uppercase tracking-[0.4em] hidden md:block text-right">USER: RECLUTA_01 // ACCESS: GRANTED<br/><span className="animate-pulse text-emerald-500/50">CÓDICE DE MISIÓN ACTIVO</span></div>
+            <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-indigo-600/20 rounded-full blur-[150px]"></div>
+            <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-cyan-600/10 rounded-full blur-[150px]"></div>
+          </div>
+
+          <div className="w-full max-w-[1400px] h-full max-h-[92vh] bg-[#0a0c16]/80 backdrop-blur-xl border border-cyan-900/40 rounded-3xl shadow-[0_0_80px_rgba(14,165,233,0.15)] flex flex-col md:flex-row relative z-10 overflow-hidden ring-1 ring-white/10 animate-[hologram-flicker_3s_infinite]">
+            <div className="absolute top-0 left-0 w-24 h-24 border-t-4 border-l-4 border-cyan-500/50 rounded-tl-3xl z-20 pointer-events-none"></div>
+            <div className="absolute bottom-0 right-0 w-24 h-24 border-b-4 border-r-4 border-cyan-500/50 rounded-br-3xl z-20 pointer-events-none"></div>
+
+            <button onClick={() => setShowInstructions(false)} className="absolute top-6 right-6 text-slate-400 hover:text-white bg-black/50 hover:bg-red-600/80 p-3 rounded-full transition-all cursor-pointer z-50 border border-slate-700 hover:border-red-400 shadow-[0_0_15px_rgba(0,0,0,0.5)] group flex items-center justify-center">
+              <X className="w-6 h-6 group-hover:rotate-90 transition-transform duration-300"/>
+            </button>
+
+            {/* SIDE NAV */}
+            <div className="w-full md:w-80 bg-gradient-to-b from-[#05060f] to-[#0a0c16] border-r border-cyan-900/30 flex flex-col relative z-20 shadow-[20px_0_50px_rgba(0,0,0,0.4)] pt-8">
+              <div className="px-8 pb-8 border-b border-cyan-900/30 text-center relative">
+                <div className="w-20 h-20 mx-auto bg-cyan-950/40 rounded-2xl border border-cyan-500/30 flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(34,211,238,0.2)]">
+                  <Hexagon className="w-12 h-12 text-cyan-400 animate-pulse"/>
+                </div>
+                <h2 className="text-2xl font-black text-white uppercase tracking-[0.2em]">CÓDICE</h2>
+                <p className="text-[10px] text-cyan-400 font-mono font-black uppercase tracking-[0.4em] mt-1 bg-cyan-900/30 py-1 rounded inline-block px-3 border border-cyan-500/20">MANUAL TÁCTICO</p>
+              </div>
+              <div className="flex-grow overflow-y-auto p-4 flex flex-col gap-2 custom-scrollbar mt-4">
+                {[
+                  {id: 1, title: 'EL SIMULADOR', desc: 'Concepto de Juego', icon: MonitorPlay, activeClass: 'bg-cyan-900/30 border-cyan-500/50 shadow-[0_0_20px_rgba(34,211,238,0.3)]', indicatorClass: 'bg-cyan-400 shadow-[0_0_10px_currentColor]', iconActiveClass: 'text-cyan-400 drop-shadow-[0_0_8px_currentColor]', descActiveClass: 'text-cyan-400/80'},
+                  {id: 2, title: 'FACCIONES', desc: 'Los 7 Clanes', icon: Users, activeClass: 'bg-blue-900/30 border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.3)]', indicatorClass: 'bg-blue-400 shadow-[0_0_10px_currentColor]', iconActiveClass: 'text-blue-400 drop-shadow-[0_0_8px_currentColor]', descActiveClass: 'text-blue-400/80'},
+                  {id: 3, title: 'RANGOS Y XP', desc: 'Sistema de Puntos', icon: Target, activeClass: 'bg-amber-900/30 border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.3)]', indicatorClass: 'bg-amber-400 shadow-[0_0_10px_currentColor]', iconActiveClass: 'text-amber-400 drop-shadow-[0_0_8px_currentColor]', descActiveClass: 'text-amber-400/80'},
+                  {id: 4, title: 'MISIONES', desc: 'Impacto Real', icon: Flame, activeClass: 'bg-emerald-900/30 border-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.3)]', indicatorClass: 'bg-emerald-400 shadow-[0_0_10px_currentColor]', iconActiveClass: 'text-emerald-400 drop-shadow-[0_0_8px_currentColor]', descActiveClass: 'text-emerald-400/80'},
+                ].map(tab => (
+                  <button key={tab.id} onClick={() => setInstructionTab(tab.id)} className={`relative flex items-center p-4 rounded-xl transition-all duration-300 cursor-pointer overflow-hidden group text-left ${instructionTab === tab.id ? `${tab.activeClass} scale-[1.02] translate-x-2` : 'bg-transparent border border-transparent hover:border-slate-700/50 hover:bg-white/5'}`}>
+                    <div className={`absolute left-0 top-0 w-1.5 h-full transition-all duration-300 ${instructionTab === tab.id ? tab.indicatorClass : 'bg-transparent group-hover:bg-slate-600'}`}></div>
+                    <tab.icon className={`w-6 h-6 ml-2 mr-4 transition-colors ${instructionTab === tab.id ? tab.iconActiveClass : 'text-slate-500 group-hover:text-slate-300'}`}/>
+                    <div>
+                      <p className={`text-sm font-black uppercase tracking-widest ${instructionTab === tab.id ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'}`}>{tab.title}</p>
+                      <p className={`text-[9px] font-mono tracking-widest uppercase mt-0.5 ${instructionTab === tab.id ? tab.descActiveClass : 'text-slate-600'}`}>{tab.desc}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* INSTRUCTION CONTENT */}
+            <div className="flex-grow p-6 md:p-14 overflow-y-auto custom-scrollbar relative z-10 perspective-1000">
+              {instructionTab === 1 && (
+                <div className="animate-in fade-in slide-in-from-right-8 duration-500 h-full flex flex-col justify-center max-w-5xl mx-auto">
+                  <div className="text-center mb-12">
+                    <MonitorPlay className="w-20 h-20 text-cyan-400 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(34,211,238,0.8)] animate-[float-3d_4s_ease-in-out_infinite]"/>
+                    <h3 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-cyan-300 uppercase tracking-tighter drop-shadow-lg mb-4">INMERSIÓN TOTAL</h3>
+                    <p className="text-cyan-400 text-sm md:text-lg font-mono tracking-[0.4em] uppercase bg-cyan-950/40 inline-block px-6 py-2 rounded-full border border-cyan-500/30">NO ES UNA CLASE. ES UN SIMULADOR.</p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 preserve-3d">
+                    <div className="group bg-[#0a0c16]/90 backdrop-blur border border-cyan-900/50 p-8 rounded-3xl hover:border-cyan-400 transition-all duration-500 shadow-[0_0_30px_rgba(34,211,238,0.05)] hover:shadow-[0_0_40px_rgba(34,211,238,0.2)]">
+                      <div className="w-14 h-14 bg-cyan-950 rounded-2xl flex items-center justify-center border border-cyan-500/50 mb-6 shadow-[0_0_15px_rgba(34,211,238,0.4)]"><Crosshair className="w-7 h-7 text-cyan-400"/></div>
+                      <h4 className="text-xl font-black text-white uppercase tracking-widest mb-4">EL OBJETIVO</h4>
+                      <p className="text-slate-400 text-sm md:text-base leading-relaxed">No buscamos memorizar versículos. El propósito es <strong className="text-cyan-300">extraer la sabiduría milenaria</strong> de los Sacerdotes, Jueces y Reyes, y usarla como herramienta táctica para resolver dilemas morales reales en nuestro propio salón.</p>
+                    </div>
+                    <div className="group bg-[#0a0c16]/90 backdrop-blur border border-indigo-900/50 p-8 rounded-3xl hover:border-indigo-400 transition-all duration-500 shadow-[0_0_30px_rgba(79,70,229,0.05)] hover:shadow-[0_0_40px_rgba(79,70,229,0.2)]">
+                      <div className="w-14 h-14 bg-indigo-950 rounded-2xl flex items-center justify-center border border-indigo-500/50 mb-6 shadow-[0_0_15px_rgba(79,70,229,0.4)]"><Gamepad2 className="w-7 h-7 text-indigo-400"/></div>
+                      <h4 className="text-xl font-black text-white uppercase tracking-widest mb-4">LA EXPERIENCIA</h4>
+                      <p className="text-slate-400 text-sm md:text-base leading-relaxed">Dejas de ser un estudiante para convertirte en <strong className="text-indigo-300">Recluta de una Facción Sagrada</strong>. Música épica, cronómetros de tensión, toma de decisiones y sonido de Shofar. Aprenderás sintiendo la historia en carne propia.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {instructionTab === 2 && (
+                <div className="animate-in fade-in slide-in-from-right-8 duration-500 max-w-6xl mx-auto">
+                  <div className="flex flex-col md:flex-row items-center justify-between mb-12 border-b border-blue-900/40 pb-6 gap-6 text-center md:text-left">
+                    <div>
+                      <h3 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-400 uppercase tracking-tighter drop-shadow-lg mb-2">FACCIONES SAGRADAS</h3>
+                      <p className="text-blue-400 text-xs font-mono tracking-[0.4em] uppercase">Mecánica Core: Interdependencia Positiva</p>
+                    </div>
+                    <div className="bg-blue-950/40 border border-blue-500/40 px-6 py-4 rounded-xl shadow-[0_0_20px_rgba(59,130,246,0.2)]">
+                      <p className="text-white font-black text-sm uppercase tracking-widest">"SI UNO CAE, EL CLAN CAE."</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 preserve-3d pb-10">
+                    {clansData.map((clan) => (
+                      <div key={clan.id} className={`group bg-[#0a0c16]/80 backdrop-blur border ${clan.border.replace('/50','/30')} p-6 rounded-2xl flex flex-col items-center text-center transition-all duration-500 cursor-default hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]`}>
+                        <div className={`w-16 h-16 rounded-2xl bg-black border ${clan.border} flex items-center justify-center text-3xl mb-4 shadow-lg group-hover:scale-110 transition-transform`}>{clan.icon}</div>
+                        <h4 className={`font-black uppercase tracking-widest text-sm md:text-base mb-2 ${clan.color}`}>{clan.name}</h4>
+                        <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest border-t border-slate-800 pt-3 w-full">Virtud: <br/><span className="text-white text-[10px]">{clan.attribute}</span></p>
+                      </div>
+                    ))}
+                    <div className="group bg-gradient-to-br from-indigo-900/40 to-[#0a0c16] backdrop-blur border border-indigo-500/50 p-6 rounded-2xl flex flex-col items-center justify-center text-center transition-all duration-500 shadow-[0_0_30px_rgba(79,70,229,0.2)] col-span-2 md:col-span-1">
+                      <Users className="w-12 h-12 text-indigo-400 mb-4 animate-pulse"/>
+                      <p className="text-xs text-indigo-100 font-bold tracking-widest uppercase leading-relaxed">El más fuerte <br/><strong className="text-white">NO PUEDE GANAR SOLO</strong>. Debe ayudar al más débil.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {instructionTab === 3 && (
+                <div className="animate-in fade-in slide-in-from-right-8 duration-500 max-w-5xl mx-auto h-full flex flex-col justify-center">
+                  <div className="text-center mb-14">
+                    <h3 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600 uppercase tracking-tighter drop-shadow-lg mb-4">ECONOMÍA DE XP</h3>
+                    <p className="text-amber-500 text-sm font-mono tracking-[0.4em] uppercase bg-amber-950/30 inline-block px-6 py-2 rounded-full border border-amber-500/30">COMPETENCIA MULTIVERSAL</p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="space-y-4 preserve-3d">
+                      <div className="bg-[#0a0c16]/90 border border-emerald-900/50 p-6 rounded-2xl flex items-center gap-6 hover:translate-x-2 transition-transform shadow-[inset_0_0_20px_rgba(16,185,129,0.05)]">
+                        <div className="w-20 h-20 bg-emerald-950/50 rounded-xl flex flex-col items-center justify-center border border-emerald-500/50 shrink-0 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                          <span className="text-emerald-400 font-black text-2xl">+50</span><span className="text-[8px] text-emerald-200 font-black tracking-widest uppercase">XP</span>
+                        </div>
+                        <div><h4 className="text-white font-black uppercase tracking-widest text-lg mb-1">Respuesta Magistral</h4><p className="text-slate-400 text-xs">Por resolver dilemas orales en el Tribunal aplicando principios bíblicos y trabajo en equipo.</p></div>
+                      </div>
+                      <div className="bg-[#0a0c16]/90 border border-blue-900/50 p-6 rounded-2xl flex items-center gap-6 hover:translate-x-2 transition-transform shadow-[inset_0_0_20px_rgba(59,130,246,0.05)]">
+                        <div className="w-20 h-20 bg-blue-950/50 rounded-xl flex flex-col items-center justify-center border border-blue-500/50 shrink-0 shadow-[0_0_20px_rgba(59,130,246,0.3)]">
+                          <span className="text-blue-400 font-black text-2xl">+150</span><span className="text-[8px] text-blue-200 font-black tracking-widest uppercase">XP</span>
+                        </div>
+                        <div><h4 className="text-white font-black uppercase tracking-widest text-lg mb-1">Misión Cumplida</h4><p className="text-slate-400 text-xs">Por completar tareas (ej. El Pectoral). Solo se otorga si TODOS en el clan lo tienen.</p></div>
+                      </div>
+                    </div>
+                    <div className="space-y-4 preserve-3d">
+                      <div className="bg-[#0a0c16]/90 border border-orange-900/50 p-6 rounded-2xl flex items-center gap-6 hover:-translate-x-2 transition-transform shadow-[inset_0_0_20px_rgba(249,115,22,0.05)]">
+                        <div className="w-20 h-20 bg-orange-950/50 rounded-xl flex flex-col items-center justify-center border border-orange-500/50 shrink-0 shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+                          <span className="text-orange-500 font-black text-2xl">-30</span><span className="text-[8px] text-orange-200 font-black tracking-widest uppercase">XP</span>
+                        </div>
+                        <div><h4 className="text-white font-black uppercase tracking-widest text-lg mb-1">Defensa Egoísta</h4><p className="text-slate-400 text-xs">Por dar respuestas individualistas o carentes de fundamento en el Tribunal de Jueces.</p></div>
+                      </div>
+                      <div className="bg-[#1a0505]/90 border border-red-800 p-6 rounded-2xl flex items-center gap-6 hover:-translate-x-2 transition-transform shadow-[inset_0_0_20px_rgba(220,38,38,0.1)] relative overflow-hidden">
+                        <div className="absolute top-0 right-0 w-2 h-full bg-red-600 animate-pulse"></div>
+                        <div className="w-20 h-20 bg-red-950/80 rounded-xl flex flex-col items-center justify-center border border-red-500 shrink-0 shadow-[0_0_20px_rgba(220,38,38,0.5)]">
+                          <span className="text-red-500 font-black text-2xl">-100</span><span className="text-[8px] text-red-200 font-black tracking-widest uppercase">XP</span>
+                        </div>
+                        <div><h4 className="text-red-400 font-black uppercase tracking-widest text-lg mb-1 flex items-center gap-2">INDISCIPLINA <AlertTriangle className="w-4 h-4"/></h4><p className="text-red-200/70 text-xs">Gritar, romper el "Silencio Táctico" o faltar al respeto. Destruye los puntos de todo tu clan.</p></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {instructionTab === 4 && (
+                <div className="animate-in fade-in slide-in-from-right-8 duration-500 max-w-5xl mx-auto">
+                  <div className="flex flex-col items-center text-center mb-12">
+                    <GraduationCap className="w-20 h-20 text-emerald-400 mb-6 drop-shadow-[0_0_30px_rgba(16,185,129,0.8)]"/>
+                    <h3 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-emerald-400 uppercase tracking-tighter drop-shadow-lg mb-4">IMPACTO EN LA VIDA REAL</h3>
+                    <p className="text-slate-300 text-base md:text-lg italic font-serif max-w-2xl">"Saber quién fue el Rey David no sirve de nada si no aplicamos sus lecciones para ser mejores compañeros hoy."</p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 preserve-3d">
+                    <div className="group bg-[#0a0c16]/90 backdrop-blur border-2 border-[#1e293b] hover:border-emerald-500/80 p-8 rounded-3xl transition-all duration-500 shadow-lg hover:shadow-[0_0_40px_rgba(16,185,129,0.2)]">
+                      <div className="flex items-start justify-between mb-6">
+                        <div className="w-12 h-12 bg-emerald-950/50 rounded-xl flex items-center justify-center border border-emerald-500/50 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.4)]"><Map className="w-6 h-6"/></div>
+                        <span className="bg-emerald-900/40 text-emerald-300 text-[9px] font-black tracking-[0.2em] uppercase px-3 py-1 rounded border border-emerald-700">Misión Primaria</span>
+                      </div>
+                      <h4 className="text-2xl font-black text-white uppercase tracking-widest mb-3">Misiones de Vida</h4>
+                      <p className="text-slate-400 text-sm leading-relaxed">Ejemplo: Al estudiar a los sacerdotes, no copiamos teoría aburrida. Cada estudiante dibuja su propio "Pectoral" y se compromete a <strong className="text-emerald-300">interceder y proteger a un compañero</strong> específico del salón.</p>
+                    </div>
+                    <div className="group bg-[#0a0c16]/90 backdrop-blur border-2 border-[#1e293b] hover:border-indigo-500/80 p-8 rounded-3xl transition-all duration-500 shadow-lg hover:shadow-[0_0_40px_rgba(79,70,229,0.2)]">
+                      <div className="flex items-start justify-between mb-6">
+                        <div className="w-12 h-12 bg-indigo-950/50 rounded-xl flex items-center justify-center border border-indigo-500/50 text-indigo-400 shadow-[0_0_15px_rgba(79,70,229,0.4)]"><Scale className="w-6 h-6"/></div>
+                        <span className="bg-indigo-900/40 text-indigo-300 text-[9px] font-black tracking-[0.2em] uppercase px-3 py-1 rounded border border-indigo-700">Misión Core</span>
+                      </div>
+                      <h4 className="text-2xl font-black text-white uppercase tracking-widest mb-3">El Tribunal Oral</h4>
+                      <p className="text-slate-400 text-sm leading-relaxed">Usamos los errores bíblicos (el ego de Gedeón, la ira de Sansón) para <strong className="text-indigo-300">juzgar casos reales de bullying o egoísmo</strong> en el aula. Debatimos oralmente y el salón entero vota con sus paletas.</p>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── INTRO MASTER ───────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {view === 'intro_master' && (
+        <div className="flex-grow flex flex-col items-center justify-center relative overflow-hidden bg-black">
+          <div className="absolute top-4 right-4 z-[9999] w-64 h-36 bg-black border border-amber-600/30 rounded-lg overflow-hidden shadow-lg group hover:scale-105 transition-transform">
+            <div className="absolute top-0 left-0 w-full bg-amber-900/80 text-[10px] font-black tracking-widest text-white px-2 py-1 text-center uppercase flex items-center justify-center gap-2 z-10"><Music className="w-3 h-3"/> LOGOSS</div>
+            <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none', padding: 0, margin: 0, marginTop: '24px' }} src="https://www.canva.com/design/DAHRVWYddvQ/QXO9us7EGIsOpJtL_MmRsA/watch?embed" allowFullScreen></iframe>
+          </div>
+
+          {!startGlobalCinematic ? (
+            <div className="relative z-10 text-center flex flex-col items-center animate-in fade-in duration-1000">
+              <Globe className="w-16 h-16 text-amber-500 mb-6 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)] animate-pulse"/>
+              <p className="text-amber-500 text-xs md:text-sm tracking-[0.2em] font-bold uppercase text-center leading-relaxed mb-8">INSTRUCCIÓN GM: 1) DALE PLAY A LA BSO EN LA ESQUINA. <br/> 2) INICIA LA INMERSIÓN.</p>
+              <button onClick={() => setStartGlobalCinematic(true)} className="bg-transparent border border-slate-600 text-white hover:bg-slate-900 px-8 py-3 rounded-full font-bold uppercase tracking-[0.2em] transition-all cursor-pointer shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:shadow-[0_0_30px_rgba(245,158,11,0.4)]">INICIAR SECUENCIA ÉPICA</button>
+            </div>
+          ) : (
+            <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none bg-black overflow-hidden">
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=2000')] bg-cover bg-center opacity-40 animate-[slowZoom_35s_linear_forwards]"></div>
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-screen animate-[slowZoom_20s_linear_infinite_alternate]"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80 z-10"></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 1s' }}><p className="text-2xl md:text-4xl text-slate-300 uppercase tracking-[0.4em] font-light drop-shadow-lg">El tiempo y el espacio...</p><p className="text-xl md:text-2xl text-amber-500/70 uppercase tracking-[0.6em] font-light mt-6">se han fracturado.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 8s' }}><p className="text-3xl md:text-5xl text-amber-500 uppercase tracking-[0.2em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,1)]">EL AULA HA DESAPARECIDO.</p><p className="text-xl md:text-2xl text-amber-200 uppercase tracking-[0.4em] font-light mt-6">Olviden quiénes creían ser.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 15s' }}><p className="text-3xl md:text-5xl text-indigo-400 uppercase tracking-[0.3em] font-bold drop-shadow-[0_0_30px_rgba(129,140,248,0.8)]">DESDE LAS SOMBRAS DEL PASADO...</p><p className="text-lg md:text-2xl text-indigo-200 uppercase tracking-[0.4em] font-light mt-6 leading-relaxed">Su verdadero destino los reclama.<br/>La sangre de reyes y profetas despierta.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 23s' }}><p className="text-2xl md:text-4xl text-slate-100 uppercase tracking-[0.5em] font-light drop-shadow-2xl">Siete linajes se levantarán del polvo.</p><p className="text-3xl md:text-5xl text-amber-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,1)] mt-6">HOY, EL DESIERTO EXIGE SU PODER.</p></div>
+              <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 4s ease-out forwards 31s' }}>
+                <Globe className="w-24 h-24 text-amber-500 mx-auto mb-8 drop-shadow-[0_0_40px_rgba(245,158,11,0.8)] animate-pulse" />
+                <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-amber-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(245,158,11,1)]">LA ODISEA BÍBLICA</h1>
+                <p className="text-amber-500 mt-6 text-xl md:text-3xl tracking-[0.6em] font-bold uppercase drop-shadow-md">FORJANDO LÍDERES EN EL DESIERTO</p>
+              </div>
+              <div className="absolute bottom-20 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 35s' }}>
+                <button onClick={() => { setStartGlobalCinematic(false); setView('selector'); }} className="bg-[#0f0a06]/80 border-2 border-amber-500 text-amber-300 px-12 py-6 font-black uppercase tracking-[0.5em] text-xl transition-all shadow-[0_0_50px_rgba(245,158,11,0.8)] hover:scale-110 hover:shadow-[0_0_80px_rgba(245,158,11,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL CAMPAMENTO <ChevronRight className="w-8 h-8"/></button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── SELECTOR ────────────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {view === 'selector' && (
+        <div className="flex-grow flex flex-col items-center justify-center p-8 relative bg-[#070913]">
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"><div className="w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[120px]"></div></div>
+          <div className="relative z-10 text-center w-full max-w-4xl">
+            <h1 className="text-5xl md:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-2 tracking-tighter uppercase drop-shadow-xl">EL CAMPAMENTO BASE</h1>
+            <p className="text-indigo-400 text-xs md:text-sm tracking-[0.4em] font-black uppercase mb-12 drop-shadow">GESTOR DE BASE DE DATOS COOPERATIVA</p>
+            <div className="bg-[#0f111a]/80 backdrop-blur-md rounded-[2rem] p-8 md:p-12 mb-8 shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-[#2a2e45] relative mx-auto w-full max-w-3xl">
+              <p className="text-amber-500 font-black uppercase tracking-[0.2em] text-xs md:text-sm mb-10 flex justify-center items-center gap-2"><Users className="w-4 h-4"/> SELECCIONA TU SALÓN</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {['1A', '1B', '1C'].map(aula => (
+                  <button key={aula} onClick={() => { setSelectedClass(aula); setView('campamento_base'); setActiveTab(1); setSorteoPaso('config'); }}
+                    className="group px-4 py-12 bg-[#343082] hover:bg-[#433eb3] rounded-2xl transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(79,70,229,0.5)] cursor-pointer flex flex-col items-center justify-center border-2 border-transparent hover:border-indigo-400 relative overflow-hidden">
+                    <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-indigo-300/50"></div>
+                    <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-indigo-300/50"></div>
+                    <span className="text-3xl md:text-5xl font-black text-white tracking-widest mb-4 drop-shadow-md">SALÓN <br/> {aula}</span>
+                    <span className="bg-transparent border-2 border-indigo-300/50 text-[10px] text-indigo-200 font-bold tracking-[0.3em] uppercase px-4 py-2 rounded-full group-hover:bg-indigo-400 group-hover:text-black group-hover:border-indigo-400 transition-colors">CARGAR DATOS</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-col gap-4 items-center justify-center mt-4">
+              <button onClick={() => setView('global_ranking')} className="bg-gradient-to-r from-orange-600 to-amber-500 text-white px-12 py-5 font-black uppercase tracking-[0.2em] text-sm md:text-base transition-all shadow-[0_0_40px_rgba(245,158,11,0.5)] hover:shadow-[0_0_60px_rgba(245,158,11,0.8)] hover:scale-105 flex items-center justify-center gap-3 rounded-full cursor-pointer border-2 border-amber-300"><Globe className="w-6 h-6"/> VER CLASIFICACIÓN GLOBAL MULTIVERSO</button>
+              <button onClick={() => setShowInstructions(true)} className="bg-[#05060b] border border-cyan-500/50 text-cyan-400 hover:text-white hover:bg-cyan-900/50 px-10 py-4 font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-3 rounded-full cursor-pointer mt-2 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]"><Hexagon className="w-5 h-5"/> MANUAL TÁCTICO DEL JUEGO (INSTRUCCIONES)</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── GLOBAL RANKING ─────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {view === 'global_ranking' && (
+        <div className="flex-grow flex flex-col items-center p-8 relative overflow-hidden bg-[#06080e] dot-grid min-h-screen">
+          <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center animate-in slide-in-from-bottom-8 duration-500 mt-10">
+            <button onClick={() => setView('selector')} className="absolute top-0 left-0 text-slate-500 hover:text-amber-500 bg-[#161827] border border-[#2a2e45] px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> VOLVER</button>
+            <Globe className="w-16 h-16 text-amber-500 mb-4 drop-shadow-[0_0_30px_rgba(245,158,11,0.6)]"/>
+            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase mb-4 drop-shadow-2xl">SALÓN DE LA FAMA</h1>
+            <span className="border border-amber-900/50 text-amber-500 px-6 py-2 rounded-full text-[10px] font-bold tracking-[0.4em] uppercase mb-12 shadow-sm bg-[#18110b]">TORNEO UNIVERSAL • TODO 1RO DE SECUNDARIA</span>
+            <div className="w-full space-y-4 pb-20">
+              {(() => {
+                const globalTotals = clansData.map(clan => {
+                  const total = ['1A', '1B', '1C'].reduce((sum, aula) => sum + (scores[aula]?.[clan.id] || 0), 0);
+                  return { ...clan, total };
+                }).sort((a, b) => b.total - a.total);
+                return globalTotals.map((clan, idx) => (
+                  <div key={clan.id} className={`flex justify-between items-center px-8 py-5 rounded-2xl border-2 transition-all ${idx === 0 ? 'border-amber-400 bg-[#241e3a] shadow-[0_0_30px_rgba(245,158,11,0.2)]' : idx === 1 ? 'border-slate-400 bg-[#15192b]' : idx === 2 ? 'border-amber-700 bg-[#1e1710]' : 'border-[#1e293b] bg-[#0f111a]'}`}>
+                    <div className="flex items-center gap-6">
+                      <span className={`text-4xl font-black italic ${idx === 0 ? 'text-amber-400 drop-shadow-[0_0_15px_rgba(245,158,11,0.8)]' : idx === 1 ? 'text-slate-300' : idx === 2 ? 'text-amber-600' : 'text-slate-600'}`}>#{idx + 1}</span>
+                      <span className="text-white font-black text-xl md:text-2xl uppercase tracking-widest">{clan.name.toUpperCase()}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className={`text-4xl font-black ${idx === 0 ? 'text-amber-400' : idx === 1 ? 'text-indigo-300' : idx === 2 ? 'text-indigo-400' : 'text-indigo-500'}`}>{clan.total}</span>
+                      <span className="text-amber-500 font-bold text-lg">XP</span>
+                    </div>
+                  </div>
+                ));
+              })()}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── CLANS SIDEBAR ──────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {showClans && selectedClass && (
+        <div className="fixed top-0 right-0 w-80 h-full bg-[#111424] border-l border-[#1e293b] flex flex-col shadow-2xl z-[99999] animate-in slide-in-from-right duration-300">
+          <div className="p-4 border-b border-[#1e293b] bg-[#0a0b12] flex justify-between items-start">
+            <div>
+              <h2 className="text-lg font-black text-amber-500 uppercase tracking-widest flex items-center gap-2"><Trophy className="w-5 h-5"/> AUDITORÍA GENERAL</h2>
+              <p className="text-indigo-400 text-xs font-bold tracking-widest mt-1">Base de Datos: Salón {selectedClass}</p>
+            </div>
+            <button onClick={() => setShowClans(false)} className="text-red-400 bg-red-950/40 hover:bg-red-900/80 p-2 rounded-lg transition-colors border border-red-900/50 cursor-pointer"><X className="w-4 h-4"/></button>
+          </div>
+          <div className="flex-grow overflow-y-auto p-4 space-y-4 custom-scrollbar">
+            {[...clansData].sort((a,b) => (scores[selectedClass]?.[b.id] || 0) - (scores[selectedClass]?.[a.id] || 0)).map((clan) => (
+              <div key={clan.id} className="p-4 rounded-xl border border-[#1e293b] bg-[#181c31] flex flex-col gap-3 relative overflow-hidden group hover:border-[#2d3748] transition-colors shadow-lg">
+                <div className="flex justify-between items-center mb-1 px-1">
+                  <span className="font-black text-white text-sm uppercase tracking-widest truncate max-w-[170px]">{clan.name.toUpperCase()}</span>
+                  <span className="text-xl font-black text-indigo-300">{scores[selectedClass]?.[clan.id] || 0}</span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <button onClick={() => updateScore(clan.id, 50)} className="bg-emerald-900/30 hover:bg-emerald-800/60 text-emerald-400 border border-emerald-500/50 py-2 rounded text-[11px] font-bold cursor-pointer transition-colors">+50 Magistral</button>
+                  <button onClick={() => updateScore(clan.id, 10)} className="bg-blue-900/30 hover:bg-blue-800/60 text-blue-400 border border-blue-500/50 py-2 rounded text-[11px] font-bold cursor-pointer transition-colors">+10 Aporte</button>
+                  <button onClick={() => updateScore(clan.id, -20)} className="bg-amber-900/30 hover:bg-amber-800/60 text-amber-500 border border-amber-500/50 py-2 rounded text-[11px] font-bold cursor-pointer transition-colors">-20 Falla</button>
+                  <button onClick={() => updateScore(clan.id, -50)} className="bg-red-900/30 hover:bg-red-800/60 text-red-400 border border-red-500/50 py-2 rounded text-[11px] font-bold cursor-pointer transition-colors">-50 Indisciplina</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── CAMPAMENTO BASE ─────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {view === 'campamento_base' && selectedClass && (
+        <div className="flex-grow flex flex-col relative dot-grid bg-[#06080e]">
+          <header className="bg-[#0a0b12]/90 backdrop-blur-md border-b border-[#1e293b] p-4 sticky top-0 z-50 flex justify-between items-center shadow-lg">
+            <div className="flex items-center gap-4">
+              <button onClick={() => setView('selector')} className="text-slate-500 hover:text-white bg-[#161827] border border-[#2a2e45] px-3 py-2 rounded-lg text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> SALIR</button>
+              <div>
+                <h1 className="text-xl md:text-2xl font-black text-white tracking-widest uppercase flex items-center gap-3"><Flame className="w-5 h-5 text-amber-500 hidden md:block"/> ODISEA BÍBLICA <span className="bg-indigo-600 text-white text-[10px] px-2 py-1 rounded tracking-widest">{selectedClass}</span></h1>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <button onClick={() => setShowInstructions(true)} className="hidden md:flex text-cyan-400 bg-cyan-900/30 hover:bg-cyan-800/50 border border-cyan-500/30 px-3 py-2 rounded-lg text-[10px] font-bold tracking-widest uppercase items-center gap-2 transition-colors cursor-pointer"><Hexagon className="w-4 h-4"/> MANUAL</button>
+              <button onClick={() => setShowClans(!showClans)} className="bg-amber-500/10 border border-amber-500/30 text-amber-500 hover:bg-amber-500 hover:text-black px-4 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all cursor-pointer"><Trophy className="w-4 h-4"/> AUDITORÍA</button>
+            </div>
+          </header>
+
+          <main className="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
+            <div className="text-center mb-12">
+              <h2 className="text-4xl md:text-5xl font-black text-white tracking-[0.2em] uppercase mb-2 drop-shadow-lg">CAMPAMENTO BASE</h2>
+              <span className="border border-indigo-900/50 text-indigo-400 px-4 py-1 rounded-full text-[10px] md:text-xs font-bold tracking-[0.4em] uppercase bg-[#0f111a]">TERCER BIMESTRE - CÓDICE DEL RECLUTA</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+              {[
+                { id: 1, title: '1. SESIÓN DE HOY', desc: 'EL DESPERTAR (MODO AULA)', icon: Wand2, tag: 'CLASE 1' },
+                { id: 2, title: '2. LAS MISIONES', desc: 'CÓDICE TEMÁTICO DEL BIMESTRE', icon: Scroll },
+                { id: 3, title: '3. LOS CLANES', desc: 'ESTANDARTES Y TROPAS REALES', icon: Shield },
+                { id: 4, title: '4. TU PRIMERA TAREA', desc: 'DIRECTIVA DE FORJA (CLASSROOM)', icon: Flame, tagColor: 'text-emerald-500' }
+              ].map(tab => (
+                <button key={tab.id} onClick={() => setActiveTab(tab.id)} className={`cursor-pointer relative flex flex-col items-center justify-center p-8 rounded-xl border-2 transition-all group overflow-hidden ${activeTab === tab.id ? 'bg-[#151226] border-indigo-500 shadow-[0_0_30px_rgba(79,70,229,0.2)]' : 'bg-[#0f111a] border-[#1e293b] hover:border-indigo-900 hover:bg-[#131524]'}`}>
+                  {tab.tag && <span className="absolute top-3 right-3 text-[9px] font-black tracking-widest px-2 py-1 rounded bg-indigo-900/50 text-indigo-300">{tab.tag}</span>}
+                  <tab.icon className={`w-12 h-12 mb-4 ${activeTab === tab.id ? 'text-indigo-400' : 'text-slate-600 group-hover:text-indigo-500'} transition-colors`} />
+                  <h3 className="font-black text-white text-sm tracking-widest uppercase">{tab.title}</h3>
+                  <p className={`text-[9px] font-bold tracking-widest uppercase mt-2 ${tab.tagColor || 'text-slate-500'}`}>{tab.desc}</p>
+                </button>
+              ))}
+            </div>
+
+            {/* TAB 1: SORTEO */}
+            {activeTab === 1 && (
+              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="text-center mb-10">
+                  <Crown className="w-16 h-16 text-amber-500 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(245,158,11,0.5)]"/>
+                  <h2 className="text-4xl font-black text-slate-300 tracking-[0.2em] uppercase mb-2">LA GRAN ASAMBLEA</h2>
+                  <p className="text-slate-500 text-xs tracking-[0.3em] font-bold uppercase">CIRCUITO PEDAGÓGICO DE INICIO</p>
+                </div>
+                {sorteoPaso === 'config' && (
+                  <div className="bg-[#0f111a] border border-[#1e293b] p-8 rounded-2xl max-w-2xl mx-auto text-center shadow-xl">
+                    <p className="text-amber-500 text-sm font-bold tracking-widest uppercase mb-6 flex justify-center items-center gap-2"><Sparkles className="w-4 h-4"/> SORTEO DE LA PROVIDENCIA ({selectedClass})</p>
+                    <div className="grid grid-cols-2 gap-6 mb-8">
+                      <div className="bg-[#15182b] p-4 rounded-xl border border-[#2a2e45]">
+                        <label className="block text-slate-400 text-[10px] tracking-widest uppercase font-bold mb-2">CANTIDAD DE CLANES</label>
+                        <input type="number" value={sorteoGrupos} onChange={e => setSorteoGrupos(e.target.value)} className="w-full bg-black border border-indigo-900 rounded p-3 text-center text-2xl font-black text-white outline-none focus:border-amber-500" min="1" max="7" />
+                      </div>
+                      <div className="bg-[#15182b] p-4 rounded-xl border border-[#2a2e45]">
+                        <label className="block text-slate-400 text-[10px] tracking-widest uppercase font-bold mb-2">MIEMBROS POR CLAN</label>
+                        <input type="number" value={sorteoMiembros} onChange={e => setSorteoMiembros(e.target.value)} className="w-full bg-black border border-indigo-900 rounded p-3 text-center text-2xl font-black text-white outline-none focus:border-amber-500" min="1" max="10" />
+                      </div>
+                    </div>
+                    <button onClick={sortearClanes} className="w-full bg-[#18110a] hover:bg-[#24170c] border-2 border-amber-600 text-amber-500 hover:text-amber-400 px-8 py-5 rounded-xl font-black uppercase tracking-[0.2em] transition-all hover:scale-[1.02] flex justify-center items-center gap-3 cursor-pointer"><Play className="w-5 h-5"/> INICIAR INMERSIÓN</button>
+                  </div>
+                )}
+                {sorteoPaso === 'cine' && (
+                  <div className="fixed inset-0 z-[99999] bg-black flex flex-col items-center justify-center">
+                    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1519074069444-1ba4fff66d16?q=80&w=2000')] bg-cover bg-center opacity-40 mix-blend-overlay animate-[slowZoom_12s_linear_forwards]"></div>
+                    <div className="absolute text-center" style={{ opacity: 0, animation: 'cinematicText 3s ease-out forwards 1s' }}><p className="text-3xl text-slate-300 uppercase tracking-[0.5em] font-light">La suerte está echada...</p></div>
+                    <div className="absolute text-center" style={{ opacity: 0, animation: 'cinematicText 3s ease-out forwards 4s' }}><p className="text-4xl text-amber-500 uppercase tracking-[0.3em] font-black">El destino los llama...</p></div>
+                    <div className="absolute text-center" style={{ opacity: 0, animation: 'cinematicTextStay 4s ease-out forwards 7s' }}><p className="text-5xl text-white uppercase tracking-[0.3em] font-bold drop-shadow-[0_0_30px_rgba(245,158,11,0.8)]">QUE SURJAN LOS LINAJES.</p></div>
+                  </div>
+                )}
+                {sorteoPaso === 'result' && (
+                  <div className="animate-in zoom-in duration-500">
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="text-2xl font-black text-amber-500 tracking-widest uppercase">RESULTADOS OFICIALES ({selectedClass})</h3>
+                      <div className="flex gap-4">
+                        <button onClick={() => { setActiveTab(3); setClanSubTab('estandartes'); }} className="text-indigo-400 hover:text-white bg-indigo-900/30 px-4 py-2 rounded-lg text-xs font-bold tracking-widest uppercase border border-indigo-500/30 cursor-pointer">Ir a Los Clanes</button>
+                        <button onClick={() => setSorteoPaso('config')} className="text-slate-400 hover:text-white bg-slate-900/30 px-4 py-2 rounded-lg text-xs font-bold tracking-widest uppercase border border-slate-500/30 cursor-pointer">Nuevo Sorteo</button>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {clansData.slice(0, Number(sorteoGrupos)).map(clan => (
+                        <div key={clan.id} className="bg-[#0f111a] border border-[#1e293b] rounded-2xl p-6 relative overflow-hidden group shadow-lg">
+                          <div className={`absolute top-0 left-0 w-1 h-full ${clan.bg.replace('/30','')}`}></div>
+                          <div className="flex items-center gap-4 mb-4">
+                            <div className={`w-12 h-12 rounded-xl bg-black border ${clan.border} flex items-center justify-center text-2xl shadow-[0_0_15px_rgba(0,0,0,0.5)]`}>{clan.icon}</div>
+                            <div><h4 className={`font-black uppercase tracking-widest text-lg ${clan.color}`}>{clan.name}</h4><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">Reclutas: {roster[selectedClass]?.[clan.id]?.length || 0}</p></div>
+                          </div>
+                          <div className="space-y-2">
+                            {roster[selectedClass]?.[clan.id]?.map((recluta, idx) => (
+                              <div key={idx} className="bg-[#15182b] border border-[#2a2e45] px-3 py-2 rounded text-[11px] font-bold text-slate-300 tracking-wider truncate uppercase">{recluta}</div>
+                            ))}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB 2: MISIONES */}
+            {activeTab === 2 && (
+              <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <div className="mb-10 text-center">
+                  <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase mb-2 drop-shadow-lg">ARCHIVOS CLASIFICADOS</h2>
+                  <p className="text-slate-500 text-xs tracking-[0.3em] font-bold uppercase">LO QUE ENFRENTAREMOS ESTE BIMESTRE</p>
+                </div>
+                <div className="space-y-6 max-w-5xl mx-auto">
+                  {[
+                    { id: 1, title: 'SANTIDAD Y SACRIFICIO', weeks: 'SEMANAS 1 Y 2', tema: 'LOS SACERDOTES', desc: '"El fuego del Sinaí arde. La santidad absoluta de Yahveh amenaza con consumir la impureza humana. ¿Cómo puede el hombre acercarse sin morir?"', icon: Scroll, action: () => { setView('mision1'); setStartMision1Cinematic(false); setM1Fase(0); } },
+                    { id: 2, title: 'LA ERA DEL CAOS', weeks: 'SEMANAS 3 Y 4', tema: 'LOS JUECES', desc: '"Anarquía total. Tribus dispersas, enemigos saqueando. Israel clama en la oscuridad, y de la nada, guerreros improbables se levantan."', icon: Crosshair, action: () => { setView('mision2'); setStartMision2Cinematic(false); setM2Fase(0); } },
+                    { id: 3, title: 'EL ASCENSO DE LA CORONA', weeks: 'SEMANAS 5 Y 6', tema: 'LOS REYES', desc: '"Israel rechaza a Yahveh como rey directo y exige un monarca humano. Comienza una era de coronas de oro y espadas manchadas de sangre."', icon: Crown, action: () => { setView('mision3'); setStartMision3Cinematic(false); setM3Fase(0); } },
+                    { id: 4, title: 'VOCES DEL DESIERTO', weeks: 'SEMANAS 7 Y 8', tema: 'LOS PROFETAS', desc: '"Los reyes han fallado. Yahveh levanta hombres que gritan verdades incómodas frente al poder de los imperios."', icon: Flame },
+                    { id: 5, title: 'HEROÍNAS DE LA FE', weeks: 'SEMANAS 9 Y 10', tema: 'MUJERES DE ISRAEL', desc: '"Donde los hombres retrocedieron, la Providencia levantó mujeres. Estrategas militares y extranjeras leales."', icon: Shield }
+                  ].map(mission => (
+                    <div key={mission.id} onClick={mission.action} className={`bg-[#0f111a] border border-[#1e293b] rounded-2xl p-6 md:p-8 flex flex-col md:flex-row gap-6 items-start hover:border-blue-500/50 transition-colors group shadow-xl ${mission.action ? 'cursor-pointer' : 'cursor-not-allowed opacity-80'}`}>
+                      <div className="bg-[#15182b] border border-blue-900/50 p-6 rounded-2xl text-blue-500 group-hover:bg-blue-900/20 transition-colors shrink-0 shadow-inner"><mission.icon className="w-8 h-8" /></div>
+                      <div className="flex-grow">
+                        <div className="flex flex-wrap items-center gap-4 mb-2">
+                          <h3 className="text-2xl font-black text-white tracking-widest uppercase">{mission.title}</h3>
+                          <span className="bg-blue-900/30 text-blue-400 border border-blue-900/50 px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">{mission.weeks}</span>
+                        </div>
+                        <p className="text-blue-500 font-bold text-[11px] tracking-widest uppercase mb-4">TEMA: {mission.tema}</p>
+                        <p className="text-slate-400 text-sm italic leading-relaxed">{mission.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: CLANES */}
+            {activeTab === 3 && (
+              <div className="animate-in fade-in duration-500">
+                <div className="mb-10 text-center">
+                  <h2 className="text-4xl md:text-5xl font-black text-indigo-400 tracking-tighter uppercase mb-2 drop-shadow-[0_0_20px_rgba(129,140,248,0.5)]">ASAMBLEA SAGRADA DE LOS 7 CLANES</h2>
+                  <p className="text-slate-500 text-xs tracking-[0.3em] font-bold uppercase">CONOCIENDO NUESTRA HERENCIA Y DESTINO</p>
+                </div>
+                <div className="flex justify-center gap-2 flex-wrap mb-10 max-w-6xl mx-auto">
+                  {clansData.map((c, i) => (
+                    <button key={c.id} onClick={() => setClanSubTab(i)} className={`cursor-pointer px-4 py-2 rounded-full border text-[10px] md:text-xs font-bold tracking-widest uppercase transition-all flex items-center gap-2 ${clanSubTab === i ? 'bg-transparent border-amber-500 text-amber-500' : 'bg-transparent border-[#1e293b] text-slate-500 hover:border-slate-600 hover:text-slate-300'}`}><Shield className="w-3 h-3 opacity-50"/> {c.name}</button>
+                  ))}
+                  <button onClick={() => setClanSubTab('sintesis')} className={`cursor-pointer px-4 py-2 rounded-full border text-[10px] md:text-xs font-bold tracking-widest uppercase transition-all ml-4 ${clanSubTab === 'sintesis' ? 'bg-amber-950/40 border-amber-500 text-amber-500' : 'bg-transparent border-[#1e293b] text-slate-500 hover:border-amber-900 hover:text-amber-500'}`}>SÍNTESIS GLOBAL</button>
+                  <button onClick={() => setClanSubTab('estandartes')} className={`cursor-pointer px-4 py-2 rounded-full border text-[10px] md:text-xs font-bold tracking-widest uppercase transition-all ${clanSubTab === 'estandartes' ? 'bg-indigo-950/40 border-indigo-500 text-indigo-400' : 'bg-transparent border-[#1e293b] text-slate-500 hover:border-indigo-900 hover:text-indigo-400'}`}>SALÓN DE ESTANDARTES</button>
+                </div>
+
+                {typeof clanSubTab === 'number' && (
+                  <div className="bg-[#0b0c16] border border-[#1e293b] rounded-3xl p-6 md:p-10 max-w-6xl mx-auto flex flex-col md:flex-row gap-10 shadow-2xl relative overflow-hidden">
+                    <div className="md:w-1/3 flex flex-col items-center text-center border-r border-[#1e293b] pr-10">
+                      <div className={`w-32 h-32 rounded-3xl bg-[#0a0b12] border-2 ${clansData[clanSubTab].border} flex items-center justify-center text-6xl shadow-xl mb-6`}>{clansData[clanSubTab].icon}</div>
+                      <h3 className={`text-3xl md:text-4xl font-black uppercase tracking-tighter ${clansData[clanSubTab].color} mb-1 leading-tight`}>{clansData[clanSubTab].name}</h3>
+                      <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-6">VIRTUD: <span className="text-white">{clansData[clanSubTab].attribute}</span></p>
+                      <div className="bg-[#05060b] border border-[#1e293b] w-full p-6 rounded-xl mb-6">
+                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-2">LEMA OFICIAL</p>
+                        <p className={`font-black uppercase text-lg ${clansData[clanSubTab].color}`}>{clansData[clanSubTab].lema}</p>
+                      </div>
+                      <div className="w-full text-left">
+                        <div className="flex justify-between items-center mb-4">
+                          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest flex items-center gap-2"><UserPlus className="w-3 h-3"/> RECLUTAS ASIGNADOS ({roster[selectedClass]?.[clansData[clanSubTab].id]?.length || 0})</p>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                          {roster[selectedClass]?.[clansData[clanSubTab].id]?.length > 0 ? (
+                            roster[selectedClass][clansData[clanSubTab].id].map((r, idx) => (
+                              <span key={idx} className={`bg-[#111424] border ${clansData[clanSubTab].border.replace('/50', '/30')} ${clansData[clanSubTab].color} px-3 py-2 rounded text-[10px] font-bold tracking-wider uppercase`}>{r}</span>
+                            ))
+                          ) : (
+                            <p className="text-xs text-slate-600 italic bg-[#0f111a] border border-[#1e293b] p-3 rounded">Esperando la elección divina.</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <div className="md:w-2/3 flex flex-col gap-6 pt-4">
+                      <div className={`bg-transparent border ${clansData[clanSubTab].border} p-8 rounded-2xl`}>
+                        <p className={`text-[11px] font-black uppercase tracking-widest mb-4 flex items-center gap-2 ${clansData[clanSubTab].color}`}><Sparkles className="w-4 h-4"/> LA LLAMADA DIVINA</p>
+                        <p className="text-white font-medium italic text-lg leading-relaxed">{clansData[clanSubTab].llamada}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-indigo-400 font-bold uppercase tracking-widest mb-2 mt-4">1. ORIGEN BÍBLICO</p>
+                        <p className="text-slate-300 text-sm leading-relaxed">{clansData[clanSubTab].origen}</p>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+                        <div className="bg-[#0f111a] border border-[#1e293b] p-6 rounded-xl">
+                          <p className="text-[10px] text-emerald-500 font-bold uppercase tracking-widest mb-2 flex items-center gap-2"><ShieldAlert className="w-4 h-4"/> HÉROE BÍBLICO</p>
+                          <p className="text-white font-black text-base">{clansData[clanSubTab].hero}</p>
+                        </div>
+                        <div className="bg-[#0f111a] border border-[#1e293b] p-6 rounded-xl">
+                          <p className="text-[10px] text-cyan-500 font-bold uppercase tracking-widest mb-2 flex items-center gap-2"><Eye className="w-4 h-4"/> SÍMBOLO</p>
+                          <p className="text-slate-300 text-sm font-bold">{clansData[clanSubTab].symbol}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {clanSubTab === 'sintesis' && (
+                  <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-8">
+                      <h3 className="text-5xl font-black text-white uppercase tracking-tighter">SÍNTESIS DE CLANES</h3>
+                      <p className="text-amber-500 text-xs font-bold tracking-widest uppercase mt-4 border border-amber-900/50 bg-amber-950/20 inline-block px-6 py-2 rounded-full"><BookOpen className="w-4 h-4 inline mr-2 -mt-1"/>COPIAR EN EL CUADERNO DE EDUCACIÓN RELIGIOSA</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {clansData.map(c => (
+                        <div key={c.id} className="bg-[#0f111a] border border-[#1e293b] rounded-xl p-6 flex flex-col justify-between hover:border-slate-600 transition-colors">
+                          <div>
+                            <h4 className={`text-xl font-black uppercase tracking-widest mb-6 ${c.color}`}>{c.name}</h4>
+                            <div className="space-y-4">
+                              <div><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-1">VIRTUD PRINCIPAL</p><p className="text-white font-bold text-sm">{c.attribute}</p></div>
+                              <div><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-1">LEMA OFICIAL</p><p className="text-slate-400 italic text-sm border-l-2 border-slate-700 pl-2">{c.lema}</p></div>
+                              <div><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-1">SÍMBOLO (DIBUJO)</p><p className="text-slate-400 text-xs">{c.symbol}</p></div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {clanSubTab === 'estandartes' && (
+                  <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-8">
+                      <h3 className="text-5xl font-black text-white uppercase tracking-tighter">SALÓN DE LOS ESTANDARTES</h3>
+                      <p className="text-slate-500 text-xs font-bold tracking-widest uppercase mt-2">CONOCE A LAS FACCIONES SAGRADAS</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {clansData.map((c, i) => (
+                        <div key={c.id} className="bg-[#0b0c16] border border-[#1e293b] rounded-2xl p-6 relative overflow-hidden shadow-lg">
+                          <div className="flex justify-between items-start mb-6">
+                            <div className="flex gap-4 items-center">
+                              <div className={`w-12 h-12 rounded-xl bg-[#0a0b12] border ${c.border} flex items-center justify-center font-black text-2xl ${c.color}`}>{i+1}</div>
+                              <div><h4 className={`text-2xl font-black uppercase tracking-widest ${c.color}`}>{c.name}</h4><p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">VIRTUD: {c.attribute}</p></div>
+                            </div>
+                            <div className="text-right"><p className="text-2xl font-black text-white">{scores[selectedClass]?.[c.id] || 0}</p><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">PUNTOS XP</p></div>
+                          </div>
+                          <div>
+                            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center gap-2 mb-3"><Users className="w-3 h-3"/> RECLUTAS CONFIRMADOS ({roster[selectedClass]?.[c.id]?.length || 0})</p>
+                            <div className="flex flex-wrap gap-2">
+                              {roster[selectedClass]?.[c.id]?.length > 0 ? (
+                                roster[selectedClass][c.id].map((r, idx) => (<span key={idx} className="bg-transparent border border-indigo-900/50 text-indigo-300 px-3 py-1.5 rounded text-[10px] font-bold tracking-wider uppercase">{r}</span>))
+                              ) : (
+                                <div className="w-full bg-[#05060b] border border-dashed border-[#1e293b] p-4 text-center rounded"><p className="text-xs text-slate-600 font-bold tracking-widest uppercase">ESPERANDO LA ELECCIÓN DIVINA EN EL AULA.</p></div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB 4: TAREA */}
+            {activeTab === 4 && (
+              <div className="animate-in fade-in duration-500 max-w-4xl mx-auto">
+                <div className="mb-10 text-center">
+                  <Flame className="w-16 h-16 text-emerald-500 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(16,185,129,0.5)]"/>
+                  <h2 className="text-5xl font-black text-white tracking-tighter uppercase mb-4">EL LLAMADO A LAS ARMAS</h2>
+                  <p className="text-emerald-500 text-[10px] tracking-[0.4em] font-bold uppercase border border-emerald-900/50 bg-emerald-950/20 inline-block px-4 py-1 rounded-full">PRIMERA ASIGNACIÓN OFICIAL</p>
+                </div>
+                <div className="bg-[#0f111a] border border-[#1e293b] rounded-2xl p-8 space-y-8 relative overflow-hidden shadow-2xl">
+                  <div className="absolute top-0 left-0 w-2 h-full bg-emerald-500"></div>
+                  <div>
+                    <h3 className="text-lg font-black text-white uppercase tracking-widest flex items-center gap-3 mb-3"><Compass className="w-5 h-5 text-slate-400"/> 1. LA ELECCIÓN DIVINA</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed border-l-2 border-slate-700 pl-4 ml-2">Presta mucha atención: La asignación de los Clanes <strong className="text-white">NO se realizará por internet</strong>. Tu destino será revelado mediante el Sorteo de la Providencia, un evento en vivo y en directo.</p>
+                  </div>
+                  <div className="bg-[#131722] border border-emerald-900/30 p-6 rounded-xl">
+                    <h3 className="text-lg font-black text-emerald-400 uppercase tracking-widest flex items-center gap-3 mb-4"><Target className="w-5 h-5"/> 2. TU PRIMERA MISIÓN (TAREA)</h3>
+                    <p className="text-slate-300 text-sm leading-relaxed mb-4">Tan pronto como escuches tu nombre y sepas a qué Clan perteneces, deberás cumplir tu primer deber como recluta oficial: <strong className="text-white">Forjar el Estandarte de tu Clan.</strong></p>
+                    <ul className="space-y-4 text-sm text-slate-400 ml-4">
+                      <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></div> Diseña el estandarte a mano o usando herramientas tecnológicas (Canva, Photoshop).</li>
+                      <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></div> La imagen <strong className="text-white">debe incluir obligatoriamente</strong> el Lema de tu Clan y su Atributo Principal.</li>
+                      <li className="flex items-start gap-3"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 shrink-0"></div> Acompaña tu imagen con una breve reseña (párrafo) explicando qué personaje bíblico inspira a tu clan.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-blue-400 uppercase tracking-widest flex items-center gap-3 mb-3"><CheckCircle2 className="w-5 h-5"/> 3. SELLO DE APROBACIÓN</h3>
+                    <p className="text-slate-400 text-sm leading-relaxed border-l-2 border-blue-900 pl-4 ml-2">Sube el diseño y tu reseña a Google Classroom. <strong className="text-white">Si tu diseño es APROBADO por el profesor Eder</strong>, recibirás el honor de imprimirlo y colocarlo oficialmente en tu cuaderno de Educación Religiosa. ¡Esfuérzate!</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </main>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── MISIÓN 1: SACERDOTES ────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {view === 'mision1' && (
+        <div className="flex-grow flex flex-col relative overflow-hidden bg-[#050300] min-h-screen">
+          <div className="absolute top-4 right-4 z-[9999] w-64 h-36 bg-black border-2 border-amber-600/50 rounded-xl overflow-hidden shadow-[0_0_20px_rgba(217,119,6,0.3)] hover:scale-105 transition-transform group backdrop-blur-md">
+            <div className="absolute top-0 left-0 w-full bg-amber-900/80 text-[9px] font-black tracking-widest text-white px-2 py-1 text-center z-10 uppercase flex items-center justify-center gap-2"><Music className="w-3 h-3"/> BSO Misión 1</div>
+            <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: '0', left: '0', border: 'none', padding: '0', margin: '0', marginTop: '24px' }} src="https://www.canva.com/design/DAHUxOYFoR4/YfVzZqhCBllExJdCAr972g/watch?embed" allowFullScreen></iframe>
+          </div>
+
+          {!startMision1Cinematic ? (
+            <div className="z-10 flex-grow flex flex-col items-center justify-center text-center animate-in fade-in duration-1000 px-4">
+              <Shield className="w-24 h-24 text-amber-500 mb-6 drop-shadow-[0_0_30px_rgba(245,158,11,0.5)] animate-pulse"/>
+              <p className="text-amber-600 text-xs tracking-[0.3em] uppercase mb-4 font-bold">INSTRUCCIÓN GM: 1) Dale Play a la BSO en la esquina. 2) Inicia la misión.</p>
+              <button onClick={() => setStartMision1Cinematic(true)} className="bg-gradient-to-b from-amber-700 to-amber-900 border-2 border-amber-500 text-amber-100 px-8 py-4 uppercase tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(245,158,11,0.6)] rounded-full cursor-pointer">Iniciar Secuencia Misión 1</button>
+              <button onClick={() => setView('campamento_base')} className="mt-6 text-slate-500 text-[10px] tracking-widest uppercase hover:text-white cursor-pointer">Volver al Campamento</button>
+            </div>
+          ) : m1Fase === 0 ? (
+            <div key="cinematica-m1" className="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none bg-black">
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541845157-a6d2d100c931?q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-color-dodge animate-[slowZoom_25s_linear_forwards]"></div>
+              <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 2s' }}><p className="text-2xl text-amber-500 uppercase tracking-[0.4em] font-light">El Sinaí arde en llamas...</p></div>
+              <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 7s' }}><p className="text-3xl text-orange-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_20px_rgba(234,88,12,0.8)]">DIOS ES PERFECTO. NOSOTROS NO.</p></div>
+              <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 12s' }}><p className="text-xl text-amber-200 uppercase tracking-[0.4em] font-light">Quien se acerque sin pureza, perecerá.</p></div>
+              <div className="absolute inset-0 bg-white z-[100]" style={{ opacity: 0, animation: 'cinematicText 2s ease-out forwards 19s' }}></div>
+              <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 4s ease-out forwards 20s' }}>
+                <h1 className="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 to-amber-600 tracking-tighter uppercase drop-shadow-[0_0_50px_rgba(245,158,11,1)]">EL TABERNÁCULO</h1>
+                <p className="text-amber-500 mt-4 text-lg md:text-2xl tracking-[0.5em] font-bold uppercase">SANTIDAD Y SACRIFICIO</p>
+              </div>
+              <div className="absolute bottom-20 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 1s ease-out forwards 23s' }}>
+                <button onClick={() => setM1Fase(1)} className="bg-amber-900/80 border-2 border-amber-400 text-amber-200 px-10 py-5 font-black uppercase tracking-[0.4em] text-xl transition-all shadow-[0_0_40px_rgba(245,158,11,0.5)] hover:scale-110 flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-sm">CRUZAR EL VELO <ChevronRight className="w-8 h-8"/></button>
+              </div>
+            </div>
+          ) : (
+            <>
+              <header className="bg-[#0a0b12] border-b border-[#1e293b] p-3 flex justify-between items-center z-50">
+                <div className="flex items-center gap-3">
+                  <button onClick={() => {setM1Fase(0); setStartMision1Cinematic(false); setView('campamento_base');}} className="text-slate-400 hover:text-white bg-slate-900 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-3 h-3"/> BASE {selectedClass}</button>
+                  <h2 className="text-white font-black tracking-widest uppercase text-sm md:text-base">
+                    {m1SubTab === 'proposito' ? 'PROPÓSITO Y MISIÓN' : m1SubTab === 'fase1' ? 'FASE 1: EL DESIERTO Y EL TRUENO' : m1SubTab === 'fase2' ? 'FASE 2: LA SOLUCIÓN DIVINA' : m1SubTab === 'decodificador' ? 'DECODIFICADOR DEL PECTORAL' : m1SubTab === 'fase3' ? 'FASE 3: REFLEXIÓN DEL CLAN' : 'FASE 4: LA MISIÓN DE CAMPO'}
+                  </h2>
+                </div>
+                <button onClick={() => setShowClans(!showClans)} className="text-amber-400 bg-amber-900/30 p-2 rounded-full hover:bg-amber-800/50 cursor-pointer transition-colors"><Trophy className="w-4 h-4"/></button>
+              </header>
+
+              <div className="bg-[#05060b] border-b border-[#1e293b] p-2 flex justify-center gap-2 overflow-x-auto z-40 shadow-md">
+                {[
+                  {id: 'proposito', label: 'PROPÓSITO'}, {id: 'fase1', label: '1. DESIERTO'}, {id: 'fase2', label: '2. SANTUARIO'},
+                  {id: 'decodificador', label: 'DECODIFICADOR'}, {id: 'fase3', label: '3. REFLEXIÓN'}, {id: 'fase4', label: '4. TAREA'}
+                ].map(tab => (
+                  <button key={tab.id} onClick={() => setM1SubTab(tab.id)} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m1SubTab === tab.id ? 'bg-amber-600 text-white shadow-[0_0_10px_rgba(217,119,6,0.5)]' : 'bg-slate-900 text-slate-400 hover:bg-slate-800'}`}>{tab.label}</button>
+                ))}
+              </div>
+
+              <div className="flex-grow overflow-y-auto p-4 md:p-8 relative custom-scrollbar pb-24 z-10">
+                {m1SubTab === 'proposito' && (
+                  <div className="max-w-4xl mx-auto mt-10 md:mt-20 animate-in zoom-in duration-500">
+                    <div className="bg-[#0a0b16] border border-slate-800 rounded-3xl p-8 md:p-14 flex flex-col items-center text-center shadow-[0_0_50px_rgba(245,158,11,0.05)]">
+                      <Shield className="w-16 h-16 text-amber-500 mb-6 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]" />
+                      <h3 className="text-3xl md:text-5xl font-black text-amber-500 uppercase tracking-widest mb-8">MISIÓN CENTRAL</h3>
+                      <p className="text-slate-300 italic text-lg md:text-xl leading-relaxed max-w-3xl font-serif">"Descifraremos los planos del Tabernáculo y el rol vital del sacerdote como el puente definitivo entre un Dios Santo y un pueblo imperfecto."</p>
+                    </div>
+                  </div>
+                )}
+
+                {m1SubTab === 'fase1' && (
+                  <div className="max-w-4xl mx-auto mt-10 animate-in slide-in-from-bottom-8 duration-500">
+                    <div className="bg-[#110505] border border-red-900/50 rounded-3xl p-8 md:p-10 relative overflow-hidden shadow-[0_0_40px_rgba(220,38,38,0.1)]">
+                      <div className="flex items-center gap-4 mb-10 border-b border-red-900/30 pb-6"><AlertTriangle className="w-8 h-8 text-red-500"/><h3 className="text-2xl md:text-3xl font-black text-red-500 uppercase tracking-widest">CONTEXTO DE SUPERVIVENCIA</h3></div>
+                      <div className="space-y-8 mb-10">
+                        <div className="flex items-start gap-6"><div className="bg-red-900 text-red-200 w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm shrink-0 shadow-inner">1</div><p className="text-slate-300 text-base md:text-lg leading-relaxed pt-1">Israel ha escapado de Egipto pero están atrapados en el desierto frente al imponente Monte Sinaí.</p></div>
+                        <div className="flex items-start gap-6"><div className="bg-red-900 text-red-200 w-8 h-8 rounded-lg flex items-center justify-center font-black text-sm shrink-0 shadow-inner">2</div><p className="text-slate-300 text-base md:text-lg leading-relaxed pt-1">La presencia directa de Dios es un fuego consumidor; si el pueblo se acerca con su pecado, <strong className="text-white">morirán instantáneamente</strong>.</p></div>
+                      </div>
+                      <div className="bg-[#1a0505] border border-red-800 p-6 md:p-8 rounded-2xl flex flex-col md:flex-row items-center md:items-start gap-6 text-center md:text-left shadow-lg">
+                        <div className="bg-red-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shrink-0 shadow-[0_0_15px_rgba(220,38,38,0.5)]">?</div>
+                        <p className="text-red-200 italic font-bold text-lg md:text-xl leading-relaxed">Pregunta para los Clanes: ¿Cómo puede un pueblo impuro sobrevivir y relacionarse con un Dios perfectamente santo?</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {m1SubTab === 'fase2' && (
+                  <div className="max-w-5xl mx-auto mt-6 animate-in slide-in-from-bottom-8 duration-500">
+                    <div className="bg-[#0b0c16] border border-indigo-900/50 rounded-3xl p-8 md:p-12 relative shadow-[0_0_50px_rgba(79,70,229,0.1)]">
+                      <button onClick={() => setM1SubTab('decodificador')} className="absolute top-6 right-6 md:top-10 md:right-10 bg-amber-600 hover:bg-amber-500 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest flex items-center gap-2 shadow-[0_0_20px_rgba(217,119,6,0.4)] hover:shadow-[0_0_30px_rgba(217,119,6,0.6)] transition-all hover:scale-105 cursor-pointer z-10"><Key className="w-5 h-5"/> DECODIFICADOR</button>
+                      <div className="text-center mb-12 relative z-0">
+                        <h3 className="text-3xl md:text-4xl font-black text-indigo-400 uppercase tracking-widest mb-3">ESQUEMA GENERAL DEL SANTUARIO</h3>
+                        <p className="text-slate-400 text-[10px] md:text-xs tracking-[0.3em] uppercase font-bold">TRANSCRIPCIÓN OBLIGATORIA EN CUADERNO</p>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div className="border border-amber-900/50 bg-[#120a05] rounded-2xl p-8 shadow-lg relative overflow-hidden">
+                          <div className="absolute top-0 left-0 w-full h-1 bg-amber-500"></div>
+                          <h4 className="text-amber-500 font-black uppercase tracking-widest text-sm md:text-base mb-8 border-b border-amber-900/30 pb-4">A. LA MÁQUINA DE SALVACIÓN</h4>
+                          <div className="space-y-8">
+                            <div className="flex items-start gap-5"><Shield className="w-6 h-6 text-amber-600 shrink-0 mt-1"/><div><p className="text-white font-black text-sm mb-2 uppercase tracking-wider">EL TABERNÁCULO</p><p className="text-slate-300 text-sm leading-relaxed">La "tienda de reunión". Único lugar donde la santidad pura de Dios convive con humanos sin destruirlos.</p></div></div>
+                            <div className="flex items-start gap-5"><BookOpen className="w-6 h-6 text-amber-600 shrink-0 mt-1"/><div><p className="text-white font-black text-sm mb-2 uppercase tracking-wider">EL SISTEMA</p><p className="text-slate-300 text-sm leading-relaxed">Requiere un sacrificio (para limpiar pecado) y un mediador puro autorizado para entrar.</p></div></div>
+                          </div>
+                        </div>
+                        <div className="border border-indigo-900/50 bg-[#0a0b12] rounded-2xl p-8 shadow-lg relative overflow-hidden">
+                          <div className="absolute top-0 left-0 w-full h-1 bg-indigo-500"></div>
+                          <h4 className="text-indigo-400 font-black uppercase tracking-widest text-sm md:text-base mb-8 border-b border-indigo-900/30 pb-4">B. LOS SACERDOTES</h4>
+                          <div className="space-y-8">
+                            <div className="flex items-start gap-5"><Users className="w-6 h-6 text-indigo-500 shrink-0 mt-1"/><div><p className="text-white font-black text-sm mb-2 uppercase tracking-wider">EL LLAMADO (TRIBU DE LEVÍ)</p><p className="text-slate-300 text-sm leading-relaxed">Los únicos separados y autorizados para acercarse al fuego de Dios y operar el tabernáculo.</p></div></div>
+                            <div className="flex items-start gap-5"><CheckCircle2 className="w-6 h-6 text-indigo-500 shrink-0 mt-1"/><div><p className="text-white font-black text-sm mb-2 uppercase tracking-wider">LA VESTIDURA SAGRADA</p><p className="text-slate-300 text-sm leading-relaxed">Usan el <strong className="text-indigo-300">Pectoral del Juicio</strong>: 12 piedras preciosas donde cada una lleva grabado el nombre de una tribu.</p></div></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="border border-purple-900/50 bg-[#120a1a] rounded-2xl p-8 text-center mb-8 shadow-lg relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-1 h-full bg-purple-500"></div>
+                        <h4 className="text-purple-400 font-black uppercase tracking-widest text-sm md:text-base mb-4">C. EL PROPÓSITO FINAL</h4>
+                        <p className="text-slate-200 text-base md:text-lg leading-relaxed max-w-4xl mx-auto font-serif italic">Entrar a la presencia de Dios llevando <strong className="text-white not-italic border-b border-purple-500">sobre su corazón</strong> a todo el pueblo. Esto es la verdadera <strong className="text-purple-300 not-italic">Intercesión</strong>: ser el puente vital entre Dios y la humanidad.</p>
+                      </div>
+                      <div className="bg-red-950/40 border border-red-800 p-5 rounded-xl text-center shadow-inner">
+                        <p className="text-red-400 font-black text-xs md:text-sm uppercase tracking-widest flex items-center justify-center gap-3"><AlertTriangle className="w-5 h-5 animate-pulse"/> AUDITORÍA EXTREMA: EL CLAN NO PARTICIPA SI FALTA 1 APUNTE.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {m1SubTab === 'decodificador' && (
+                  <div className="w-full h-full flex flex-col items-center mt-6 animate-in zoom-in duration-500">
+                    <h3 className="text-3xl md:text-5xl font-black text-white uppercase tracking-[0.2em] md:tracking-[0.3em] mb-8 text-center drop-shadow-[0_0_20px_rgba(255,255,255,0.2)]">DECODIFICADOR DEL PECTORAL</h3>
+                    <button className="bg-blue-600 hover:bg-blue-500 text-white px-10 py-4 rounded-xl font-black uppercase tracking-widest mb-12 shadow-[0_0_30px_rgba(37,99,235,0.5)] hover:scale-105 transition-all cursor-pointer">GIRAR RULETA DIVINA</button>
+                    <div className="grid grid-cols-4 md:grid-cols-6 gap-4 md:gap-6 max-w-5xl mx-auto px-4">
+                      {pectoralStones.map(stone => {
+                        const isSolved = stoneProgress[stone.id];
+                        return (
+                          <button key={stone.id} onClick={() => {setActiveStone(stone.id); setGuessedLetters([]); setActiveAhorcadoClan(null);}} className={`relative w-20 h-20 md:w-28 md:h-28 rounded-2xl flex flex-col items-center justify-center border-2 transition-all cursor-pointer ${isSolved ? 'border-slate-700 bg-[#0a0b12] opacity-50' : 'border-[#1e293b] bg-[#111424] hover:border-indigo-500 shadow-[0_0_20px_rgba(0,0,0,0.5)] hover:-translate-y-2'}`}>
+                            <div className={`w-8 h-8 md:w-12 md:h-12 rounded-full mb-2 md:mb-3 shadow-inner ${stone.color} ${isSolved ? 'grayscale' : ''}`}></div>
+                            <span className={`text-[9px] md:text-xs font-black uppercase tracking-widest ${isSolved ? 'text-slate-500' : 'text-slate-300'}`}>{stone.tribu}</span>
+                            {isSolved && <div className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-2xl backdrop-blur-[2px]"><CheckCircle2 className="w-10 h-10 md:w-14 md:h-14 text-emerald-500 drop-shadow-[0_0_10px_rgba(16,185,129,0.8)]"/></div>}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {activeStone && (() => {
+                      const stone = pectoralStones.find(s => s.id === activeStone);
+                      const wordArr = stone.palabra.split('');
+                      const isSolved = wordArr.every(char => guessedLetters.includes(char) || char === ' ');
+                      return (
+                        <div className="fixed inset-0 z-[99999] bg-[#050303]/95 backdrop-blur-md flex items-center justify-center p-4 md:p-8 animate-in fade-in">
+                          <div className="bg-[#110505] border-2 border-red-900/80 rounded-3xl p-6 md:p-10 w-full max-w-4xl relative shadow-[0_0_80px_rgba(220,38,38,0.3)] flex flex-col overflow-y-auto max-h-full custom-scrollbar">
+                            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+                              <div>
+                                <h3 className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest mb-3 drop-shadow-lg">{stone.tribu}</h3>
+                                <span className="bg-red-600 text-white px-4 py-2 rounded-lg text-xs md:text-sm font-black uppercase tracking-widest shadow-md">PIEDRA {stone.piedra}</span>
+                              </div>
+                              <div className="flex gap-4">
+                                <button onClick={() => { if(activeAhorcadoClan) updateScore(activeAhorcadoClan, 100); }} className="bg-emerald-900/40 hover:bg-emerald-800 text-emerald-400 border-2 border-emerald-500/50 px-5 py-3 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer transition-colors shadow-lg hover:shadow-[0_0_20px_rgba(16,185,129,0.4)]"><BookOpen className="w-5 h-5"/> +100 CUADERNOS</button>
+                                <button onClick={() => { if(activeAhorcadoClan) updateScore(activeAhorcadoClan, -100); }} className="bg-red-900/40 hover:bg-red-800 text-red-400 border-2 border-red-500/50 px-5 py-3 rounded-xl text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer transition-colors shadow-lg hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]"><AlertTriangle className="w-5 h-5"/> -100 GRITÓ</button>
+                              </div>
+                            </div>
+                            <p className="text-center text-slate-300 italic text-xl md:text-2xl mb-10 font-serif leading-relaxed px-4 border-l-4 border-red-900/30">"{stone.pista}"</p>
+                            <div className="bg-[#1a0a0a] border border-red-900/30 p-6 rounded-2xl mb-12 shadow-inner">
+                              <p className="text-amber-500 font-black text-xs md:text-sm uppercase tracking-widest text-center mb-6">AUDITORÍA APROBADA. SELECCIONA CLAN EN TURNO:</p>
+                              <div className="flex flex-wrap justify-center gap-3">
+                                {clansData.map(c => (
+                                  <button key={c.id} onClick={() => setActiveAhorcadoClan(c.id)} className={`px-4 py-3 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-widest transition-all cursor-pointer border ${activeAhorcadoClan === c.id ? 'bg-amber-600 border-amber-400 text-white shadow-[0_0_15px_rgba(217,119,6,0.8)] scale-105' : 'bg-[#2a1313] border-red-900/50 text-slate-400 hover:bg-[#3a1a1a] hover:text-slate-200'}`}>{c.name}</button>
+                                ))}
+                              </div>
+                            </div>
+                            <div className="flex justify-center flex-wrap gap-2 md:gap-4 mb-12">
+                              {wordArr.map((char, i) => (
+                                <div key={i} className="w-12 h-16 md:w-16 md:h-20 border-b-4 border-slate-500 flex items-center justify-center text-4xl md:text-5xl font-black text-white uppercase drop-shadow-md bg-[#0a0505]/50 rounded-t-lg">
+                                  {(guessedLetters.includes(char) || isSolved || stoneProgress[activeStone]) ? char : ''}
+                                </div>
+                              ))}
+                            </div>
+                            {!activeAhorcadoClan && !isSolved && !stoneProgress[activeStone] && (
+                              <p className="text-center text-slate-600 font-bold uppercase tracking-[0.3em] mb-8 animate-pulse text-xs md:text-sm">ESPERANDO SELECCIÓN...</p>
+                            )}
+                            <div className="flex flex-col items-center gap-3 mb-10">
+                              {['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'].map((row, i) => (
+                                <div key={i} className="flex gap-2 md:gap-3">
+                                  {row.split('').map(char => {
+                                    const isGuessed = guessedLetters.includes(char);
+                                    return (
+                                      <button key={char} onClick={() => {
+                                        if(!activeAhorcadoClan) return;
+                                        if(!isGuessed && !isSolved && !stoneProgress[activeStone]) {
+                                          setGuessedLetters([...guessedLetters, char]);
+                                          if(wordArr.every(l => [...guessedLetters, char].includes(l) || l === ' ')) {
+                                            setStoneProgress({...stoneProgress, [activeStone]: true});
+                                          }
+                                        }
+                                      }} className={`w-10 h-12 md:w-14 md:h-16 rounded-xl font-black text-xl md:text-2xl transition-all shadow-md ${isGuessed || isSolved || stoneProgress[activeStone] ? 'bg-slate-800 border border-slate-700 text-slate-600 cursor-not-allowed opacity-40' : 'bg-[#2a1313] text-slate-300 hover:bg-red-700 hover:text-white border-b-4 border-red-900 cursor-pointer active:translate-y-1 active:border-b-0'}`}>{char}</button>
+                                    );
+                                  })}
+                                </div>
+                              ))}
+                            </div>
+                            <button onClick={() => {setActiveStone(null); setGuessedLetters([]); setActiveAhorcadoClan(null);}} className="w-full bg-[#1a202c] hover:bg-[#2d3748] text-white py-5 rounded-xl font-black text-sm md:text-base uppercase tracking-[0.2em] transition-colors cursor-pointer border-2 border-[#4a5568] shadow-lg">CERRAR Y CAMBIAR DE PIEDRA</button>
+                          </div>
+                        </div>
+                      );
+                    })()}
+                  </div>
+                )}
+
+                {m1SubTab === 'fase3' && (
+                  <div className="max-w-4xl mx-auto mt-10 md:mt-16 animate-in slide-in-from-bottom-8 duration-500">
+                    <div className="bg-[#05110a] border border-emerald-900/50 rounded-3xl p-8 md:p-12 relative shadow-[0_0_60px_rgba(16,185,129,0.1)]">
+                      <div className="absolute top-0 left-0 w-full h-2 bg-emerald-600 rounded-t-3xl"></div>
+                      <h3 className="text-3xl md:text-4xl font-black text-emerald-500 uppercase tracking-widest text-center mb-6">METACOGNICIÓN</h3>
+                      <p className="text-slate-300 italic text-center mb-12 font-serif text-lg md:text-xl px-4">"El Sumo Sacerdote llevaba los nombres de las tribus en su pecho, justo encima de su corazón."</p>
+                      <div className="space-y-8">
+                        <div className="bg-[#0a1a12] border border-emerald-900/30 p-8 rounded-2xl flex flex-col md:flex-row items-start gap-6 shadow-inner transition-transform hover:-translate-y-1">
+                          <div className="bg-emerald-900 text-emerald-300 w-12 h-12 rounded-xl flex items-center justify-center font-black text-base shrink-0 shadow-md">Q1</div>
+                          <p className="text-white text-lg md:text-xl leading-relaxed pt-2">¿Qué significaba espiritualmente que el sacerdote llevara a Israel sobre su corazón al entrar ante el fuego de Dios?</p>
+                        </div>
+                        <div className="w-full h-[1px] bg-emerald-900/30"></div>
+                        <div className="bg-[#0a1a12] border border-emerald-900/30 p-8 rounded-2xl flex flex-col md:flex-row items-start gap-6 shadow-inner transition-transform hover:-translate-y-1">
+                          <div className="bg-emerald-900 text-emerald-300 w-12 h-12 rounded-xl flex items-center justify-center font-black text-base shrink-0 shadow-md">Q2</div>
+                          <p className="text-white text-lg md:text-xl leading-relaxed pt-2">Si Jesús es nuestro "Gran Sumo Sacerdote" hoy en día, ¿qué nombres crees que lleva en su pectoral celestial?</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {m1SubTab === 'fase4' && (
+                  <div className="max-w-5xl mx-auto mt-8 md:mt-12 animate-in slide-in-from-bottom-8 duration-500">
+                    <div className="bg-[#0b0c16] border border-indigo-900/50 rounded-3xl p-8 md:p-12 relative shadow-[0_0_50px_rgba(79,70,229,0.15)]">
+                      <div className="flex flex-col md:flex-row items-center justify-center md:justify-start gap-5 mb-12 border-b border-indigo-900/30 pb-6 text-center md:text-left">
+                        <Shield className="w-10 h-10 text-indigo-500 shrink-0"/>
+                        <h3 className="text-3xl md:text-4xl font-black text-white uppercase tracking-widest">LA FORJA DE LA IDENTIDAD (TAREA)</h3>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                        <div className="bg-[#111424] border border-[#1e293b] p-8 md:p-10 rounded-2xl hover:border-indigo-500 transition-colors shadow-lg">
+                          <h4 className="text-amber-500 font-black uppercase tracking-widest text-sm md:text-base mb-6 flex items-center gap-3 border-b border-slate-800 pb-3"><BookOpen className="w-6 h-6"/> 1. EL PECTORAL PROPIO</h4>
+                          <p className="text-slate-300 text-base leading-relaxed">En su cuaderno, cada estudiante dibuja un pectoral con 4 piedras grandes. En cada piedra escribirán el nombre de <strong className="text-white">personas o grupos por los que deben interceder, proteger o ayudar</strong>.<br/><br/><span className="text-slate-500 italic block border-l-2 border-slate-700 pl-3">(Ej: Su familia, un compañero con dificultades, su clan).</span></p>
+                        </div>
+                        <div className="bg-[#111424] border border-[#1e293b] p-8 md:p-10 rounded-2xl hover:border-indigo-500 transition-colors shadow-lg">
+                          <h4 className="text-amber-500 font-black uppercase tracking-widest text-sm md:text-base mb-6 flex items-center gap-3 border-b border-slate-800 pb-3"><Users className="w-6 h-6"/> 2. EL MANIFIESTO COOPERATIVO</h4>
+                          <p className="text-slate-300 text-base leading-relaxed">Los clanes se reúnen. Discuten y redactan un <strong className="text-white">Edicto o Manifiesto</strong> (1 párrafo). Es una promesa escrita de <em className="text-indigo-300 font-serif">"cómo van a ser sacerdotes" (puentes hacia el bien) y traerán paz al salón esta semana</em>.</p>
+                        </div>
+                      </div>
+                      <div className="bg-emerald-950/20 border-2 border-emerald-600/50 p-8 rounded-2xl text-center shadow-[0_0_30px_rgba(16,185,129,0.2)] transform hover:scale-[1.02] transition-transform">
+                        <Trophy className="w-12 h-12 text-emerald-500 mx-auto mb-4 animate-bounce"/>
+                        <p className="text-emerald-400 font-black text-xl md:text-2xl uppercase tracking-widest mb-3">RECOMPENSA: +150 XP</p>
+                        <p className="text-emerald-100/70 text-[10px] md:text-xs tracking-[0.2em] uppercase max-w-2xl mx-auto font-bold">SOLO SI TODOS LOS MIEMBROS DEL CLAN TIENEN LOS DOS PASOS COPIADOS PARA LA FIRMA DEL GAME MASTER.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── MISIÓN 2: JUECES ────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {view === 'mision2' && (
+        <div className="flex-grow flex flex-col relative overflow-hidden bg-[#06080e] min-h-screen">
+          {m2Fase === 0 && (
+            <div className="absolute top-4 right-4 z-[9999] w-64 h-36 bg-black border-2 border-red-600/50 rounded-xl overflow-hidden shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:scale-105 transition-transform group backdrop-blur-md">
+              <div className="absolute top-0 left-0 w-full bg-red-900/80 text-[9px] font-black tracking-widest text-white px-2 py-1 text-center z-10 uppercase flex items-center justify-center gap-2"><Music className="w-3 h-3"/> Tensión Marvel</div>
+              <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none', padding: 0, margin: 0, marginTop: '24px' }} src="https://www.canva.com/design/DAHUpFG0HGw/LtS7S0nuTMhG6sedKbanpw/watch?embed" allowFullScreen></iframe>
+            </div>
+          )}
+
+          {m2Fase > 0 && (
+            <header className="bg-[#0a0b12] border-b border-[#1e293b] p-3 flex justify-between items-center z-50">
+              <div className="flex items-center gap-3">
+                <button onClick={() => {setM2Fase(0); setStartMision2Cinematic(false); setView('campamento_base');}} className="text-slate-400 hover:text-white bg-slate-900 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-3 h-3"/> Cambiar Salón</button>
+                <h2 className="text-white font-black tracking-widest uppercase text-sm md:text-base">{m2Fase === 1 ? 'PROPÓSITO: LA ERA DEL CAOS' : m2Fase === 2 ? 'FASE 1: EL CÓDICE' : 'FASE 2: SIMULADOR DE TRIBUNAL'}</h2>
+              </div>
+              <button onClick={() => setShowClans(!showClans)} className="text-blue-400 bg-blue-900/30 p-2 rounded-full hover:bg-blue-800/50 cursor-pointer transition-colors"><Trophy className="w-4 h-4"/></button>
+            </header>
+          )}
+
+          <div className="flex-grow overflow-y-auto pb-24 p-4 md:p-8 relative custom-scrollbar z-10">
+            {!startMision2Cinematic && m2Fase === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center text-center animate-in fade-in duration-1000 max-w-2xl mx-auto px-4">
+                <ShieldAlert className="w-24 h-24 text-red-600 mb-6 drop-shadow-[0_0_30px_rgba(220,38,38,0.5)] animate-pulse"/>
+                <p className="text-red-500 text-xs tracking-[0.3em] uppercase mb-4 font-bold">INSTRUCCIÓN GM: 1) Dale Play a la música en la esquina. 2) Inicia la misión.</p>
+                <button onClick={() => setStartMision2Cinematic(true)} className="bg-gradient-to-b from-red-700 to-red-900 border-2 border-red-500 text-red-100 px-8 py-4 uppercase tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(220,38,38,0.6)] rounded-full cursor-pointer">Iniciar Intro Cómic</button>
+                <button onClick={() => setView('campamento_base')} className="mt-6 text-slate-500 text-[10px] tracking-widest uppercase hover:text-white cursor-pointer">Volver al Campamento</button>
+              </div>
+            ) : m2Fase === 0 ? (
+              <div key="cinematica-m2" className="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none bg-black">
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-color-dodge animate-[slowZoom_45s_linear_forwards]"></div>
+                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 2s' }}><p className="text-lg md:text-2xl text-white border-y-2 border-red-600 py-2 uppercase tracking-[0.5em] font-bold shadow-[0_0_20px_rgba(220,38,38,0.5)]">ESTUDIOS BÍBLICOS PRESENTA</p></div>
+                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 7s' }}><p className="text-3xl md:text-5xl text-amber-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_30px_rgba(245,158,11,0.8)]">UNA NACIÓN SIN RUMBO...</p></div>
+                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 13s' }}><div className="bg-white text-black px-6 py-3 border-4 border-black shadow-[8px_8px_0_rgba(220,38,38,1)] transform -rotate-2"><p className="text-2xl md:text-3xl uppercase tracking-widest font-black">"En esos días no había rey en Israel..."</p></div></div>
+                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 4s ease-out forwards 19s' }}><div className="bg-red-600 text-white px-6 py-3 border-4 border-black shadow-[8px_8px_0_rgba(255,255,255,1)] transform rotate-2"><p className="text-3xl md:text-4xl uppercase tracking-widest font-black">"...y cada uno hacía lo que bien le parecía."</p></div></div>
+                <div className="absolute text-center px-4" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 25s' }}><p className="text-4xl md:text-6xl text-white uppercase tracking-[0.2em] font-black drop-shadow-[0_0_40px_rgba(220,38,38,1)]">Y LA OSCURIDAD LO CONSUMIÓ TODO.</p></div>
+                <div className="absolute inset-0 bg-red-600 z-[100]" style={{ opacity: 0, animation: 'cinematicText 1.5s ease-out forwards 31s' }}></div>
+                <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 10s ease-out forwards 32s' }}>
+                  <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-red-500 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(220,38,38,1)]" style={{ WebkitTextStroke: '2px black' }}>LA ERA DEL CAOS</h1>
+                  <p className="text-red-500 mt-4 text-lg md:text-2xl tracking-[0.5em] font-bold uppercase bg-black/80 inline-block px-6 py-3 border border-red-900/50 shadow-2xl">EL TRIBUNAL DE LOS JUECES</p>
+                </div>
+                <div className="absolute bottom-20 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 38s' }}>
+                  <button onClick={() => setM2Fase(1)} className="bg-red-900/80 border-2 border-red-500 text-white px-10 py-5 font-black uppercase tracking-[0.4em] text-xl transition-all shadow-[0_0_40px_rgba(220,38,38,0.8)] hover:scale-110 flex items-center gap-4 cursor-pointer rounded-xl backdrop-blur-sm transform hover:-rotate-1">VER PROPÓSITO <ChevronRight className="w-8 h-8"/></button>
+                </div>
+              </div>
+            ) : null}
+
+            {m2Fase === 1 && (
+              <div className="max-w-4xl mx-auto mt-10 md:mt-20 animate-in zoom-in duration-500">
+                <div className="bg-[#0b0404] border border-red-900/50 rounded-2xl p-8 md:p-12 relative shadow-[0_0_50px_rgba(220,38,38,0.15)] flex flex-col items-center text-center">
+                  <div className="w-16 h-16 rounded-full bg-red-950 border border-red-800 flex items-center justify-center text-red-500 mb-8 shadow-inner"><AlertTriangle className="w-8 h-8"/></div>
+                  <h2 className="text-4xl md:text-5xl font-black text-red-500 tracking-widest uppercase mb-8 drop-shadow-[0_0_15px_rgba(220,38,38,0.8)]">MISIÓN: RESTAURAR EL ORDEN</h2>
+                  <div className="bg-[#150a0a] border border-red-900/30 p-6 md:p-8 rounded-xl w-full max-w-2xl">
+                    <p className="text-slate-300 text-sm md:text-base italic leading-relaxed font-serif">"Analizaremos la espiral de caos en Israel tras la muerte de Josué y descubriremos cómo Dios levanta libertadores para restaurar la paz. En esta misión, ustedes serán los jueces de su propia conducta."</p>
+                  </div>
+                  <button onClick={() => setM2Fase(2)} className="mt-10 bg-red-900/50 hover:bg-red-800 text-white border border-red-500/50 px-8 py-4 rounded uppercase font-bold tracking-widest text-xs transition-colors cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:scale-105">Ingresar al Códice <ChevronRight className="inline w-4 h-4 -mt-1"/></button>
+                </div>
+              </div>
+            )}
+
+            {m2Fase === 2 && (
+              <div className="max-w-5xl mx-auto space-y-8 animate-in slide-in-from-bottom-8 duration-700">
+                <div className="bg-[#0f111a] border border-[#1e293b] rounded-xl overflow-hidden shadow-2xl">
+                  <div className="bg-[#15182b] border-b border-[#1e293b] p-3 flex items-center gap-2"><Play className="w-4 h-4 text-red-500"/> <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Archivo Histórico: Los Jueces</span></div>
+                  <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                    <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none' }} src="https://www.canva.com/design/DAHUqu9i4XE/UQyvnmdGtkut8rZ41kbCsQ/view?embed" allowFullScreen></iframe>
+                  </div>
+                </div>
+
+                <div className="bg-[#0b0c16] border border-amber-900/30 rounded-2xl p-8 text-center mt-10 shadow-lg">
+                  <h3 className="text-4xl font-black text-amber-500 uppercase tracking-widest mb-4">EL CÓDICE DEL CAOS</h3>
+                  <p className="text-slate-400 italic text-xs border border-slate-800 bg-[#15182b] inline-block px-8 py-3 rounded-full">Analicen y copien los apuntes clave. Los necesitarán como argumentos en el Tribunal.</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-[#0f111a] border border-blue-900 rounded-xl p-8 shadow-lg">
+                    <h4 className="text-blue-400 font-bold uppercase tracking-widest text-sm mb-6 flex items-center gap-3"><Target className="w-5 h-5"/> 1. EL MANDATO IDEAL</h4>
+                    <ul className="space-y-4 text-slate-300 text-xs md:text-sm leading-relaxed">
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0"/> Obedecer la Torá para ser ejemplo a las naciones.</li>
+                      <li className="flex items-start gap-3"><CheckCircle2 className="w-5 h-5 text-blue-500 shrink-0"/> Aislarse de la corrupción moral cananea (evitar el sacrificio de niños).</li>
+                    </ul>
+                  </div>
+                  <div className="bg-[#1a0f14] border border-red-900 rounded-xl p-8 shadow-lg">
+                    <h4 className="text-red-400 font-bold uppercase tracking-widest text-sm mb-6 flex items-center gap-3"><AlertTriangle className="w-5 h-5"/> 2. EL FRACASO REAL</h4>
+                    <ul className="space-y-4 text-slate-300 text-xs md:text-sm leading-relaxed">
+                      <li className="flex items-start gap-3"><X className="w-5 h-5 text-red-500 shrink-0"/> <div><strong className="text-white block mb-1">Fracaso militar:</strong> (Jueces Cap. 1). No expulsaron la corrupción.</div></li>
+                      <li className="flex items-start gap-3"><X className="w-5 h-5 text-red-500 shrink-0"/> <div><strong className="text-white block mb-1">Asimilación Cultural:</strong> Adoptaron prácticas aberrantes e idolatría.</div></li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="bg-[#0f111a] border border-slate-700 rounded-2xl p-8 text-center relative shadow-lg">
+                  <h4 className="text-indigo-400 font-bold uppercase tracking-widest text-base mb-2 flex items-center justify-center gap-2"><RefreshCw className="w-5 h-5"/> 3. LA ESPIRAL DESCENDENTE</h4>
+                  <p className="text-slate-500 text-[10px] tracking-widest uppercase mb-8">NO ES UN CÍRCULO, LA SITUACIÓN EMPEORA EN CADA VUELTA.</p>
+                  <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-xs font-bold uppercase w-full">
+                    <div className="bg-[#1e151e] border border-red-900/50 text-red-300 px-6 py-3 rounded-lg flex flex-col w-full md:w-auto"><span className="text-red-500 mb-1">1. CORRUPCIÓN</span> PECADO E ÍDOLOS</div>
+                    <ChevronRight className="w-5 h-5 text-slate-600 rotate-90 md:rotate-0"/>
+                    <div className="bg-[#151c2b] border border-blue-900/50 text-blue-300 px-6 py-3 rounded-lg flex flex-col w-full md:w-auto"><span className="text-blue-500 mb-1">2. OPRESIÓN</span> CONQUISTA ENEMIGA</div>
+                    <ChevronRight className="w-5 h-5 text-slate-600 rotate-90 md:rotate-0"/>
+                    <div className="bg-[#151c2b] border border-blue-900/50 text-blue-300 px-6 py-3 rounded-lg flex flex-col w-full md:w-auto"><span className="text-blue-500 mb-1">3. CLAMOR</span> PIDEN AYUDA A DIOS</div>
+                    <ChevronRight className="w-5 h-5 text-slate-600 rotate-90 md:rotate-0"/>
+                    <div className="bg-[#152b22] border border-emerald-900/50 text-emerald-300 px-6 py-3 rounded-lg flex flex-col w-full md:w-auto"><span className="text-emerald-500 mb-1">4. LIBERACIÓN</span> DIOS ENVÍA UN JUEZ</div>
+                  </div>
+                  <div className="mt-8 mx-auto inline-block bg-[#2b1515] border-2 border-red-600 text-red-400 px-8 py-4 rounded-xl text-sm font-black uppercase tracking-widest shadow-[0_0_20px_rgba(220,38,38,0.2)] relative">
+                    5. REINCIDENCIA<br/><span className="text-[10px] text-red-300 mt-1 block">PEOR QUE ANTES</span>
+                    <div className="absolute -top-3 -right-3 w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-white"><AlertTriangle className="w-3 h-3"/></div>
+                  </div>
+                </div>
+
+                <div className="bg-[#0b0c16] border border-[#1e293b] rounded-2xl p-8 shadow-xl">
+                  <h4 className="text-white font-black uppercase tracking-widest text-center text-xl mb-8">4. EXPEDIENTES DE LOS JUECES</h4>
+                  <p className="text-xs text-emerald-500 font-bold uppercase tracking-widest mb-4">A. LÍDERES FUNCIONALES (FASE DE AVENTURA)</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                    <div className="bg-[#05060b] border-l-4 border-l-emerald-500 border border-[#1e293b] p-6 rounded-r-xl shadow-md">
+                      <h5 className="text-white font-black text-base mb-1">Otoniel & Aod</h5>
+                      <p className="text-emerald-500 text-[10px] font-black uppercase tracking-widest mb-4">LOS ÍNTEGROS Y TÁCTICOS</p>
+                      <ul className="text-slate-400 text-xs space-y-2 list-disc pl-4"><li>Héroes de aventuras épicas.</li><li>Cumplieron su misión con valentía y estrategia.</li></ul>
+                    </div>
+                    <div className="bg-[#05060b] border-l-4 border-l-blue-500 border border-[#1e293b] p-6 rounded-r-xl shadow-md">
+                      <h5 className="text-white font-black text-base mb-1">Débora</h5>
+                      <p className="text-blue-500 text-[10px] font-black uppercase tracking-widest mb-4">SINERGIA Y SABIDURÍA</p>
+                      <ul className="text-slate-400 text-xs space-y-2 list-disc pl-4"><li>Líder estratega y profetisa.</li><li>Demostró el poder del <strong className="text-slate-200">trabajo en equipo</strong> (con Barac).</li></ul>
+                    </div>
+                  </div>
+                  <p className="text-xs text-red-500 font-bold uppercase tracking-widest mb-4 border-t border-[#1e293b] pt-8">B. EL COLAPSO MORAL (FASE DE DEGRADACIÓN)</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-[#1a0f14] border-l-4 border-l-orange-500 border border-red-900/30 p-6 rounded-r-xl shadow-md">
+                      <h5 className="text-white font-black text-base mb-1">Gedeón</h5>
+                      <p className="text-orange-500 text-[10px] font-black uppercase tracking-widest mb-4">EL EGO CORRUPTOR</p>
+                      <p className="text-emerald-400 text-xs mb-3 leading-relaxed"><strong className="text-emerald-500 block mb-1">Logro:</strong> Vence a madianitas con solo 300 hombres (Fe).</p>
+                      <p className="text-red-400 text-xs leading-relaxed"><strong className="text-red-500 block mb-1">Falla:</strong> Su ego lo corrompe. Asesina por venganza y fabrica un ídolo de oro.</p>
+                    </div>
+                    <div className="bg-[#1a0f14] border-l-4 border-l-orange-500 border border-red-900/30 p-6 rounded-r-xl shadow-md">
+                      <h5 className="text-white font-black text-base mb-1">Jefté</h5>
+                      <p className="text-orange-500 text-[10px] font-black uppercase tracking-widest mb-4">EL IGNORANTE</p>
+                      <p className="text-emerald-400 text-xs mb-3 leading-relaxed"><strong className="text-emerald-500 block mb-1">Logro:</strong> Estratega militar, protege al pueblo.</p>
+                      <p className="text-red-400 text-xs leading-relaxed"><strong className="text-red-500 block mb-1">Falla:</strong> Ignorancia de Dios. Hace un voto absurdo y sacrifica a su propia hija.</p>
+                    </div>
+                    <div className="bg-[#1a0f14] border-l-4 border-l-red-600 border border-red-900/30 p-6 rounded-r-xl shadow-md">
+                      <h5 className="text-white font-black text-base mb-1">Sansón</h5>
+                      <p className="text-red-500 text-[10px] font-black uppercase tracking-widest mb-4">EL NARCISISTA</p>
+                      <p className="text-emerald-400 text-xs mb-3 leading-relaxed"><strong className="text-emerald-500 block mb-1">Logro:</strong> Fuerza sobrenatural, victorias contra filisteos.</p>
+                      <p className="text-red-400 text-xs leading-relaxed"><strong className="text-red-500 block mb-1">Falla:</strong> Promiscuo, violento, vengativo. Su vida termina en un asesinato/suicidio masivo.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-[#150a0a] border border-red-700 rounded-2xl p-10 text-center relative overflow-hidden shadow-[0_0_40px_rgba(220,38,38,0.15)]">
+                  <h4 className="text-red-500 font-black uppercase tracking-widest text-xl mb-6 flex items-center justify-center gap-3"><Skull className="w-6 h-6"/> 5. EL COLAPSO SOCIAL TOTAL</h4>
+                  <p className="text-slate-300 text-sm mb-6">La anarquía llega cuando los líderes fallan:</p>
+                  <ul className="text-slate-400 text-sm space-y-4 max-w-lg mx-auto text-left list-disc pl-6 mb-10 font-bold">
+                    <li><strong className="text-white">Robo y Asesinato:</strong> Destrucción de la ciudad inocente de Lais.</li>
+                    <li><strong className="text-white">Guerra Civil:</strong> Tribus masacrándose entre sí por violencia desmedida.</li>
+                  </ul>
+                  <div className="bg-[#050202] border border-red-900/50 py-6 px-8 rounded-xl inline-block text-center w-full max-w-3xl shadow-inner">
+                    <p className="text-[11px] text-slate-500 font-bold uppercase tracking-widest mb-3 flex items-center justify-center gap-2"><Scroll className="w-4 h-4"/> CONCLUSIÓN DEL LIBRO:</p>
+                    <p className="text-white font-serif italic text-2xl md:text-3xl leading-snug">"En esos días no había rey en Israel y cada uno hacía lo que bien le parecía."</p>
+                  </div>
+                </div>
+
+                <div className="text-center mt-12 mb-20 animate-in fade-in duration-700">
+                  <button onClick={() => setM2Fase(3)} className="bg-gradient-to-b from-red-800 to-red-950 hover:from-red-700 hover:to-red-900 text-white border-2 border-red-500 px-10 py-6 rounded-xl font-black uppercase tracking-widest transition-all shadow-[0_0_30px_rgba(220,38,38,0.5)] hover:scale-105 hover:shadow-[0_0_50px_rgba(220,38,38,0.8)] text-lg md:text-2xl flex items-center justify-center gap-4 mx-auto cursor-pointer"><AlertTriangle className="w-8 h-8"/> ENTRAR AL TRIBUNAL (FASE 2)</button>
+                </div>
+              </div>
+            )}
+
+            {m2Fase === 3 && (
+              <div className="max-w-4xl mx-auto mt-6 space-y-6 animate-in zoom-in duration-500 pb-20">
+                <div className="bg-[#0b0c16] border border-orange-900/50 rounded-2xl p-6 md:p-10 shadow-[0_0_40px_rgba(245,158,11,0.1)] relative">
+                  <div className="text-center mb-6">
+                    <h3 className="text-3xl md:text-5xl font-black text-amber-500 uppercase tracking-widest mb-4">EL TRIBUNAL DE LOS JUECES</h3>
+                    <p className="text-slate-300 text-sm bg-black/50 p-4 rounded border border-slate-800 inline-block">Se presentará un Caos Escolar. <strong className="text-white">TODOS</strong> los clanes tienen 2 minutos para debatir en susurros y preparar su DEFENSA ORAL.</p>
+                  </div>
+                  <div className="bg-red-950/20 border border-red-600/50 p-4 rounded-xl text-center max-w-xl mx-auto mb-8 shadow-inner">
+                    <p className="text-red-400 font-bold uppercase tracking-widest text-xs flex items-center justify-center gap-2 mb-1"><BookOpen className="w-4 h-4"/> REGLAS DEL JUZGAMIENTO</p>
+                    <p className="text-slate-300 text-xs italic">Respuesta Correcta: <strong className="text-emerald-400">+50 XP</strong>. Veredicto egoísta: <strong className="text-red-400">-30 XP</strong>. <br/> Si aprueban, el salón vota con paletas; si hay MAYORÍA, el clan gana <strong className="text-indigo-300">+20 XP EXTRA</strong>.</p>
+                  </div>
+                  {tribunalPaso === 'inicio' && (
+                    <div className="flex justify-center mt-8">
+                      <button onClick={() => {
+                        setCasoActivo(casosTribunal[casoIndice]);
+                        setCasoIndice(prev => (prev + 1) % casosTribunal.length);
+                        setTribunalPaso('caos');
+                        setResultadoJuicio(null);
+                        setVotoPopularEmitido(false);
+                        if(poolTribunal.length === 0) {
+                          let nuevoPool = [...clansData, ...clansData].sort(() => 0.5 - Math.random());
+                          setPoolTribunal(nuevoPool);
+                        }
+                      }} className="bg-red-900/80 hover:bg-red-800 text-white border-2 border-red-500/80 px-10 py-5 rounded-xl uppercase font-black tracking-widest shadow-[0_0_30px_rgba(220,38,38,0.4)] hover:shadow-[0_0_50px_rgba(220,38,38,0.7)] hover:scale-105 transition-all flex items-center gap-3 cursor-pointer"><Zap className="w-6 h-6"/> GENERAR CAOS (CASO {casoIndice + 1}/14)</button>
+                    </div>
+                  )}
+                </div>
+
+                {(tribunalPaso === 'caos' || tribunalPaso === 'ruleta') && (
+                  <div className="bg-[#050303] border border-red-700/80 rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(220,38,38,0.2)] animate-in slide-in-from-bottom-8">
+                    <div className="bg-gradient-to-br from-[#1a0a0a] to-[#0a0505] p-6 md:p-8 flex flex-col md:flex-row gap-6 border-b border-red-900/50">
+                      <div className="flex-grow">
+                        <div className="flex items-center gap-4 mb-4">
+                          <AlertTriangle className="w-8 h-8 text-red-500"/>
+                          <div>
+                            <h4 className="text-red-500 font-black uppercase tracking-widest text-xl">{casoActivo?.titulo || 'CARGANDO...'}</h4>
+                            <span className={`text-[10px] px-3 py-1 rounded font-black uppercase tracking-widest ${casoActivo?.tipo.includes('COMPLEJO') ? 'bg-orange-950 text-orange-500 border border-orange-900' : 'bg-red-950 text-red-400 border border-red-900'}`}>{casoActivo?.tipo}</span>
+                          </div>
+                        </div>
+                        <p className="text-white italic text-lg md:text-xl leading-relaxed mb-6 font-serif border-l-4 border-red-600 pl-4 bg-red-950/20 py-3 pr-3">{casoActivo?.descripcion}</p>
+                        <div className="bg-[#15110a] border border-amber-600/50 p-5 rounded-xl flex items-start gap-4 shadow-inner">
+                          <div>
+                            <p className="text-amber-500 font-black text-xs uppercase tracking-widest flex items-center gap-2 mb-2"><Target className="w-4 h-4"/> EXIGENCIA BÍBLICA Y DEFENSA ORAL:</p>
+                            <p className="text-amber-100 text-sm leading-relaxed">{casoActivo?.exigencia}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="shrink-0 w-full md:w-48 bg-black border border-red-900/50 rounded-xl p-3 shadow-lg flex flex-col items-center justify-center">
+                        <p className="text-red-500 text-[10px] font-black uppercase tracking-widest mb-2 text-center">TENSIÓN<br/>(DAR PLAY)</p>
+                        <div className="w-full aspect-square relative rounded overflow-hidden">
+                          <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none', padding: 0, margin: 0 }} src="https://www.canva.com/design/DAHUrJcAyCo/iH1wZ60oFd56K9f2Ouhyyw/watch?embed" allowFullScreen></iframe>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="p-6 md:p-8 bg-[#0b0c16]">
+                      <h4 className="text-indigo-400 font-black text-sm uppercase tracking-widest text-center flex items-center justify-center gap-2 mb-6"><Crosshair className="w-5 h-5"/> SELECCIÓN (2 TURNOS POR CLAN)</h4>
+                      <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-8">
+                        <div className="bg-[#111424] border border-indigo-900 p-4 rounded-xl w-64 text-center shadow-inner">
+                          <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-3">1. CLAN AL BANQUILLO</p>
+                          <p className={`text-2xl font-black uppercase tracking-widest ${tribunalPaso === 'ruleta' ? 'text-amber-500 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'text-slate-400'}`}>{kaganClan}</p>
+                        </div>
+                        <div className="bg-[#111424] border border-indigo-900 p-4 rounded-xl w-48 text-center shadow-inner">
+                          <p className="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-3">2. INTEGRANTE N°</p>
+                          <div className="flex items-center justify-center gap-2">
+                            <Users className={`w-6 h-6 ${tribunalPaso === 'ruleta' ? 'text-indigo-400' : 'text-slate-600'}`}/>
+                            <span className={`text-4xl font-black ${tribunalPaso === 'ruleta' ? 'text-indigo-400' : 'text-slate-600'}`}>{kaganNum}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {tribunalPaso === 'caos' && (
+                        <div className="text-center">
+                          <button onClick={() => {
+                            let currentPool = poolTribunal.length > 0 ? [...poolTribunal] : [...clansData, ...clansData].sort(() => 0.5 - Math.random());
+                            let clanGanadorObj = currentPool[0];
+                            let clanesNombres = clansData.map(c => c.name);
+                            let ticks = 0;
+                            let interval = setInterval(() => {
+                              setKaganClan(clanesNombres[Math.floor(Math.random() * clanesNombres.length)].toUpperCase());
+                              setKaganNum(Math.floor(Math.random() * 5) + 1);
+                              ticks++;
+                              if (ticks > 25) {
+                                clearInterval(interval);
+                                setKaganClan(clanGanadorObj.name.toUpperCase());
+                                setKaganNum(Math.floor(Math.random() * 5) + 1);
+                                setPoolTribunal(currentPool.slice(1));
+                                setTribunalPaso('ruleta');
+                              }
+                            }, 80);
+                          }} className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-xl font-bold uppercase tracking-widest text-sm shadow-[0_0_20px_rgba(79,70,229,0.5)] transition-all cursor-pointer">AL ACABAR LA MÚSICA: GIRAR RULETA</button>
+                        </div>
+                      )}
+
+                      {tribunalPaso === 'ruleta' && (
+                        <div className="mt-8 border-t border-[#1e293b] pt-8 animate-in fade-in">
+                          <h4 className="text-indigo-300 font-bold text-center text-xs md:text-sm uppercase tracking-widest mb-8 flex items-center justify-center gap-2"><Trophy className="w-5 h-5"/> DEFENSA ORAL DEL CLAN: {kaganClan}</h4>
+                          {!evaluandoTribunal && !resultadoJuicio && (
+                            <div className="animate-in fade-in duration-300">
+                              <div className="flex flex-col md:flex-row justify-center gap-6 mb-10">
+                                <button onClick={() => procesarVeredicto(true)} className="bg-emerald-700 hover:bg-emerald-600 text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest flex items-center justify-center gap-3 cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:scale-105 transition-all w-full md:w-auto"><CheckCircle2 className="w-6 h-6"/> RESPUESTA CORRECTA (+50)</button>
+                                <button onClick={() => procesarVeredicto(false)} className="bg-red-800 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest flex items-center justify-center gap-3 cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.3)] hover:shadow-[0_0_40px_rgba(220,38,38,0.6)] hover:scale-105 transition-all w-full md:w-auto"><X className="w-6 h-6"/> INSUFICIENTE / EGOÍSTA (-30)</button>
+                              </div>
+                              <p className="text-slate-500 font-bold text-[10px] text-center uppercase tracking-widest mb-4">O USAR CARTAS TÁCTICAS:</p>
+                              <div className="flex justify-center flex-wrap gap-4">
+                                {[
+                                  {id: 'C1', title: 'RELEVO INTERNO', cost: '-5 PTS USO', effect: '(+45 XP)', icon: Shield, points: 45},
+                                  {id: 'C2', title: 'VER CÓDICE', cost: '-5 PTS USO', effect: '(+45 XP)', icon: BookOpen, points: 45},
+                                  {id: 'C3', title: 'ALIANZA', cost: '(50/50)', effect: '+25 AL CLAN', icon: Users, points: 25},
+                                  {id: 'C4', title: 'REBOTE LIBRE', cost: 'OTRO GANA', effect: '+10 CONSUELO', icon: RefreshCw, points: 10},
+                                  {id: 'C5', title: 'EL CAMPEÓN', cost: '-10 PTS', effect: '(+40 XP)', icon: Trophy, special: true, points: 40}
+                                ].map(card => (
+                                  <div key={card.id} onClick={() => {
+                                    const clanId = clansData.find(c => c.name.toUpperCase() === kaganClan)?.id;
+                                    if(clanId) { updateScore(clanId, card.points); setTribunalPaso('inicio'); setResultadoJuicio(null); }
+                                  }} className={`w-28 p-3 rounded-lg border flex flex-col items-center justify-center text-center cursor-pointer transition-all hover:-translate-y-1 shadow-lg group ${card.special ? 'bg-[#1a1205] border-amber-500 hover:bg-[#2b1e0a] text-amber-500 hover:shadow-[0_0_20px_rgba(245,158,11,0.5)]' : 'bg-[#0f111a] border-[#2a2e45] hover:border-indigo-500 hover:bg-[#15182b] text-slate-400 hover:text-indigo-300 hover:shadow-[0_0_15px_rgba(79,70,229,0.3)]'}`}>
+                                    <card.icon className={`w-5 h-5 mb-2 opacity-80 ${card.special ? 'group-hover:text-amber-300 animate-pulse' : 'group-hover:text-indigo-200'}`}/>
+                                    <p className="text-[9px] font-black uppercase mb-1">{card.id}: {card.title}</p>
+                                    <p className="text-[8px] font-bold text-slate-500">{card.cost}</p>
+                                    <p className={`text-[9px] font-bold mt-1 ${card.special ? 'text-amber-400' : 'text-indigo-400'}`}>{card.effect}</p>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {evaluandoTribunal && (
+                            <div className="text-center py-16 animate-in zoom-in duration-500">
+                              <Scale className="w-24 h-24 text-amber-500 mx-auto mb-8 animate-[pulse_1.5s_ease-in-out_infinite] drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]"/>
+                              <h3 className="text-2xl md:text-4xl font-black text-white uppercase tracking-[0.3em] mb-4">LA PROVIDENCIA ESTÁ JUZGANDO</h3>
+                              <p className="text-amber-500 text-xs md:text-sm font-bold tracking-widest uppercase flex items-center justify-center gap-3"><Loader2 className="w-5 h-5 animate-spin"/> Evaluando los principios del clan...</p>
+                            </div>
+                          )}
+
+                          {resultadoJuicio === 'aprobado' && (
+                            <div className="bg-emerald-950/20 border-2 border-emerald-500 p-8 md:p-12 rounded-2xl text-center shadow-[0_0_60px_rgba(16,185,129,0.2)] animate-in slide-in-from-bottom-8">
+                              <CheckCircle2 className="w-20 h-20 text-emerald-400 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(16,185,129,0.8)]"/>
+                              <h3 className="text-3xl md:text-5xl font-black text-emerald-400 uppercase tracking-widest mb-4">VEREDICTO APROBADO</h3>
+                              <p className="text-emerald-100 text-xs font-black tracking-[0.4em] uppercase mb-10 bg-emerald-900/60 inline-block px-6 py-3 rounded-full shadow-lg border border-emerald-500/50">+50 XP OTORGADOS A {kaganClan}</p>
+                              <div className="bg-[#050a07] border-2 border-emerald-800 p-8 rounded-2xl mb-10 shadow-inner relative">
+                                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#050a07] border border-emerald-800 px-4 py-1 rounded-full"><p className="text-emerald-500 font-black text-[10px] uppercase tracking-widest"><Scroll className="w-4 h-4 inline mr-2 -mt-1"/>FALLO DEL GAME MASTER</p></div>
+                                <p className="text-white font-serif italic text-2xl md:text-3xl leading-relaxed mt-4 drop-shadow-md">"La defensa oral ha sido contundente. El clan ha demostrado actuar bajo los principios de la Providencia, priorizando el bien común sobre el ego."</p>
+                              </div>
+                              {!votoPopularEmitido ? (
+                                <div className="bg-[#0b0c16] border-2 border-indigo-500/50 p-8 rounded-2xl mb-8 shadow-[0_0_30px_rgba(79,70,229,0.2)] animate-in zoom-in">
+                                  <h4 className="text-indigo-400 font-black uppercase tracking-widest text-2xl mb-4 flex items-center justify-center gap-3"><Users className="w-8 h-8"/> VOTO POPULAR (PALETAS)</h4>
+                                  <p className="text-slate-300 text-sm mb-8 leading-relaxed max-w-2xl mx-auto">El salón entero levanta sus paletas ahora. ¿Es esta una decisión justa? <strong className="text-white">Si hay MAYORÍA afirmativa, el clan gana puntos extra.</strong></p>
+                                  <div className="flex flex-col md:flex-row justify-center gap-4">
+                                    <button onClick={() => { const clanId = clansData.find(c => c.name.toUpperCase() === kaganClan)?.id; if(clanId) updateScore(clanId, 20); setVotoPopularEmitido(true); }} className="bg-indigo-600 hover:bg-indigo-500 text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(79,70,229,0.5)] cursor-pointer"><CheckCircle2 className="w-6 h-6"/> MAYORÍA CONFIRMA (+20 XP)</button>
+                                    <button onClick={() => setVotoPopularEmitido(true)} className="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-600 px-8 py-4 rounded-xl font-black uppercase tracking-widest transition-colors flex items-center justify-center gap-3 cursor-pointer"><X className="w-6 h-6"/> NO HAY MAYORÍA (0 XP)</button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <button onClick={() => {setTribunalPaso('inicio'); setResultadoJuicio(null); setVotoPopularEmitido(false);}} className="bg-emerald-700 hover:bg-emerald-600 text-white border border-emerald-400 px-10 py-4 rounded-xl uppercase font-black tracking-widest transition-all shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:scale-105 cursor-pointer">CERRAR CASO Y VOLVER AL TRIBUNAL</button>
+                              )}
+                            </div>
+                          )}
+
+                          {resultadoJuicio === 'rechazado' && (
+                            <div className="bg-red-950/20 border-2 border-red-600 p-8 md:p-12 rounded-2xl text-center shadow-[0_0_60px_rgba(220,38,38,0.2)] animate-in slide-in-from-bottom-8">
+                              <X className="w-20 h-20 text-red-500 mx-auto mb-6 drop-shadow-[0_0_30px_rgba(220,38,38,0.8)]"/>
+                              <h3 className="text-3xl md:text-5xl font-black text-red-500 uppercase tracking-widest mb-4">EL CIELO RECHAZA ESTA DEFENSA</h3>
+                              <p className="text-red-200 text-xs font-black tracking-[0.4em] uppercase mb-10 bg-red-900/60 inline-block px-6 py-3 rounded-full shadow-lg border border-red-500/50">-30 XP RESTADOS A {kaganClan}</p>
+                              <div className="bg-[#110505] border border-red-800 p-8 rounded-2xl mb-10 shadow-inner">
+                                <p className="text-red-500 font-black text-[10px] uppercase tracking-widest mb-4 border-b border-red-900/50 pb-2"><AlertTriangle className="w-4 h-4 inline mr-2 -mt-1"/>MOTIVO BÍBLICO DEL RECHAZO:</p>
+                                <p className="text-slate-300 text-lg md:text-xl leading-relaxed">{razonFallo}</p>
+                              </div>
+                              <button onClick={() => {setTribunalPaso('caos'); setResultadoJuicio(null); setVotoPopularEmitido(false);}} className="bg-red-800 hover:bg-red-700 text-white border border-red-500 px-10 py-4 rounded-xl uppercase font-black tracking-widest transition-all shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:scale-105 cursor-pointer flex items-center justify-center gap-3 mx-auto"><RefreshCw className="w-5 h-5"/> CEDER LA PALABRA A OTRO CLAN</button>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── MISIÓN 3: REYES ─────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {view === 'mision3' && (
+        <div className="flex-grow flex flex-col relative overflow-hidden bg-[#0a0510] min-h-screen">
+          {m3Fase === 0 && (
+            <div className="absolute top-4 right-4 z-[9999] w-64 h-36 bg-black border-2 border-purple-600/50 rounded-xl overflow-hidden shadow-[0_0_20px_rgba(147,51,234,0.3)] hover:scale-105 transition-transform group backdrop-blur-md">
+              <div className="absolute top-0 left-0 w-full bg-purple-900/80 text-[9px] font-black tracking-widest text-white px-2 py-1 text-center z-10 uppercase flex items-center justify-center gap-2"><Music className="w-3 h-3"/> 🎵 PLAY MÚSICA REYES</div>
+              <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none', padding: 0, margin: 0, marginTop: '24px' }} src="https://www.canva.com/design/DAHWXrz91FE/9ABxgJgEagZQmW6C8GPHjA/watch?embed" allowFullScreen></iframe>
+            </div>
+          )}
+
+          {!startMision3Cinematic ? (
+            <div className="z-10 flex-grow flex flex-col items-center justify-center text-center animate-in fade-in duration-1000 max-w-2xl mx-auto px-4 w-full h-full">
+              <Crown className="w-24 h-24 text-purple-500 mb-6 drop-shadow-[0_0_30px_rgba(168,85,247,0.5)] animate-pulse"/>
+              <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-widest mb-4">MISIÓN 3: LOS REYES</h1>
+              <p className="text-purple-400 text-xs md:text-sm tracking-[0.3em] uppercase mb-10 font-bold border border-purple-900/50 bg-purple-950/30 px-6 py-4 rounded-xl">INSTRUCCIÓN GM: <br/><br/>1) Dale Play a la música en la ventana de la esquina.<br/>2) Inicia la cinemática épica.</p>
+              <button onClick={() => setStartMision3Cinematic(true)} className="bg-gradient-to-b from-purple-700 to-purple-950 border-2 border-purple-400 text-purple-100 px-10 py-5 uppercase tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(168,85,247,0.6)] rounded-full cursor-pointer flex items-center justify-center gap-3"><Swords className="w-6 h-6"/> Iniciar Cinemática Épica</button>
+              <button onClick={() => { setView('campamento_base'); setStartMision3Cinematic(false); setM3Fase(0); }} className="mt-8 text-slate-500 text-[10px] tracking-widest uppercase hover:text-white cursor-pointer transition-colors border-b border-transparent hover:border-white">Volver al Campamento Base</button>
+            </div>
+          ) : m3Fase === 0 ? (
+            <div key="cinematica-m3" className="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none bg-[#05020a] overflow-hidden">
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1604095593719-74d3e8e19c35?q=80&w=2000')] bg-cover bg-center opacity-20 mix-blend-luminosity animate-[slowZoom_40s_linear_forwards]"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#05020a] via-[#05020a]/80 to-transparent z-10"></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 1s' }}><p className="text-2xl md:text-4xl text-slate-300 uppercase tracking-[0.5em] font-light drop-shadow-lg">La anarquía destrozó a la nación...</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 6s' }}><p className="text-3xl md:text-5xl text-purple-400 uppercase tracking-[0.4em] font-bold drop-shadow-[0_0_20px_rgba(168,85,247,0.8)]">El pueblo se cansó de lo invisible.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 11s' }}><p className="text-5xl md:text-7xl text-red-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(239,68,68,1)]">«¡DANOS UN REY!»</p><p className="text-xl md:text-3xl text-red-300 uppercase tracking-[0.5em] font-bold mt-4">«Para ser como las demás naciones»</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 17s' }}><p className="text-3xl md:text-5xl text-slate-400 uppercase tracking-[0.4em] font-light">Rechazaron a la Providencia...</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 23s' }}><p className="text-4xl md:text-6xl text-amber-500 uppercase tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]">POR CORONAS DE ORO QUE CIEGAN...</p><p className="text-2xl md:text-4xl text-slate-200 uppercase tracking-[0.4em] font-bold mt-4">Y espadas que traicionan.</p></div>
+              <div className="absolute inset-0 bg-purple-950 z-[100]" style={{ opacity: 0, animation: 'cinematicText 1.5s ease-out forwards 29s' }}></div>
+              <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 3s ease-out forwards 30s' }}>
+                <Crown className="w-24 h-24 text-amber-400 mx-auto mb-8 drop-shadow-[0_0_40px_rgba(251,191,36,1)] animate-[pulse_2s_ease-in-out_infinite]" />
+                <h1 className="text-6xl md:text-8xl lg:text-9xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 to-amber-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(245,158,11,0.8)]" style={{ WebkitTextStroke: '2px rgba(0,0,0,0.8)' }}>EL ASCENSO DE LA CORONA</h1>
+                <p className="text-purple-400 mt-6 text-xl md:text-3xl tracking-[0.6em] font-bold uppercase bg-black/80 inline-block px-8 py-3 border border-purple-900/50 shadow-2xl rounded-full">MISIÓN 3: LOS REYES DE ISRAEL</p>
+              </div>
+              <div className="absolute bottom-20 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 32s' }}>
+                <button onClick={() => setM3Fase(1)} className="bg-gradient-to-r from-purple-900 to-[#1a0b2e] border-2 border-amber-500 text-amber-300 px-12 py-5 font-black uppercase tracking-[0.4em] text-xl transition-all shadow-[0_0_50px_rgba(168,85,247,0.6)] hover:scale-110 hover:shadow-[0_0_70px_rgba(245,158,11,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL SALÓN DEL TRONO <ChevronRight className="w-8 h-8"/></button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col w-full h-full relative z-10">
+              <header className="bg-[#0b0612] border-b border-[#2d1b4e] p-3 flex justify-between items-center z-50 shadow-lg shadow-purple-900/20">
+                <div className="flex items-center gap-3">
+                  <button onClick={() => {setM3Fase(0); setStartMision3Cinematic(false); setView('campamento_base');}} className="text-slate-400 hover:text-white bg-slate-900 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-3 h-3"/> Base {selectedClass}</button>
+                  <h2 className="text-purple-300 font-black tracking-widest uppercase text-sm md:text-base">{m3SubTab === 'codice' ? 'FASE 1: EL CÓDICE REAL' : 'FASE 2: EL TRIBUNAL DEL REY'}</h2>
+                </div>
+                <button onClick={() => setShowClans(!showClans)} className="text-amber-400 bg-amber-900/30 p-2 rounded-full hover:bg-amber-800/50 cursor-pointer transition-colors"><Trophy className="w-4 h-4"/></button>
+              </header>
+              <div className="bg-[#05020a] border-b border-[#2d1b4e] p-2 flex justify-center gap-2 z-40 shadow-md">
+                <button onClick={() => setM3SubTab('codice')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m3SubTab === 'codice' ? 'bg-purple-600 text-white shadow-[0_0_10px_rgba(147,51,234,0.5)]' : 'bg-[#150a29] text-purple-400/50 hover:bg-[#1a0b36]'}`}>1. EL CÓDICE REAL</button>
+                <button onClick={() => setM3SubTab('simulador')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m3SubTab === 'simulador' ? 'bg-amber-600 text-white shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'bg-[#150a29] text-purple-400/50 hover:bg-[#1a0b36]'}`}>2. EL TRIBUNAL DEL REY</button>
+              </div>
+
+              <div className="flex-grow overflow-y-auto pb-24 p-4 md:p-8 relative custom-scrollbar z-10">
+                {m3SubTab === 'codice' && (
+                  <div className="max-w-6xl mx-auto mt-4 animate-in zoom-in duration-700">
+                    <div className="text-center mb-10">
+                      <Crown className="w-16 h-16 text-amber-500 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(245,158,11,0.6)]"/>
+                      <h2 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-purple-300 tracking-widest uppercase mb-4 drop-shadow-lg">EL CÓDICE DE LOS REYES</h2>
+                      <p className="text-purple-400 text-[10px] md:text-xs tracking-[0.3em] uppercase font-bold bg-[#170a29] inline-block px-6 py-2 rounded border border-purple-800/50">ANÁLISIS DE LIDERAZGO ABSOLUTO</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                      <div className="bg-[#0f071a] border border-red-900/50 rounded-2xl p-8 relative overflow-hidden shadow-[0_0_30px_rgba(220,38,38,0.1)] group hover:border-red-500/50 transition-colors">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-red-600"></div>
+                        <div className="w-14 h-14 bg-red-950 border border-red-800 rounded-xl flex items-center justify-center text-red-500 mb-6 shadow-inner"><AlertTriangle className="w-7 h-7"/></div>
+                        <h3 className="text-2xl font-black text-white uppercase tracking-widest mb-1">REY SAÚL</h3>
+                        <p className="text-red-500 text-[10px] font-black uppercase tracking-widest mb-6 border-b border-red-900/30 pb-3">LA APARIENCIA Y LA INSEGURIDAD</p>
+                        <div className="space-y-4">
+                          <div><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-1">EL INICIO</p><p className="text-slate-300 text-xs leading-relaxed">Elegido porque "era el más alto y apuesto". Representa el deseo del pueblo por un líder basado en las apariencias.</p></div>
+                          <div><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-1">LA CAÍDA</p><p className="text-slate-300 text-xs leading-relaxed">Su inseguridad y miedo al 'qué dirán' lo lleva a desobedecer a Dios. Se obsesiona con matar a David por pura envidia. Pierde la corona y la razón.</p></div>
+                        </div>
+                      </div>
+                      <div className="bg-[#0f071a] border border-emerald-900/50 rounded-2xl p-8 relative overflow-hidden shadow-[0_0_30px_rgba(16,185,129,0.1)] group hover:border-emerald-500/50 transition-colors">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500"></div>
+                        <div className="w-14 h-14 bg-emerald-950 border border-emerald-800 rounded-xl flex items-center justify-center text-emerald-500 mb-6 shadow-inner"><Heart className="w-7 h-7"/></div>
+                        <h3 className="text-2xl font-black text-white uppercase tracking-widest mb-1">REY DAVID</h3>
+                        <p className="text-emerald-500 text-[10px] font-black uppercase tracking-widest mb-6 border-b border-emerald-900/30 pb-3">EL CORAZÓN ARREPENTIDO</p>
+                        <div className="space-y-4">
+                          <div><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-1">EL INICIO</p><p className="text-slate-300 text-xs leading-relaxed">El pastor invisible, el menor de sus hermanos. Elegido porque "Dios mira el corazón". Derrota a Goliat con fe absoluta.</p></div>
+                          <div><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-1">LA CAÍDA Y RESTAURACIÓN</p><p className="text-slate-300 text-xs leading-relaxed">Comete adulterio y asesinato (caso de Betsabé). Sin embargo, cuando es confrontado, <strong className="text-emerald-400">se arrepiente genuinamente</strong> en lugar de excusarse.</p></div>
+                        </div>
+                      </div>
+                      <div className="bg-[#0f071a] border border-blue-900/50 rounded-2xl p-8 relative overflow-hidden shadow-[0_0_30px_rgba(59,130,246,0.1)] group hover:border-blue-500/50 transition-colors">
+                        <div className="absolute top-0 left-0 w-full h-1 bg-blue-500"></div>
+                        <div className="w-14 h-14 bg-blue-950 border border-blue-800 rounded-xl flex items-center justify-center text-blue-500 mb-6 shadow-inner"><Scale className="w-7 h-7"/></div>
+                        <h3 className="text-2xl font-black text-white uppercase tracking-widest mb-1">REY SALOMÓN</h3>
+                        <p className="text-blue-500 text-[10px] font-black uppercase tracking-widest mb-6 border-b border-blue-900/30 pb-3">LA SABIDURÍA DIVIDIDA</p>
+                        <div className="space-y-4">
+                          <div><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-1">EL INICIO</p><p className="text-slate-300 text-xs leading-relaxed">No pide riquezas, sino sabiduría para gobernar. Construye el majestuoso Templo. Lleva a Israel a su edad de oro.</p></div>
+                          <div><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mb-1">LA CAÍDA</p><p className="text-slate-300 text-xs leading-relaxed">El poder lo corrompe. Multiplica esposas extranjeras que <strong className="text-blue-400">desvían su corazón hacia la idolatría</strong>. Su hijo hereda un reino roto.</p></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {m3SubTab === 'simulador' && (
+                  <div className="max-w-4xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-500 pb-20">
+                    <div className="bg-[#120703] border border-amber-900/50 rounded-3xl p-8 md:p-12 relative shadow-[0_0_50px_rgba(245,158,11,0.15)] flex flex-col items-center text-center">
+                      <Scale className="w-20 h-20 text-amber-500 mb-6 drop-shadow-[0_0_30px_rgba(245,158,11,0.8)]"/>
+                      <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-600 uppercase tracking-widest mb-4">EL DILEMA DE SUCESIÓN</h2>
+                      <p className="text-amber-500 text-xs md:text-sm font-bold tracking-[0.3em] uppercase bg-amber-950/40 inline-block px-6 py-2 rounded border border-amber-900/50 mb-8">SIMULADOR DE GOBIERNO</p>
+                      <div className="bg-[#0a0502] border border-amber-900/30 p-6 md:p-8 rounded-2xl w-full text-left mb-8 shadow-inner">
+                        <p className="text-white italic text-lg leading-relaxed font-serif border-l-4 border-amber-600 pl-4">"El Rey Salomón ha muerto. El trono pasa a su hijo Roboam. El pueblo, agotado por los altos impuestos y trabajos forzados del padre, viene a suplicar piedad y descanso."</p>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-10 text-left">
+                        <div className="bg-[#0f071a] border border-blue-900/50 p-6 rounded-xl hover:border-blue-500 transition-colors shadow-lg">
+                          <h4 className="text-blue-400 font-black uppercase tracking-widest text-xs mb-3">EL CONSEJO DE LOS ANCIANOS</h4>
+                          <p className="text-slate-300 text-sm leading-relaxed">"Si hoy te haces **siervo de este pueblo**, les sirves y les respondes con buenas palabras, ellos serán tus siervos para siempre."</p>
+                        </div>
+                        <div className="bg-[#1a0707] border border-red-900/50 p-6 rounded-xl hover:border-red-500 transition-colors shadow-lg">
+                          <h4 className="text-red-400 font-black uppercase tracking-widest text-xs mb-3">EL CONSEJO DE LOS JÓVENES</h4>
+                          <p className="text-slate-300 text-sm leading-relaxed">"Muéstrales quién manda. Diles: 'Mi dedo meñique es más grueso que la cintura de mi padre. Si él los castigó con látigos, yo los castigaré con escorpiones'."</p>
+                        </div>
+                      </div>
+                      <div className="bg-purple-950/20 border border-purple-800/50 p-6 rounded-xl w-full">
+                        <h4 className="text-purple-400 font-black text-sm uppercase tracking-widest mb-3 flex items-center justify-center gap-2"><Crosshair className="w-5 h-5"/> EXIGENCIA DEL REINO</h4>
+                        <p className="text-slate-300 text-sm mb-6">Todos los clanes tienen 2 minutos para debatir. Si tuvieran la corona, ¿qué consejo tomarían y **POR QUÉ** basándose en la enseñanza de Cristo sobre el liderazgo?</p>
+                        <div className="flex flex-wrap justify-center gap-4">
+                          <button className="bg-purple-700 hover:bg-purple-600 text-white border-2 border-purple-400 px-8 py-4 rounded-xl uppercase font-black tracking-widest transition-all shadow-[0_0_20px_rgba(147,51,234,0.4)] hover:scale-105 cursor-pointer">LLAMAR CLAN AL ESTRADO (RULETA)</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── BOTTOM MISSION BAR ──────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {isMissionActive && (
+        <div className="fixed bottom-0 left-0 w-full bg-[#030408]/95 backdrop-blur-md border-t border-[#1e293b] p-4 flex justify-between items-center z-[100] shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+          <div className="flex items-center gap-4">
+            <button onClick={() => setTimerRunning(!timerRunning)} className="cursor-pointer">
+              <span className={`font-black text-3xl md:text-4xl tracking-widest font-mono drop-shadow-[0_0_10px_rgba(129,140,248,0.5)] ${timerSeconds <= 60 ? 'text-red-500 animate-pulse' : timerSeconds <= 180 ? 'text-amber-400' : 'text-indigo-400'}`}>{formatTime(timerSeconds)}</span>
+            </button>
+            <div className="flex gap-2">
+              <button onClick={() => setTimerRunning(!timerRunning)} className={`p-2 md:p-3 rounded-lg shadow-inner cursor-pointer transition-colors border ${timerRunning ? 'bg-amber-950/50 border-amber-900 text-amber-500 hover:bg-amber-900/60' : 'bg-emerald-950/50 border-emerald-900 text-emerald-500 hover:bg-emerald-900/60'}`}>
+                {timerRunning ? <Pause className="w-5 h-5 md:w-6 md:h-6"/> : <Play className="w-5 h-5 md:w-6 md:h-6"/>}
+              </button>
+              <button onClick={() => { setTimerSeconds(25 * 60); setTimerRunning(false); }} className="bg-slate-900/50 border border-slate-700 p-2 md:p-3 rounded-lg text-slate-400 shadow-inner hover:bg-slate-800 cursor-pointer transition-colors">
+                <RotateCcw className="w-5 h-5 md:w-6 md:h-6"/>
+              </button>
+            </div>
+          </div>
+          <button onClick={() => { setShowShofarPlayer(true); setShofarBlast(true); setShofarLlamadas(prev => prev + 1); setTimeout(() => setShofarBlast(false), 3000); }} className="bg-gradient-to-b from-amber-500 to-amber-700 hover:from-amber-400 hover:to-amber-600 text-white px-6 py-3 rounded-xl font-black uppercase tracking-widest flex items-center gap-3 cursor-pointer shadow-[0_0_20px_rgba(245,158,11,0.5)] transition-all hover:scale-105">
+            <Volume2 className="w-5 h-5"/> SHOFAR ({shofarLlamadas})
+          </button>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── SHOFAR MODAL ───────────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {showShofarPlayer && (
+        <div className="fixed inset-0 z-[999999] bg-black/98 backdrop-blur-2xl flex flex-col items-center justify-center animate-in zoom-in duration-300 overflow-hidden">
+          {/* Shockwave effect */}
+          {shofarBlast && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className="w-40 h-40 rounded-full border-4 border-amber-500/60 animate-[shockwave_2s_ease-out_forwards]" />
+              <div className="absolute w-40 h-40 rounded-full border-4 border-amber-500/40 animate-[shockwave_2s_ease-out_forwards_0.3s]" />
+              <div className="absolute w-40 h-40 rounded-full border-4 border-amber-500/20 animate-[shockwave_2s_ease-out_forwards_0.6s]" />
+            </div>
+          )}
+
+          <div className="relative z-10 text-center">
+            <div className="text-8xl md:text-[10rem] mb-6 animate-[shofar-pulse_1.5s_ease-in-out_infinite]">📯</div>
+            <h2 className="text-5xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-300 to-amber-600 uppercase tracking-[0.3em] mb-4 drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]">¡SHOFAR!</h2>
+            <div className="bg-red-600 text-white px-8 py-4 rounded-xl inline-block mb-8 shadow-[0_0_40px_rgba(220,38,38,0.6)] animate-pulse">
+              <p className="text-2xl md:text-4xl font-black uppercase tracking-[0.4em]">SILENCIO TÁCTICO ABSOLUTO</p>
+            </div>
+            <p className="text-amber-500/60 text-sm mb-12 font-mono tracking-widest uppercase">Llamadas de Shofar hoy: <span className="text-white font-black text-lg">{shofarLlamadas}</span></p>
+            <div className="flex gap-4 justify-center">
+              <button onClick={() => { setShofarBlast(true); setShofarLlamadas(prev => prev + 1); setTimeout(() => setShofarBlast(false), 3000); }} className="bg-amber-600 hover:bg-amber-500 text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest cursor-pointer shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:shadow-[0_0_50px_rgba(245,158,11,0.8)] transition-all hover:scale-105 flex items-center gap-3">
+                <Volume2 className="w-6 h-6"/> SONAR DE NUEVO
+              </button>
+              <button onClick={() => setShowShofarPlayer(false)} className="bg-slate-800 hover:bg-slate-700 text-white px-8 py-4 rounded-xl font-black uppercase tracking-widest cursor-pointer border border-slate-600 transition-colors flex items-center gap-3">
+                <X className="w-6 h-6"/> CERRAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+    </div>
+  );
+}

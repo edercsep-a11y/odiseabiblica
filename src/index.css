@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(56, 189, 248, 0.3);
+    border-radius: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(56, 189, 248, 0.6);
+  }
+  
+  .dot-grid {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+}
+
+@keyframes float-3d {
+  0%, 100% { transform: translateY(0) translateZ(0) rotateX(0) rotateY(0); }
+  25% { transform: translateY(-10px) translateZ(20px) rotateX(5deg) rotateY(5deg); }
+  50% { transform: translateY(0) translateZ(40px) rotateX(0) rotateY(10deg); }
+  75% { transform: translateY(10px) translateZ(20px) rotateX(-5deg) rotateY(5deg); }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes hologram-flicker {
+  0%, 100% { opacity: 1; }
+  33% { opacity: 0.85; }
+  34% { opacity: 1; }
+  66% { opacity: 0.9; }
+  67% { opacity: 1; }
+  90% { opacity: 0.8; }
+  91% { opacity: 1; }
+}
+
+@keyframes cinematicText {
+  0% { opacity: 0; transform: translateY(20px) scale(0.95); filter: blur(10px); }
+  15% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  85% { opacity: 1; transform: translateY(0) scale(1.05); filter: blur(0); }
+  100% { opacity: 0; transform: translateY(-20px) scale(1.1); filter: blur(10px); }
+}
+
+@keyframes cinematicTextStay {
+  0% { opacity: 0; transform: translateY(30px) scale(0.9); filter: blur(15px); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes slowZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.3); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.5; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes shockwave {
+  0% { transform: scale(1); opacity: 0.8; border-width: 8px; }
+  100% { transform: scale(4); opacity: 0; border-width: 0px; }
+}
+
+@keyframes shofar-pulse {
+  0%, 100% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 20px rgba(245,158,11,0.5)); }
+  25% { transform: scale(1.1) rotate(-5deg); filter: drop-shadow(0 0 40px rgba(245,158,11,0.8)); }
+  75% { transform: scale(1.1) rotate(5deg); filter: drop-shadow(0 0 40px rgba(245,158,11,0.8)); }
+}
+
+@media print {
+  @page { margin: 0; size: A4; }
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    background-color: white !important;
+  }
+  .no-print { 
+    display: none !important; 
+  }
+  .dossier-print-container {
+    width: 100% !important;
+    max-width: 210mm !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    background-color: white !important;
+  }
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Fix html2canvas kerning and text-compression bugs on Mac */
+.pdf-safe-font {
+  font-family: Arial, Helvetica, sans-serif !important;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  font-kerning: none !important;
+  text-rendering: optimizeSpeed !important;
+}
+.pdf-safe-font * {
+  font-family: Arial, Helvetica, sans-serif !important;
+  letter-spacing: normal !important;
+  word-spacing: normal !important;
+  font-kerning: none !important;
+}
