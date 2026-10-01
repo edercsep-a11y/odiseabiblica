@@ -256,7 +256,7 @@ export default function OdiseaBiblica() {
         ...prev,
         [aulaTarget]: { ...prev[aulaTarget], [clanId]: (prev[aulaTarget][clanId] || 0) + points }
       };
-      updateDocument('scores', newScores);
+      updateFirebase('scores', newScores);
       return newScores;
     });
   };
@@ -292,7 +292,7 @@ export default function OdiseaBiblica() {
       });
       setRoster(prev => {
         const nextRoster = { ...prev, [selectedClass]: newRoster };
-        updateDocument('roster', nextRoster);
+        updateFirebase('roster', nextRoster);
         return nextRoster;
       });
       setSorteoPaso('result');
