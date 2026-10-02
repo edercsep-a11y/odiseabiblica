@@ -332,7 +332,7 @@ export default function OdiseaBiblica() {
         <div className="border-b-2 border-slate-200 pb-4 mb-6 flex justify-between items-end">
           <div>
             <h2 className="text-indigo-600 font-black text-[10px] tracking-widest md:tracking-[0.4em] uppercase mb-1">PROGRAMA DE ENTRENAMIENTO MULTIVERSAL</h2>
-            <h1 className="text-5xl md:text-7xl lg:text-[120px] font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-400 to-amber-900 tracking-widest md:tracking-[0.15em] uppercase drop-shadow-[0_0_80px_rgba(245,158,11,1)] font-serif" style={{ WebkitTextStroke: "3px rgba(0,0,0,0.9)" }}>LA ODISEA BÍBLICA</h1>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 via-amber-400 to-amber-600 tracking-widest uppercase drop-shadow-[0_0_20px_rgba(245,158,11,0.5)] font-serif">LA ODISEA BÍBLICA</h1>
           </div>
           <div className="text-right">
             <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest md:tracking-[0.2em] mb-1">FECHA ESTELAR: {new Date().toLocaleDateString()}</p>
@@ -417,7 +417,7 @@ export default function OdiseaBiblica() {
           <div className="relative z-10 w-full max-w-md bg-[#0a0c16]/90 backdrop-blur-md border border-indigo-500/30 rounded-3xl p-8 shadow-[0_0_50px_rgba(79,70,229,0.15)]">
             <div className="text-center mb-8">
               <Globe className="w-16 h-16 text-amber-500 mx-auto mb-4 animate-pulse drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]"/>
-              <h1 className="text-5xl md:text-7xl lg:text-[120px] font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-400 to-amber-900 tracking-widest md:tracking-[0.15em] uppercase drop-shadow-[0_0_80px_rgba(245,158,11,1)] font-serif" style={{ WebkitTextStroke: "3px rgba(0,0,0,0.9)" }}>LA ODISEA BÍBLICA</h1>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 via-amber-400 to-amber-600 tracking-widest uppercase drop-shadow-[0_0_20px_rgba(245,158,11,0.5)] font-serif">LA ODISEA BÍBLICA</h1>
               <p className="text-indigo-400 text-[10px] font-bold uppercase tracking-widest md:tracking-[0.3em] mt-2">SISTEMA DE GESTIÓN DOCENTE</p>
             </div>
 
