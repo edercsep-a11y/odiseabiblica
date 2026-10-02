@@ -332,7 +332,7 @@ export default function OdiseaBiblica() {
         <div className="border-b-2 border-slate-200 pb-4 mb-6 flex justify-between items-end">
           <div>
             <h2 className="text-indigo-600 font-black text-[10px] tracking-widest md:tracking-[0.4em] uppercase mb-1">PROGRAMA DE ENTRENAMIENTO MULTIVERSAL</h2>
-            <h1 className="text-2xl font-black text-slate-900 tracking-widest uppercase">LA ODISEA BÍBLICA</h1>
+            <h1 className="text-5xl md:text-7xl lg:text-[120px] font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-400 to-amber-900 tracking-widest md:tracking-[0.15em] uppercase drop-shadow-[0_0_80px_rgba(245,158,11,1)] font-serif" style={{ WebkitTextStroke: "3px rgba(0,0,0,0.9)" }}>LA ODISEA BÍBLICA</h1>
           </div>
           <div className="text-right">
             <p className="text-[8px] text-slate-500 font-mono uppercase tracking-widest md:tracking-[0.2em] mb-1">FECHA ESTELAR: {new Date().toLocaleDateString()}</p>
@@ -417,7 +417,7 @@ export default function OdiseaBiblica() {
           <div className="relative z-10 w-full max-w-md bg-[#0a0c16]/90 backdrop-blur-md border border-indigo-500/30 rounded-3xl p-8 shadow-[0_0_50px_rgba(79,70,229,0.15)]">
             <div className="text-center mb-8">
               <Globe className="w-16 h-16 text-amber-500 mx-auto mb-4 animate-pulse drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]"/>
-              <h1 className="text-3xl font-black text-white uppercase tracking-widest drop-shadow-lg">LA ODISEA BÍBLICA</h1>
+              <h1 className="text-5xl md:text-7xl lg:text-[120px] font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-400 to-amber-900 tracking-widest md:tracking-[0.15em] uppercase drop-shadow-[0_0_80px_rgba(245,158,11,1)] font-serif" style={{ WebkitTextStroke: "3px rgba(0,0,0,0.9)" }}>LA ODISEA BÍBLICA</h1>
               <p className="text-indigo-400 text-[10px] font-bold uppercase tracking-widest md:tracking-[0.3em] mt-2">SISTEMA DE GESTIÓN DOCENTE</p>
             </div>
 
@@ -681,7 +681,7 @@ export default function OdiseaBiblica() {
             </div>
           ) : (
             <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none bg-black overflow-hidden">
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=2000')] bg-cover bg-center opacity-40 animate-[slowZoom_35s_linear_forwards]"></div>
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542401886-65d6c61db217?q=80&w=2000')] bg-cover bg-center opacity-40 animate-[slowZoom_35s_linear_forwards]"></div>
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-screen animate-[slowZoom_20s_linear_infinite_alternate]"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80 z-10"></div>
               <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 1s' }}><p className="text-2xl md:text-4xl text-slate-300 uppercase tracking-widest md:tracking-[0.4em] font-light drop-shadow-lg">El tiempo y el espacio...</p><p className="text-xl md:text-2xl text-amber-500/70 uppercase tracking-widest md:tracking-[0.6em] font-light mt-6">se han fracturado.</p></div>
@@ -690,7 +690,7 @@ export default function OdiseaBiblica() {
               <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 23s' }}><p className="text-2xl md:text-4xl text-slate-100 uppercase tracking-widest md:tracking-[0.5em] font-light drop-shadow-2xl">Siete linajes se levantarán del polvo.</p><p className="text-2xl md:text-4xl lg:text-5xl text-amber-500 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,1)] mt-6">HOY, EL DESIERTO EXIGE SU PODER.</p></div>
               <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 4s ease-out forwards 31s' }}>
                 <Globe className="w-24 h-24 text-amber-500 mx-auto mb-8 drop-shadow-[0_0_40px_rgba(245,158,11,0.8)] animate-pulse" />
-                <h1 className="text-6xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-amber-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(245,158,11,1)]">LA ODISEA BÍBLICA</h1>
+                <h1 className="text-5xl md:text-7xl lg:text-[120px] font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-100 via-amber-400 to-amber-900 tracking-widest md:tracking-[0.15em] uppercase drop-shadow-[0_0_80px_rgba(245,158,11,1)] font-serif" style={{ WebkitTextStroke: "3px rgba(0,0,0,0.9)" }}>LA ODISEA BÍBLICA</h1>
                 <p className="text-amber-500 mt-6 text-xl md:text-3xl tracking-widest md:tracking-[0.6em] font-bold uppercase drop-shadow-md">FORJANDO LÍDERES EN EL DESIERTO</p>
               </div>
               <div className="absolute bottom-8 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 35s' }}>
@@ -2232,7 +2232,7 @@ export default function OdiseaBiblica() {
 
                       {/* NODO 1: SAÚL */}
                       <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between mb-40 group">
-                        <div className="md:w-1/3 flex justify-center md:justify-end md:pr-16 mb-10 md:mb-0">
+                        <div className="md:w-1/2 flex justify-center md:justify-end md:pr-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('saul')} className="relative w-64 h-64 md:w-96 md:h-96 rounded-full border-4 md:border-8 border-red-900/80 shadow-[0_0_80px_rgba(220,38,38,0.5)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_120px_rgba(220,38,38,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-red-900/60 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['saul'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
                             <img src="/images/saul.jpg" alt="Saúl" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['saul'] ? 'scale-100' : 'scale-125'}`}/>
@@ -2243,12 +2243,12 @@ export default function OdiseaBiblica() {
                         </div>
                         {/* Conector Central */}
                         <div className="absolute left-1/2 -translate-x-1/2 w-12 h-12 md:w-20 md:h-20 rounded-full bg-red-600 border-4 md:border-8 border-black shadow-[0_0_40px_rgba(220,38,38,1)] hidden md:flex items-center justify-center z-20"><span className="text-black font-black text-4xl">1</span></div>
-                        <div className="md:w-2/3 md:pl-16 text-center md:text-left z-30">
+                        <div className="md:w-1/2 md:pl-24 text-center md:text-left z-30">
                           <h3 className="text-5xl md:text-7xl lg:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">SAÚL</h3>
                           <p className="text-red-500 text-xl md:text-2xl font-black uppercase tracking-widest mb-6 border-b-4 border-red-900/50 pb-4 inline-block">EL GUERRERO INSEGURO</p>
                           <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['saul'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
                             <div className="overflow-hidden">
-                              <div className="bg-[#0f071a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-red-500/50 shadow-[0_0_50px_rgba(220,38,38,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-3 gap-6 w-full">
+                              <div className="bg-[#0f071a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-red-500/50 shadow-[0_0_50px_rgba(220,38,38,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 w-full">
                                 <div className="bg-black/50 p-6 rounded-3xl border border-red-900/50">
                                   <span className="inline-block bg-slate-800 text-slate-300 px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-3">Contexto</span>
                                   <p className="text-slate-200 text-lg md:text-2xl leading-relaxed font-serif">Elegido por su imponente estatura física. El pueblo quería un líder militar que luciera fuerte como los reyes paganos.</p>
@@ -2307,7 +2307,7 @@ export default function OdiseaBiblica() {
 
                       {/* NODO 2: DAVID */}
                       <div className="relative z-10 w-full flex flex-col md:flex-row-reverse items-center justify-between mb-40 group">
-                        <div className="md:w-1/3 flex justify-center md:justify-start md:pl-16 mb-10 md:mb-0">
+                        <div className="md:w-1/2 flex justify-center md:justify-start md:pl-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('david')} className="relative w-72 h-72 md:w-[400px] md:h-[400px] rounded-full border-4 md:border-8 border-emerald-600/80 shadow-[0_0_100px_rgba(16,185,129,0.5)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_150px_rgba(16,185,129,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-emerald-900/50 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['david'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
                             <img src="/images/david.jpg" alt="David" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['david'] ? 'scale-100' : 'scale-125'}`}/>
@@ -2317,12 +2317,12 @@ export default function OdiseaBiblica() {
                           </div>
                         </div>
                         <div className="absolute left-1/2 -translate-x-1/2 w-12 h-12 md:w-20 md:h-20 rounded-full bg-emerald-500 border-4 md:border-8 border-black shadow-[0_0_50px_rgba(16,185,129,1)] hidden md:flex items-center justify-center z-20"><span className="text-black font-black text-4xl">2</span></div>
-                        <div className="md:w-2/3 md:pr-16 text-center md:text-right z-30">
+                        <div className="md:w-1/2 md:pr-24 text-center md:text-right z-30">
                           <h3 className="text-5xl md:text-7xl lg:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">DAVID</h3>
                           <p className="text-emerald-400 text-xl md:text-2xl font-black uppercase tracking-widest mb-6 border-b-4 border-emerald-900/50 pb-4 inline-block">EL CORAZÓN DE LEÓN</p>
                           <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['david'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
                             <div className="overflow-hidden">
-                              <div className="bg-[#051a0f]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-3 gap-6 w-full text-left">
+                              <div className="bg-[#051a0f]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 w-full text-left">
                                 <div className="bg-black/50 p-6 rounded-3xl border border-emerald-900/50">
                                   <span className="inline-block bg-slate-800 text-slate-300 px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-3">Contexto</span>
                                   <p className="text-slate-200 text-lg md:text-2xl leading-relaxed font-serif">Un pastor invisible y arpista que unificó a las 12 tribus en un imperio invencible, recibiendo el pacto del "Linaje Eterno".</p>
@@ -2381,7 +2381,7 @@ export default function OdiseaBiblica() {
 
                       {/* NODO 3: SALOMÓN */}
                       <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between mb-48 group">
-                        <div className="md:w-1/3 flex justify-center md:justify-end md:pr-16 mb-10 md:mb-0">
+                        <div className="md:w-1/2 flex justify-center md:justify-end md:pr-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('salomon')} className="relative w-72 h-72 md:w-[450px] md:h-[450px] rounded-full border-4 md:border-8 border-blue-600/80 shadow-[0_0_120px_rgba(59,130,246,0.6)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_180px_rgba(59,130,246,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-blue-900/50 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['salomon'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
                             <img src="/images/salomon.jpg" alt="Salomón" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['salomon'] ? 'scale-100' : 'scale-125'}`}/>
@@ -2391,12 +2391,12 @@ export default function OdiseaBiblica() {
                           </div>
                         </div>
                         <div className="absolute left-1/2 -translate-x-1/2 w-16 h-16 md:w-24 md:h-24 rounded-full bg-blue-500 border-4 md:border-8 border-black shadow-[0_0_60px_rgba(59,130,246,1)] hidden md:flex items-center justify-center z-20"><Crown className="w-8 h-8 md:w-12 md:h-12 text-black"/></div>
-                        <div className="md:w-2/3 md:pl-16 text-center md:text-left z-30">
+                        <div className="md:w-1/2 md:pl-24 text-center md:text-left z-30">
                           <h3 className="text-5xl md:text-7xl lg:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">SALOMÓN</h3>
                           <p className="text-blue-400 text-xl md:text-2xl font-black uppercase tracking-widest mb-6 border-b-4 border-blue-900/50 pb-4 inline-block">EL ARQUITECTO CORRUPTO</p>
                           <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['salomon'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
                             <div className="overflow-hidden">
-                              <div className="bg-[#07101a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-blue-500/50 shadow-[0_0_50px_rgba(59,130,246,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-3 gap-6 w-full">
+                              <div className="bg-[#07101a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-blue-500/50 shadow-[0_0_50px_rgba(59,130,246,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 w-full">
                                 <div className="bg-black/50 p-6 rounded-3xl border border-blue-900/50">
                                   <span className="inline-block bg-slate-800 text-slate-300 px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-3">Contexto</span>
                                   <p className="text-slate-200 text-lg md:text-2xl leading-relaxed font-serif">Inició brillante. Pide sabiduría y construye el majestuoso Primer Templo, llevando a Israel a la cúspide de su poder.</p>
@@ -2671,8 +2671,8 @@ export default function OdiseaBiblica() {
                           <p className="text-yellow-500 font-black uppercase tracking-widest md:tracking-[1em] text-lg md:text-2xl mb-8"><Key className="w-8 h-8 inline-block mr-4"/> EL HILO CONDUCTOR DIVINO</p>
                           <h3 className="text-5xl md:text-7xl lg:text-9xl lg:text-[140px] font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-200 to-yellow-600 uppercase tracking-tighter mb-16 drop-shadow-[0_0_40px_rgba(250,204,21,0.5)] leading-none">JESÚS DE NAZARET</h3>
                           
-                          <div className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-700 ${expandedNodes['promesa'] ? 'opacity-0' : 'opacity-100'}`}>
-                              <span className="bg-black/90 text-yellow-400 font-black uppercase tracking-widest md:tracking-[0.5em] px-12 py-6 rounded-full border-4 border-yellow-500/50 shadow-[0_0_50px_rgba(234,179,8,0.8)] backdrop-blur-xl text-2xl md:text-4xl animate-bounce mt-[200px]">DESCUBRIR EL PACTO FINAL</span>
+                          <div className={`z-20 flex items-center justify-center pointer-events-none transition-all duration-700 ${expandedNodes['promesa'] ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100 h-32 mt-10'}`}>
+                              <span className="bg-black/90 text-yellow-400 font-black uppercase tracking-widest md:tracking-[0.5em] px-12 py-6 rounded-full border-4 border-yellow-500/50 shadow-[0_0_50px_rgba(234,179,8,0.8)] backdrop-blur-xl text-2xl md:text-4xl animate-bounce">DESCUBRIR EL PACTO FINAL</span>
                           </div>
 
                           <div className={`grid transition-all duration-1000 ease-in-out w-full ${expandedNodes['promesa'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-20'}`}>
@@ -2743,7 +2743,7 @@ export default function OdiseaBiblica() {
                   <div className="max-w-4xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-500 pb-20">
                     <div className="bg-[#02050a] border border-emerald-900/50 rounded-3xl p-8 md:p-12 relative shadow-[0_0_50px_rgba(16,185,129,0.15)] flex flex-col items-center text-center overflow-hidden">
                       {/* background elements */}
-                      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=2000')] bg-cover bg-center opacity-10 mix-blend-screen"></div>
+                      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542401886-65d6c61db217?q=80&w=2000')] bg-cover bg-center opacity-10 mix-blend-screen"></div>
                       <div className="absolute top-0 left-0 w-full h-1 bg-emerald-500/30"></div>
                       
                       <div className="w-20 h-20 bg-emerald-950/50 rounded-3xl flex items-center justify-center border-2 border-emerald-500/50 mb-8 shadow-[0_0_30px_rgba(16,185,129,0.4)] relative z-10">
