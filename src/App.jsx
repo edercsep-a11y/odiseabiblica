@@ -2231,7 +2231,8 @@ export default function OdiseaBiblica() {
                       <div className="absolute top-0 bottom-0 w-2 md:w-4 bg-gradient-to-b from-amber-500 via-amber-700 to-red-600 shadow-[0_0_30px_rgba(245,158,11,1)] z-0 rounded-full opacity-80 hidden md:block"></div>
 
                       {/* NODO 1: SAÚL */}
-                      <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between mb-24 md:mb-40 group">
+                      <div className="relative w-full mb-24 md:mb-40 group z-20">
+  <div className="relative w-full flex flex-col md:flex-row items-center justify-between z-10">
                         <div className="md:w-1/2 flex justify-center md:justify-end md:pr-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('saul')} className="relative w-64 h-64 md:w-96 md:h-96 rounded-full border-4 md:border-8 border-red-900/80 shadow-[0_0_80px_rgba(220,38,38,0.5)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_120px_rgba(220,38,38,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-red-900/60 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['saul'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
@@ -2246,9 +2247,14 @@ export default function OdiseaBiblica() {
                         <div className="md:w-1/2 md:pl-24 text-center md:text-left z-30">
                           <h3 className="text-3xl md:text-6xl lg:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">SAÚL</h3>
                           <p className="text-red-500 text-xl md:text-2xl font-black uppercase tracking-widest mb-6 border-b-4 border-red-900/50 pb-4 inline-block">EL GUERRERO INSEGURO</p>
-                          <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['saul'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
+                          
+                        </div>
+                        </div>
+  {/* TARJETAS EXPANDIBLES A TODO ANCHO */}
+  <div className="w-full relative z-30">
+    <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['saul'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
                             <div className="overflow-hidden">
-                              <div className="bg-[#0f071a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-red-500/50 shadow-[0_0_50px_rgba(220,38,38,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 w-full">
+                              <div className="bg-[#0f071a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-red-500/50 shadow-[0_0_50px_rgba(220,38,38,0.3)] relative mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
                                 <div className="bg-black/50 p-6 rounded-3xl border border-red-900/50">
                                   <span className="inline-block bg-slate-800 text-slate-300 px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-3">Contexto</span>
                                   <p className="text-slate-200 text-lg md:text-2xl leading-relaxed font-serif">Elegido por su imponente estatura física. El pueblo quería un líder militar que luciera fuerte como los reyes paganos.</p>
@@ -2302,11 +2308,13 @@ export default function OdiseaBiblica() {
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+  </div>
+</div>
+
 
                       {/* NODO 2: DAVID */}
-                      <div className="relative z-10 w-full flex flex-col md:flex-row-reverse items-center justify-between mb-24 md:mb-40 group">
+                      <div className="relative w-full mb-24 md:mb-40 group z-20">
+  <div className="relative w-full flex flex-col md:flex-row-reverse items-center justify-between z-10">
                         <div className="md:w-1/2 flex justify-center md:justify-start md:pl-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('david')} className="relative w-72 h-72 md:w-[400px] md:h-[400px] rounded-full border-4 md:border-8 border-emerald-600/80 shadow-[0_0_100px_rgba(16,185,129,0.5)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_150px_rgba(16,185,129,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-emerald-900/50 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['david'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
@@ -2320,9 +2328,14 @@ export default function OdiseaBiblica() {
                         <div className="md:w-1/2 md:pr-24 text-center md:text-right z-30">
                           <h3 className="text-3xl md:text-6xl lg:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">DAVID</h3>
                           <p className="text-emerald-400 text-xl md:text-2xl font-black uppercase tracking-widest mb-6 border-b-4 border-emerald-900/50 pb-4 inline-block">EL CORAZÓN DE LEÓN</p>
-                          <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['david'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
+                          
+                        </div>
+                        </div>
+  {/* TARJETAS EXPANDIBLES A TODO ANCHO */}
+  <div className="w-full relative z-30">
+    <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['david'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
                             <div className="overflow-hidden">
-                              <div className="bg-[#051a0f]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 w-full text-left">
+                              <div className="bg-[#051a0f]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-emerald-500/50 shadow-[0_0_50px_rgba(16,185,129,0.3)] relative mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6 w-full text-left">
                                 <div className="bg-black/50 p-6 rounded-3xl border border-emerald-900/50">
                                   <span className="inline-block bg-slate-800 text-slate-300 px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-3">Contexto</span>
                                   <p className="text-slate-200 text-lg md:text-2xl leading-relaxed font-serif">Un pastor invisible y arpista que unificó a las 12 tribus en un imperio invencible, recibiendo el pacto del "Linaje Eterno".</p>
@@ -2376,11 +2389,13 @@ export default function OdiseaBiblica() {
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
+  </div>
+</div>
+
 
                       {/* NODO 3: SALOMÓN */}
-                      <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between mb-48 group">
+                      <div className="relative w-full mb-48 group z-20">
+  <div className="relative w-full flex flex-col md:flex-row items-center justify-between z-10">
                         <div className="md:w-1/2 flex justify-center md:justify-end md:pr-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('salomon')} className="relative w-72 h-72 md:w-[450px] md:h-[450px] rounded-full border-4 md:border-8 border-blue-600/80 shadow-[0_0_120px_rgba(59,130,246,0.6)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_180px_rgba(59,130,246,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-blue-900/50 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['salomon'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
@@ -2394,9 +2409,15 @@ export default function OdiseaBiblica() {
                         <div className="md:w-1/2 md:pl-24 text-center md:text-left z-30">
                           <h3 className="text-3xl md:text-6xl lg:text-9xl font-black text-white uppercase tracking-tighter mb-2 drop-shadow-2xl">SALOMÓN</h3>
                           <p className="text-blue-400 text-xl md:text-2xl font-black uppercase tracking-widest mb-6 border-b-4 border-blue-900/50 pb-4 inline-block">EL ARQUITECTO CORRUPTO</p>
-                          <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['salomon'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
+                          
+                        </div>
+                      </div>
+                      </div>
+  {/* TARJETAS EXPANDIBLES A TODO ANCHO */}
+  <div className="w-full relative z-30">
+    <div className={`grid transition-all duration-1000 ease-in-out ${expandedNodes['salomon'] ? 'grid-rows-[1fr] opacity-100 translate-y-0' : 'grid-rows-[0fr] opacity-0 translate-y-10'}`}>
                             <div className="overflow-hidden">
-                              <div className="bg-[#07101a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-blue-500/50 shadow-[0_0_50px_rgba(59,130,246,0.3)] relative mt-4 grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6 w-full">
+                              <div className="bg-[#07101a]/95 backdrop-blur-2xl p-8 md:p-10 rounded-[3rem] border-2 border-blue-500/50 shadow-[0_0_50px_rgba(59,130,246,0.3)] relative mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6 w-full">
                                 <div className="bg-black/50 p-6 rounded-3xl border border-blue-900/50">
                                   <span className="inline-block bg-slate-800 text-slate-300 px-4 py-1 rounded-full text-xs font-black tracking-widest uppercase mb-3">Contexto</span>
                                   <p className="text-slate-200 text-lg md:text-2xl leading-relaxed font-serif">Inició brillante. Pide sabiduría y construye el majestuoso Primer Templo, llevando a Israel a la cúspide de su poder.</p>
@@ -2450,9 +2471,9 @@ export default function OdiseaBiblica() {
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </div>
-                    </div>
+  </div>
+</div>
+
 
                     {/* ========================================= */}
                     {/* PARTE 2: EL GRAN CISMA (DIVISIÓN VISUAL) */}
