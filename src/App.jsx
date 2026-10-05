@@ -1090,7 +1090,7 @@ export default function OdiseaBiblica() {
                         </div>
                         <div className="relative max-w-5xl mx-auto pl-4 md:pl-8">
                            {/* Línea vertical conectora */}
-                           <div className="absolute left-[27px] md:left-[43px] top-8 bottom-8 w-1 bg-gradient-to-b from-amber-500 via-indigo-500 to-emerald-500 rounded-full opacity-50"></div>
+                           <div className="absolute left-[27px] md:left-[43px] top-8 bottom-8 w-1 bg-gradient-to-b from-amber-500 via-indigo-500 to-emerald-500 rounded-full opacity-50 hidden md:block"></div>
                            
                            {[
                               { 
@@ -2228,10 +2228,10 @@ export default function OdiseaBiblica() {
                     {/* ========================================= */}
                     <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center">
                       {/* Línea brillante central */}
-                      <div className="absolute top-0 bottom-0 w-2 md:w-4 bg-gradient-to-b from-amber-500 via-amber-700 to-red-600 shadow-[0_0_30px_rgba(245,158,11,1)] z-0 rounded-full opacity-80"></div>
+                      <div className="absolute top-0 bottom-0 w-2 md:w-4 bg-gradient-to-b from-amber-500 via-amber-700 to-red-600 shadow-[0_0_30px_rgba(245,158,11,1)] z-0 rounded-full opacity-80 hidden md:block"></div>
 
                       {/* NODO 1: SAÚL */}
-                      <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between mb-40 group">
+                      <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between mb-24 md:mb-40 group">
                         <div className="md:w-1/2 flex justify-center md:justify-end md:pr-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('saul')} className="relative w-64 h-64 md:w-96 md:h-96 rounded-full border-4 md:border-8 border-red-900/80 shadow-[0_0_80px_rgba(220,38,38,0.5)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_120px_rgba(220,38,38,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-red-900/60 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['saul'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
@@ -2306,7 +2306,7 @@ export default function OdiseaBiblica() {
                       </div>
 
                       {/* NODO 2: DAVID */}
-                      <div className="relative z-10 w-full flex flex-col md:flex-row-reverse items-center justify-between mb-40 group">
+                      <div className="relative z-10 w-full flex flex-col md:flex-row-reverse items-center justify-between mb-24 md:mb-40 group">
                         <div className="md:w-1/2 flex justify-center md:justify-start md:pl-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('david')} className="relative w-72 h-72 md:w-[400px] md:h-[400px] rounded-full border-4 md:border-8 border-emerald-600/80 shadow-[0_0_100px_rgba(16,185,129,0.5)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_150px_rgba(16,185,129,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-emerald-900/50 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['david'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
@@ -2656,7 +2656,7 @@ export default function OdiseaBiblica() {
                     {/* PARTE 4: LA CONVERGENCIA Y LA PROMESA */}
                     {/* ========================================= */}
                     <div className="mt-48 relative flex flex-col items-center">
-                      <div className="w-2 md:w-4 h-48 bg-gradient-to-b from-amber-500 via-yellow-400 to-white shadow-[0_0_50px_rgba(250,204,21,1)] z-10 mb-[-4rem] lg:ml-[50%] rounded-full opacity-90"></div>
+                      <div className="w-2 md:w-4 h-48 bg-gradient-to-b from-amber-500 via-yellow-400 to-white shadow-[0_0_50px_rgba(250,204,21,1)] z-10 mb-[-4rem] lg:ml-[50%] rounded-full opacity-90 hidden md:block"></div>
                       
                       <div onClick={() => toggleNode('promesa')} className="w-full max-w-7xl bg-gradient-to-br from-[#1a0a00] via-[#331100] to-black border-4 md:border-8 border-yellow-500 rounded-[4rem] md:rounded-[6rem] p-12 md:p-32 relative overflow-hidden shadow-[0_0_200px_rgba(234,179,8,0.6)] cursor-pointer group hover:border-yellow-400 transition-colors duration-700">
                         <div className={`absolute inset-0 bg-[url('https://images.unsplash.com/photo-1501651493037-128dce28d6bd?q=80&w=2000')] bg-cover bg-center mix-blend-screen transition-all duration-[3s] ${expandedNodes['promesa'] ? 'opacity-20 scale-100' : 'opacity-40 scale-110'}`}></div>
