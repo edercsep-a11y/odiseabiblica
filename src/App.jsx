@@ -1031,42 +1031,85 @@ export default function OdiseaBiblica() {
               <p className="text-red-400 text-xs font-mono mt-2 uppercase">SISTEMA DE SINCRONIZACIÓN DE CLANES</p>
             </div>
 
-            <div className="space-y-4">
-              <div>
-                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Nombre y Apellidos Completos</label>
-                <input type="text" value={studentForm.name} onChange={e => setStudentForm({...studentForm, name: e.target.value})} className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none transition-colors" placeholder="Ej: Juan Pérez" />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
+            {studentForm.step === 1 ? (
+              <div className="space-y-4 animate-in fade-in zoom-in duration-300">
                 <div>
-                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Salón</label>
-                  <select value={studentForm.aula} onChange={e => setStudentForm({...studentForm, aula: e.target.value})} className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none">
-                    <option value="1A">1A</option><option value="1B">1B</option><option value="1C">1C</option>
+                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Clave de Salón</label>
+                  <input 
+                    type="password" 
+                    value={studentForm.pass} 
+                    onChange={e => setStudentForm({...studentForm, pass: e.target.value.toUpperCase()})} 
+                    className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none transition-colors text-center font-mono tracking-[0.5em]" 
+                    placeholder="****" 
+                  />
+                  <p className="text-[10px] text-slate-500 mt-2 text-center">Ingresa la clave proporcionada por tu maestro para conectar a tu salón.</p>
+                </div>
+                <button 
+                  onClick={() => {
+                    const aula = classCodes[studentForm.pass];
+                    if (aula) {
+                      setStudentForm({...studentForm, aula, step: 2});
+                    } else {
+                      alert("❌ Clave de salón incorrecta.");
+                    }
+                  }} 
+                  className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-xl mt-4 transition-colors cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.4)]">
+                  CONECTAR AL SALÓN
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4 animate-in slide-in-from-right-8 duration-300">
+                <div className="bg-red-950/40 border border-red-500/30 p-3 rounded-lg text-center mb-4">
+                  <span className="text-red-400 text-xs font-bold uppercase tracking-widest">CONECTADO AL SALÓN: </span>
+                  <span className="text-white font-black text-lg">{studentForm.aula}</span>
+                </div>
+                
+                <div>
+                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Tus Nombres y Apellidos</label>
+                  <select 
+                    value={studentForm.name} 
+                    onChange={e => {
+                      const val = e.target.value;
+                      if (val === "EDER CARRASCO (MAESTRO)") {
+                         setStudentForm({...studentForm, name: val, clanId: "all"});
+                      } else {
+                         setStudentForm({...studentForm, name: val, clanId: ""});
+                      }
+                    }} 
+                    className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none transition-colors"
+                  >
+                    <option value="" disabled>Selecciona tu nombre...</option>
+                    <option value="EDER CARRASCO (MAESTRO)" className="text-yellow-400 font-bold">EDER CARRASCO (MAESTRO)</option>
+                    {studentForm.aula && unassignedStudentsDB[studentForm.aula]?.map(name => (
+                      <option key={name} value={name}>{name}</option>
+                    ))}
                   </select>
                 </div>
+                
                 <div>
                   <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Tu Clan</label>
-                  <select value={studentForm.clanId} onChange={e => setStudentForm({...studentForm, clanId: e.target.value})} className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none">
-                    {clansData.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  <select 
+                    value={studentForm.clanId} 
+                    onChange={e => setStudentForm({...studentForm, clanId: e.target.value})} 
+                    disabled={studentForm.name === "EDER CARRASCO (MAESTRO)"}
+                    className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none transition-colors"
+                  >
+                    {studentForm.name === "EDER CARRASCO (MAESTRO)" ? (
+                      <option value="all">TODOS LOS CLANES (MODO DIOS)</option>
+                    ) : (
+                      <>
+                        <option value="" disabled>Selecciona tu clan...</option>
+                        {clansData.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                      </>
+                    )}
                   </select>
                 </div>
+                
+                <button onClick={(e) => handleStudentAuth(e)} className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-xl mt-4 transition-colors cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.4)]">
+                  ENTRAR AL MUNDO
+                </button>
               </div>
-              <div>
-                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Contraseña de Misión</label>
-                <input type="password" value={studentForm.password} onChange={e => setStudentForm({...studentForm, password: e.target.value})} className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none transition-colors text-center font-mono tracking-[0.5em]" placeholder="****" />
-                <p className="text-[10px] text-slate-500 mt-1 text-center">Pídele la contraseña a tu maestro (Ej: ODISEA2026)</p>
-              </div>
-              
-              <button onClick={() => {
-                if(studentForm.name.length > 3 && studentForm.password === 'ODISEA2026') {
-                  setStudentAuth(studentForm);
-                  setView('student_dashboard');
-                } else {
-                  alert("Datos incompletos o contraseña incorrecta. La contraseña por defecto es ODISEA2026.");
-                }
-              }} className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-xl mt-4 transition-colors cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.4)]">
-                AUTENTICAR RECLUTA
-              </button>
-            </div>
+            )}
           </div>
         </div>
       )}
