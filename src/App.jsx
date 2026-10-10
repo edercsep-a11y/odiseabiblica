@@ -868,7 +868,14 @@ export default function OdiseaBiblica() {
                   <p className="text-indigo-400 font-bold uppercase tracking-widest text-xs border-b border-indigo-900/50 pb-2">SELECCIONA TU AULA:</p>
                   <div className="grid grid-cols-3 gap-3">
                     {['1A', '1B', '1C'].map(aula => (
-                      <button key={aula} onClick={() => { setSelectedClass(aula); setView('intro_master'); setActiveTab(1); setSorteoPaso('config'); }}
+                      <button key={aula} onClick={() => {
+    const pass = prompt("ACCESO RESTRINGIDO:\nIngresa la contraseña maestra para abrir el proyector:");
+    if (pass === "EDER2026") {
+      setSelectedClass(aula); setView('intro_master'); setActiveTab(1); setSorteoPaso('config');
+    } else if (pass !== null) {
+      alert("Contraseña incorrecta. Solo el Game Master puede entrar aquí.");
+    }
+  }}
                         className="bg-indigo-950/50 hover:bg-indigo-600 border border-indigo-500/30 hover:border-indigo-400 text-white py-4 rounded-xl font-black text-xl transition-all cursor-pointer">
                         {aula}
                       </button>
