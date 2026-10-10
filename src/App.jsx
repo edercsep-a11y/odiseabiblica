@@ -840,7 +840,7 @@ export default function OdiseaBiblica() {
                 <p className="text-amber-500 mt-6 text-xl md:text-3xl tracking-widest md:tracking-[0.6em] font-bold uppercase drop-shadow-md">FORJANDO LÍDERES EN EL DESIERTO</p>
               </div>
               <div className="absolute bottom-8 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 35s' }}>
-                <button onClick={() => { setStartGlobalCinematic(false); setView('selector'); }} className="bg-[#0f0a06]/80 border-2 border-amber-500 text-amber-300 px-12 py-6 font-black uppercase tracking-widest md:tracking-[0.5em] text-xl transition-all shadow-[0_0_50px_rgba(245,158,11,0.8)] hover:scale-110 hover:shadow-[0_0_80px_rgba(245,158,11,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL CAMPAMENTO <ChevronRight className="w-8 h-8"/></button>
+                <button onClick={() => { setStartGlobalCinematic(false); setView('campamento_base'); }} className="bg-[#0f0a06]/80 border-2 border-amber-500 text-amber-300 px-12 py-6 font-black uppercase tracking-widest md:tracking-[0.5em] text-xl transition-all shadow-[0_0_50px_rgba(245,158,11,0.8)] hover:scale-110 hover:shadow-[0_0_80px_rgba(245,158,11,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL CAMPAMENTO <ChevronRight className="w-8 h-8"/></button>
               </div>
             </div>
           )}
@@ -868,7 +868,7 @@ export default function OdiseaBiblica() {
                   <p className="text-indigo-400 font-bold uppercase tracking-widest text-xs border-b border-indigo-900/50 pb-2">SELECCIONA TU AULA:</p>
                   <div className="grid grid-cols-3 gap-3">
                     {['1A', '1B', '1C'].map(aula => (
-                      <button key={aula} onClick={() => { setSelectedClass(aula); setView('campamento_base'); setActiveTab(1); setSorteoPaso('config'); }}
+                      <button key={aula} onClick={() => { setSelectedClass(aula); setView('intro_master'); setActiveTab(1); setSorteoPaso('config'); }}
                         className="bg-indigo-950/50 hover:bg-indigo-600 border border-indigo-500/30 hover:border-indigo-400 text-white py-4 rounded-xl font-black text-xl transition-all cursor-pointer">
                         {aula}
                       </button>
