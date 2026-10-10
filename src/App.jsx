@@ -52,6 +52,148 @@ function loadFromStorage(key, fallback) {
     }
   };
 
+
+// ═══════════════════════════════════════════════════════════════
+// ── MODO SOLO: MINIJUEGO "CARRERA EN EL DESIERTO" ──────────────
+// ═══════════════════════════════════════════════════════════════
+function DesertRunGame({ clanId, onWin, onLose, onExit }) {
+  const [lane, setLane] = useState(1);
+  const [qIndex, setQIndex] = useState(0);
+  const [status, setStatus] = useState('intro'); // intro, playing, evaluating, won, lost
+  const [timeLeft, setTimeLeft] = useState(100);
+
+  const questions = [
+    { q: "¿Quién fue el primer rey, que cayó por su inseguridad?", options: ["David", "Saúl", "Salomón"], correct: 1 },
+    { q: "¿Qué juez venció con solo 300 hombres?", options: ["Gedeón", "Sansón", "Samuel"], correct: 0 },
+    { q: "¿Qué representaban las 12 piedras del Pectoral?", options: ["Apóstoles", "Mandamientos", "Tribus de Israel"], correct: 2 },
+  ];
+
+  useEffect(() => {
+    if (status === 'playing') {
+      const timer = setInterval(() => {
+        setTimeLeft(prev => {
+          if (prev <= 0) {
+            clearInterval(timer);
+            setStatus('evaluating');
+            return 0;
+          }
+          return prev - 1.5; // Controls falling speed
+        });
+      }, 50);
+      return () => clearInterval(timer);
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (status === 'evaluating') {
+      const isCorrect = lane === questions[qIndex].correct;
+      setTimeout(() => {
+        if (isCorrect) {
+          if (qIndex === questions.length - 1) {
+            setStatus('won');
+            setTimeout(onWin, 3000);
+          } else {
+            setQIndex(q => q + 1);
+            setTimeLeft(100);
+            setStatus('playing');
+          }
+        } else {
+          setStatus('lost');
+          setTimeout(onLose, 3000);
+        }
+      }, 1500);
+    }
+  }, [status, lane, qIndex, onWin, onLose]);
+
+  const clanData = clansData.find(c => c.id === clanId) || clansData[0];
+
+  return (
+    <div className="fixed inset-0 bg-black z-[99999] flex flex-col font-sans overflow-hidden">
+      {/* HEADER */}
+      <div className="bg-[#0a0c16] border-b border-slate-800 p-4 flex justify-between items-center relative z-20 shadow-xl">
+        <div className="flex items-center gap-3">
+          <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl border ${clanData.border} bg-black`}>{clanData.icon}</div>
+          <div>
+            <h2 className="text-white font-black uppercase text-sm">Prueba del Desierto</h2>
+            <p className={`text-[10px] uppercase tracking-widest ${clanData.color}`}>{clanData.name}</p>
+          </div>
+        </div>
+        <button onClick={onExit} className="text-slate-500 hover:text-white bg-slate-900 px-4 py-2 rounded-full text-xs font-bold uppercase cursor-pointer border border-slate-700">Abortar</button>
+      </div>
+
+      {/* GAME AREA */}
+      <div className="flex-grow relative bg-gradient-to-b from-[#1a0f0a] to-[#0a0502] overflow-hidden flex flex-col">
+        {/* Background Grid */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(245,158,11,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(245,158,11,0.05)_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_100%,#000_20%,transparent_100%)]"></div>
+
+        {status === 'intro' && (
+          <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm p-6 text-center animate-in zoom-in duration-500">
+            <Gamepad2 className="w-24 h-24 text-amber-500 mb-6 animate-bounce" />
+            <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest mb-4">MODO SUPERVIVENCIA</h1>
+            <p className="text-amber-400 text-sm md:text-lg max-w-2xl leading-relaxed mb-8 font-bold">Lee la pregunta. Tienes 3 segundos para moverte al carril con la respuesta correcta antes de que los bloques caigan. <br/><br/> <span className="text-red-400">Si te aplasta la respuesta incorrecta, PIERDES 30 XP PARA TU CLAN. Si pasas las 3 pruebas, GANAS 50 XP.</span></p>
+            <button onClick={() => setStatus('playing')} className="bg-amber-600 hover:bg-amber-500 text-black px-12 py-4 rounded-full font-black uppercase tracking-[0.2em] text-xl shadow-[0_0_30px_rgba(245,158,11,0.5)] transition-all cursor-pointer">¡ACEPTO EL RIESGO!</button>
+          </div>
+        )}
+
+        {(status === 'playing' || status === 'evaluating') && (
+          <>
+            {/* QUESTION */}
+            <div className="relative z-20 bg-[#0a0c16]/90 border border-amber-900/50 m-4 p-6 rounded-2xl text-center shadow-[0_0_30px_rgba(245,158,11,0.2)]">
+              <span className="text-amber-500 font-black text-xs uppercase tracking-[0.3em] mb-2 block">PREGUNTA {qIndex + 1} DE 3</span>
+              <h2 className="text-xl md:text-3xl font-black text-white">{questions[qIndex].q}</h2>
+            </div>
+
+            {/* LANES */}
+            <div className="flex-grow flex relative z-10 w-full max-w-3xl mx-auto border-l border-r border-amber-900/30">
+              {[0, 1, 2].map(lIndex => (
+                <div key={lIndex} onClick={() => status === 'playing' && setLane(lIndex)} className={`flex-1 border-r border-amber-900/20 relative cursor-pointer transition-colors ${lane === lIndex ? 'bg-amber-900/20' : 'hover:bg-white/5'}`}>
+                  {/* Falling Block */}
+                  <div 
+                    className={`absolute w-11/12 left-1/2 -translate-x-1/2 rounded-xl p-4 text-center transition-all duration-75 flex items-center justify-center shadow-lg border-2 ${status === 'evaluating' ? (lIndex === questions[qIndex].correct ? 'bg-emerald-600 border-emerald-400 shadow-[0_0_30px_rgba(16,185,129,0.8)]' : 'bg-red-600 border-red-400 opacity-50') : 'bg-[#1f1610] border-amber-700'}`}
+                    style={{ top: `${100 - timeLeft}%`, height: '100px', marginTop: '-100px' }}
+                  >
+                    <span className="text-white font-black text-sm md:text-xl drop-shadow-md">{questions[qIndex].options[lIndex]}</span>
+                  </div>
+
+                  {/* Player Avatar */}
+                  {lane === lIndex && (
+                    <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-16 h-16 md:w-20 md:h-20 bg-black rounded-full border-4 shadow-[0_0_30px_currentColor] flex items-center justify-center text-3xl animate-in slide-in-from-bottom-10" style={{ borderColor: clanData.color.replace('text-', ''), color: clanData.color.replace('text-', '') }}>
+                      {status === 'evaluating' ? (lane === questions[qIndex].correct ? <CheckCircle2 className="w-10 h-10 text-emerald-400" /> : <Skull className="w-10 h-10 text-red-500 animate-bounce" />) : clanData.icon}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Mobile Controls */}
+            <div className="md:hidden flex justify-between p-4 bg-[#0a0c16] relative z-20 border-t border-slate-800">
+              <button onClick={() => setLane(Math.max(0, lane - 1))} className="bg-slate-800 p-4 rounded-xl text-white font-black flex-1 mr-2 active:bg-amber-600">&larr; IZQ</button>
+              <button onClick={() => setLane(Math.min(2, lane + 1))} className="bg-slate-800 p-4 rounded-xl text-white font-black flex-1 ml-2 active:bg-amber-600">DER &rarr;</button>
+            </div>
+          </>
+        )}
+
+        {status === 'won' && (
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-emerald-950/90 backdrop-blur-md p-6 text-center animate-in fade-in duration-500">
+            <Trophy className="w-32 h-32 text-emerald-400 mb-6 drop-shadow-[0_0_50px_rgba(16,185,129,0.8)] animate-bounce" />
+            <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-widest mb-4">¡PRUEBA SUPERADA!</h1>
+            <p className="text-emerald-300 text-xl font-bold uppercase tracking-widest mb-8">+50 XP TRANSFERIDOS AL CLAN {clanData.name}</p>
+          </div>
+        )}
+
+        {status === 'lost' && (
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-red-950/90 backdrop-blur-md p-6 text-center animate-in fade-in duration-500">
+            <Skull className="w-32 h-32 text-red-500 mb-6 drop-shadow-[0_0_50px_rgba(220,38,38,0.8)] animate-[pulse_1s_ease-in-out_infinite]" />
+            <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-widest mb-4">EL DESIERTO TE HA TRAGADO</h1>
+            <p className="text-red-300 text-xl font-bold uppercase tracking-widest mb-8">-30 XP RESTADOS AL CLAN {clanData.name}</p>
+            <p className="text-slate-400 text-sm">Debes estudiar más el Códice antes de volver a intentarlo.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function OdiseaBiblica() {
   // ── Auth & Profiles ──
   const [authView, setAuthView] = useState('login'); // login, register, dashboard
@@ -66,6 +208,10 @@ export default function OdiseaBiblica() {
   const [view, setView] = useState('auth'); // Starts at auth
   const [selectedClass, setSelectedClass] = useState(null);
 
+
+  // ── Student Auth & Solo Mode ──
+  const [studentAuth, setStudentAuth] = useState(null);
+  const [studentForm, setStudentForm] = useState({ name: '', aula: '1A', clanId: 'c1', password: '' });
   // ── Core Data (Loaded dynamically per save) ──
   const [roster, setRoster] = useState(defaultRoster);
   const [scores, setScores] = useState(defaultScores);
@@ -705,69 +851,184 @@ export default function OdiseaBiblica() {
       {/* ── SELECTOR ────────────────────────────────────────────── */}
       {/* ════════════════════════════════════════════════════════════ */}
       {view === 'selector' && (
-        <div className="flex-grow flex flex-col items-center justify-center p-8 relative bg-[#070913]">
+        <div className="flex-grow flex flex-col items-center justify-center p-4 md:p-8 relative bg-[#070913] min-h-screen">
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"><div className="w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[120px]"></div></div>
-          <div className="relative z-10 text-center w-full max-w-4xl">
-            <h1 className="text-3xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-2 tracking-tighter uppercase drop-shadow-xl">EL CAMPAMENTO BASE</h1>
-            <p className="text-indigo-400 text-xs md:text-sm tracking-widest md:tracking-[0.4em] font-black uppercase mb-12 drop-shadow">GESTOR DE BASE DE DATOS COOPERATIVA</p>
-            <div className="bg-[#0f111a]/80 backdrop-blur-md rounded-[2rem] p-8 md:p-12 mb-8 shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-[#2a2e45] relative mx-auto w-full max-w-4xl">
-              <p className="text-amber-500 font-black uppercase tracking-widest md:tracking-[0.2em] text-xs md:text-sm mb-10 flex justify-center items-center gap-2"><Users className="w-4 h-4"/> SELECCIONA TU SALÓN</p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                {Object.keys(scores).map(aula => (
-                  <button key={aula} onClick={() => { 
-                    setSelectedClass(aula); 
-                    setView('campamento_base'); 
-                    const hasStudents = roster[aula] && Object.values(roster[aula]).some(clan => clan.length > 0);
-                    if (hasStudents) {
-                      setActiveTab(2); // Jump straight to Misiones
-                    } else {
-                      setActiveTab(1); // Go to Sorteo
-                      setSorteoPaso('config');
-                    }
-                  }}
-                    className="group px-4 py-12 bg-[#343082] hover:bg-[#433eb3] rounded-2xl transition-all duration-300 shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_0_30px_rgba(79,70,229,0.5)] cursor-pointer flex flex-col items-center justify-center border-2 border-transparent hover:border-indigo-400 relative overflow-hidden">
-                    <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-indigo-300/50"></div>
-                    <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-indigo-300/50"></div>
-                    <span className="text-2xl md:text-4xl font-black text-white tracking-widest mb-4 drop-shadow-md">{aula}</span>
-                    <span className="bg-transparent border-2 border-indigo-300/50 text-[10px] text-indigo-200 font-bold tracking-widest md:tracking-[0.3em] uppercase px-4 py-2 rounded-full group-hover:bg-indigo-400 group-hover:text-black group-hover:border-indigo-400 transition-colors">PROYECTAR CLASE</span>
-                  </button>
-                ))}
-              </div>
-
-              <div className="bg-black/50 border border-indigo-900/50 p-6 rounded-2xl max-w-xl mx-auto text-center">
-                <p className="text-slate-400 text-[10px] uppercase font-bold tracking-widest mb-4">AÑADIR NUEVO SALÓN A ESTA CARPETA</p>
-                <div className="flex gap-2">
-                  <input type="text" value={newClassName} onChange={e => setNewClassName(e.target.value)} placeholder="Ej. 3ro A, Confirmación, etc." className="flex-grow bg-[#111424] border border-slate-700 rounded py-3 px-4 text-sm text-white outline-none focus:border-indigo-500" />
-                  <button onClick={() => {
-                    if(!newClassName.trim() || scores[newClassName.trim().toUpperCase()]) return;
-                    const c = newClassName.trim().toUpperCase();
-                    setScores(prev => ({...prev, [c]: { c1:0, c2:0, c3:0, c4:0, c5:0, c6:0, c7:0 }}));
-                    setRoster(prev => ({...prev, [c]: { c1:[], c2:[], c3:[], c4:[], c5:[], c6:[], c7:[] }}));
-                    setNewClassName('');
-                  }} className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 rounded text-sm font-bold cursor-pointer transition-colors flex items-center justify-center"><Plus className="w-5 h-5"/></button>
+          
+          <div className="relative z-10 w-full max-w-6xl flex flex-col items-center">
+            <h1 className="text-4xl md:text-7xl lg:text-[100px] font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-4 tracking-tighter uppercase drop-shadow-xl text-center leading-none">LA ODISEA BÍBLICA</h1>
+            <p className="text-indigo-400 text-xs md:text-lg tracking-[0.4em] font-black uppercase mb-12 drop-shadow text-center">SELECCIONA TU PORTAL DE ACCESO</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+              {/* PORTAL MAESTRO */}
+              <div className="bg-[#0f111a]/90 backdrop-blur-xl rounded-[3rem] p-8 md:p-12 border-2 border-indigo-900/50 shadow-[0_0_50px_rgba(79,70,229,0.2)] hover:shadow-[0_0_80px_rgba(79,70,229,0.4)] transition-all duration-500 group flex flex-col items-center text-center">
+                <Crown className="w-20 h-20 text-indigo-500 mb-6 drop-shadow-[0_0_20px_rgba(79,70,229,0.8)] group-hover:scale-110 transition-transform" />
+                <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-widest mb-4">ACCESO MAESTRO</h2>
+                <p className="text-slate-400 text-sm mb-10 h-10">Control del proyector principal, gestión de XP y dirección de misiones en vivo.</p>
+                <div className="w-full space-y-4">
+                  <p className="text-indigo-400 font-bold uppercase tracking-widest text-xs border-b border-indigo-900/50 pb-2">SELECCIONA TU AULA:</p>
+                  <div className="grid grid-cols-3 gap-3">
+                    {['1A', '1B', '1C'].map(aula => (
+                      <button key={aula} onClick={() => { setSelectedClass(aula); setView('campamento_base'); setActiveTab(1); setSorteoPaso('config'); }}
+                        className="bg-indigo-950/50 hover:bg-indigo-600 border border-indigo-500/30 hover:border-indigo-400 text-white py-4 rounded-xl font-black text-xl transition-all cursor-pointer">
+                        {aula}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
+
+              {/* PORTAL ESTUDIANTE */}
+              <div className="bg-[#1a0505]/90 backdrop-blur-xl rounded-[3rem] p-8 md:p-12 border-2 border-red-900/50 shadow-[0_0_50px_rgba(220,38,38,0.2)] hover:shadow-[0_0_80px_rgba(220,38,38,0.4)] transition-all duration-500 group flex flex-col items-center text-center">
+                <Gamepad2 className="w-20 h-20 text-red-500 mb-6 drop-shadow-[0_0_20px_rgba(220,38,38,0.8)] group-hover:scale-110 transition-transform" />
+                <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-widest mb-4">MODO ESTUDIANTE</h2>
+                <p className="text-slate-400 text-sm mb-10 h-10">Juega misiones individuales en tu celular. <span className="text-red-400 font-bold">¡Tus victorias y derrotas afectarán el puntaje de tu clan!</span></p>
+                <button onClick={() => setView('student_login')} className="w-full bg-gradient-to-r from-red-800 to-red-600 hover:from-red-600 hover:to-red-500 text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em] text-lg shadow-[0_0_30px_rgba(220,38,38,0.5)] transition-all cursor-pointer border border-red-400 mt-auto">
+                  ENTRAR AL MODO SOLO
+                </button>
+              </div>
             </div>
-            <div className="flex flex-col gap-4 items-center justify-center mt-4">
-              <button onClick={() => setView('global_ranking')} className="bg-gradient-to-r from-orange-600 to-amber-500 text-white px-12 py-5 font-black uppercase tracking-widest md:tracking-[0.2em] text-sm md:text-base transition-all shadow-[0_0_40px_rgba(245,158,11,0.5)] hover:shadow-[0_0_60px_rgba(245,158,11,0.8)] hover:scale-105 flex items-center justify-center gap-3 rounded-full cursor-pointer border-2 border-amber-300"><Globe className="w-6 h-6"/> VER CLASIFICACIÓN GLOBAL MULTIVERSO</button>
-              <button onClick={() => setView('archivos_misiones')} className="bg-[#05060b] border border-indigo-500/50 text-indigo-400 hover:text-white hover:bg-indigo-900/50 px-10 py-4 font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-3 rounded-full cursor-pointer shadow-[0_0_20px_rgba(79,70,229,0.2)] hover:shadow-[0_0_30px_rgba(79,70,229,0.5)]"><Scroll className="w-5 h-5"/> CENTRO DE DESCARGAS (DOSSIERS DE MISIONES)</button>
-              <button onClick={() => setShowInstructions(true)} className="bg-[#05060b] border border-cyan-500/50 text-cyan-400 hover:text-white hover:bg-cyan-900/50 px-10 py-4 font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-3 rounded-full cursor-pointer mt-2 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]"><Hexagon className="w-5 h-5"/> MANUAL TÁCTICO DEL JUEGO (INSTRUCCIONES)</button>
+
+            <div className="flex flex-col md:flex-row gap-4 items-center justify-center mt-12 w-full">
+              <button onClick={() => setView('global_ranking')} className="bg-gradient-to-r from-orange-900 to-amber-700 text-white px-8 py-4 font-black uppercase tracking-[0.2em] text-xs md:text-sm transition-all shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.6)] rounded-full cursor-pointer border border-amber-500 flex items-center gap-2"><Globe className="w-5 h-5"/> CLASIFICACIÓN MULTIVERSO</button>
+              <button onClick={() => setShowInstructions(true)} className="bg-[#05060b] border border-cyan-500/50 text-cyan-400 hover:text-white px-8 py-4 font-bold uppercase tracking-widest text-xs transition-all rounded-full cursor-pointer flex items-center gap-2"><Hexagon className="w-5 h-5"/> MANUAL TÁCTICO</button>
             </div>
+          </div>
+        </div>
+      )}
+      
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── STUDENT LOGIN & DASHBOARD ───────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {view === 'student_login' && (
+        <div className="flex-grow flex items-center justify-center p-4 bg-[url('https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=2000')] bg-cover bg-center relative">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+          <div className="relative z-10 bg-[#0a0c16]/95 border border-red-900/50 p-8 md:p-12 rounded-[2rem] w-full max-w-lg shadow-[0_0_50px_rgba(220,38,38,0.3)]">
+            <button onClick={() => setView('selector')} className="absolute top-4 left-4 text-slate-500 hover:text-white flex items-center text-xs font-bold uppercase tracking-widest cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> VOLVER</button>
             
-            <div className="mt-16 border-t border-[#2a2e45] pt-6 flex flex-col items-center justify-center">
-              <p className="text-slate-500 text-[10px] uppercase tracking-widest md:tracking-[0.2em] font-mono">Desarrollado y Diseñado Originalmente por:</p>
-              <p className="text-indigo-400 font-black text-sm uppercase tracking-widest mt-1">Prof. Eder Carrasco</p>
-              <p className="text-amber-500 text-[10px] font-bold mt-1 bg-amber-900/20 px-3 py-1 rounded-full border border-amber-500/20">De profe a profe Oficial</p>
+            <div className="text-center mb-8 mt-4">
+              <ShieldAlert className="w-16 h-16 text-red-500 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(220,38,38,0.8)]" />
+              <h2 className="text-3xl font-black text-white uppercase tracking-widest">IDENTIFICACIÓN</h2>
+              <p className="text-red-400 text-xs font-mono mt-2 uppercase">SISTEMA DE SINCRONIZACIÓN DE CLANES</p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Nombre y Apellidos Completos</label>
+                <input type="text" value={studentForm.name} onChange={e => setStudentForm({...studentForm, name: e.target.value})} className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none transition-colors" placeholder="Ej: Juan Pérez" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Salón</label>
+                  <select value={studentForm.aula} onChange={e => setStudentForm({...studentForm, aula: e.target.value})} className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none">
+                    <option value="1A">1A</option><option value="1B">1B</option><option value="1C">1C</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Tu Clan</label>
+                  <select value={studentForm.clanId} onChange={e => setStudentForm({...studentForm, clanId: e.target.value})} className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none">
+                    {clansData.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Contraseña de Misión</label>
+                <input type="password" value={studentForm.password} onChange={e => setStudentForm({...studentForm, password: e.target.value})} className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none transition-colors text-center font-mono tracking-[0.5em]" placeholder="****" />
+                <p className="text-[10px] text-slate-500 mt-1 text-center">Pídele la contraseña a tu maestro (Ej: ODISEA2026)</p>
+              </div>
+              
+              <button onClick={() => {
+                if(studentForm.name.length > 3 && studentForm.password === 'ODISEA2026') {
+                  setStudentAuth(studentForm);
+                  setView('student_dashboard');
+                } else {
+                  alert("Datos incompletos o contraseña incorrecta. La contraseña por defecto es ODISEA2026.");
+                }
+              }} className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-xl mt-4 transition-colors cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.4)]">
+                AUTENTICAR RECLUTA
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* ════════════════════════════════════════════════════════════ */}
-      {/* ── GLOBAL RANKING ─────────────────────────────────────── */}
-      {/* ════════════════════════════════════════════════════════════ */}
-      {view === 'global_ranking' && (
+      {view === 'student_dashboard' && studentAuth && (
+        <div className="flex-grow flex flex-col p-4 md:p-8 bg-[#070913] min-h-screen relative overflow-hidden">
+          {/* Header */}
+          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center bg-[#0f111a] p-6 rounded-3xl border border-slate-800 shadow-xl mb-8 gap-4">
+             <div className="flex items-center gap-4">
+                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl border ${clansData.find(c=>c.id===studentAuth.clanId)?.border} bg-black`}>
+                  {clansData.find(c=>c.id===studentAuth.clanId)?.icon}
+                </div>
+                <div>
+                  <p className="text-slate-400 text-xs font-black uppercase tracking-widest">RECLUTA ACTIVO</p>
+                  <h2 className="text-2xl font-black text-white uppercase">{studentAuth.name}</h2>
+                  <p className={`text-sm font-black uppercase tracking-widest ${clansData.find(c=>c.id===studentAuth.clanId)?.color}`}>CLAN {clansData.find(c=>c.id===studentAuth.clanId)?.name} • {studentAuth.aula}</p>
+                </div>
+             </div>
+             <div className="bg-black/50 border border-amber-500/30 px-8 py-3 rounded-xl text-center">
+                <p className="text-amber-500/50 text-[10px] font-black uppercase tracking-[0.2em]">XP ACTUAL DEL CLAN</p>
+                <p className="text-amber-400 text-3xl font-black">{scores[studentAuth.aula]?.[studentAuth.clanId] || 0}</p>
+             </div>
+          </div>
+
+          {/* Missions List */}
+          <div className="relative z-10 w-full max-w-4xl mx-auto">
+             <h3 className="text-3xl font-black text-white uppercase tracking-widest mb-6 flex items-center gap-3"><Map className="w-8 h-8 text-amber-500"/> MISIONES INDIVIDUALES</h3>
+             
+             {/* Mission 1 Card */}
+             <div className="bg-gradient-to-br from-[#1a0f05] to-[#0a0502] border-2 border-amber-900/50 rounded-3xl p-6 md:p-10 flex flex-col md:flex-row items-center gap-8 shadow-[0_0_30px_rgba(245,158,11,0.1)] hover:border-amber-500 transition-colors group">
+                <div className="w-32 h-32 shrink-0 rounded-2xl bg-black border-2 border-amber-700 flex items-center justify-center shadow-[inset_0_0_20px_rgba(245,158,11,0.5)] overflow-hidden relative">
+                   <Gamepad2 className="w-16 h-16 text-amber-500 drop-shadow-[0_0_15px_rgba(245,158,11,1)] group-hover:scale-110 transition-transform"/>
+                </div>
+                <div className="flex-grow text-center md:text-left">
+                   <span className="bg-amber-900/50 text-amber-300 text-[10px] font-black px-3 py-1 rounded uppercase tracking-[0.2em]">DISPONIBLE</span>
+                   <h4 className="text-2xl md:text-4xl font-black text-white uppercase mt-2 mb-2">LA PRUEBA DEL DESIERTO</h4>
+                   <p className="text-slate-400 text-sm leading-relaxed mb-4">Un juego de reflejos estilo "Mario Bros". Esquiva las respuestas incorrectas saltando de carril. Solo los más ágiles e inteligentes sobrevivirán.</p>
+                   <div className="flex flex-wrap gap-4 justify-center md:justify-start">
+                     <span className="text-emerald-400 text-xs font-black uppercase tracking-widest flex items-center gap-1"><Trophy className="w-4 h-4"/> VICTORIA: +50 XP</span>
+                     <span className="text-red-400 text-xs font-black uppercase tracking-widest flex items-center gap-1"><Skull className="w-4 h-4"/> DERROTA: -30 XP</span>
+                   </div>
+                </div>
+                <button onClick={() => setView('student_game_1')} className="w-full md:w-auto shrink-0 bg-amber-600 hover:bg-amber-500 text-black font-black uppercase tracking-[0.2em] px-10 py-5 rounded-2xl text-xl shadow-[0_0_30px_rgba(245,158,11,0.5)] cursor-pointer hover:scale-105 transition-transform">
+                  JUGAR AHORA
+                </button>
+             </div>
+
+             {/* Locked Mission */}
+             <div className="bg-[#0a0c16] border-2 border-slate-800 rounded-3xl p-6 md:p-10 flex flex-col md:flex-row items-center gap-8 mt-6 opacity-60 grayscale">
+                <div className="w-32 h-32 shrink-0 rounded-2xl bg-black border-2 border-slate-700 flex items-center justify-center">
+                   <Key className="w-16 h-16 text-slate-600" />
+                </div>
+                <div className="flex-grow text-center md:text-left">
+                   <span className="bg-slate-900 text-slate-500 text-[10px] font-black px-3 py-1 rounded uppercase tracking-[0.2em]">BLOQUEADO</span>
+                   <h4 className="text-2xl md:text-4xl font-black text-slate-400 uppercase mt-2 mb-2">EL TRIBUNAL OSCURO</h4>
+                   <p className="text-slate-500 text-sm mb-4">Requiere autorización del Maestro para acceder.</p>
+                </div>
+             </div>
+          </div>
+          
+          <button onClick={() => { setStudentAuth(null); setView('selector'); }} className="absolute bottom-8 right-8 text-slate-500 hover:text-white font-bold text-xs uppercase tracking-widest cursor-pointer">Cerrar Sesión</button>
+        </div>
+      )}
+
+      {view === 'student_game_1' && studentAuth && (
+        <DesertRunGame 
+           clanId={studentAuth.clanId}
+           onExit={() => setView('student_dashboard')}
+           onWin={() => {
+              updateScore(studentAuth.clanId, 50, studentAuth.aula);
+              alert("¡FELICIDADES! +50 XP han sido sincronizados a tu Clan.");
+              setView('student_dashboard');
+           }}
+           onLose={() => {
+              updateScore(studentAuth.clanId, -30, studentAuth.aula);
+              alert("¡HAS SIDO APLASTADO POR EL ERROR! -30 XP han sido restados a tu Clan.");
+              setView('student_dashboard');
+           }}
+        />
+      )}
+
+{view === 'global_ranking' && (
         <div className="flex-grow flex flex-col items-center p-8 relative overflow-hidden bg-[#06080e] dot-grid min-h-screen">
           <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center animate-in slide-in-from-bottom-8 duration-500 mt-10">
             <button onClick={() => setView('selector')} className="absolute top-0 left-0 text-slate-500 hover:text-amber-500 bg-[#161827] border border-[#2a2e45] px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> VOLVER</button>
