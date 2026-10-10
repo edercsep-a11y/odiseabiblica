@@ -292,6 +292,8 @@ function DesertRunGame({ clanId, onWin, onLose, onExit, updateScore, studentForm
   );
 }
 
+const classCodes = { 'EDER1A': '1A', 'EDER1B': '1B', 'EDER1C': '1C' };
+
 export default function OdiseaBiblica() {
   // ── Auth & Profiles ──
   const [authView, setAuthView] = useState('login'); // login, register, dashboard
