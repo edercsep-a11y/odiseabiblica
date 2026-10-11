@@ -1,14 +1,14 @@
 import React from 'react';
-import { Shield, ShieldAlert, Swords, Heart, Zap, Crosshair, Scale } from 'lucide-react';
+import { Shield, ShieldAlert, Swords, Heart, Zap, Crosshair, Scale, Eye, Scroll, Target, Flame } from 'lucide-react';
 
 export const clansData = [
-  { id: 'c1', name: 'León de Judá', color: 'text-amber-500', bg: 'bg-amber-900/50', border: 'border-amber-500/50', icon: <Shield className="w-8 h-8 text-amber-500"/>, attribute: 'Valentía', lema: 'No retrocedemos ante el gigante.', symbol: '🦁' },
-  { id: 'c2', name: 'Águilas de Dan', color: 'text-blue-500', bg: 'bg-blue-900/50', border: 'border-blue-500/50', icon: <Zap className="w-8 h-8 text-blue-500"/>, attribute: 'Visión', lema: 'Vemos la trampa antes de caer.', symbol: '🦅' },
-  { id: 'c3', name: 'Osos de Isacar', color: 'text-emerald-500', bg: 'bg-emerald-900/50', border: 'border-emerald-500/50', icon: <ShieldAlert className="w-8 h-8 text-emerald-500"/>, attribute: 'Sabiduría', lema: 'Fuerza sin control es debilidad.', symbol: '🐻' },
-  { id: 'c4', name: 'Lobos de Benjamín', color: 'text-slate-400', bg: 'bg-slate-800/50', border: 'border-slate-400/50', icon: <Crosshair className="w-8 h-8 text-slate-400"/>, attribute: 'Precisión', lema: 'Certeros en la palabra y la acción.', symbol: '🐺' },
-  { id: 'c5', name: 'Toros de Efraín', color: 'text-red-500', bg: 'bg-red-900/50', border: 'border-red-500/50', icon: <Swords className="w-8 h-8 text-red-500"/>, attribute: 'Fuerza', lema: 'Nuestra fuerza protege al débil.', symbol: '🐂' },
-  { id: 'c6', name: 'Ciervos de Neftalí', color: 'text-cyan-400', bg: 'bg-cyan-900/50', border: 'border-cyan-400/50', icon: <Heart className="w-8 h-8 text-cyan-400"/>, attribute: 'Agilidad', lema: 'Rápidos para perdonar, veloces para ayudar.', symbol: '🦌' },
-  { id: 'c7', name: 'Carpas de Zabulón', color: 'text-indigo-400', bg: 'bg-indigo-900/50', border: 'border-indigo-400/50', icon: <Scale className="w-8 h-8 text-indigo-400"/>, attribute: 'Justicia', lema: 'Equidad en cada decisión.', symbol: '🐟' },
+  { id: 'c1', name: 'Leones de Judá', attribute: 'Autoridad y Liderazgo', color: 'text-amber-500', border: 'border-amber-500/50', bg: 'bg-amber-950/30', hero: 'David y Judá', symbol: 'El Cetro Real y el León', lema: '"De nosotros viene el cetro."', icon: <Shield className="w-8 h-8 text-amber-500"/> },
+  { id: 'c2', name: 'Águilas de Isaías', attribute: 'Visión y Profecía', color: 'text-blue-400', border: 'border-blue-500/50', bg: 'bg-blue-950/30', hero: 'Isaías y el Remanente', symbol: 'El Carbón y las Alas', lema: '"Vemos lo que está por venir."', icon: <Eye className="w-8 h-8 text-blue-400"/> },
+  { id: 'c3', name: 'Guerreros de Josué', attribute: 'Valor y Conquista', color: 'text-red-500', border: 'border-red-500/50', bg: 'bg-red-950/30', hero: 'Josué y Caleb', symbol: 'Trompetas y Espada', lema: '"Ni un paso atrás."', icon: <Swords className="w-8 h-8 text-red-500"/> },
+  { id: 'c4', name: 'Sabios de Salomón', attribute: 'Sabiduría y Discernimiento', color: 'text-purple-400', border: 'border-purple-500/50', bg: 'bg-purple-950/30', hero: 'Salomón', symbol: 'El Manuscrito', lema: '"La mente sobre la espada."', icon: <Scroll className="w-8 h-8 text-purple-400"/> },
+  { id: 'c5', name: 'Centinelas de Nehemías', attribute: 'Restauración y Vigilancia', color: 'text-orange-500', border: 'border-orange-500/50', bg: 'bg-orange-950/30', hero: 'Nehemías', symbol: 'La Lanza y la Cuchara', lema: '"Reconstruimos las ruinas."', icon: <ShieldAlert className="w-8 h-8 text-orange-500"/> },
+  { id: 'c6', name: 'Valientes de David', attribute: 'Lealtad y Sacrificio', color: 'text-green-500', border: 'border-green-500/50', bg: 'bg-green-950/30', hero: 'Los Tres Valientes', symbol: 'Honda y Vasija', lema: '"Hasta la última gota."', icon: <Target className="w-8 h-8 text-green-500"/> },
+  { id: 'c7', name: 'Llamas de Elías', attribute: 'Celo y Fuego Divino', color: 'text-cyan-400', border: 'border-cyan-500/50', bg: 'bg-cyan-950/30', hero: 'Elías el Tesbita', symbol: 'El Altar en Fuego', lema: '"Que el fuego responda."', icon: <Flame className="w-8 h-8 text-cyan-400"/> }
 ];
 
 export const unassignedStudentsDB = {

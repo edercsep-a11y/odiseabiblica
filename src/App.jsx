@@ -498,9 +498,17 @@ export default function OdiseaBiblica() {
   const updateScore = (clanId, points, aulaTarget = selectedClass) => {
     if (!aulaTarget || !clanId) return;
     setScores(prev => {
+      const targetAulaScores = { ...(prev[aulaTarget] || {}) };
+      if (clanId === 'all') {
+        clansData.forEach(c => {
+          targetAulaScores[c.id] = (targetAulaScores[c.id] || 0) + points;
+        });
+      } else {
+        targetAulaScores[clanId] = (targetAulaScores[clanId] || 0) + points;
+      }
       const newScores = {
         ...prev,
-        [aulaTarget]: { ...prev[aulaTarget], [clanId]: (prev[aulaTarget][clanId] || 0) + points }
+        [aulaTarget]: targetAulaScores
       };
       updateFirebase('scores', newScores);
       return newScores;
@@ -559,6 +567,61 @@ export default function OdiseaBiblica() {
         if (clanId) updateScore(clanId, -30);
       }
     }, 4000);
+  };
+
+  
+  const handleStudentAuth = (e) => {
+    if (e && e.preventDefault) e.preventDefault();
+    const { name, aula, clanId, password } = studentForm;
+    if (!name) {
+      alert("Por favor selecciona tu nombre de la lista.");
+      return;
+    }
+    if (!clanId && name !== "EDER CARRASCO (MAESTRO)") {
+      alert("Por favor selecciona tu clan.");
+      return;
+    }
+
+    if (name === "EDER CARRASCO (MAESTRO)") {
+      if (password !== "Zamitoecsa") {
+        alert("❌ Contraseña de Maestro incorrecta.");
+        return;
+      }
+      setStudentAuth({
+        name: "EDER CARRASCO (MAESTRO)",
+        aula: aula || '1A',
+        clanId: 'all',
+        isGodMode: true,
+        lives: 999
+      });
+      setView('student_dashboard');
+      return;
+    }
+
+    const validCodes = ['ODISEA2026', 'EDER2026', 'EDER1A', 'EDER1B', 'EDER1C', '1A', '1B', '1C'];
+    if (!validCodes.includes((password || '').trim().toUpperCase()) && (password || '').length < 3) {
+      alert("❌ Clave de salón incorrecta. Pídesela a tu docente.");
+      return;
+    }
+
+    const storageKey = `student_lives_${aula}_${name}`;
+    const studentData = loadFromStorage(storageKey, { lives: 3, lockedUntil: 0 });
+    
+    if (studentData.lockedUntil && Date.now() < studentData.lockedUntil) {
+      const remainingMs = studentData.lockedUntil - Date.now();
+      const remainingHrs = Math.ceil(remainingMs / (1000 * 60 * 60));
+      alert(`⛔ Has perdido todas tus vidas. Debes esperar ${remainingHrs} hora(s) para volver a jugar.`);
+      return;
+    }
+
+    setStudentAuth({
+      name,
+      aula: aula || '1A',
+      clanId,
+      isGodMode: false,
+      lives: studentData.lives || 3
+    });
+    setView('student_dashboard');
   };
 
   const isMissionActive = (view === 'mision1' && m1Fase > 0) || (view === 'mision2' && m2Fase > 0) || (view === 'mision3' && m3Fase > 0) || (view === 'mision4' && m4Fase > 0);
@@ -639,7 +702,7 @@ export default function OdiseaBiblica() {
     setScores(data.scores);
     setRoster(data.roster);
     setCurrentSave(saveId);
-    setView('intro_master'); // Restaurado: Va a la intro épica
+    setView('class_selector');
   };
 
   // ═══════════════════════════════════════════════════════════════
@@ -921,22 +984,20 @@ export default function OdiseaBiblica() {
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"><div className="w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[120px]"></div></div>
           <div className="relative z-10 w-full max-w-md bg-[#0f111a]/90 backdrop-blur-xl border border-indigo-500/30 rounded-3xl p-8 shadow-[0_0_50px_rgba(79,70,229,0.15)] text-center">
             <h2 className="text-3xl font-black text-white uppercase tracking-widest mb-2">ELIGE TU SALÓN</h2>
-            <p className="text-slate-400 text-xs uppercase tracking-widest mb-8">PARTIDA: {usersDB[currentUser]?.saves.find(s=>s.id===currentSave)?.name || 'Activa'}</p>
+            <p className="text-slate-400 text-xs uppercase tracking-widest mb-8">DOCENTE: {currentUser || 'MAESTRO'}</p>
             <div className="space-y-4">
               {['1A', '1B', '1C'].map(aula => (
                 <button key={aula} onClick={() => { 
-                  const pass = prompt("ACCESO RESTRINGIDO:\nIngresa la contraseña maestra para abrir el proyector:");
-                  if (pass === "EDER2026") {
-                    setSelectedClass(aula); setView('intro_master'); setActiveTab(1); setSorteoPaso('config');
-                  } else if (pass !== null) {
-                    alert("Contraseña incorrecta. Solo el Game Master puede entrar aquí.");
-                  }
+                  setSelectedClass(aula); 
+                  setView('campamento_base'); 
+                  setActiveTab(1); 
+                  setSorteoPaso('config');
                 }} className="w-full bg-indigo-950/50 hover:bg-indigo-600 border border-indigo-500/30 hover:border-indigo-400 text-white py-4 rounded-xl font-black text-2xl transition-all cursor-pointer shadow-lg hover:scale-105">
                   SALÓN {aula}
                 </button>
               ))}
             </div>
-            <button onClick={() => setView('auth')} className="mt-8 text-slate-500 hover:text-white text-xs font-bold uppercase tracking-widest cursor-pointer underline">VOLVER A PARTIDAS</button>
+            <button onClick={() => setView('auth')} className="mt-8 text-slate-500 hover:text-white text-xs font-bold uppercase tracking-widest cursor-pointer underline">VOLVER A MIS CARPETAS</button>
           </div>
         </div>
       )}
@@ -1020,101 +1081,104 @@ export default function OdiseaBiblica() {
       {/* ── STUDENT LOGIN & DASHBOARD ───────────────────────────── */}
       {/* ════════════════════════════════════════════════════════════ */}
       {view === 'student_login' && (
-        <div className="flex-grow flex items-center justify-center p-4 bg-[url('https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=2000')] bg-cover bg-center relative">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
-          <div className="relative z-10 bg-[#0a0c16]/95 border border-red-900/50 p-8 md:p-12 rounded-[2rem] w-full max-w-lg shadow-[0_0_50px_rgba(220,38,38,0.3)]">
+        <div className="flex-grow flex items-center justify-center p-4 bg-[url('https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=2000')] bg-cover bg-center relative min-h-screen">
+          <div className="absolute inset-0 bg-black/85 backdrop-blur-sm"></div>
+          <div className="relative z-10 bg-[#0a0c16]/95 border border-red-900/50 p-6 md:p-10 rounded-[2.5rem] w-full max-w-lg shadow-[0_0_50px_rgba(220,38,38,0.3)] my-8">
             <button onClick={() => setView('selector')} className="absolute top-4 left-4 text-slate-500 hover:text-white flex items-center text-xs font-bold uppercase tracking-widest cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> VOLVER</button>
             
-            <div className="text-center mb-8 mt-4">
-              <ShieldAlert className="w-16 h-16 text-red-500 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(220,38,38,0.8)]" />
-              <h2 className="text-3xl font-black text-white uppercase tracking-widest">IDENTIFICACIÓN</h2>
-              <p className="text-red-400 text-xs font-mono mt-2 uppercase">SISTEMA DE SINCRONIZACIÓN DE CLANES</p>
+            <div className="text-center mb-6 mt-2">
+              <ShieldAlert className="w-14 h-14 text-red-500 mx-auto mb-2 drop-shadow-[0_0_20px_rgba(220,38,38,0.8)]" />
+              <h2 className="text-2xl md:text-3xl font-black text-white uppercase tracking-widest">IDENTIFICACIÓN</h2>
+              <p className="text-red-400 text-xs font-mono mt-1 uppercase">SISTEMA DE SINCRONIZACIÓN DE CLANES</p>
             </div>
 
-            {studentForm.step === 1 ? (
-              <div className="space-y-4 animate-in fade-in zoom-in duration-300">
-                <div>
-                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Clave de Salón</label>
-                  <input 
-                    type="password" 
-                    value={studentForm.pass} 
-                    onChange={e => setStudentForm({...studentForm, pass: e.target.value.toUpperCase()})} 
-                    className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none transition-colors text-center font-mono tracking-[0.5em]" 
-                    placeholder="****" 
-                  />
-                  <p className="text-[10px] text-slate-500 mt-2 text-center">Ingresa la clave proporcionada por tu maestro para conectar a tu salón.</p>
+            <form onSubmit={handleStudentAuth} className="space-y-4">
+              {/* 1. SELECCIÓN DE SALÓN (1A, 1B, 1C) */}
+              <div>
+                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">1. SELECCIONA TU SALÓN</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {['1A', '1B', '1C'].map(aula => (
+                    <button
+                      type="button"
+                      key={aula}
+                      onClick={() => setStudentForm(prev => ({ ...prev, aula, name: '' }))}
+                      className={`py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-all cursor-pointer border ${(studentForm.aula || '1A') === aula ? 'bg-red-600 border-red-400 text-white shadow-[0_0_15px_rgba(220,38,38,0.6)] scale-[1.02]' : 'bg-black/50 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-white'}`}
+                    >
+                      SALÓN {aula}
+                    </button>
+                  ))}
                 </div>
-                <button 
-                  onClick={() => {
-                    const aula = classCodes[studentForm.pass];
-                    if (aula) {
-                      setStudentForm({...studentForm, aula, step: 2});
+              </div>
+
+              {/* 2. SELECCIÓN DE NOMBRE DE LA LISTA */}
+              <div>
+                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">2. TUS APELLIDOS Y NOMBRES</label>
+                <select 
+                  value={studentForm.name} 
+                  onChange={e => {
+                    const val = e.target.value;
+                    if (val === "EDER CARRASCO (MAESTRO)") {
+                       setStudentForm(prev => ({...prev, name: val, clanId: "all"}));
                     } else {
-                      alert("❌ Clave de salón incorrecta.");
+                       setStudentForm(prev => ({...prev, name: val, clanId: prev.clanId === 'all' ? '' : prev.clanId}));
                     }
                   }} 
-                  className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-xl mt-4 transition-colors cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.4)]">
-                  CONECTAR AL SALÓN
-                </button>
+                  required
+                  className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:border-red-500 focus:outline-none transition-colors"
+                >
+                  <option value="" disabled>Selecciona tu nombre de la lista...</option>
+                  <option value="EDER CARRASCO (MAESTRO)" className="text-amber-400 font-bold bg-[#1a1202]">⭐ EDER CARRASCO (MAESTRO)</option>
+                  {(unassignedStudentsDB[studentForm.aula || '1A'] || []).map(name => (
+                    <option key={name} value={name} className="bg-[#0a0c16]">{name}</option>
+                  ))}
+                </select>
+                <p className="text-[10px] text-slate-500 mt-1">Lista oficial de Siaweb cargada para {studentForm.aula || '1A'}.</p>
               </div>
-            ) : (
-              <div className="space-y-4 animate-in slide-in-from-right-8 duration-300">
-                <div className="bg-red-950/40 border border-red-500/30 p-3 rounded-lg text-center mb-4">
-                  <span className="text-red-400 text-xs font-bold uppercase tracking-widest">CONECTADO AL SALÓN: </span>
-                  <span className="text-white font-black text-lg">{studentForm.aula}</span>
-                </div>
-                
-                <div>
-                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Tus Nombres y Apellidos</label>
-                  <select 
-                    value={studentForm.name} 
-                    onChange={e => {
-                      const val = e.target.value;
-                      if (val === "EDER CARRASCO (MAESTRO)") {
-                         setStudentForm({...studentForm, name: val, clanId: "all"});
-                      } else {
-                         setStudentForm({...studentForm, name: val, clanId: ""});
-                      }
-                    }} 
-                    className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none transition-colors"
-                  >
-                    <option value="" disabled>Selecciona tu nombre...</option>
-                    <option value="EDER CARRASCO (MAESTRO)" className="text-yellow-400 font-bold">EDER CARRASCO (MAESTRO)</option>
-                    {studentForm.aula && unassignedStudentsDB[studentForm.aula]?.map(name => (
-                      <option key={name} value={name}>{name}</option>
-                    ))}
-                  </select>
-                </div>
-                
-                <div>
-                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1 block">Tu Clan</label>
-                  <select 
-                    value={studentForm.clanId} 
-                    onChange={e => setStudentForm({...studentForm, clanId: e.target.value})} 
-                    disabled={studentForm.name === "EDER CARRASCO (MAESTRO)"}
-                    className="w-full bg-black/50 border border-slate-700 rounded-xl px-4 py-3 text-white focus:border-red-500 focus:outline-none transition-colors"
-                  >
-                    {studentForm.name === "EDER CARRASCO (MAESTRO)" ? (
-                      <option value="all">TODOS LOS CLANES (MODO DIOS)</option>
-                    ) : (
-                      <>
-                        <option value="" disabled>Selecciona tu clan...</option>
-                        {clansData.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
-                      </>
-                    )}
-                  </select>
-                </div>
-                
-                <button onClick={(e) => handleStudentAuth(e)} className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-xl mt-4 transition-colors cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.4)]">
-                  ENTRAR AL MUNDO
-                </button>
+
+              {/* 3. SELECCIÓN DE CLAN */}
+              <div>
+                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">3. TU CLAN SAGRADO</label>
+                <select 
+                  value={studentForm.clanId} 
+                  onChange={e => setStudentForm(prev => ({...prev, clanId: e.target.value}))} 
+                  disabled={studentForm.name === "EDER CARRASCO (MAESTRO)"}
+                  required
+                  className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:border-red-500 focus:outline-none transition-colors"
+                >
+                  {studentForm.name === "EDER CARRASCO (MAESTRO)" ? (
+                    <option value="all">⚡ TODOS LOS CLANES (MODO MAESTRO)</option>
+                  ) : (
+                    <>
+                      <option value="" disabled>Selecciona a qué clan perteneces...</option>
+                      {clansData.map(c => <option key={c.id} value={c.id} className="bg-[#0a0c16]">{c.symbol || '🛡️'} {c.name}</option>)}
+                    </>
+                  )}
+                </select>
               </div>
-            )}
+
+              {/* 4. CONTRASEÑA DE MISIÓN */}
+              <div>
+                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">4. CONTRASEÑA DE MISIÓN</label>
+                <input 
+                  type="password" 
+                  value={studentForm.password || ''} 
+                  onChange={e => setStudentForm(prev => ({...prev, password: e.target.value}))} 
+                  required
+                  className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:border-red-500 focus:outline-none transition-colors text-center font-mono tracking-[0.2em]" 
+                  placeholder={studentForm.name === "EDER CARRASCO (MAESTRO)" ? "Contraseña secreta de Maestro" : "Pídesela a tu docente (Ej. EDER1A)"} 
+                />
+              </div>
+
+              <button 
+                type="submit" 
+                className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-xl mt-4 transition-all cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:scale-[1.02]">
+                AUTENTICAR RECLUTA
+              </button>
+            </form>
           </div>
         </div>
       )}
-
-      {view === 'student_dashboard' && studentAuth && (
+{view === 'student_dashboard' && studentAuth && (
         <div className="flex-grow flex flex-col p-4 md:p-8 bg-[#070913] min-h-screen relative overflow-hidden">
           {/* Header */}
           <div className="relative z-10 flex flex-col md:flex-row justify-between items-center bg-[#0f111a] p-6 rounded-3xl border border-slate-800 shadow-xl mb-8 gap-4">
@@ -1278,7 +1342,20 @@ export default function OdiseaBiblica() {
             <div className="flex items-center gap-4">
               <button onClick={() => setView('selector')} className="text-slate-500 hover:text-white bg-[#161827] border border-[#2a2e45] px-3 py-2 rounded-lg text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> SALIR</button>
               <div>
-                <h1 className="text-xl md:text-2xl font-black text-white tracking-widest uppercase flex items-center gap-3"><Flame className="w-5 h-5 text-amber-500 hidden md:block"/> ODISEA BÍBLICA <span className="bg-indigo-600 text-white text-[10px] px-2 py-1 rounded tracking-widest">{selectedClass}</span></h1>
+                <div className="flex items-center gap-3">
+    <h1 className="text-xl md:text-2xl font-black text-white tracking-widest uppercase flex items-center gap-2"><Flame className="w-5 h-5 text-amber-500 hidden md:block"/> ODISEA BÍBLICA</h1>
+    <div className="flex items-center gap-1 bg-[#161827] border border-[#2a2e45] p-1 rounded-xl">
+      {['1A', '1B', '1C'].map(aula => (
+        <button
+          key={aula}
+          onClick={() => setSelectedClass(aula)}
+          className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider transition-colors cursor-pointer ${selectedClass === aula ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
+        >
+          {aula}
+        </button>
+      ))}
+    </div>
+  </div>
               </div>
             </div>
             <div className="flex items-center gap-3">
