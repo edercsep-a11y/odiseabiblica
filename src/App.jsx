@@ -163,6 +163,448 @@ const playRetroSound = (type) => {
   }
 };
 
+// ─── COLECCIÓN OFICIAL DE CARTAS DEL ANTIGUO TESTAMENTO (TCG BÍBLICO) ────────
+export const biblicalCardsDB = [
+  // ── LÍDERES Y HÉROES ──
+  {
+    id: "card_01",
+    name: "Moisés y las Tablas de la Ley",
+    category: "LÍDERES",
+    rarity: "LEGENDARIA",
+    badgeColor: "bg-yellow-500 text-black",
+    gradient: "from-amber-500 via-yellow-600 to-amber-900",
+    border: "border-yellow-400",
+    glow: "shadow-[0_0_35px_rgba(234,179,8,0.7)]",
+    icon: "📜",
+    pasaje: "Éxodo 20:1-17",
+    clanXP: 120,
+    quote: "«Habló Dios todas estas palabras... no tendrás dioses ajenos delante de mí.»",
+    power: "Autoridad Suprema de la Ley: Rompe cualquier trampa moral o injusticia en el aula.",
+    desc: "El libertador de Israel que habló con Dios cara a cara en el Sinaí, trayendo el pacto eterno para forjar una nación santa."
+  },
+  {
+    id: "card_02",
+    name: "Josué y la Caída de Jericó",
+    category: "LÍDERES",
+    rarity: "ÉPICA",
+    badgeColor: "bg-purple-500 text-white",
+    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
+    icon: "⚔️",
+    pasaje: "Josué 6:20",
+    clanXP: 75,
+    quote: "«El pueblo gritó y las trompetas sonaron, y los muros cayeron a plomo.»",
+    power: "Grito de la Conquista: Derrumba gigantes del miedo y la cobardía grupal.",
+    desc: "Sucesor de Moisés, líder de fe inquebrantable que no dio ni un solo paso atrás ante los gigantes de Canaán."
+  },
+  {
+    id: "card_03",
+    name: "Gedeón y los 300 del Cántaro",
+    category: "LÍDERES",
+    rarity: "ÉPICA",
+    badgeColor: "bg-purple-500 text-white",
+    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
+    icon: "🏺",
+    pasaje: "Jueces 7:20",
+    clanXP: 75,
+    quote: "«¡Por la espada de Yahveh y de Gedeón!»",
+    power: "Teas de Harod: Desarma ejércitos de confusión con solo 300 vigilantes disciplinados.",
+    desc: "Redujo su tropa de 32,000 a 300 hombres despiertos, demostrando que la fidelidad de pocos vence a multitudes descuidadas."
+  },
+  {
+    id: "card_04",
+    name: "Sansón y la Fuerza del Espíritu",
+    category: "LÍDERES",
+    rarity: "RARA",
+    badgeColor: "bg-blue-500 text-white",
+    gradient: "from-blue-600 via-cyan-700 to-blue-950",
+    border: "border-blue-400",
+    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
+    icon: "🦁",
+    pasaje: "Jueces 15:14",
+    clanXP: 45,
+    quote: "«Las cuerdas se cayeron de sus brazos como lino quemado al fuego.»",
+    power: "Poder del Nazareo: Fortaleza física sobrenatural que exige dominio propio y lealtad.",
+    desc: "Juez dotado de fuerza prodigiosa. Su historia nos enseña que el mayor combate es vencer al propio ego antes de que destruya tu llamado."
+  },
+  {
+    id: "card_05",
+    name: "David el Vencedor de Gigantes",
+    category: "LÍDERES",
+    rarity: "LEGENDARIA",
+    badgeColor: "bg-yellow-500 text-black",
+    gradient: "from-amber-500 via-yellow-600 to-amber-900",
+    border: "border-yellow-400",
+    glow: "shadow-[0_0_35px_rgba(234,179,8,0.7)]",
+    icon: "👑",
+    pasaje: "1 Samuel 17:45",
+    clanXP: 120,
+    quote: "«Tú vienes a mí con espada y lanza; mas yo vengo a ti en el nombre de Yahveh.»",
+    power: "Golpe Certero en la Frente: Derriba al opresor más intimidante sin usar armaduras prestadas.",
+    desc: "Pastor humilde que se convirtió en rey según el corazón de Dios, venciendo a Goliat con una honda y fe inquebrantable."
+  },
+  {
+    id: "card_06",
+    name: "Salomón y el Juicio de la Espada",
+    category: "LÍDERES",
+    rarity: "ÉPICA",
+    badgeColor: "bg-purple-500 text-white",
+    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
+    icon: "⚖️",
+    pasaje: "1 Reyes 3:28",
+    clanXP: 75,
+    quote: "«Todo Israel oyó el juicio del rey y temieron, viendo que había en él sabiduría de Dios.»",
+    power: "Discernimiento Divino: Revela la verdad oculta y desenmascara la falsedad a través del amor.",
+    desc: "El monarca más sabio de la antigüedad, constructor del Gran Templo de Jerusalén y autor de Proverbios."
+  },
+  {
+    id: "card_07",
+    name: "Elías el Profeta del Fuego",
+    category: "PROFETAS",
+    rarity: "LEGENDARIA",
+    badgeColor: "bg-yellow-500 text-black",
+    gradient: "from-amber-500 via-yellow-600 to-amber-900",
+    border: "border-yellow-400",
+    glow: "shadow-[0_0_35px_rgba(234,179,8,0.7)]",
+    icon: "🔥",
+    pasaje: "1 Reyes 18:38",
+    clanXP: 120,
+    quote: "«Cayó fuego de Yahveh y consumió el holocausto, la leña y las aguas.»",
+    power: "Fuego del Carmelo: Desciende sobre la verdad y avergüenza a 450 falsos profetas en público.",
+    desc: "Voz indomable del desierto que no dobló sus rodillas ante la idolatría de Acab y Jezabel."
+  },
+  {
+    id: "card_08",
+    name: "Eliseo y la Doble Porción",
+    category: "PROFETAS",
+    rarity: "ÉPICA",
+    badgeColor: "bg-purple-500 text-white",
+    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
+    icon: "✨",
+    pasaje: "2 Reyes 2:9",
+    clanXP: 75,
+    quote: "«Te ruego que una doble porción de tu espíritu sea sobre mí.»",
+    power: "Manto Multiplicador: Comparte talentos y multiplica provisiones para los más necesitados.",
+    desc: "Discípulo leal de Elías que realizó milagros de compasión y salvó a viudas y ejércitos con generosidad divina."
+  },
+  {
+    id: "card_09",
+    name: "Daniel en el Foso de los Leones",
+    category: "PROFETAS",
+    rarity: "LEGENDARIA",
+    badgeColor: "bg-yellow-500 text-black",
+    gradient: "from-amber-500 via-yellow-600 to-amber-900",
+    border: "border-yellow-400",
+    glow: "shadow-[0_0_35px_rgba(234,179,8,0.7)]",
+    icon: "🦁",
+    pasaje: "Daniel 6:22",
+    clanXP: 120,
+    quote: "«Mi Dios envió su ángel, el cual cerró la boca de los leones, para que no me hiciesen daño.»",
+    power: "Ventanas Abiertas a Sion: Integridad inquebrantable que no se apaga ante amenazas ni burlas.",
+    desc: "Estadista en Babilonia que prefirió la muerte antes que violar sus oraciones diarias y principios sagrados."
+  },
+  {
+    id: "card_10",
+    name: "Nehemías el Constructor del Muro",
+    category: "LÍDERES",
+    rarity: "RARA",
+    badgeColor: "bg-blue-500 text-white",
+    gradient: "from-blue-600 via-cyan-700 to-blue-950",
+    border: "border-blue-400",
+    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
+    icon: "🧱",
+    pasaje: "Nehemías 4:17",
+    clanXP: 45,
+    quote: "«Con una mano trabajaban en la obra, y en la otra tenían la espada.»",
+    power: "Vigilancia en la Brecha: Reconstruye muros caídos trabajando en equipo con disciplina estricta.",
+    desc: "Estratega y copero real que lideró la restauración de los muros de Jerusalén en solo 52 días contra enemigos burlones."
+  },
+  // ── HEROÍNAS SAGRADAS ──
+  {
+    id: "card_11",
+    name: "Débora la Jueza de la Palmera",
+    category: "HEROÍNAS",
+    rarity: "ÉPICA",
+    badgeColor: "bg-purple-500 text-white",
+    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
+    icon: "🌴",
+    pasaje: "Jueces 5:7",
+    clanXP: 75,
+    quote: "«Las aldeas quedaron abandonadas en Israel, hasta que yo, Débora, me levanté como madre.»",
+    power: "Voz de la Tormenta: Inspira a capitanes con valentía divina e inmoviliza 900 carros de hierro.",
+    desc: "Profetisa y jueza que impartió justicia con rectitud y convocó al pueblo a liberarse de la opresión cananea."
+  },
+  {
+    id: "card_12",
+    name: "Reina Ester 'Si Perezco, Que Perezca'",
+    category: "HEROÍNAS",
+    rarity: "LEGENDARIA",
+    badgeColor: "bg-yellow-500 text-black",
+    gradient: "from-amber-500 via-yellow-600 to-amber-900",
+    border: "border-yellow-400",
+    glow: "shadow-[0_0_35px_rgba(234,179,8,0.7)]",
+    icon: "👑",
+    pasaje: "Ester 4:16",
+    clanXP: 120,
+    quote: "«Y si perezco, que perezca... entraré a ver al rey, aunque no sea conforme a la ley.»",
+    power: "Cetro de Oro y Ayuno: Desarma planes de exterminio y salva a toda su nación de la muerte.",
+    desc: "Joven huérfana judía que arriesgó su propia vida presentándose ante el emperador Asuero para defender a los perseguidos."
+  },
+  {
+    id: "card_13",
+    name: "Rut la Leal de Moab",
+    category: "HEROÍNAS",
+    rarity: "ÉPICA",
+    badgeColor: "bg-purple-500 text-white",
+    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
+    icon: "🌾",
+    pasaje: "Rut 1:16",
+    clanXP: 75,
+    quote: "«Tu pueblo será mi pueblo, y tu Dios mi Dios.»",
+    power: "Fidelidad del Espigueo: Transforma la precariedad en bendición eterna y redención generacional.",
+    desc: "Mujer extranjera cuya lealtad incondicional hacia Noemí la llevó a ser la bisabuela del Rey David."
+  },
+  {
+    id: "card_14",
+    name: "Abigail la Pacificadora Sabia",
+    category: "HEROÍNAS",
+    rarity: "RARA",
+    badgeColor: "bg-blue-500 text-white",
+    gradient: "from-blue-600 via-cyan-700 to-blue-950",
+    border: "border-blue-400",
+    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
+    icon: "🕊️",
+    pasaje: "1 Samuel 25:28",
+    clanXP: 45,
+    quote: "«Te ruego que perdones la ofensa de tu sierva... Yahveh hará a mi señor casa firme.»",
+    power: "Palabra de Mansedumbre: Apaga la ira de 400 guerreros armados antes de una tragedia sangrienta.",
+    desc: "Mujer prudente que evitó que David cometiera una masacre por la necedad de su esposo Nabal."
+  },
+  // ── RELIQUIAS SAGRADAS ──
+  {
+    id: "card_15",
+    name: "El Arca de la Alianza y la Shekinah",
+    category: "RELIQUIAS",
+    rarity: "LEGENDARIA",
+    badgeColor: "bg-yellow-500 text-black",
+    gradient: "from-amber-500 via-yellow-600 to-amber-900",
+    border: "border-yellow-400",
+    glow: "shadow-[0_0_40px_rgba(234,179,8,0.8)]",
+    icon: "⛩️",
+    pasaje: "Éxodo 25:22",
+    clanXP: 130,
+    quote: "«Y de allí me declararé a ti, y hablaré contigo de sobre el propiciatorio.»",
+    power: "Presencia Inviolable: La santidad pura de Dios habita entre los querubines de oro.",
+    desc: "El objeto más sagrado del Antiguo Testamento, conteniendo las Tablas de la Ley, la Vara de Aarón y el Maná."
+  },
+  {
+    id: "card_16",
+    name: "El Pectoral de las 12 Piedras",
+    category: "RELIQUIAS",
+    rarity: "ÉPICA",
+    badgeColor: "bg-purple-500 text-white",
+    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
+    icon: "💎",
+    pasaje: "Éxodo 28:29",
+    clanXP: 80,
+    quote: "«Llevará Aarón los nombres de los hijos de Israel en el pectoral del juicio sobre su corazón.»",
+    power: "Intercesión Perpetua: Lleva en el pecho a todo el clan para que nadie quede excluido ni abandonado.",
+    desc: "Vestidura del Sumo Sacerdote con 12 gemas preciosas grabadas con los nombres de las tribus de Israel."
+  },
+  {
+    id: "card_17",
+    name: "La Menorá de Oro Puro",
+    category: "RELIQUIAS",
+    rarity: "RARA",
+    badgeColor: "bg-blue-500 text-white",
+    gradient: "from-blue-600 via-cyan-700 to-blue-950",
+    border: "border-blue-400",
+    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
+    icon: "🕎",
+    pasaje: "Éxodo 25:31",
+    clanXP: 45,
+    quote: "«Harás además un candelero de oro puro; labrado a martillo se hará.»",
+    power: "Luz Inextinguible: Disipa las tinieblas de la mentira con testimonio constante y puro.",
+    desc: "Candelero de 7 brazos de oro macizo que iluminaba el Lugar Santo del Tabernáculo día y noche."
+  },
+  {
+    id: "card_18",
+    name: "La Honda y las 5 Piedras Lisas",
+    category: "RELIQUIAS",
+    rarity: "COMÚN",
+    badgeColor: "bg-slate-300 text-black",
+    gradient: "from-slate-600 via-slate-700 to-slate-900",
+    border: "border-slate-400",
+    glow: "shadow-[0_0_15px_rgba(148,163,184,0.3)]",
+    icon: "🎯",
+    pasaje: "1 Samuel 17:40",
+    clanXP: 25,
+    quote: "«Tomó su cayado en su mano, y escogió cinco piedras lisas del arroyo.»",
+    power: "Piedra del Arroyo: Precisión humilde que vence a la soberbia del gigante armado.",
+    desc: "El instrumento de pastor con el que David demostró que lo que el mundo menosprecia, Dios lo enaltece para vencer gigantes."
+  },
+  {
+    id: "card_19",
+    name: "El Manto Caído de Elías",
+    category: "RELIQUIAS",
+    rarity: "ÉPICA",
+    badgeColor: "bg-purple-500 text-white",
+    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
+    icon: "🧥",
+    pasaje: "2 Reyes 2:13",
+    clanXP: 75,
+    quote: "«Alzó luego el manto de Elías que se le había caído, y volvió, y se paró a la orilla del Jordán.»",
+    power: "Apertura del Jordán: Golpea las aguas de la adversidad para que el equipo cruce en seco.",
+    desc: "El manto profético dejado en el torbellino de fuego, símbolo de unción y sucesión de liderazgo espiritual."
+  },
+  {
+    id: "card_20",
+    name: "El Incensario Sagrado de Aarón",
+    category: "RELIQUIAS",
+    rarity: "COMÚN",
+    badgeColor: "bg-slate-300 text-black",
+    gradient: "from-slate-600 via-slate-700 to-slate-900",
+    border: "border-slate-400",
+    glow: "shadow-[0_0_15px_rgba(148,163,184,0.3)]",
+    icon: "💨",
+    pasaje: "Números 16:47",
+    clanXP: 25,
+    quote: "«Puso incienso en él, e hizo expiación por el pueblo... y cesó la mortandad.»",
+    power: "Perfume de Paz: Se para entre los vivos y los muertos para detener plagas morales en el aula.",
+    desc: "Instrumento sacerdotal de bronce y oro que elevaba las oraciones del pueblo como perfume agradable ante Dios."
+  },
+  // ── PROFETAS & VOCES DE JUSTICIA ──
+  {
+    id: "card_21",
+    name: "Isaías y el Carbón Encendido",
+    category: "PROFETAS",
+    rarity: "ÉPICA",
+    badgeColor: "bg-purple-500 text-white",
+    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
+    icon: "🦅",
+    pasaje: "Isaías 6:6-8",
+    clanXP: 75,
+    quote: "«Tocó con él mi boca y dijo: He aquí que esto tocó tus labios... Heme aquí, envíame a mí.»",
+    power: "Purificación de Labios: Elimina el chisme y el insulto del aula para anunciar visión divina.",
+    desc: "Profeta mesiánico de noble visión que vio al Señor sentado en su trono y purificó su voz para servir."
+  },
+  {
+    id: "card_22",
+    name: "Jeremías el Vaso del Alfarero",
+    category: "PROFETAS",
+    rarity: "RARA",
+    badgeColor: "bg-blue-500 text-white",
+    gradient: "from-blue-600 via-cyan-700 to-blue-950",
+    border: "border-blue-400",
+    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
+    icon: "🏺",
+    pasaje: "Jeremías 18:4",
+    clanXP: 45,
+    quote: "«Y la vasija de barro que él hacía se echó a perder en su mano; y volvió y la hizo otra vasija.»",
+    power: "Resiliencia del Barro: Si tropiezas en una falta, Dios te reconstruye con honor y propósito nuevo.",
+    desc: "Profeta que predicó la verdad en tiempos de ruina con inquebrantable ternura y fidelidad."
+  },
+  {
+    id: "card_23",
+    name: "Amós el Clamor de la Justicia",
+    category: "PROFETAS",
+    rarity: "RARA",
+    badgeColor: "bg-blue-500 text-white",
+    gradient: "from-blue-600 via-cyan-700 to-blue-950",
+    border: "border-blue-400",
+    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
+    icon: "🌊",
+    pasaje: "Amós 5:24",
+    clanXP: 45,
+    quote: "«Pero corra el juicio como las aguas, y la justicia como impetuoso arroyo.»",
+    power: "Torrente Incontenible: Cero tolerancia ante el abuso, la burla y la explotación del más débil.",
+    desc: "Pastor humilde de Técoa que no toleró la hipocresía religiosa frente a la opresión de los pobres."
+  },
+  {
+    id: "card_24",
+    name: "Miqueas y el Requisito Divino",
+    category: "PROFETAS",
+    rarity: "COMÚN",
+    badgeColor: "bg-slate-300 text-black",
+    gradient: "from-slate-600 via-slate-700 to-slate-900",
+    border: "border-slate-400",
+    glow: "shadow-[0_0_15px_rgba(148,163,184,0.3)]",
+    icon: "🌱",
+    pasaje: "Miqueas 6:8",
+    clanXP: 25,
+    quote: "«Solamente hacer justicia, amar misericordia, y humillarte ante tu Dios.»",
+    power: "Tríada de Vida: Resume la verdadera religión en justicia diaria, amor fraternal y sencillez de corazón.",
+    desc: "Profeta que enseñó que los rituales vacíos no valen nada sin justicia práctica y compasión con el prójimo."
+  }
+];
+
+// ─── CATÁLOGO OFICIAL DE SOBRES DE LA TIENDA DEL TEMPLO ─────────────────────
+export const packStoreCatalog = [
+  {
+    id: "pack_pacto",
+    name: "Sobre del Pacto",
+    tier: "BÁSICO",
+    price: 100, // 100 Shekels
+    icon: "📦",
+    gradient: "from-blue-950 via-slate-900 to-blue-900",
+    border: "border-blue-500/60",
+    glow: "shadow-[0_0_30px_rgba(59,130,246,0.3)]",
+    badge: "bg-blue-600 text-white",
+    cardsCount: 3,
+    description: "Contiene 3 Cartas Sagradas. Garantiza al menos 1 Carta Rara o Común para iniciar tu colección sagrada.",
+    rates: "70% Común • 25% Rara • 5% Épica",
+    weights: { COMÚN: 0.70, RARA: 0.25, ÉPICA: 0.05, LEGENDARIA: 0.0 }
+  },
+  {
+    id: "pack_reyes",
+    name: "Sobre de Jueces y Reyes",
+    tier: "AVANZADO",
+    price: 220, // 220 Shekels
+    icon: "🛡️",
+    gradient: "from-purple-950 via-slate-900 to-purple-900",
+    border: "border-purple-500/70",
+    glow: "shadow-[0_0_35px_rgba(168,85,247,0.4)]",
+    badge: "bg-purple-600 text-white",
+    cardsCount: 3,
+    description: "Contiene 3 Cartas Sagradas. Garantiza al menos 1 Carta Épica y alta probabilidad de Raras.",
+    rates: "20% Común • 55% Rara • 20% Épica • 5% Legendaria",
+    weights: { COMÚN: 0.20, RARA: 0.55, ÉPICA: 0.20, LEGENDARIA: 0.05 }
+  },
+  {
+    id: "pack_sion",
+    name: "Sobre de la Gloria de Sion",
+    tier: "LEGENDARIO",
+    price: 450, // 450 Shekels
+    icon: "👑",
+    gradient: "from-amber-950 via-yellow-950 to-black",
+    border: "border-yellow-400",
+    glow: "shadow-[0_0_45px_rgba(234,179,8,0.7)]",
+    badge: "bg-yellow-500 text-black",
+    cardsCount: 3,
+    description: "El sobre supremo del Templo. Garantiza al menos 1 Carta Legendaria o Épica con bendición masiva de XP al Clan.",
+    rates: "10% Rara • 55% Épica • 35% Legendaria",
+    weights: { COMÚN: 0.0, RARA: 0.10, ÉPICA: 0.55, LEGENDARIA: 0.35 }
+  }
+];
+
+
 const soloMissions = [
   {
     id: 1,
@@ -170,23 +612,40 @@ const soloMissions = [
     title: "MISIÓN 1: SANTIDAD Y SACRIFICIO",
     theme: "LOS SACERDOTES Y EL TABERNÁCULO",
     videoUrl: "https://www.canva.com/design/DAHUxOYFoR4/YfVzZqhCBllExJdCAr972g/watch?embed",
-    lore: "El fuego del Sinaí arde. La santidad pura de Yahveh exige un mediador sagrado. Los sacerdotes custodian la tienda de reunión portando el Pectoral sobre el corazón.",
-    secretWord: "SANTIDAD",
+    lore: "El fuego del Sinaí arde. La santidad pura de Yahveh exige un mediador sagrado. Los sacerdotes custodian el santuario portando las 12 tribus en el pecho.",
+    secretPassword: "SANTIDAD77",
+    acceptedPasswords: ["SANTIDAD77", "SANTIDAD", "LEVI12"],
+    passwordHint: "Virtud grabada en la diadema del Sumo Sacerdote (SANTIDAD) + el número perfecto 77 = SANTIDAD77",
     questions: [
       {
-        q: "¿Qué vestidura sagrada llevaba 12 piedras preciosas con los nombres de las tribus?",
-        options: ["El Pectoral del Juicio", "La Corona de Oro", "El Manto de Elías"],
-        correct: 0
+        q: "EL FUEGO EXTRAÑO DE NADAB Y ABIÚ: En Levítico 10, los hijos de Aarón llevaron fuego común buscando aplausos rápidos y fueron consumidos. Si en tu salón te presionan a hacer trampas para ganar popularidad fácil, ¿qué principio sacerdotal debes aplicar?",
+        options: [
+          "La verdadera gloria viene de obedecer con integridad sagrada, no de inventar atajos deshonestos para complacer a la masa.",
+          "Lo importante es hacer ruido y destacar a cualquier costo para no quedarse atrás en el grupo.",
+          "Si la mayoría lo hace, la trampa deja de ser mala y se convierte en una regla válida."
+        ],
+        correct: 0,
+        explanation: "La santidad exige autenticidad y obediencia; los atajos morales destruyen el liderazgo espiritual."
       },
       {
-        q: "¿De qué tribu debían ser exclusivamente los sacerdotes autorizados?",
-        options: ["Tribu de Judá", "Tribu de Leví", "Tribu de Benjamín"],
-        correct: 1
+        q: "EL PECTORAL SOBRE EL CORAZÓN: Éxodo 28 revela que el Sumo Sacerdote llevaba 12 piedras preciosas en su pecho para no olvidar a ninguna tribu. Si un compañero de tu aula sufre burlas y abandono, ¿cuál es tu deber sacerdotal?",
+        options: [
+          "Ignorarlo para no arruinar tu propia reputación ante los compañeros populares del aula.",
+          "Llevar su carga sobre tu corazón: defenderlo, apoyarlo en sus estudios y ser su puente de paz y protección.",
+          "Burlarte con los demás en el recreo pero saludarlo amablemente cuando nadie los esté mirando."
+        ],
+        correct: 1,
+        explanation: "Un verdadero sacerdote intercede y protege al más débil, llevándolo con amor y valentía en el pecho."
       },
       {
-        q: "¿Cuál era el propósito supremo de la intercesión sacerdotal?",
-        options: ["Cobrar tributos", "Llevar al pueblo sobre su corazón ante Dios", "Liderar batallas"],
-        correct: 1
+        q: "EL VELO DEL SANTUARIO Y EL PERDÓN: El velo separaba el mundo del Arca de la Alianza. Nadie podía cruzar sin purificarse primero del pecado. ¿Qué nos enseña este misterio sobre cómo tratamos las faltas ajenas?",
+        options: [
+          "Que antes de juzgar o señalar los errores de tus compañeros, debes examinar y purificar tus propias acciones.",
+          "Que los líderes tienen derecho de criticar duramente a todos porque ellos son perfectos.",
+          "Que las faltas morales se borran simplemente vistiendo ropas costosas y aparentando en público."
+        ],
+        correct: 0,
+        explanation: "La pureza interior es indispensable: no podemos corregir con soberbia lo que no hemos sanado en nosotros mismos."
       }
     ]
   },
@@ -196,23 +655,40 @@ const soloMissions = [
     title: "MISIÓN 2: LA ERA DEL CAOS",
     theme: "LOS JUECES DE ISRAEL",
     videoUrl: "https://www.canva.com/design/DAHUqu9i4XE/UQyvnmdGtkut8rZ41kbCsQ/watch?embed",
-    lore: "Israel entra en anarquía espiritual. Cuando el pueblo clama en su angustia, la Providencia levanta libertadores para romper las cadenas del invasor.",
-    secretWord: "JUSTICIA",
+    lore: "Anarquía total. Cada quien hace lo que bien le parece. Cuando Israel clama en la oscuridad, la Providencia levanta jueces y libertadores improbables.",
+    secretPassword: "JUECES300",
+    acceptedPasswords: ["JUECES300", "JUSTICIA", "GEDEON300"],
+    passwordHint: "El ejército escogido por Dios que venció a los madianitas con cántaros de fuego = JUECES300",
     questions: [
       {
-        q: "¿Qué juez venció al ejército madianita con solo 300 hombres y vasijas con teas?",
-        options: ["Gedeón", "Sansón", "Barac"],
-        correct: 0
+        q: "LA PRUEBA DEL MANANTIAL DE HAROD: Gedeón redujo su ejército de 32,000 a solo 300 soldados que bebieron agua vigilando con cántaros y teas. ¿Por qué Dios eligió a 300 vigilantes en vez de una multitud descuidada?",
+        options: [
+          "Porque la victoria no depende de la fuerza numérica, sino de la disciplina, la vigilancia y la confianza ciega en Dios.",
+          "Porque 300 soldados eran más veloces para salir huyendo si la batalla se complicaba.",
+          "Porque los madianitas se asustaban más si veían menos soldados en el campo de batalla."
+        ],
+        correct: 0,
+        explanation: "Dios usa la fidelidad y la vigilancia de pocos valientes para desarmar a ejércitos gigantescos."
       },
       {
-        q: "¿Quién fue la gran profetisa y jueza que impartió justicia bajo la palmera?",
-        options: ["Rut", "Débora", "Ester"],
-        correct: 1
+        q: "LA PALMERA DE DÉBORA Y LOS CARROS DE HIERRO: El general Sísara atacó con 900 carros de hierro forjado. Barac no se atrevió a luchar sin Débora, quien profetizó que la fe movería la tormenta divina. ¿Qué principio táctico demuestra esta victoria?",
+        options: [
+          "Que ningún poder material o intimidación escolar puede derrotar a un liderazgo firme fundado en la verdad divina.",
+          "Que siempre es más inteligente rendirse cuando el adversario tiene mejores recursos económicos.",
+          "Que el valor de un líder se mide únicamente por la cantidad de armas y fuerza física que posee."
+        ],
+        correct: 0,
+        explanation: "La sabiduría y la convicción espiritual de Débora prevalecieron sobre la maquinaria bélica más temida de su tiempo."
       },
       {
-        q: "¿Cuál fue el error de Sansón que causó la pérdida de su consagración y fuerza?",
-        options: ["Falta de armas", "Ceder a sus impulsos y quebrar su pacto", "Miedo al combate"],
-        correct: 1
+        q: "LA TRAGEDIA DE SANSÓN Y LA ROCA DE ETAM: Sansón venció a ejércitos enteros con una quijada, pero sucumbió ante sus impulsos y rencores personales con Dalila. ¿Cuál es el mayor peligro del guerrero que vence a todos menos a su propio ego?",
+        options: [
+          "Que puedes tener talentos prodigiosos, pero si careces de dominio propio y lealtad, tu orgullo destruirá tu destino.",
+          "Que Sansón perdió su fuerza porque le faltó entrenamiento militar con armaduras de acero.",
+          "Que la fuerza muscular siempre garantiza un liderazgo respetado y admirado por todos."
+        ],
+        correct: 0,
+        explanation: "El dominio propio es la mayor victoria: vencer a mil enemigos no sirve de nada si pierdes tu alma ante tus pasiones."
       }
     ]
   },
@@ -222,23 +698,40 @@ const soloMissions = [
     title: "MISIÓN 3: EL ASCENSO DE LA CORONA",
     theme: "LOS REYES DE ISRAEL",
     videoUrl: "https://www.canva.com/design/DAHWHQ6Tcnw/51zOo9S2VlPP2lY6o_bDdQ/watch?embed",
-    lore: "El pueblo exige un monarca humano. La historia de tres coronas: Saúl el soberbio, David el pastor según el corazón de Dios y Salomón el sabio.",
-    secretWord: "CORONA",
+    lore: "Israel exige un rey humano. Tres monarcas forjan el destino del pueblo: Saúl el soberbio, David el pastor según el corazón de Dios y Salomón el sabio constructor.",
+    secretPassword: "CORONA777",
+    acceptedPasswords: ["CORONA777", "CORONA", "DAVID7"],
+    passwordHint: "El cetro real y la unción eterna del linaje de David = CORONA777",
     questions: [
       {
-        q: "¿Quién fue el primer rey de Israel, ungido pero luego desechado por su soberbia?",
-        options: ["Saúl", "David", "Roboam"],
-        correct: 0
+        q: "EL DESAFÍO EN EL VALLE DE ELA: Goliat desafió a Israel por 40 días. Saúl le ofreció a David su pesada armadura de bronce, pero David se la quitó diciendo: 'No puedo andar con esto'. ¿Por qué David rechazó la armadura de Saúl?",
+        options: [
+          "Porque la fe auténtica no necesita máscaras ni armaduras prestadas; el poder de Dios opera en quien eres verdaderamente.",
+          "Porque David quería impresionar al rey corriendo a gran velocidad sin nada de ropa protectora.",
+          "Porque la armadura de Saúl estaba rota y no tenía suficiente valor económico."
+        ],
+        correct: 0,
+        explanation: "Vencer gigantes no requiere copiar las tácticas del mundo, sino actuar con la fe y autenticidad que Dios te dio."
       },
       {
-        q: "¿Con qué armas derrotó el joven David al gigante Goliat en el valle de Ela?",
-        options: ["Espada y cota de malla", "Una honda y 5 piedras lisas", "Un carro de guerra"],
-        correct: 1
+        q: "LA CUEVA DE EN-GADI Y EL HONOR DE DAVID: Mientras Saúl lo perseguía a muerte, David tuvo la oportunidad de asesinarlo a traición en la cueva, pero solo cortó la orilla de su manto. ¿Qué lección de honor enseña David al no vengarse?",
+        options: [
+          "Que un líder según el corazón de Dios jamás aprovecha la debilidad del enemigo para traicionar sus principios con venganza.",
+          "Que David sintió pavor de que los guardias de Saúl despertaran y lo encerraran.",
+          "Que es mejor esperar a que otros hagan el trabajo sucio por nosotros."
+        ],
+        correct: 0,
+        explanation: "El perdón y el respeto al orden divino forjaron la grandeza de David: la venganza destruye la dignidad del vencedor."
       },
       {
-        q: "¿Qué pidió el rey Salomón en oración a Dios cuando comenzó su reinado?",
-        options: ["Riqueza y larga vida", "Sabiduría y entendimiento para juzgar", "Derrotar a sus rivales"],
-        correct: 1
+        q: "EL VEREDICTO SALOMÓNICO DE LA ESPADA: Dos mujeres reclamaban al mismo bebé recién nacido. Salomón pidió una espada para cortarlo a la mitad. La verdadera madre gritó: '¡Dénselo viva a ella!'. ¿Cómo revela Salomón la verdadera sabiduría?",
+        options: [
+          "Demostró que el amor genuino prefiere sacrificarse por la vida del otro antes que ver destrucción o división.",
+          "Comprobó que la amenaza de violencia siempre asusta a las personas débiles de carácter.",
+          "Buscaba impresionar a la corte real mostrando una orden sanguinaria e intimidante."
+        ],
+        correct: 0,
+        explanation: "La sabiduría divina discierne el corazón: el amor verdadero siempre elige proteger la vida por encima del beneficio propio."
       }
     ]
   },
@@ -248,33 +741,40 @@ const soloMissions = [
     title: "MISIÓN 4: VOCES DEL DESIERTO",
     theme: "LOS PROFETAS Y EL FUEGO DE LA VERDAD",
     videoUrl: "https://www.canva.com/design/DAHWugF3r_Y/CGzIAO7oBeFfkhz_SVDLvQ/watch?embed",
-    lore: "Los reyes han corrompido el trono. Yahveh levanta hombres y mujeres valientes: voces incansables que enfrentan imperios, defienden a los oprimidos y encienden el fuego de la justicia.",
-    secretWord: "FUEGO",
+    lore: "Los monarcas fallaron. Dios levanta profetas: hombres y mujeres que gritan verdades incómodas frente al poder de imperios opresores para despertar la justicia.",
+    secretPassword: "FUEGO18",
+    acceptedPasswords: ["FUEGO18", "FUEGO", "CARMELO450"],
+    passwordHint: "El milagro de Elías consumiendo el holocausto en 1 Reyes 18 = FUEGO18",
     questions: [
       {
-        q: "¿Qué profeta desafió a 450 falsos profetas en el Monte Carmelo enseñándonos a no seguir a la masa?",
-        options: ["Elías el Tesbita", "Eliseo", "Jonás"],
-        correct: 0
+        q: "LA CONFRONTACIÓN DEL MONTE CARMELO: 450 profetas de Baal bailaron y sangraron todo el día sin respuesta. Elías reconstruyó el altar con 12 piedras, derramó cántaros de agua y oró una sola vez. ¿Por qué Elías mojó el sacrificio antes de orar?",
+        options: [
+          "Para que no hubiera duda humana de que el fuego del cielo fue un milagro de Dios que vindica la verdad absoluta.",
+          "Porque el calor del desierto estaba secando la leña y necesitaba enfriar el altar.",
+          "Para apagar las chispas que los sacerdotes de Baal habían colocado en secreto."
+        ],
+        correct: 0,
+        explanation: "Cuando defiendes la verdad, no necesitas trucos ni trampas: la justicia de Dios resplandece ante la imposibilidad humana."
       },
       {
-        q: "¿Qué profeta fue arrojado al foso de los leones por negarse a violar su integridad en Babilonia?",
-        options: ["Daniel", "Ezequiel", "Jeremías"],
-        correct: 0
+        q: "EL DECRETO DE MEDOPERSIA Y EL FOSO DE LOS LEONES: Los sátrapas promulgaron una ley de pena de muerte para quien orase a Dios. Daniel abrió sus ventanas hacia Jerusalén y oró 3 veces al día como siempre. ¿Qué nos enseña Daniel frente a la presión escolar?",
+        options: [
+          "Que tus principios éticos y tu devoción no se apagan ni se esconden por miedo a las burlas o castigos del grupo.",
+          "Que Daniel desafió al rey porque quería provocar una rebelión militar en Babilonia.",
+          "Que orar en público te hace automáticamente superior a los demás compañeros."
+        ],
+        correct: 0,
+        explanation: "La firmeza moral de Daniel demostró que la lealtad a los valores divinos está por encima de cualquier presión social."
       },
       {
-        q: "¿Qué profeta defendió a los pobres y oprimidos clamando: 'Corra el juicio como las aguas'?",
-        options: ["Amós", "Oseas", "Habacuc"],
-        correct: 0
-      },
-      {
-        q: "¿Qué profeta sintetizó la vida justa en Miqueas 6:8 con justicia, misericordia y humildad?",
-        options: ["Miqueas", "Zacarías", "Malaquías"],
-        correct: 0
-      },
-      {
-        q: "¿Qué profeta perseveró proclamando la verdad a pesar de ser encarcelado y rechazado por todos?",
-        options: ["Jeremías", "Eliseo", "Hageo"],
-        correct: 0
+        q: "EL CLAMOR DE AMÓS CONTRA EL ABUSO SOCIAL: Amós, un campesino de Técoa, denunció a los corruptos en Samaria: 'Venden al justo por dinero y al pobre por un par de zapatos... corra la justicia como un torrente'. ¿Cómo se vive hoy el mensaje de Amós?",
+        options: [
+          "Levantando nuestra voz contra la discriminación, el acoso y la exclusión de cualquier compañero vulnerable en el colegio.",
+          "Comprando zapatillas caras para que nadie se burle de nuestra condición económica.",
+          "Permaneciendo callados cuando vemos a alguien sufrir para no meternos en problemas ajenos."
+        ],
+        correct: 0,
+        explanation: "La profecía bíblica no es predecir el futuro, es exigir justicia y defender al inocente en el presente."
       }
     ]
   },
@@ -284,23 +784,40 @@ const soloMissions = [
     title: "MISIÓN 5: HEROÍNAS DE LA FE",
     theme: "MUJERES VALIENTES DE ISRAEL",
     videoUrl: "https://www.canva.com/design/DAHUpFG0HGw/LtS7S0nuTMhG6sedKbanpw/watch?embed",
-    lore: "Donde los hombres vacilaron, la Providencia levantó mujeres leales y decididas. Estrategas de fe que salvaron a toda su nación.",
-    secretWord: "VALOR",
+    lore: "Donde los hombres vacilaron, la Providencia levantó mujeres leales y decididas. Estrategas de fe que cambiaron la historia de su nación.",
+    secretPassword: "VALIENTES12",
+    acceptedPasswords: ["VALIENTES12", "VALOR", "ESTER77"],
+    passwordHint: "El valor de Ester y la lealtad de Rut para las 12 tribus = VALIENTES12",
     questions: [
       {
-        q: "¿Qué mujer extranjera declaró lealtad diciendo: 'Tu pueblo será mi pueblo'?",
-        options: ["Rut la moabita", "Rahab", "Sara"],
-        correct: 0
+        q: "EL BANQUETE DE LA REINA ESTER: El malvado Amán firmó el decreto de exterminio. Presentarse ante el rey sin ser llamada significaba muerte inmediata. Ester ayunó 3 días y dijo: 'Si perezco, que perezca'. ¿Cuál fue la clave de su audacia?",
+        options: [
+          "Combinar preparación espiritual, paciencia estratégica y valentía extrema para denunciar la injusticia en el momento exacto.",
+          "Escapar disfrazada del palacio de Persia para salvarse sola y dejar que su pueblo enfrente la crisis.",
+          "Atacar militarmente la corte del emperador Asuero con espadas y soldados mercenarios."
+        ],
+        correct: 0,
+        explanation: "La valentía de Ester salvó a toda una nación: el coraje moral y la inteligencia desarman los planes más destructivos."
       },
       {
-        q: "¿Qué reina arriesgó su vida diciendo: 'Si perezco, que perezca' para salvar a su pueblo?",
-        options: ["Reina Ester", "Reina Vasti", "Atalía"],
-        correct: 0
+        q: "LA PRUDENCIA DE ABIGAIL FRENTE A LA GUERRA: El necio Nabal humilló a David. David cabalgaba con 400 hombres armados para destruir su casa. Abigail salió al paso con alimentos, se postró y le recordó que un futuro rey no debe mancharse con venganza. ¿Qué poder tiene su acto?",
+        options: [
+          "Demuestra que una intervención sabia, humilde y oportuna apaga fuegos de violencia antes de que causen tragedias irreparables.",
+          "Demuestra que es mejor huir y esconderse hasta que los soldados terminen de pelear.",
+          "Demuestra que regalar alimentos soluciona mágicamente los problemas de odio en el mundo."
+        ],
+        correct: 0,
+        explanation: "Abigail fue una estratega de paz: salvó decenas de vidas inocentes guiando a David a la sensatez y al perdón."
       },
       {
-        q: "¿Qué mujer prudente y sabia evitó con su intervención una sangrienta venganza de David?",
-        options: ["Abigail", "Betsabé", "Mical"],
-        correct: 0
+        q: "EL PACTO DE LEALTAD DE RUT EN BELÉN: Noemí le rogó a Rut que regresara a su tierra pagana. Rut respondió: 'Tu pueblo será mi pueblo, y tu Dios mi Dios'. Recogió espigas bajo el sol sin quejarse. ¿Qué fruto dio su lealtad incondicional?",
+        options: [
+          "Su fidelidad sin quejas la convirtió en la bisabuela del Rey David y antecesora directa de Jesucristo.",
+          "Le permitió volver a Moab convertida en una comerciante millonaria y famosa.",
+          "Le garantizó no tener que trabajar nunca más por el resto de su vida."
+        ],
+        correct: 0,
+        explanation: "La lealtad humilde y desinteresada de Rut trascendió generaciones, bendiciendo a la humanidad entera."
       }
     ]
   }
@@ -310,682 +827,1004 @@ function MarioBrosSoloGame({ missionIndex, studentAuth, onWin, onLose, onExit })
   const safeMissionIndex = (typeof missionIndex === 'number' && missionIndex >= 0 && missionIndex < soloMissions.length) ? missionIndex : 0;
   const mission = soloMissions[safeMissionIndex] || soloMissions[0];
   const questions = (Array.isArray(mission?.questions) && mission.questions.length > 0) ? mission.questions : [
-    { q: "¿Cuál es el principio supremo de este desafío?", options: ["Servicio y Justicia", "Egoísmo", "Indiferencia"], correct: 0 }
+    { q: "¿Cuál es el principio supremo de este desafío?", options: ["Servicio y Justicia", "Egoísmo", "Indiferencia"], correct: 0, explanation: "El servicio desinteresado es la base del reino." }
   ];
 
-  // Fases del minijuego: 'video_gate' | 'playing' | 'flagpole' | 'won' | 'lost'
+  // Fases: 'video_gate' | 'playing' | 'enigma_modal' | 'won' | 'lost'
   const [phase, setPhase] = useState('video_gate');
   const [videoCodeInput, setVideoCodeInput] = useState('');
   const [gateUnlocked, setGateUnlocked] = useState(Boolean(studentAuth?.isGodMode));
   const [gateError, setGateError] = useState('');
   const [showCodeHint, setShowCodeHint] = useState(false);
 
-  // Estados del juego estilo Mario Bros
-  const [qIndex, setQIndex] = useState(0);
-  const [scoreCoins, setScoreCoins] = useState(0);
-  const [currentLives, setCurrentLives] = useState(studentAuth?.isGodMode ? 999 : (studentAuth?.lives || 3));
-  
-  // Física del Personaje (Mario)
-  const [marioX, setMarioX] = useState(12); // porcentaje 5% - 92%
-  const [marioY, setMarioY] = useState(0); // px arriba del suelo (0 = en suelo)
-  const [facing, setFacing] = useState('right'); // 'left' | 'right'
-  const [isMoving, setIsMoving] = useState(false);
+  // Estados Arcade & Vidas
+  const [lives, setLives] = useState(studentAuth?.isGodMode ? 999 : (studentAuth?.lives || 3));
+  const [coins, setCoins] = useState(0);
+  const [scoreXP, setScoreXP] = useState(0);
+  const [gameTime, setGameTime] = useState(0);
+
+  // Power-ups
+  const [maxBombs, setMaxBombs] = useState(1);
+  const [blastRadius, setBlastRadius] = useState(1);
+  const [shieldSec, setShieldSec] = useState(0);
+  const [speedBoost, setSpeedBoost] = useState(false);
+
+  // Jugador (Coordenadas en cuadrícula 13x9)
+  const [playerX, setPlayerX] = useState(1);
+  const [playerY, setPlayerY] = useState(1);
+  const [facing, setFacing] = useState('down'); // 'up' | 'down' | 'left' | 'right'
   const [isJumping, setIsJumping] = useState(false);
-  const [isHit, setIsHit] = useState(false);
-  
-  // Bloques interactivos [?]
-  const [hitBlock, setHitBlock] = useState(null);
-  const [evaluating, setEvaluating] = useState(false);
-  const [blockStatus, setBlockStatus] = useState({}); // { 0: 'hit_correct' | 'hit_wrong' }
-  const [coinEffect, setCoinEffect] = useState(null); // { idx, type: 'correct'|'wrong' }
+  const [isInvulnerable, setIsInvulnerable] = useState(false);
 
-  // Enemigo patrullando (Goomba)
-  const [goombaX, setGoombaX] = useState(62);
-  const [goombaDir, setGoombaDir] = useState(1);
-  const [goombaStomped, setGoombaStomped] = useState(false);
+  // Cuadrícula Bomberman (13 cols x 9 rows)
+  // Tipos: 'WALL' | 'BLOCK' | 'EMPTY' | 'ALTAR' | 'PORTAL'
+  const COLS = 13;
+  const ROWS = 9;
+  const ALTAR_COORDS = [
+    { x: 11, y: 1 }, // Altar 1 (Esquina superior derecha)
+    { x: 5, y: 4 },  // Altar 2 (Centro sagrado)
+    { x: 1, y: 7 }   // Altar 3 (Cripta inferior izquierda)
+  ];
+  const PORTAL_COORD = { x: 11, y: 7 }; // Portal de Victoria (Esquina inferior derecha)
 
-  // Celebración Bandera y Castillo
-  const [flagDropped, setFlagDropped] = useState(false);
+  const [grid, setGrid] = useState(() => {
+    const initial = [];
+    for (let r = 0; r < ROWS; r++) {
+      const row = [];
+      for (let c = 0; c < COLS; c++) {
+        // Muros exteriores
+        if (r === 0 || r === ROWS - 1 || c === 0 || c === COLS - 1) {
+          row.push({ type: 'WALL', item: null });
+        }
+        // Pilares interiores indestructibles
+        else if (r % 2 === 0 && c % 2 === 0) {
+          row.push({ type: 'WALL', item: null });
+        }
+        // Altares sagrados
+        else if (ALTAR_COORDS.some(a => a.x === c && a.y === r)) {
+          const altarIdx = ALTAR_COORDS.findIndex(a => a.x === c && a.y === r);
+          row.push({ type: 'ALTAR', altarIdx, item: null });
+        }
+        // Portal de salida
+        else if (PORTAL_COORD.x === c && PORTAL_COORD.y === r) {
+          row.push({ type: 'PORTAL', item: null });
+        }
+        // Zona inicial de spawn del jugador libre
+        else if ((c === 1 && r === 1) || (c === 2 && r === 1) || (c === 1 && r === 2)) {
+          row.push({ type: 'EMPTY', item: null });
+        }
+        // Bloques destruibles con probabilidad de items
+        else if (Math.random() < 0.45) {
+          const rand = Math.random();
+          let item = null;
+          if (rand < 0.25) item = 'coin';
+          else if (rand < 0.35) item = 'fire';
+          else if (rand < 0.45) item = 'bomb';
+          else if (rand < 0.52) item = 'speed';
+          else if (rand < 0.58) item = 'shield';
+          else if (rand < 0.63) item = 'heart';
+          row.push({ type: 'BLOCK', item });
+        }
+        // Pasillo libre
+        else {
+          row.push({ type: 'EMPTY', item: null });
+        }
+      }
+      initial.push(row);
+    }
+    return initial;
+  });
 
-  // Controles activos
-  const keysRef = useRef({ left: false, right: false });
-  const animRef = useRef(null);
-  const marioPosRef = useRef({ x: 12, y: 0, vy: 0 });
+  // Bombas activas y Explosiones
+  const [bombs, setBombs] = useState([]); // [{ id, x, y, timer }]
+  const [explosions, setExplosions] = useState([]); // [{ id, tiles: [{x, y}] }]
 
-  const safeQIndex = Math.min(Math.max(0, qIndex), questions.length - 1);
-  const currentQuestion = questions[safeQIndex] || questions[0];
-  const blockPositions = [24, 50, 76]; // Porcentaje horizontal de los 3 bloques [ ? ]
+  // Sombras Enemigas Patrullando
+  const [enemies, setEnemies] = useState([
+    { id: 1, x: 9, y: 3, alive: true, dir: 'left' },
+    { id: 2, x: 3, y: 5, alive: true, dir: 'right' },
+    { id: 3, x: 7, y: 7, alive: true, dir: 'up' }
+  ]);
 
-  // Desbloqueo del video
+  // Estado de los 3 Altares
+  const [solvedAltars, setSolvedAltars] = useState([false, false, false]);
+  const [activeAltarIdx, setActiveAltarIdx] = useState(null);
+  const [enigmaAnswered, setEnigmaAnswered] = useState(false);
+  const [enigmaError, setEnigmaError] = useState('');
+
+  // Mensaje flotante de estado
+  const [hudBanner, setHudBanner] = useState('');
+
+  const showBanner = (msg, duration = 3000) => {
+    setHudBanner(msg);
+    setTimeout(() => setHudBanner(''), duration);
+  };
+
+  // ── DESBLOQUEO DEL VIDEO GATE CON CONTRASEÑA ÚNICA ──
   const handleUnlockVideoGate = (e) => {
     if (e && e.preventDefault) e.preventDefault();
     const code = videoCodeInput.trim().toUpperCase();
-    const validCodes = [
-      (mission.secretWord || '').toUpperCase(),
-      'EDER2026',
-      'ZAMITOECSA',
-      'ODISEA2026',
-      'EDER1A',
-      'EDER1B',
-      'EDER1C',
-      '1A',
-      '1B',
-      '1C',
-      'MAESTRO',
-      'SANTIDAD',
-      'JUSTICIA',
-      'CORONA',
-      'FUEGO',
-      'VALOR'
-    ];
+    const isMaster = studentAuth?.isGodMode || code === 'EDER2026' || code === 'ZAMITOECSA';
+    const isMissionMatch = mission.acceptedPasswords?.includes(code) || code === (mission.secretPassword || '').toUpperCase();
 
-    if (studentAuth?.isGodMode || validCodes.includes(code) || code.length >= 3) {
+    if (isMaster || isMissionMatch) {
       setGateUnlocked(true);
       setGateError('');
       playRetroSound('powerup');
+      showBanner('¡CÓDICE ACEPTADO! PREPÁRATE PARA LA AVENTURA BOMBERMAN');
     } else {
-      setGateError('Contraseña incorrecta. Mira el video, pídesela a tu docente o pulsa "Ver Pista".');
+      setGateError(`Código incorrecto para ${mission.title}. Solicita el código a tu docente o pulsa "Ver Pista".`);
       playRetroSound('hit');
     }
   };
 
-  // Salto de Mario
+  // ── SALTO DE MARIO ──
   const triggerJump = useCallback(() => {
-    if (phase !== 'playing' || evaluating) return;
-    if (marioPosRef.current.y <= 4) {
-      marioPosRef.current.vy = 15;
-      setIsJumping(true);
-      playRetroSound('jump');
-    }
-  }, [phase, evaluating]);
+    if (phase !== 'playing' || isJumping) return;
+    setIsJumping(true);
+    playRetroSound('jump');
+    setTimeout(() => {
+      setIsJumping(false);
+    }, 450);
+  }, [phase, isJumping]);
 
-  // Manejo de teclado
+  // ── COLOCAR BOMBA SAGRADA ──
+  const dropBomb = useCallback(() => {
+    if (phase !== 'playing') return;
+    // Verificar si ya hay una bomba en esa celda
+    if (bombs.some(b => b.x === playerX && b.y === playerY)) return;
+    // Verificar límite de bombas
+    if (bombs.length >= maxBombs) {
+      showBanner('¡Límite de bombas alcanzado! Espera la explosión o busca un item 💣', 1500);
+      return;
+    }
+
+    const newBomb = {
+      id: Date.now() + Math.random(),
+      x: playerX,
+      y: playerY,
+      radius: blastRadius,
+      createdAt: Date.now()
+    };
+
+    setBombs(prev => [...prev, newBomb]);
+    playRetroSound('bomb_drop');
+  }, [phase, bombs, playerX, playerY, maxBombs, blastRadius]);
+
+  // ── MOVIMIENTO DEL JUGADOR ──
+  const movePlayer = useCallback((dx, dy, dirName) => {
+    if (phase !== 'playing') return;
+    setFacing(dirName);
+
+    const nx = playerX + dx;
+    const ny = playerY + dy;
+
+    // Límites
+    if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) return;
+
+    const cell = grid[ny]?.[nx];
+    if (!cell) return;
+
+    // Muros o bloques destruibles bloquean el paso (a menos que salte)
+    if (cell.type === 'WALL') return;
+    if (cell.type === 'BLOCK') return;
+
+    // Verificar si hay una bomba en la celda destino
+    if (bombs.some(b => b.x === nx && b.y === ny) && !isJumping) return;
+
+    // Movimiento exitoso
+    setPlayerX(nx);
+    setPlayerY(ny);
+
+    // Recoger item si hay
+    if (cell.item) {
+      const it = cell.item;
+      // Limpiar item de la celda
+      setGrid(prev => {
+        const next = prev.map(row => [...row]);
+        next[ny][nx] = { ...next[ny][nx], item: null };
+        return next;
+      });
+
+      if (it === 'coin') {
+        playRetroSound('coin');
+        setCoins(c => c + 1);
+        setScoreXP(s => s + 25);
+        showBanner('🪙 ¡Moneda del Templo recogida! +25 XP', 1500);
+      } else if (it === 'fire') {
+        playRetroSound('powerup');
+        setBlastRadius(r => Math.min(3, r + 1));
+        showBanner('🔥 ¡Fuego Sagrado aumentado! Mayor radio de explosión', 2000);
+      } else if (it === 'bomb') {
+        playRetroSound('powerup');
+        setMaxBombs(b => Math.min(3, b + 1));
+        showBanner('💣 ¡Bolsa de Bombas! Puedes colocar +1 bomba simultánea', 2000);
+      } else if (it === 'speed') {
+        playRetroSound('powerup');
+        setSpeedBoost(true);
+        showBanner('⚡ ¡Sandalias de Asael! Velocidad aumentada', 2000);
+      } else if (it === 'shield') {
+        playRetroSound('secret');
+        setShieldSec(12);
+        showBanner('🛡️ ¡Escudo de Fe activo! Invulnerabilidad por 12s', 2500);
+      } else if (it === 'heart') {
+        playRetroSound('powerup');
+        setLives(l => (studentAuth?.isGodMode ? 999 : Math.min(5, l + 1)));
+        showBanner('❤️ ¡Vida recuperada!', 1500);
+      }
+    }
+
+    // Verificar si pisó un Altar
+    if (cell.type === 'ALTAR') {
+      const idx = cell.altarIdx;
+      if (!solvedAltars[idx]) {
+        setActiveAltarIdx(idx);
+        setEnigmaAnswered(false);
+        setEnigmaError('');
+        setPhase('enigma_modal');
+        playRetroSound('secret');
+      } else {
+        showBanner(`✨ Altar N° ${idx + 1} ya fue consagrado y bendecido`, 1500);
+      }
+    }
+
+    // Verificar si pisó el Portal de Victoria
+    if (cell.type === 'PORTAL') {
+      const allSolved = solvedAltars.every(Boolean);
+      if (allSolved) {
+        setPhase('won');
+        playRetroSound('win');
+        if (onWin) onWin(scoreXP + 50);
+      } else {
+        const solvedCount = solvedAltars.filter(Boolean).length;
+        showBanner(`🔒 El Portal de Gloria está sellado. Consagra los 3 Altares primero (${solvedCount}/3)`, 2500);
+      }
+    }
+  }, [phase, playerX, playerY, grid, bombs, isJumping, solvedAltars, scoreXP, studentAuth, onWin]);
+
+  // ── DETECCIÓN DE TECLADO ──
   useEffect(() => {
     if (phase !== 'playing') return;
 
     const handleKeyDown = (e) => {
-      if (e.repeat) return;
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-        keysRef.current.left = true;
-        setFacing('left');
-      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-        keysRef.current.right = true;
-        setFacing('right');
-      } else if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', ' ', 'b', 'B'].includes(e.key)) {
         e.preventDefault();
-        triggerJump();
       }
-    };
 
-    const handleKeyUp = (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
-        keysRef.current.left = false;
+      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+        movePlayer(0, -1, 'up');
+      } else if (e.key === 'ArrowDown' || e.key === 's' || e.key === 'S') {
+        movePlayer(0, 1, 'down');
+      } else if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        movePlayer(-1, 0, 'left');
       } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
-        keysRef.current.right = false;
+        movePlayer(1, 0, 'right');
+      } else if (e.key === ' ' || e.key === 'j' || e.key === 'J') {
+        triggerJump();
+      } else if (e.key === 'b' || e.key === 'B' || e.key === 'k' || e.key === 'K' || e.key === 'Enter') {
+        dropBomb();
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, [phase, triggerJump]);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [phase, movePlayer, triggerJump, dropBomb]);
 
-  // Verificación de impacto en el bloque [ ? ]
-  const checkBlockHit = useCallback((blockIdx) => {
-    if (evaluating) return;
-    setHitBlock(blockIdx);
-    setEvaluating(true);
-
-    const isCorrect = blockIdx === currentQuestion.correct;
-    setCoinEffect({ idx: blockIdx, type: isCorrect ? 'correct' : 'wrong' });
-
-    if (isCorrect) {
-      playRetroSound('coin');
-      setScoreCoins(c => c + 1);
-      setBlockStatus(prev => ({ ...prev, [blockIdx]: 'hit_correct' }));
-
-      setTimeout(() => {
-        setCoinEffect(null);
-        setHitBlock(null);
-        setEvaluating(false);
-
-        if (safeQIndex + 1 >= questions.length) {
-          // Secuencia de victoria con Bandera y Castillo
-          setPhase('flagpole');
-          playRetroSound('win');
-          setTimeout(() => {
-            setFlagDropped(true); // Baja la bandera
-            setTimeout(() => {
-              setPhase('won');
-              if (onWin) onWin(50);
-            }, 1800);
-          }, 600);
-        } else {
-          setQIndex(q => q + 1);
-          setBlockStatus({});
-          marioPosRef.current.x = 12;
-          setMarioX(12);
-        }
-      }, 900);
-    } else {
-      playRetroSound('hit');
-      setIsHit(true);
-      setBlockStatus(prev => ({ ...prev, [blockIdx]: 'hit_wrong' }));
-      const newLives = (currentLives || 3) - 1;
-      setCurrentLives(newLives);
-
-      setTimeout(() => {
-        setIsHit(false);
-        setCoinEffect(null);
-        setHitBlock(null);
-        setEvaluating(false);
-
-        if (newLives <= 0 && !studentAuth?.isGodMode) {
-          setPhase('lost');
-          if (onLose) onLose(-30);
-        }
-      }, 1000);
-    }
-  }, [evaluating, currentQuestion, questions.length, safeQIndex, currentLives, studentAuth, onWin, onLose]);
-
-  // Selección automática al hacer click en un bloque o cartel
-  const handleRunToBlock = (idx) => {
-    if (evaluating || phase !== 'playing') return;
-    const targetX = blockPositions[idx];
-    setEvaluating(true);
-    setHitBlock(idx);
-
-    let currentX = marioPosRef.current.x;
-    const step = targetX > currentX ? 1.6 : -1.6;
-    setFacing(targetX > currentX ? 'right' : 'left');
-    setIsMoving(true);
-
-    const runInterval = setInterval(() => {
-      currentX += step;
-      marioPosRef.current.x = currentX;
-      setMarioX(currentX);
-
-      if (Math.abs(currentX - targetX) <= 2.5) {
-        clearInterval(runInterval);
-        marioPosRef.current.x = targetX;
-        setMarioX(targetX);
-        setIsMoving(false);
-        // Salto directo hacia el bloque
-        marioPosRef.current.vy = 15;
-        setIsJumping(true);
-        playRetroSound('jump');
-
-        setTimeout(() => {
-          checkBlockHit(idx);
-        }, 320);
-      }
-    }, 25);
-  };
-
-  // Bucle de Física a 60 FPS
+  // ── CRONÓMETRO DE JUEGO Y ESCUDO ──
   useEffect(() => {
     if (phase !== 'playing') return;
+    const timer = setInterval(() => {
+      setGameTime(t => t + 1);
+      setShieldSec(s => Math.max(0, s - 1));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [phase]);
 
-    const loop = () => {
-      // Movimiento horizontal
-      let newX = marioPosRef.current.x;
-      let moving = false;
-      if (keysRef.current.left) {
-        newX = Math.max(5, newX - 0.75);
-        moving = true;
-      }
-      if (keysRef.current.right) {
-        newX = Math.min(92, newX + 0.75);
-        moving = true;
-      }
-      marioPosRef.current.x = newX;
-      setMarioX(newX);
-      setIsMoving(moving);
+  // ── DETONACIÓN DE BOMBAS Y CÁLCULO DE EXPLOSIÓN EN CRUZ ──
+  useEffect(() => {
+    if (phase !== 'playing') return;
+    const bombInterval = setInterval(() => {
+      const now = Date.now();
+      const readyBombs = bombs.filter(b => now - b.createdAt >= 2200);
 
-      // Salto y Gravedad
-      let newY = marioPosRef.current.y + marioPosRef.current.vy;
-      let newVy = marioPosRef.current.vy - 0.85;
+      if (readyBombs.length > 0) {
+        readyBombs.forEach(b => {
+          // Generar celdas de la explosión
+          const expTiles = [{ x: b.x, y: b.y }];
+          const directions = [
+            { dx: 0, dy: -1 }, // Arriba
+            { dx: 0, dy: 1 },  // Abajo
+            { dx: -1, dy: 0 }, // Izquierda
+            { dx: 1, dy: 0 }   // Derecha
+          ];
 
-      if (newY <= 0) {
-        newY = 0;
-        newVy = 0;
-        setIsJumping(false);
-      }
-      marioPosRef.current.y = newY;
-      marioPosRef.current.vy = newVy;
-      setMarioY(newY);
+          setGrid(prev => {
+            const next = prev.map(row => [...row]);
+            directions.forEach(({ dx, dy }) => {
+              for (let step = 1; step <= (b.radius || 1); step++) {
+                const tx = b.x + dx * step;
+                const ty = b.y + dy * step;
 
-      // Detección de colisión con bloques [ ? ] cuando Mario salta desde abajo
-      if (!evaluating && newVy > 0 && newY >= 105 && newY <= 150) {
-        for (let i = 0; i < blockPositions.length; i++) {
-          if (Math.abs(newX - blockPositions[i]) <= 7.5) {
-            marioPosRef.current.vy = -3; // Rebote hacia abajo
-            checkBlockHit(i);
-            break;
+                if (tx < 0 || tx >= COLS || ty < 0 || ty >= ROWS) break;
+                const target = next[ty][tx];
+
+                // Los muros indestructibles detienen el fuego
+                if (target.type === 'WALL') break;
+
+                // Si es un bloque destruible, se rompe y revela su item
+                if (target.type === 'BLOCK') {
+                  expTiles.push({ x: tx, y: ty });
+                  next[ty][tx] = { type: 'EMPTY', item: target.item };
+                  break; // El bloque absorbe la llama y detiene el rayo
+                }
+
+                // Si es pasillo libre, la llama continúa
+                expTiles.push({ x: tx, y: ty });
+              }
+            });
+            return next;
+          });
+
+          // Agregar efecto visual de explosión
+          const expId = Date.now() + Math.random();
+          setExplosions(prev => [...prev, { id: expId, tiles: expTiles }]);
+          playRetroSound('explosion');
+
+          // Verificar daño al jugador si está en el radio y no salta ni tiene escudo
+          const hitPlayer = expTiles.some(t => t.x === playerX && t.y === playerY);
+          if (hitPlayer && !isJumping && shieldSec <= 0 && !isInvulnerable && !studentAuth?.isGodMode) {
+            setLives(l => {
+              const nl = l - 1;
+              if (nl <= 0) setPhase('lost');
+              return nl;
+            });
+            playRetroSound('hit');
+            setIsInvulnerable(true);
+            setTimeout(() => setIsInvulnerable(false), 2000);
           }
-        }
-      }
 
-      // Patrulla del Goomba
-      if (!goombaStomped) {
-        setGoombaX(gx => {
-          let nextGx = gx + 0.16 * goombaDir;
-          if (nextGx > 85) setGoombaDir(-1);
-          if (nextGx < 30) setGoombaDir(1);
-          return nextGx;
+          // Verificar daño a enemigos
+          setEnemies(prev => prev.map(en => {
+            if (!en.alive) return en;
+            const hitEnemy = expTiles.some(t => t.x === en.x && t.y === en.y);
+            if (hitEnemy) {
+              setScoreXP(s => s + 50);
+              showBanner('💥 ¡Sombra del Caos desintegrada! +50 XP', 1500);
+              return { ...en, alive: false };
+            }
+            return en;
+          }));
+
+          // Remover la animación de explosión tras 600ms
+          setTimeout(() => {
+            setExplosions(prev => prev.filter(e => e.id !== expId));
+          }, 600);
         });
 
-        // Colisión con Goomba
-        if (Math.abs(newX - goombaX) < 4.5 && newY < 25 && !evaluating && !isHit) {
-          if (newVy < 0 && newY > 12) {
-            // Mario salta sobre el Goomba (pisotón)
-            setGoombaStomped(true);
-            playRetroSound('coin');
-            marioPosRef.current.vy = 10;
-            setTimeout(() => setGoombaStomped(false), 3000);
-          } else {
-            // Mario choca de costado con Goomba
-            setIsHit(true);
-            playRetroSound('hit');
-            const newLives = (currentLives || 3) - 1;
-            setCurrentLives(newLives);
-            marioPosRef.current.vy = 8;
-            setTimeout(() => setIsHit(false), 1200);
-            if (newLives <= 0 && !studentAuth?.isGodMode) {
-              setPhase('lost');
-              if (onLose) onLose(-30);
-            }
-          }
-        }
+        // Remover las bombas que ya explotaron
+        setBombs(prev => prev.filter(b => now - b.createdAt < 2200));
       }
+    }, 200);
 
-      animRef.current = requestAnimationFrame(loop);
-    };
+    return () => clearInterval(bombInterval);
+  }, [phase, bombs, playerX, playerY, isJumping, shieldSec, isInvulnerable, studentAuth]);
 
-    animRef.current = requestAnimationFrame(loop);
-    return () => {
-      if (animRef.current) cancelAnimationFrame(animRef.current);
-    };
-  }, [phase, evaluating, goombaDir, goombaX, goombaStomped, isHit, currentLives, studentAuth, checkBlockHit, onLose]);
+  // ── MOVIMIENTO DE ENEMIGOS ──
+  useEffect(() => {
+    if (phase !== 'playing') return;
+    const enemyInterval = setInterval(() => {
+      setEnemies(prev => prev.map(en => {
+        if (!en.alive) return en;
 
+        const dirs = [
+          { dx: 0, dy: -1, name: 'up' },
+          { dx: 0, dy: 1, name: 'down' },
+          { dx: -1, dy: 0, name: 'left' },
+          { dx: 1, dy: 0, name: 'right' }
+        ];
+
+        // Intentar seguir la misma dirección o elegir una aleatoria si choca
+        const currentDir = dirs.find(d => d.name === en.dir) || dirs[0];
+        const nx = en.x + currentDir.dx;
+        const ny = en.y + currentDir.dy;
+
+        const cell = grid[ny]?.[nx];
+        const canMove = cell && cell.type !== 'WALL' && cell.type !== 'BLOCK' && !bombs.some(b => b.x === nx && b.y === ny);
+
+        if (canMove && Math.random() < 0.7) {
+          return { ...en, x: nx, y: ny };
+        } else {
+          // Cambiar dirección aleatoriamente
+          const validDirs = dirs.filter(d => {
+            const tx = en.x + d.dx;
+            const ty = en.y + d.dy;
+            const c = grid[ty]?.[tx];
+            return c && c.type !== 'WALL' && c.type !== 'BLOCK' && !bombs.some(b => b.x === tx && b.y === ty);
+          });
+          if (validDirs.length > 0) {
+            const chosen = validDirs[Math.floor(Math.random() * validDirs.length)];
+            return { ...en, x: en.x + chosen.dx, y: en.y + chosen.dy, dir: chosen.name };
+          }
+          return en;
+        }
+      }));
+    }, 650);
+
+    return () => clearInterval(enemyInterval);
+  }, [phase, grid, bombs]);
+
+  // ── COLISIÓN JUGADOR CON ENEMIGOS ──
+  useEffect(() => {
+    if (phase !== 'playing' || isJumping || shieldSec > 0 || isInvulnerable || studentAuth?.isGodMode) return;
+
+    const hitByEnemy = enemies.some(en => en.alive && en.x === playerX && en.y === playerY);
+    if (hitByEnemy) {
+      setLives(l => {
+        const nl = l - 1;
+        if (nl <= 0) setPhase('lost');
+        return nl;
+      });
+      playRetroSound('hit');
+      setIsInvulnerable(true);
+      showBanner('⚠️ ¡Alerta! Una Sombra del Desierto te ha atacado (-1 ❤️)', 2000);
+      setTimeout(() => setIsInvulnerable(false), 2000);
+    }
+  }, [phase, playerX, playerY, enemies, isJumping, shieldSec, isInvulnerable, studentAuth]);
+
+  // ── RESPUESTA EN EL ALTAR SAGRADO ──
+  const handleAnswerEnigma = (optIdx) => {
+    if (activeAltarIdx === null) return;
+    const q = questions[activeAltarIdx % questions.length];
+
+    if (optIdx === q.correct) {
+      playRetroSound('win');
+      setSolvedAltars(prev => {
+        const next = [...prev];
+        next[activeAltarIdx] = true;
+        return next;
+      });
+      setScoreXP(s => s + 50);
+      setEnigmaAnswered(true);
+      setEnigmaError('');
+
+      setTimeout(() => {
+        setPhase('playing');
+        setActiveAltarIdx(null);
+        setEnigmaAnswered(false);
+        const nextSolved = solvedAltars.filter(Boolean).length + 1;
+        if (nextSolved >= 3) {
+          showBanner('✨ ¡LOS 3 ALTARES CONSAGRADOS! Corre al Portal Sagrado en la esquina inferior derecha ⛩️', 5000);
+        } else {
+          showBanner(`🏛️ ¡Altar N° ${activeAltarIdx + 1} superado con éxito! (+50 XP)`, 2500);
+        }
+      }, 1500);
+    } else {
+      playRetroSound('hit');
+      setLives(l => {
+        const nl = l - 1;
+        if (nl <= 0) setPhase('lost');
+        return nl;
+      });
+      setEnigmaError(`Respuesta no aprobada por los sabios. Pista: ${q.explanation}`);
+    }
+  };
+
+  // Helper para verificar si una celda está en fuego de explosión
+  const isCellExploding = (x, y) => {
+    return explosions.some(exp => exp.tiles.some(t => t.x === x && t.y === y));
+  };
+
+  // ═══════════════════════════════════════════════════════════════
+  // RENDER DEL COMPONENTE
+  // ═══════════════════════════════════════════════════════════════
   return (
-    <div className="fixed inset-0 z-[99999] bg-[#5c94fc] flex flex-col font-mono overflow-hidden select-none">
-      
-      {/* ── FASE 1: VIDEO OBLIGATORIO Y DESBLOQUEO ── */}
-      {phase === 'video_gate' && (
-        <div className="absolute inset-0 z-50 bg-[#070913]/95 backdrop-blur-md flex flex-col items-center justify-between p-4 md:p-8 overflow-y-auto custom-scrollbar">
-          <div className="w-full max-w-4xl flex justify-between items-center mb-4">
-            <div>
-              <span className="bg-amber-600 text-white font-black text-xs px-3 py-1 rounded-full uppercase tracking-widest">{mission.worldNum} • MODO SOLO</span>
-              <h2 className="text-2xl md:text-4xl font-black text-white uppercase tracking-wider mt-1">{mission.title}</h2>
-              <p className="text-amber-400 text-xs md:text-sm font-bold uppercase">{mission.theme}</p>
-            </div>
-            <button onClick={onExit} className="bg-red-600 hover:bg-red-500 text-white font-black px-4 py-2 rounded-xl text-xs uppercase cursor-pointer border-2 border-black shadow-[3px_3px_0_#000]">SALIR</button>
-          </div>
+    <div className="min-h-screen bg-[#030408] text-white font-sans flex flex-col relative select-none overflow-x-hidden">
 
-          {/* Reproductor de Video Canva */}
-          <div className="w-full max-w-4xl bg-black rounded-2xl overflow-hidden border-4 border-amber-500/50 shadow-[0_0_40px_rgba(245,158,11,0.25)] relative mb-6">
-            <div className="bg-amber-950/80 px-4 py-2 border-b border-amber-500/30 flex items-center justify-between">
-              <span className="text-amber-300 font-bold text-xs uppercase tracking-widest flex items-center gap-2">📺 VIDEO OBLIGATORIO DE LA MISIÓN</span>
-              <span className="text-[10px] text-slate-400 uppercase">TRANSMISIÓN EDUCATIVA</span>
+      {/* ── 1. FASE: VIDEO GATE Y CÓDICE DE SEGURIDAD ── */}
+      {phase === 'video_gate' && (
+        <div className="flex-grow flex flex-col items-center justify-center p-4 md:p-8 bg-gradient-to-b from-[#060810] via-[#090b16] to-[#030408] relative">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-600/10 via-transparent to-black pointer-events-none"></div>
+
+          <div className="relative z-10 w-full max-w-4xl bg-[#0c0e1a]/95 border-2 border-amber-500/50 rounded-3xl p-6 md:p-10 shadow-[0_0_60px_rgba(245,158,11,0.2)] flex flex-col items-center">
+            
+            {/* Header del Reto */}
+            <div className="flex flex-col md:flex-row items-center justify-between w-full border-b border-amber-900/40 pb-6 mb-6 gap-4">
+              <div className="text-center md:text-left">
+                <span className="bg-amber-900/40 text-amber-300 text-[10px] md:text-xs font-black uppercase tracking-[0.3em] px-4 py-1.5 rounded-full border border-amber-600/40">
+                  MODO ESTUDIANTE • {mission.worldNum}
+                </span>
+                <h2 className="text-2xl md:text-4xl font-black text-white uppercase tracking-tight mt-2">
+                  {mission.title}
+                </h2>
+                <p className="text-amber-400 text-xs md:text-sm font-bold uppercase tracking-widest mt-1">
+                  TEMA: {mission.theme}
+                </p>
+              </div>
+
+              <button 
+                onClick={onExit} 
+                className="bg-black/60 hover:bg-red-950 text-slate-400 hover:text-white border border-slate-700 px-5 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer">
+                <ChevronRight className="rotate-180 w-4 h-4"/> Salir al Panel
+              </button>
             </div>
-            <div className="relative w-full aspect-video">
+
+            {/* Video de Canva de la Misión */}
+            <div className="w-full aspect-video bg-black rounded-2xl overflow-hidden border-2 border-amber-600/40 shadow-2xl relative mb-6">
               <iframe 
                 src={mission.videoUrl} 
-                className="w-full h-full border-none" 
+                className="w-full h-full border-0" 
                 allowFullScreen 
-                allow="autoplay; fullscreen; clipboard-write; encrypted-media"
+                title={mission.title}
               />
             </div>
-          </div>
 
-          {/* Lore y Desbloqueo */}
-          <div className="w-full max-w-4xl bg-[#0f111a] border-2 border-slate-800 p-6 rounded-2xl shadow-xl flex flex-col md:flex-row items-center gap-6">
-            <div className="flex-grow text-center md:text-left">
-              <h4 className="text-white font-black text-base uppercase mb-1">CÓDICE DE MISIÓN:</h4>
-              <p className="text-slate-300 text-xs md:text-sm italic leading-relaxed mb-2">"{mission.lore}"</p>
-              <p className="text-amber-400 text-[11px] font-bold uppercase">Observa el video y obtén la palabra clave que dio tu docente para entrar al nivel de Mario Bros.</p>
-              
-              {showCodeHint && (
-                <div className="mt-3 bg-amber-950/40 border border-amber-500/40 p-2.5 rounded-xl text-xs text-amber-300 flex items-center justify-between">
-                  <span>💡 Clave oficial de la misión: <strong className="text-white font-mono tracking-widest">{mission.secretWord}</strong></span>
+            {/* Lore Narrativo */}
+            <p className="text-slate-300 text-sm md:text-base italic text-center max-w-2xl mb-8 leading-relaxed font-serif border-l-2 border-r-2 border-amber-500/40 px-6">
+              "{mission.lore}"
+            </p>
+
+            {/* Formulario de Contraseña de Video */}
+            <div className="w-full max-w-md bg-[#121526] border border-amber-500/30 rounded-2xl p-6 shadow-xl flex flex-col items-center">
+              <h3 className="text-amber-400 font-black text-xs md:text-sm uppercase tracking-widest mb-2 flex items-center gap-2">
+                <Key className="w-4 h-4"/> CÓDICE SAGRADO DE LA MISIÓN
+              </h3>
+              <p className="text-slate-400 text-[11px] text-center mb-4 leading-relaxed">
+                Cada misión tiene su propia contraseña exclusiva entregada por tu docente en clase.
+              </p>
+
+              <form onSubmit={handleUnlockVideoGate} className="w-full space-y-3">
+                <input 
+                  type="text" 
+                  value={videoCodeInput} 
+                  onChange={(e) => setVideoCodeInput(e.target.value)} 
+                  placeholder="INGRESA EL CÓDICE AQUÍ..." 
+                  className="w-full bg-black/80 border-2 border-amber-600/60 rounded-xl px-4 py-3 text-center text-lg md:text-xl font-black text-white uppercase tracking-[0.2em] outline-none focus:border-amber-400 placeholder:text-slate-600"
+                />
+
+                {gateError && (
+                  <p className="text-red-400 text-xs font-bold text-center bg-red-950/50 p-2 rounded-lg border border-red-800">
+                    {gateError}
+                  </p>
+                )}
+
+                {showCodeHint && (
+                  <div className="bg-amber-950/40 border border-amber-500/40 p-3 rounded-xl text-amber-300 text-xs text-center animate-in fade-in">
+                    <p className="font-bold mb-1">💡 PISTA DEL PROFESOR:</p>
+                    <p className="text-slate-200 italic">{mission.passwordHint}</p>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                   <button 
-                    onClick={() => { setVideoCodeInput(mission.secretWord); setShowCodeHint(false); }}
-                    className="bg-amber-600 hover:bg-amber-500 text-black px-2.5 py-1 rounded text-[10px] font-black uppercase cursor-pointer">
-                    Usar
+                    type="button" 
+                    onClick={() => setShowCodeHint(!showCodeHint)} 
+                    className="bg-black/50 hover:bg-slate-900 text-amber-400 border border-amber-600/40 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-colors cursor-pointer">
+                    {showCodeHint ? 'Ocultar Pista' : '💡 Ver Pista'}
                   </button>
-                </div>
-              )}
-            </div>
 
-            <div className="shrink-0 w-full md:w-80 bg-black/60 border border-slate-700 p-4 rounded-xl">
-              {!gateUnlocked ? (
-                <form onSubmit={handleUnlockVideoGate} className="space-y-3">
-                  <label className="text-amber-400 text-[10px] font-black uppercase tracking-widest block text-center">🔑 CONTRASEÑA DE VIDEO</label>
-                  <input 
-                    type="text" 
-                    value={videoCodeInput} 
-                    onChange={e => setVideoCodeInput(e.target.value)} 
-                    placeholder="Escribe la clave..." 
-                    className="w-full bg-[#111424] border border-amber-500/50 rounded-lg px-3 py-2 text-white text-center text-sm font-mono tracking-widest outline-none focus:border-amber-400 uppercase"
-                  />
-                  {gateError && <p className="text-red-400 text-[10px] font-bold text-center leading-tight">{gateError}</p>}
                   <button 
                     type="submit" 
-                    className="w-full bg-amber-600 hover:bg-amber-500 text-black font-black uppercase py-2.5 rounded-lg text-xs tracking-wider transition-all cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.4)]">
-                    DESBLOQUEAR NIVEL
+                    className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-black uppercase tracking-wider py-3 rounded-xl text-xs shadow-[0_0_20px_rgba(245,158,11,0.5)] transition-all cursor-pointer hover:scale-[1.02]">
+                    DESBLOQUEAR RETO
                   </button>
-                  
-                  <div className="flex justify-between items-center pt-1 text-[10px]">
-                    <button 
-                      type="button" 
-                      onClick={() => setShowCodeHint(!showCodeHint)} 
-                      className="text-slate-400 hover:text-amber-400 underline cursor-pointer">
-                      Ver Pista
-                    </button>
-                    {studentAuth?.isGodMode && (
-                      <button 
-                        type="button" 
-                        onClick={() => { setGateUnlocked(true); playRetroSound('powerup'); }} 
-                        className="text-amber-400 hover:text-yellow-300 font-bold uppercase cursor-pointer">
-                        ⚡ Desbloqueo Maestro
-                      </button>
-                    )}
-                  </div>
-                </form>
-              ) : (
-                <div className="text-center space-y-3 animate-in zoom-in duration-300">
-                  <div className="bg-emerald-950/60 border border-emerald-500/50 text-emerald-400 text-xs font-black py-2 px-3 rounded-lg uppercase">
-                    ¡VIDEO APROBADO!
-                  </div>
+                </div>
+              </form>
+
+              {/* Acceso Directo si ya está desbloqueado */}
+              {gateUnlocked && (
+                <div className="mt-4 pt-4 border-t border-slate-700/50 w-full flex flex-col items-center animate-in zoom-in">
+                  <span className="text-emerald-400 text-xs font-black uppercase tracking-widest mb-2 flex items-center gap-1">
+                    <CheckCircle2 className="w-4 h-4"/> MISIÓN DESBLOQUEADA
+                  </span>
                   <button 
                     onClick={() => { setPhase('playing'); playRetroSound('powerup'); }} 
-                    className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-black uppercase py-3 rounded-xl text-sm tracking-widest transition-all cursor-pointer shadow-[0_0_25px_rgba(16,185,129,0.5)] animate-pulse">
-                    🎮 JUGAR MARIO BROS
+                    className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-[0.2em] py-3.5 rounded-xl shadow-[0_0_30px_rgba(16,185,129,0.5)] transition-all cursor-pointer text-sm hover:scale-[1.02]">
+                    🎮 ENTRAR AL RETO BOMBERMAN & MARIO
                   </button>
                 </div>
               )}
             </div>
+
           </div>
         </div>
       )}
 
-      {/* ── FASE 2: NIVEL ESTILO SUPER MARIO BROS (PLATAFORMA AUTÉNTICA) ── */}
-      {(phase === 'playing' || phase === 'flagpole' || phase === 'won' || phase === 'lost') && (
-        <div className="relative w-full h-full flex flex-col justify-between overflow-hidden">
-          
-          {/* Header Retro NES */}
-          <div className="relative z-40 p-3 md:px-8 flex justify-between items-start text-white drop-shadow-[2px_2px_0_#000] bg-black/40 border-b border-black">
-            <div>
-              <p className="font-black text-xs md:text-lg">MARIO / {studentAuth?.clanId === 'all' ? 'MAESTRO EDER' : studentAuth?.name}</p>
-              <p className="font-black text-[10px] md:text-xs text-yellow-300">CLAN: {studentAuth?.clanId?.toUpperCase() || 'SACRO'}</p>
-            </div>
-            <div className="text-center">
-              <p className="font-black text-xs md:text-base">XP COINS</p>
-              <p className="font-black text-sm md:text-xl text-yellow-300">🪙 x {scoreCoins * 50}</p>
-            </div>
-            <div className="text-center">
-              <p className="font-black text-xs md:text-base">MUNDO</p>
-              <p className="font-black text-sm md:text-xl">{mission.worldNum}</p>
-            </div>
-            <div className="text-right">
-              <p className="font-black text-xs md:text-base">VIDAS</p>
-              <p className="font-black text-sm md:text-xl text-red-400">
-                {studentAuth?.isGodMode ? '❤️ x 999' : `❤️ x ${Math.max(0, currentLives)}`}
-              </p>
-            </div>
-            <button 
-              onClick={onExit} 
-              className="ml-3 bg-red-600 hover:bg-red-500 text-white font-black px-3 py-1 rounded text-[11px] border-2 border-black shadow-[2px_2px_0_#000] cursor-pointer">
-              SALIR
-            </button>
-          </div>
+      {/* ── 2. FASE: JUEGO ACTIVO (ARENA BOMBERMAN + MARIO) ── */}
+      {phase === 'playing' && (
+        <div className="flex-grow flex flex-col items-center justify-center p-2 sm:p-4 bg-[#05060b] relative">
 
-          {/* Cartel de Pregunta Flotante en el Cielo */}
-          <div className="relative z-30 mx-auto w-11/12 max-w-3xl bg-black/90 border-4 border-white p-3 md:p-4 rounded-2xl text-center shadow-[6px_6px_0_rgba(0,0,0,0.5)] mt-1">
-            <p className="text-amber-400 text-[10px] md:text-xs font-black uppercase tracking-widest mb-1">
-              PREGUNTA {safeQIndex + 1} DE {questions.length} • ¡CORRE Y SALTA HACIA EL BLOQUE [ ? ]!
-            </p>
-            <h3 className="text-xs md:text-lg font-black text-white leading-snug">{currentQuestion.q}</h3>
-            <p className="text-slate-300 text-[9px] md:text-[11px] mt-1 font-bold">
-              🎮 Usa las flechas ◄ ► para correr y ESPACIO para saltar, o toca el control en pantalla.
-            </p>
-          </div>
-
-          {/* Cielo con nubes y fondo NES */}
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-20 left-12 w-28 h-10 bg-white rounded-full opacity-90 shadow-[inset_-4px_-4px_0_#d0d0d0]"></div>
-            <div className="absolute top-16 right-36 w-36 h-12 bg-white rounded-full opacity-90 shadow-[inset_-4px_-4px_0_#d0d0d0]"></div>
-            <div className="absolute top-32 right-1/2 w-24 h-8 bg-white rounded-full opacity-70"></div>
-            {/* Colinas verdes */}
-            <div className="absolute bottom-28 left-6 w-48 h-28 bg-[#00a800] rounded-t-full border-4 border-black"></div>
-            <div className="absolute bottom-28 right-20 w-64 h-36 bg-[#00d800] rounded-t-full border-4 border-black"></div>
-            {/* Tubo verde clásico */}
-            <div className="absolute bottom-28 right-8 w-16 h-20 bg-[#00a800] border-4 border-black z-10 flex flex-col items-center">
-              <div className="w-20 h-7 bg-[#00d800] border-4 border-black -mt-4 rounded-sm"></div>
-            </div>
-          </div>
-
-          {/* Los 3 Bloques de Preguntas [ ? ] con sus Carteles arriba */}
-          <div className="relative w-full h-56 z-20 flex justify-between items-end px-2 md:px-16 pointer-events-none">
-            {blockPositions.map((pos, idx) => {
-              const isHitThis = hitBlock === idx;
-              const status = blockStatus[idx];
-              return (
-                <div 
-                  key={idx} 
-                  onClick={() => handleRunToBlock(idx)}
-                  className="relative flex flex-col items-center pointer-events-auto cursor-pointer group" 
-                  style={{ position: 'absolute', left: `${pos}%`, transform: 'translateX(-50%)' }}
-                >
-                  {/* Cartel con la Opción arriba del bloque */}
-                  <div className={`mb-3 max-w-[125px] sm:max-w-[180px] md:max-w-[240px] bg-white border-4 border-black p-1.5 md:p-2.5 rounded-lg text-black font-black text-[9px] sm:text-xs md:text-sm text-center shadow-[4px_4px_0_#000] leading-tight transition-transform group-hover:scale-105 ${isHitThis ? 'bg-yellow-200 scale-110' : ''}`}>
-                    <span className="text-amber-800 font-black block text-[8px] md:text-[10px] uppercase">OPCIÓN {String.fromCharCode(65 + idx)}</span>
-                    {currentQuestion.options?.[idx] || `Opción ${idx + 1}`}
-                  </div>
-
-                  {/* Bloque de Interrogación [ ? ] */}
-                  <div 
-                    className={`w-14 h-14 md:w-20 md:h-20 border-4 border-black rounded shadow-[4px_4px_0_#000] flex items-center justify-center transition-all ${
-                      status === 'hit_correct' 
-                        ? 'bg-[#b86828] -translate-y-4' 
-                        : status === 'hit_wrong'
-                        ? 'bg-red-800 -translate-y-2'
-                        : isHitThis
-                        ? '-translate-y-4 bg-yellow-300'
-                        : 'bg-[#fc9838] animate-pulse hover:bg-yellow-400'
-                    }`}
-                  >
-                    {status === 'hit_correct' ? (
-                      <span className="text-white font-black text-2xl md:text-4xl">⭐</span>
-                    ) : status === 'hit_wrong' ? (
-                      <span className="text-white font-black text-2xl md:text-4xl">❌</span>
-                    ) : (
-                      <span className="text-black font-black text-3xl md:text-5xl drop-shadow-[1px_1px_0_#fff]">?</span>
-                    )}
-                  </div>
-
-                  {/* Moneda / Calavera que salta al golpear el bloque */}
-                  {coinEffect && coinEffect.idx === idx && (
-                    <div className="absolute -top-16 z-40 animate-bounce flex flex-col items-center">
-                      {coinEffect.type === 'correct' ? (
-                        <>
-                          <span className="text-4xl">🪙</span>
-                          <span className="text-yellow-300 font-black text-base md:text-xl drop-shadow-[2px_2px_0_#000]">+50 XP</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="text-4xl">💥</span>
-                          <span className="text-red-500 font-black text-base md:text-xl drop-shadow-[2px_2px_0_#000]">-1 VIDA</span>
-                        </>
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Goomba Enemigo patrullando */}
-          {!goombaStomped && (
-            <div 
-              className="absolute bottom-28 z-25 transition-transform"
-              style={{ left: `${goombaX}%`, transform: `translateX(-50%) scaleX(${goombaDir})` }}
-            >
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-[#8b4513] border-4 border-black rounded-t-full shadow-[3px_3px_0_#000] flex flex-col items-center justify-center relative">
-                <div className="flex gap-2">
-                  <div className="w-1.5 h-3 bg-white border border-black"></div>
-                  <div className="w-1.5 h-3 bg-white border border-black"></div>
-                </div>
-                <div className="absolute -bottom-1 flex justify-between w-full px-1">
-                  <div className="w-3 h-2 bg-black rounded-full"></div>
-                  <div className="w-3 h-2 bg-black rounded-full"></div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Bandera y Castillo para la fase final */}
-          {phase === 'flagpole' && (
-            <div className="absolute bottom-28 right-12 z-30 flex items-end">
-              {/* Asta de la Bandera */}
-              <div className="relative w-3 h-64 bg-amber-200 border-2 border-black flex flex-col justify-between">
-                <div className="w-7 h-7 bg-yellow-400 rounded-full border-2 border-black -top-4 -left-2 absolute"></div>
-                {/* Bandera deslizante */}
-                <div 
-                  className="absolute left-3 w-14 h-10 bg-green-500 border-2 border-black transition-all duration-1000 flex items-center justify-center text-xs font-black text-white"
-                  style={{ top: flagDropped ? '190px' : '10px' }}
-                >
-                  ODISEA
-                </div>
-              </div>
-              {/* Castillo */}
-              <div className="ml-8 w-28 h-32 bg-[#c84c0c] border-4 border-black relative flex flex-col items-center justify-end">
-                <div className="absolute -top-6 flex justify-between w-full px-2">
-                  <div className="w-5 h-6 bg-[#c84c0c] border-2 border-black"></div>
-                  <div className="w-5 h-6 bg-[#c84c0c] border-2 border-black"></div>
-                  <div className="w-5 h-6 bg-[#c84c0c] border-2 border-black"></div>
-                </div>
-                <div className="w-10 h-16 bg-black rounded-t-full"></div>
-              </div>
-            </div>
-          )}
-
-          {/* Personaje Mario / Recluta corriendo y saltando con físicas reales */}
-          <div 
-            className={`absolute bottom-28 z-30 transition-opacity ${isHit ? 'opacity-40 animate-pulse' : 'opacity-100'}`}
-            style={{ 
-              left: `${marioX}%`, 
-              bottom: `calc(7rem + ${marioY}px)`,
-              transform: `translateX(-50%) scaleX(${facing === 'left' ? -1 : 1})`
-            }}
-          >
-            <div className="relative flex flex-col items-center">
-              {/* Gorra y Cabeza de Mario */}
-              <div className={`w-12 h-12 md:w-16 md:h-16 ${studentAuth?.isGodMode ? 'bg-yellow-500' : 'bg-red-600'} border-4 border-black rounded-2xl shadow-[4px_4px_0_#000] flex items-center justify-center text-2xl md:text-4xl transition-transform ${isMoving ? 'rotate-3' : ''}`}>
-                {studentAuth?.isGodMode ? '👑' : isHit ? '💥' : isJumping ? '🦘' : isMoving ? '🏃' : '🧔'}
-              </div>
-              {/* Badge del personaje */}
-              <span className={`bg-black text-yellow-300 text-[8px] font-black px-1.5 py-0.5 rounded mt-0.5 border border-white tracking-widest ${facing === 'left' ? '-scale-x-100' : ''}`}>
-                {studentAuth?.isGodMode ? 'EDER' : 'RECLUTA'}
+          {/* HUD Retro Superior */}
+          <div className="w-full max-w-4xl bg-[#0e1122] border-2 border-amber-600/50 rounded-2xl p-3 sm:p-4 shadow-xl mb-3 flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-black">
+            <div className="flex items-center gap-3">
+              <span className="bg-amber-950 text-yellow-400 border border-amber-600/50 px-3 py-1 rounded-lg uppercase tracking-wider">
+                {mission.worldNum} • {mission.theme.split(' ')[0]}
+              </span>
+              <span className="text-red-400 flex items-center gap-1 text-base">
+                {studentAuth?.isGodMode ? '❤️ x 999' : `❤️ x ${Math.max(0, lives)}`}
+              </span>
+              <span className="text-yellow-400 flex items-center gap-1">
+                🪙 {coins} ({scoreXP} XP)
               </span>
             </div>
+
+            <div className="flex items-center gap-3">
+              <span className="text-slate-300 flex items-center gap-1">
+                💣 {maxBombs - bombs.length}/{maxBombs}
+              </span>
+              <span className="text-orange-400 flex items-center gap-1">
+                🔥 LVL {blastRadius}
+              </span>
+              {shieldSec > 0 && (
+                <span className="text-cyan-400 animate-pulse flex items-center gap-1">
+                  🛡️ {shieldSec}s
+                </span>
+              )}
+              <span className="text-purple-300 bg-purple-950/60 border border-purple-600/40 px-2.5 py-1 rounded-lg">
+                📜 {solvedAltars.filter(Boolean).length}/3 ALTARES
+              </span>
+              <button 
+                onClick={onExit} 
+                className="bg-black/60 hover:bg-red-900 text-slate-400 hover:text-white border border-slate-700 px-3 py-1 rounded-lg text-xs uppercase cursor-pointer">
+                Pausa
+              </button>
+            </div>
           </div>
 
-          {/* Suelo NES clásico de Mario Bros */}
-          <div className="relative w-full h-28 bg-[#c84c0c] border-t-8 border-black z-20 flex flex-col">
-            <div className="w-full h-4 bg-[#00d800] border-b-2 border-black"></div>
-            <div className="w-full flex-grow flex items-center justify-between px-4" style={{
-              backgroundImage: 'repeating-linear-gradient(90deg, #000 0px, #000 4px, transparent 4px, transparent 32px), repeating-linear-gradient(0deg, #000 0px, #000 4px, transparent 4px, transparent 16px)'
-            }}>
+          {/* Banner Flotante de Notificaciones */}
+          {hudBanner && (
+            <div className="fixed top-20 z-50 bg-amber-950/95 border-2 border-amber-400 text-amber-200 px-6 py-2.5 rounded-full font-black text-xs sm:text-sm tracking-wider uppercase shadow-[0_0_30px_rgba(245,158,11,0.6)] animate-in slide-in-from-top-4 duration-300">
+              {hudBanner}
+            </div>
+          )}
+
+          {/* Tablero Bomberman (13 x 9) */}
+          <div className="relative bg-[#090b14] border-4 border-amber-700/60 rounded-2xl p-2 sm:p-3 shadow-[0_0_50px_rgba(0,0,0,0.8)] overflow-hidden w-full max-w-[720px] aspect-[13/9]">
+            
+            <div className="w-full h-full grid grid-cols-13 grid-rows-9 gap-1" style={{ display: 'grid', gridTemplateColumns: 'repeat(13, minmax(0, 1fr))', gridTemplateRows: 'repeat(9, minmax(0, 1fr))' }}>
+              {grid.map((row, r) => 
+                row.map((cell, c) => {
+                  const isPlayerHere = (playerX === c && playerY === r);
+                  const isBombHere = bombs.find(b => b.x === c && b.y === r);
+                  const isFireHere = isCellExploding(c, r);
+                  const enemyHere = enemies.find(en => en.alive && en.x === c && en.y === r);
+                  const isAltar = cell.type === 'ALTAR';
+                  const isPortal = cell.type === 'PORTAL';
+                  const altarSolved = isAltar && solvedAltars[cell.altarIdx];
+                  const portalReady = isPortal && solvedAltars.every(Boolean);
+
+                  return (
+                    <div 
+                      key={`${r}-${c}`} 
+                      className={`relative flex items-center justify-center rounded-md text-xs font-black transition-all overflow-hidden ${
+                        cell.type === 'WALL' ? 'bg-gradient-to-b from-[#2a3048] to-[#161a29] border border-[#3b4363] shadow-inner text-slate-500' :
+                        cell.type === 'BLOCK' ? 'bg-gradient-to-b from-[#78350f] to-[#451a03] border border-[#92400e] text-amber-200 shadow-md' :
+                        isAltar ? (altarSolved ? 'bg-purple-950/80 border border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.4)]' : 'bg-purple-900/40 border-2 border-purple-400 animate-pulse') :
+                        isPortal ? (portalReady ? 'bg-amber-500/80 border-2 border-yellow-300 shadow-[0_0_30px_rgba(245,158,11,0.9)] animate-pulse' : 'bg-slate-900/60 border border-slate-700 opacity-60') :
+                        'bg-[#0e1222] border border-[#171c33]'
+                      }`}>
+
+                      {/* Icono de Muro o Bloque */}
+                      {cell.type === 'WALL' && <span className="opacity-40 text-xs">🏛️</span>}
+                      {cell.type === 'BLOCK' && <span className="text-xs">🧱</span>}
+
+                      {/* Item revelado en celda vacía */}
+                      {cell.type === 'EMPTY' && cell.item && !isBombHere && !isFireHere && !isPlayerHere && (
+                        <span className="text-xs animate-bounce">
+                          {cell.item === 'coin' ? '🪙' :
+                           cell.item === 'fire' ? '🔥' :
+                           cell.item === 'bomb' ? '💣' :
+                           cell.item === 'speed' ? '⚡' :
+                           cell.item === 'shield' ? '🛡️' : '❤️'}
+                        </span>
+                      )}
+
+                      {/* Altar Sagrado */}
+                      {isAltar && (
+                        <div className="flex flex-col items-center justify-center">
+                          <span className="text-sm">{altarSolved ? '✨' : '📜'}</span>
+                          <span className="text-[7px] font-black uppercase text-purple-300">
+                            {altarSolved ? 'OK' : `A${cell.altarIdx + 1}`}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Portal de Victoria */}
+                      {isPortal && (
+                        <div className="flex flex-col items-center justify-center">
+                          <span className="text-sm">{portalReady ? '⛩️' : '🔒'}</span>
+                          <span className="text-[7px] font-black uppercase text-yellow-300">
+                            {portalReady ? 'EXIT' : 'SELLADO'}
+                          </span>
+                        </div>
+                      )}
+
+                      {/* Bomba Sagrada Activa */}
+                      {isBombHere && (
+                        <div className="absolute inset-0 flex items-center justify-center z-20 animate-ping duration-1000">
+                          <span className="text-base drop-shadow-[0_0_10px_rgba(239,68,68,1)]">💣</span>
+                        </div>
+                      )}
+
+                      {/* Explosión en Cruz */}
+                      {isFireHere && (
+                        <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-orange-500 to-yellow-400 flex items-center justify-center z-30 animate-pulse">
+                          <span className="text-sm">💥</span>
+                        </div>
+                      )}
+
+                      {/* Enemigo Sombrío */}
+                      {enemyHere && !isFireHere && (
+                        <div className="absolute inset-0 flex items-center justify-center z-25 animate-pulse">
+                          <span className="text-sm drop-shadow-[0_0_10px_rgba(220,38,38,0.8)]">😈</span>
+                        </div>
+                      )}
+
+                      {/* Jugador (Mario Recluta Bíblico) */}
+                      {isPlayerHere && (
+                        <div className={`absolute inset-0 flex items-center justify-center z-40 transition-transform ${
+                          isJumping ? 'scale-125 -translate-y-2' : ''
+                        } ${
+                          isInvulnerable ? 'opacity-50 animate-pulse' : ''
+                        }`}>
+                          <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shadow-lg ${
+                            studentAuth?.isGodMode ? 'bg-yellow-500 border-2 border-white' :
+                            shieldSec > 0 ? 'bg-cyan-500 border-2 border-white shadow-[0_0_15px_rgba(6,182,212,1)]' :
+                            'bg-red-600 border border-yellow-300'
+                          }`}>
+                            <span className="text-xs sm:text-sm">
+                              {studentAuth?.isGodMode ? '👑' : isJumping ? '🦘' : '🧔'}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+          </div>
+
+          {/* Controles Táctiles para Móviles / Arcade */}
+          <div className="w-full max-w-4xl mt-3 flex flex-wrap items-center justify-between gap-4 p-2 bg-[#0a0c16]/80 rounded-2xl border border-slate-800">
+            
+            {/* D-Pad Direccional */}
+            <div className="grid grid-cols-3 gap-1.5 w-36 h-28 sm:w-44 sm:h-32 mx-auto sm:mx-0">
+              <div></div>
+              <button 
+                onClick={() => movePlayer(0, -1, 'up')} 
+                className="bg-slate-800 hover:bg-slate-700 active:bg-amber-600 text-white font-black rounded-xl border border-slate-600 flex items-center justify-center text-lg active:scale-95 shadow cursor-pointer">
+                ▲
+              </button>
+              <div></div>
+
+              <button 
+                onClick={() => movePlayer(-1, 0, 'left')} 
+                className="bg-slate-800 hover:bg-slate-700 active:bg-amber-600 text-white font-black rounded-xl border border-slate-600 flex items-center justify-center text-lg active:scale-95 shadow cursor-pointer">
+                ◄
+              </button>
+              <div className="flex items-center justify-center text-[10px] text-slate-500 font-bold uppercase">
+                D-PAD
+              </div>
+              <button 
+                onClick={() => movePlayer(1, 0, 'right')} 
+                className="bg-slate-800 hover:bg-slate-700 active:bg-amber-600 text-white font-black rounded-xl border border-slate-600 flex items-center justify-center text-lg active:scale-95 shadow cursor-pointer">
+                ►
+              </button>
+
+              <div></div>
+              <button 
+                onClick={() => movePlayer(0, 1, 'down')} 
+                className="bg-slate-800 hover:bg-slate-700 active:bg-amber-600 text-white font-black rounded-xl border border-slate-600 flex items-center justify-center text-lg active:scale-95 shadow cursor-pointer">
+                ▼
+              </button>
+              <div></div>
+            </div>
+
+            {/* Teclas explicativas */}
+            <div className="hidden md:flex flex-col text-slate-400 text-xs gap-1 border-x border-slate-800 px-6">
+              <p>🎮 <strong>Teclado:</strong> Flechas o W,A,S,D para moverte</p>
+              <p>🦘 <strong>Espacio o J:</strong> Salto de Mario (Esquiva bombas y sombras)</p>
+              <p>💣 <strong>B o K:</strong> Colocar Bomba Sagrada</p>
+              <p>📜 <strong>Misión:</strong> Destruye bloques, consagra los 3 Altares y huye por el Portal</p>
+            </div>
+
+            {/* Botones de Acción de Arcade */}
+            <div className="flex gap-3 mx-auto sm:mx-0">
+              <button 
+                onClick={dropBomb} 
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-b from-orange-500 to-red-600 hover:from-orange-400 hover:to-red-500 active:scale-95 text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_20px_rgba(239,68,68,0.5)] border-2 border-amber-300 flex flex-col items-center justify-center gap-1 cursor-pointer">
+                <span className="text-2xl sm:text-3xl">💣</span>
+                <span>BOMBA</span>
+              </button>
+
+              <button 
+                onClick={triggerJump} 
+                className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-b from-blue-500 to-indigo-700 hover:from-blue-400 hover:to-indigo-600 active:scale-95 text-white font-black text-xs sm:text-sm uppercase tracking-wider shadow-[0_0_20px_rgba(59,130,246,0.5)] border-2 border-cyan-300 flex flex-col items-center justify-center gap-1 cursor-pointer">
+                <span className="text-2xl sm:text-3xl">🦘</span>
+                <span>SALTAR</span>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* ── 3. FASE: MODAL DE ENIGMA EN EL ALTAR SAGRADO ── */}
+      {phase === 'enigma_modal' && activeAltarIdx !== null && (() => {
+        const q = questions[activeAltarIdx % questions.length];
+        return (
+          <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4 animate-in fade-in">
+            <div className="bg-gradient-to-b from-[#121528] to-[#0a0c16] border-2 border-purple-500/80 rounded-3xl p-6 md:p-10 max-w-3xl w-full shadow-[0_0_80px_rgba(168,85,247,0.3)] relative flex flex-col">
               
-              {/* CONTROLES TÁCTILES EN PANTALLA (GAME BOY / NES D-PAD PARA MÓVIL Y TABLET) */}
-              <div className="flex items-center gap-3 z-30 select-none">
-                <button 
-                  onPointerDown={(e) => { e.preventDefault(); keysRef.current.left = true; setFacing('left'); }}
-                  onPointerUp={(e) => { e.preventDefault(); keysRef.current.left = false; }}
-                  onPointerLeave={(e) => { e.preventDefault(); keysRef.current.left = false; }}
-                  className="w-14 h-14 bg-slate-900 border-4 border-white text-white font-black text-2xl rounded-2xl active:bg-yellow-400 active:text-black flex items-center justify-center shadow-[3px_3px_0_#000] cursor-pointer">
-                  ◄
-                </button>
-                <button 
-                  onPointerDown={(e) => { e.preventDefault(); keysRef.current.right = true; setFacing('right'); }}
-                  onPointerUp={(e) => { e.preventDefault(); keysRef.current.right = false; }}
-                  onPointerLeave={(e) => { e.preventDefault(); keysRef.current.right = false; }}
-                  className="w-14 h-14 bg-slate-900 border-4 border-white text-white font-black text-2xl rounded-2xl active:bg-yellow-400 active:text-black flex items-center justify-center shadow-[3px_3px_0_#000] cursor-pointer">
-                  ►
-                </button>
+              <div className="flex justify-between items-center border-b border-purple-900/50 pb-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-purple-950 border border-purple-400 flex items-center justify-center text-2xl shadow-[0_0_20px_rgba(168,85,247,0.5)]">
+                    📜
+                  </div>
+                  <div>
+                    <span className="text-purple-400 text-xs font-black uppercase tracking-widest">
+                      ALTAR SAGRADO • ENIGMA {activeAltarIdx + 1} DE 3
+                    </span>
+                    <h3 className="text-xl md:text-2xl font-black text-white uppercase tracking-tight">
+                      DESAFÍO ÉPICO DEL CLAN
+                    </h3>
+                  </div>
+                </div>
+
+                <span className="bg-purple-900/60 text-purple-300 text-xs font-black px-3 py-1.5 rounded-full border border-purple-500/40">
+                  +50 XP AL RESPONDER
+                </span>
               </div>
 
-              {/* Botón de Salto Grande Ⓐ */}
-              <div className="z-30 select-none">
-                <button 
-                  onPointerDown={(e) => { e.preventDefault(); triggerJump(); }}
-                  className="px-6 h-14 bg-red-600 hover:bg-red-500 border-4 border-white text-white font-black text-sm md:text-base rounded-2xl active:scale-95 flex items-center justify-center gap-2 shadow-[4px_4px_0_#000] cursor-pointer animate-pulse">
-                  <span className="w-7 h-7 bg-white text-red-600 rounded-full flex items-center justify-center text-xs font-black">A</span>
-                  SALTAR
-                </button>
+              {/* Pregunta Épica Narrativa */}
+              <div className="bg-black/60 border border-purple-900/40 p-5 rounded-2xl mb-6 shadow-inner">
+                <p className="text-slate-200 text-base md:text-lg font-medium leading-relaxed font-serif">
+                  {q.q}
+                </p>
               </div>
+
+              {/* Opciones Interactivas */}
+              <div className="space-y-3 mb-6">
+                {q.options.map((opt, oIdx) => (
+                  <button 
+                    key={oIdx} 
+                    disabled={enigmaAnswered} 
+                    onClick={() => handleAnswerEnigma(oIdx)} 
+                    className="w-full text-left bg-[#161a33] hover:bg-purple-900/50 border-2 border-purple-800/60 hover:border-purple-400 p-4 rounded-2xl text-sm md:text-base font-bold transition-all cursor-pointer flex items-center gap-4 group shadow-md hover:scale-[1.01]">
+                    <span className="w-8 h-8 rounded-xl bg-purple-950 border border-purple-500 flex items-center justify-center font-black text-purple-300 shrink-0 group-hover:bg-purple-600 group-hover:text-white transition-colors">
+                      {String.fromCharCode(65 + oIdx)}
+                    </span>
+                    <span className="text-slate-200 group-hover:text-white leading-relaxed">
+                      {opt}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Feedback de error */}
+              {enigmaError && (
+                <div className="bg-red-950/80 border border-red-800 p-4 rounded-xl text-red-200 text-xs mb-4 text-center animate-in shake">
+                  {enigmaError}
+                </div>
+              )}
+
+              {/* Feedback de victoria */}
+              {enigmaAnswered && (
+                <div className="bg-emerald-950/80 border border-emerald-500 p-4 rounded-xl text-emerald-300 text-sm font-black text-center animate-in zoom-in">
+                  ✨ ¡ALTAR SAGRADO CONSAGRADO! Has obtenido +50 XP y bendición de clan.
+                </div>
+              )}
 
             </div>
           </div>
+        );
+      })()}
 
-          {/* Modal de Victoria al estilo Mario Bros */}
-          {phase === 'won' && (
-            <div 
-              onClick={(e) => e.stopPropagation()}
-              className="absolute inset-0 z-50 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in zoom-in duration-300">
-              <div className="bg-[#fc9838] border-8 border-black p-8 rounded-3xl shadow-[10px_10px_0_#000] max-w-lg">
-                <span className="text-6xl mb-2 block animate-bounce">🏰 ⭐ 🚩</span>
-                <h2 className="text-3xl md:text-5xl font-black text-white uppercase drop-shadow-[4px_4px_0_#000] mb-2">¡NIVEL COMPLETADO!</h2>
-                <p className="text-black font-black text-base md:text-lg mb-6 uppercase">La sabiduría de la misión ha sido grabada en tu corazón.</p>
-                <div className="bg-black text-yellow-400 p-4 rounded-xl font-black text-2xl border-4 border-white mb-6 shadow-inner">
-                  +50 XP AL CLAN ({studentAuth?.aula})
-                </div>
-                <button 
-                  onClick={onExit} 
-                  className="bg-white hover:bg-yellow-300 text-black font-black px-8 py-4 rounded-2xl text-xl uppercase tracking-widest border-4 border-black shadow-[6px_6px_0_#000] cursor-pointer transition-transform hover:scale-105">
-                  VOLVER A MISIONES
-                </button>
+      {/* ── 4. FASE: VICTORIA ÉPICA Y BANDERÍN ── */}
+      {phase === 'won' && (
+        <div className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center p-6 animate-in zoom-in duration-500">
+          <div className="max-w-2xl w-full bg-[#0d1020] border-4 border-yellow-400 rounded-3xl p-8 text-center relative overflow-hidden shadow-[0_0_100px_rgba(245,158,11,0.6)]">
+            
+            <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 animate-pulse"></div>
+
+            <div className="w-24 h-24 mx-auto bg-gradient-to-b from-yellow-400 to-amber-600 rounded-3xl flex items-center justify-center text-5xl mb-6 shadow-[0_0_40px_rgba(245,158,11,0.8)] animate-bounce">
+              🏆
+            </div>
+
+            <h2 className="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-white to-amber-400 uppercase tracking-tight mb-2">
+              ¡MISIÓN CUMPLIDA!
+            </h2>
+            <p className="text-amber-400 text-sm md:text-base font-black tracking-[0.3em] uppercase mb-6">
+              HAS CONQUISTADO EL RETO BOMBERMAN & MARIO DE {mission.worldNum}
+            </p>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-black/60 p-4 rounded-2xl border border-amber-600/40 mb-8">
+              <div>
+                <p className="text-slate-400 text-[10px] uppercase font-bold">Tiempo</p>
+                <p className="text-white text-lg font-black">{Math.floor(gameTime / 60)}:{(gameTime % 60).toString().padStart(2, '0')}</p>
+              </div>
+              <div>
+                <p className="text-slate-400 text-[10px] uppercase font-bold">Monedas</p>
+                <p className="text-yellow-400 text-lg font-black">🪙 {coins}</p>
+              </div>
+              <div>
+                <p className="text-slate-400 text-[10px] uppercase font-bold">Altares</p>
+                <p className="text-purple-400 text-lg font-black">📜 3 / 3</p>
+              </div>
+              <div>
+                <p className="text-slate-400 text-[10px] uppercase font-bold">Total XP Ganado</p>
+                <p className="text-emerald-400 text-lg font-black">+{scoreXP + 50} XP</p>
               </div>
             </div>
-          )}
 
-          {/* Modal de Game Over */}
-          {phase === 'lost' && (
-            <div 
-              onClick={(e) => e.stopPropagation()}
-              className="absolute inset-0 z-50 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in zoom-in duration-300">
-              <div className="bg-[#8b0000] border-8 border-black p-8 rounded-3xl shadow-[10px_10px_0_#000] max-w-lg">
-                <span className="text-6xl mb-2 block animate-pulse">💀</span>
-                <h2 className="text-4xl md:text-6xl font-black text-white uppercase drop-shadow-[4px_4px_0_#000] mb-2">¡GAME OVER!</h2>
-                <p className="text-white font-bold text-base mb-6">Has agotado tus vidas en este reto. Tu clan ha perdido 30 XP.</p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button 
-                    onClick={() => {
-                      setCurrentLives(studentAuth?.isGodMode ? 999 : 3);
-                      setQIndex(0);
-                      setMarioX(12);
-                      setHitBlock(null);
-                      setEvaluating(false);
-                      setPhase('playing');
-                    }} 
-                    className="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-6 py-3 rounded-2xl text-base uppercase tracking-widest border-4 border-black shadow-[4px_4px_0_#000] cursor-pointer">
-                    REINTENTAR RETO
-                  </button>
-                  <button 
-                    onClick={onExit} 
-                    className="bg-white hover:bg-red-400 text-black font-black px-6 py-3 rounded-2xl text-base uppercase tracking-widest border-4 border-black shadow-[4px_4px_0_#000] cursor-pointer">
-                    SALIR DEL JUEGO
-                  </button>
-                </div>
-              </div>
+            <p className="text-slate-300 text-sm italic mb-8 max-w-lg mx-auto font-serif">
+              "El estandarte sagrado de tu clan ha sido alzado en lo alto de la fortaleza. Tu fidelidad ha honrado al salón {studentAuth?.aula}."
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button 
+                onClick={() => {
+                  setPhase('playing');
+                  setLives(studentAuth?.isGodMode ? 999 : 3);
+                  setSolvedAltars([false, false, false]);
+                  setPlayerX(1);
+                  setPlayerY(1);
+                  setBombs([]);
+                  setExplosions([]);
+                }} 
+                className="bg-purple-700 hover:bg-purple-600 text-white font-black uppercase tracking-wider px-8 py-4 rounded-2xl shadow-[0_0_25px_rgba(147,51,234,0.5)] transition-all cursor-pointer hover:scale-105">
+                🔄 REPETIR MISIÓN (MEJORAR PUNTUACIÓN)
+              </button>
+
+              <button 
+                onClick={onExit} 
+                className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-black uppercase tracking-wider px-8 py-4 rounded-2xl shadow-[0_0_30px_rgba(245,158,11,0.6)] transition-all cursor-pointer hover:scale-105">
+                ⬅️ REGRESAR AL PANEL DE MISIONES
+              </button>
             </div>
-          )}
 
+          </div>
+        </div>
+      )}
+
+      {/* ── 5. FASE: DERROTA Y REINTENTO ── */}
+      {phase === 'lost' && (
+        <div className="fixed inset-0 z-50 bg-black/95 flex flex-col items-center justify-center p-6 animate-in fade-in">
+          <div className="max-w-md w-full bg-[#180a0a] border-2 border-red-700 rounded-3xl p-8 text-center shadow-[0_0_60px_rgba(220,38,38,0.5)]">
+            <div className="w-20 h-20 mx-auto bg-red-950 rounded-2xl flex items-center justify-center text-4xl mb-4 border border-red-600 shadow-lg">
+              💀
+            </div>
+            <h3 className="text-3xl font-black text-red-500 uppercase tracking-tight mb-2">
+              CAÍDO EN COMBATE
+            </h3>
+            <p className="text-slate-300 text-sm mb-6 leading-relaxed">
+              Te quedaste sin vidas en el laberinto. Un verdadero líder se levanta del polvo y vuelve a intentar con mayor sabiduría.
+            </p>
+
+            <div className="space-y-3">
+              <button 
+                onClick={() => {
+                  setPhase('playing');
+                  setLives(studentAuth?.isGodMode ? 999 : 3);
+                  setPlayerX(1);
+                  setPlayerY(1);
+                  setBombs([]);
+                  setExplosions([]);
+                }} 
+                className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-wider py-4 rounded-xl shadow-[0_0_25px_rgba(220,38,38,0.5)] transition-all cursor-pointer">
+                ❤️ REINTENTAR MISIÓN DESDE EL INICIO
+              </button>
+
+              <button 
+                onClick={onExit} 
+                className="w-full bg-black/60 hover:bg-slate-900 text-slate-400 hover:text-white border border-slate-700 py-3 rounded-xl font-bold text-xs uppercase tracking-wider transition-colors cursor-pointer">
+                ⬅️ Salir al Panel de Misiones
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -2467,100 +3306,781 @@ export default function OdiseaBiblica() {
         </div>
       )}
 {view === 'student_dashboard' && studentAuth && (
-        <div className="flex-grow flex flex-col p-4 md:p-8 bg-[#070913] min-h-screen relative overflow-hidden select-none">
-          {/* Header */}
-          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center bg-[#0f111a] p-6 rounded-3xl border border-slate-800 shadow-xl mb-8 gap-4 max-w-5xl mx-auto w-full">
-             <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl border border-amber-500/50 bg-black shadow-[0_0_15px_rgba(245,158,11,0.3)]">
+        <div className="flex-grow flex flex-col p-3 sm:p-6 md:p-8 bg-[#050711] min-h-screen relative overflow-hidden select-none">
+          {/* Fondo estético celestial */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950/20 via-[#070913] to-[#030408] pointer-events-none"></div>
+
+          {/* ── HEADER PRINCIPAL DEL RECLUTA ── */}
+          <div className="relative z-10 flex flex-col lg:flex-row justify-between items-center bg-[#0d1022]/90 backdrop-blur-xl p-4 sm:p-6 rounded-3xl border-2 border-indigo-900/50 shadow-2xl mb-6 gap-4 max-w-6xl mx-auto w-full">
+             <div className="flex items-center gap-4 text-center sm:text-left">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-4xl border-2 border-amber-500/60 bg-black shadow-[0_0_25px_rgba(245,158,11,0.4)] shrink-0">
                   {studentAuth.isGodMode ? '👑' : (clansData.find(c=>c.id===studentAuth.clanId)?.icon || '🛡️')}
                 </div>
                 <div>
-                  <p className="text-slate-400 text-xs font-black uppercase tracking-widest">RECLUTA ACTIVO</p>
-                  <h2 className="text-2xl font-black text-white uppercase">{studentAuth.name}</h2>
-                  <p className="text-sm font-black uppercase tracking-widest text-amber-400">
-                    {studentAuth.isGodMode ? 'MODO MAESTRO MULTIVERSAL' : `CLAN ${clansData.find(c=>c.id===studentAuth.clanId)?.name || 'SAGRADO'} • SALÓN ${studentAuth.aula}`}
+                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                    <span className="bg-indigo-900/60 text-indigo-300 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full border border-indigo-500/30">
+                      RECLUTA OFICIAL
+                    </span>
+                    <span className="bg-amber-950/60 text-amber-300 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full border border-amber-500/30">
+                      SALÓN {studentAuth.aula}
+                    </span>
+                  </div>
+                  <h2 className="text-xl sm:text-3xl font-black text-white uppercase tracking-tight mt-1">{studentAuth.name}</h2>
+                  <p className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-400">
+                    {studentAuth.isGodMode ? 'MODO MAESTRO MULTIVERSAL' : `CLAN ${clansData.find(c=>c.id===studentAuth.clanId)?.name || 'SAGRADO'}`}
                   </p>
                 </div>
              </div>
              
-             <div className="flex gap-4 items-center">
-               <div className="bg-black/50 border border-red-500/30 px-6 py-3 rounded-xl text-center">
-                  <p className="text-red-400/80 text-[10px] font-black uppercase tracking-[0.2em]">VIDAS DISPONIBLES</p>
-                  <p className="text-red-400 text-2xl font-black">{studentAuth.isGodMode ? '❤️ x 999' : '❤️ x 3'}</p>
-               </div>
-               <div className="bg-black/50 border border-amber-500/30 px-6 py-3 rounded-xl text-center">
-                  <p className="text-amber-500/80 text-[10px] font-black uppercase tracking-[0.2em]">XP DEL CLAN ({studentAuth.aula})</p>
-                  <p className="text-amber-400 text-2xl font-black">
-                    {studentAuth.isGodMode ? 'TODOS' : (scores[studentAuth.aula]?.[studentAuth.clanId] || 0)}
+             {/* Indicadores de Economía y Colección */}
+             <div className="flex flex-wrap gap-2.5 sm:gap-4 items-center justify-center">
+                <div className="bg-black/60 border border-red-500/40 px-4 sm:px-6 py-2.5 rounded-2xl text-center shadow-lg">
+                   <p className="text-red-400/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em]">VIDAS</p>
+                   <p className="text-red-400 text-xl sm:text-2xl font-black">{studentAuth.isGodMode ? '❤️ x 999' : `❤️ x ${Math.max(0, studentAuth.lives || 3)}`}</p>
+                </div>
+                <div className="bg-black/60 border border-yellow-500/40 px-4 sm:px-6 py-2.5 rounded-2xl text-center shadow-lg">
+                   <p className="text-yellow-400/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em]">MONEDAS (SHEKELS)</p>
+                   <p className="text-yellow-400 text-xl sm:text-2xl font-black">🪙 {studentProgress.shekels || 0}</p>
+                </div>
+                <div className="bg-black/60 border border-purple-500/40 px-4 sm:px-6 py-2.5 rounded-2xl text-center shadow-lg">
+                   <p className="text-purple-300/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em]">ÁLBUM SAGRADO</p>
+                   <p className="text-purple-300 text-xl sm:text-2xl font-black">🃏 {studentProgress.unlockedCards?.length || 0} / 24</p>
+                </div>
+                <div className="bg-black/60 border border-amber-500/40 px-4 sm:px-6 py-2.5 rounded-2xl text-center shadow-lg">
+                   <p className="text-amber-500/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em]">XP CLAN ({studentAuth.aula})</p>
+                   <p className="text-amber-400 text-xl sm:text-2xl font-black">
+                     {studentAuth.isGodMode ? 'TODOS' : (scores[studentAuth.aula]?.[studentAuth.clanId] || 0)}
+                   </p>
+                </div>
+             </div>
+          </div>
+
+          {/* ── BARRA DE PESTAÑAS PRINCIPALES DEL ESTUDIANTE ── */}
+          <div className="relative z-10 max-w-6xl mx-auto w-full mb-8 flex justify-center">
+            <div className="bg-[#0b0e1e]/90 p-1.5 rounded-2xl border border-indigo-900/60 shadow-xl flex flex-wrap gap-1.5 justify-center">
+              {[
+                { id: 'misiones', label: '🎮 MISIONES DE AVENTURA', desc: 'Bomberman & Mario' },
+                { id: 'tienda', label: '🛍️ TIENDA SAGRADA', desc: 'Sobres de Cartas 📦' },
+                { id: 'album', label: '🃏 MI ÁLBUM SAGRADO', desc: 'Colección & Captura 📸' },
+                { id: 'cinematicas', label: '🎬 HISTORIA & BSO', desc: 'Cinemáticas Épicas' },
+                { id: 'ranking', label: '🏆 SALÓN DE LA FAMA', desc: 'Clasificación Global' },
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => {
+                    if (tab.id === 'ranking') setView('global_ranking');
+                    else setStudentTab(tab.id);
+                  }}
+                  className={`px-4 sm:px-6 py-3 rounded-xl font-black text-xs uppercase tracking-wider transition-all cursor-pointer flex flex-col items-center justify-center ${
+                    studentTab === tab.id
+                      ? 'bg-gradient-to-r from-amber-600 to-amber-500 text-black shadow-[0_0_20px_rgba(245,158,11,0.5)] scale-105'
+                      : 'bg-transparent text-slate-300 hover:bg-white/5 hover:text-white'
+                  }`}>
+                  <span>{tab.label}</span>
+                  <span className={`text-[9px] font-bold ${studentTab === tab.id ? 'text-black/80' : 'text-slate-500'}`}>{tab.desc}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* ════════════════════════════════════════════════════════════ */}
+          {/* ── PESTAÑA 1: MISIONES DE AVENTURA (BOMBERMAN & MARIO) ──── */}
+          {/* ════════════════════════════════════════════════════════════ */}
+          {studentTab === 'misiones' && (
+            <div className="relative z-10 w-full max-w-6xl mx-auto pb-20 animate-in fade-in duration-300">
+              <div className="text-center md:text-left mb-6 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-indigo-900/40 pb-4">
+                <div>
+                  <h3 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+                    <Gamepad2 className="w-8 h-8 text-amber-500"/> MISIONES DEL ANTIGUO TESTAMENTO
+                  </h3>
+                  <p className="text-slate-400 text-xs sm:text-sm mt-1">
+                    Supera los 5 mundos de aventura Bomberman & Mario. Los puntos de clan (+100 XP) solo se otorgan la <strong>primera vez</strong>; pero puedes rejugarlos para conseguir <strong>Monedas del Templo 🪙</strong> para comprar sobres en la Tienda.
                   </p>
-               </div>
-             </div>
-          </div>
+                </div>
+                <div className="flex gap-2">
+                  <span className="bg-amber-950/60 border border-amber-500/40 text-amber-300 text-xs font-black px-4 py-2 rounded-xl uppercase">
+                    5 NIVELES ÉPICOS
+                  </span>
+                </div>
+              </div>
 
-          {/* Missions List */}
-          <div className="relative z-10 w-full max-w-5xl mx-auto">
-             <div className="text-center md:text-left mb-8 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-800 pb-4">
-               <div>
-                 <h3 className="text-3xl md:text-4xl font-black text-white uppercase tracking-widest flex items-center gap-3">
-                   <Gamepad2 className="w-8 h-8 text-amber-500"/> MISIONES EN MODO SOLO
-                 </h3>
-                 <p className="text-slate-400 text-xs md:text-sm mt-1">Supera el video obligatorio y salta en el nivel de Super Mario Bros para sumar puntos a tu clan.</p>
-               </div>
-               <span className="bg-amber-950/60 border border-amber-500/40 text-amber-400 text-xs font-black px-4 py-2 rounded-full uppercase tracking-wider">
-                 5 MISIONES DISPONIBLES
-               </span>
-             </div>
-             
-             <div className="space-y-6 pb-20">
-               {soloMissions.map((m, idx) => (
-                 <div key={m.id} className="bg-gradient-to-br from-[#0f111a] to-[#0a0502] border-2 border-slate-800 hover:border-amber-500/80 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all group">
-                    <div className="w-24 h-24 md:w-32 md:h-32 shrink-0 rounded-2xl bg-black border-2 border-amber-600/50 flex flex-col items-center justify-center shadow-[inset_0_0_20px_rgba(245,158,11,0.3)] relative">
-                       <span className="text-3xl md:text-4xl font-black text-yellow-400">{m.worldNum}</span>
-                       <span className="text-[10px] font-black text-slate-400 tracking-widest uppercase mt-1">MARIO BROS</span>
-                    </div>
-
-                    <div className="flex-grow text-center md:text-left">
-                       <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-1.5">
-                         <span className="bg-amber-900/40 text-amber-300 text-[10px] font-black px-3 py-0.5 rounded uppercase tracking-wider border border-amber-700/50">VIDEO + RETO</span>
-                         <span className="text-slate-400 text-xs font-bold uppercase tracking-wider">• {m.theme}</span>
+              <div className="space-y-6">
+                {soloMissions.map((m, idx) => {
+                  const isCleared = studentProgress.completedMissions?.[m.id];
+                  return (
+                    <div key={m.id} className="bg-gradient-to-br from-[#0c0f1f] to-[#070913] border-2 border-indigo-950 hover:border-amber-500/80 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 shadow-2xl transition-all group">
+                       <div className="w-24 h-24 md:w-32 md:h-32 shrink-0 rounded-2xl bg-black border-2 border-amber-600/50 flex flex-col items-center justify-center shadow-[inset_0_0_20px_rgba(245,158,11,0.3)] relative">
+                          <span className="text-3xl md:text-4xl font-black text-yellow-400">{m.worldNum}</span>
+                          <span className="text-[9px] font-black text-amber-400 tracking-wider uppercase mt-1">💣 BOMBERMAN</span>
+                          <span className="text-[8px] font-bold text-slate-400 uppercase">🦘 & MARIO</span>
+                          {isCleared && (
+                            <div className="absolute top-1 right-1 bg-emerald-500 text-black text-[9px] font-black px-1.5 py-0.5 rounded-full">
+                              ✓ SUPERADO
+                            </div>
+                          )}
                        </div>
-                       <h4 className="text-xl md:text-2xl font-black text-white uppercase group-hover:text-amber-400 transition-colors">{m.title}</h4>
-                       <p className="text-slate-400 text-xs md:text-sm leading-relaxed my-2 italic">"{m.lore}"</p>
-                       <div className="flex flex-wrap gap-4 justify-center md:justify-start mt-3">
-                         <span className="text-emerald-400 text-xs font-black uppercase tracking-widest flex items-center gap-1"><Trophy className="w-4 h-4"/> VICTORIA: +50 XP</span>
-                         <span className="text-red-400 text-xs font-black uppercase tracking-widest flex items-center gap-1"><Skull className="w-4 h-4"/> DERROTA: -30 XP</span>
+
+                       <div className="flex-grow text-center md:text-left">
+                          <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-1.5">
+                            <span className="bg-amber-900/40 text-amber-300 text-[10px] font-black px-3 py-0.5 rounded uppercase tracking-wider border border-amber-700/50">
+                              VIDEO + LABERINTO
+                            </span>
+                            <span className="text-slate-400 text-xs font-bold uppercase tracking-wider">• {m.theme}</span>
+                            {isCleared && (
+                              <span className="bg-emerald-950/80 text-emerald-300 text-[10px] font-black px-2.5 py-0.5 rounded border border-emerald-500/40 uppercase">
+                                ⭐ CLAN XP OBTENIDO (1 VEZ)
+                              </span>
+                            )}
+                          </div>
+                          <h4 className="text-xl md:text-2xl font-black text-white uppercase group-hover:text-amber-400 transition-colors">{m.title}</h4>
+                          <p className="text-slate-400 text-xs md:text-sm leading-relaxed my-2 italic">"{m.lore}"</p>
+                          <div className="flex flex-wrap gap-4 justify-center md:justify-start mt-3">
+                            <span className="text-emerald-400 text-xs font-black uppercase tracking-widest flex items-center gap-1">
+                              <Trophy className="w-4 h-4"/> 1° TRIUNFO: +100 XP CLAN
+                            </span>
+                            <span className="text-yellow-400 text-xs font-black uppercase tracking-widest flex items-center gap-1">
+                              🪙 REJUGAR: +50 MONEDAS
+                            </span>
+                            <span className="text-purple-400 text-xs font-black uppercase tracking-widest flex items-center gap-1">
+                              📜 3 ALTARES
+                            </span>
+                          </div>
+                       </div>
+
+                       <div className="flex flex-col sm:flex-row md:flex-col gap-2.5 shrink-0 w-full md:w-auto">
+                         <button 
+                           onClick={() => { setActiveSoloMission(idx); setView('student_mario_game'); }} 
+                           className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-black uppercase tracking-wider px-6 py-4 rounded-2xl text-sm shadow-[0_0_25px_rgba(245,158,11,0.4)] cursor-pointer hover:scale-105 transition-all flex items-center justify-center gap-2">
+                           <Gamepad2 className="w-5 h-5"/> {isCleared ? '🔄 REPETIR POR MONEDAS 🪙' : '🎮 JUGAR AVENTURA'}
+                         </button>
+
+                         <button 
+                           onClick={() => setActiveCinematicModal(m)} 
+                           className="bg-black/70 hover:bg-slate-900 text-slate-300 hover:text-white border border-slate-700 px-4 py-2.5 rounded-xl text-xs font-black uppercase tracking-wider transition-colors cursor-pointer flex items-center justify-center gap-2">
+                           <Play className="w-4 h-4 text-amber-400"/> VER INTRO CON BSO
+                         </button>
                        </div>
                     </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
+          {/* ════════════════════════════════════════════════════════════ */}
+          {/* ── PESTAÑA 2: TIENDA SAGRADA & SOBRES DE CARTAS (BOOSTERS) ─ */}
+          {/* ════════════════════════════════════════════════════════════ */}
+          {studentTab === 'tienda' && (
+            <div className="relative z-10 w-full max-w-6xl mx-auto pb-20 animate-in fade-in duration-300">
+              <div className="text-center md:text-left mb-8 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-indigo-900/40 pb-6">
+                <div>
+                  <h3 className="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-500 uppercase tracking-tight flex items-center gap-3">
+                    🛍️ MERCADO DEL TEMPLO (SOBRES DE CARTAS)
+                  </h3>
+                  <p className="text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
+                    Usa las Monedas 🪙 conseguidas en las misiones para abrir sobres de cartas bíblicas sagradas. <strong>Cada carta nueva que desbloquees suma puntos directos e inmediatos al Clan de tu salón.</strong> ¡Las cartas solo se pueden conseguir una sola vez!
+                  </p>
+                </div>
+                <div className="bg-[#121528] border-2 border-yellow-500/60 p-4 rounded-2xl text-center shadow-lg">
+                  <p className="text-yellow-400/80 text-[10px] font-black uppercase tracking-widest">TU SALDO DE SHEKELS</p>
+                  <p className="text-2xl sm:text-3xl font-black text-yellow-400">🪙 {studentProgress.shekels || 0} MONEDAS</p>
+                </div>
+              </div>
+
+              {/* Catálogo de 3 Sobres */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                {packStoreCatalog.map((pack) => {
+                  const canAfford = (studentProgress.shekels || 0) >= pack.price;
+                  return (
+                    <div key={pack.id} className={`bg-gradient-to-b ${pack.gradient} border-2 ${pack.border} rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.02]`}>
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+
+                      <div>
+                        <div className="flex justify-between items-start mb-4">
+                          <span className={`${pack.badge} px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest`}>
+                            {pack.tier}
+                          </span>
+                          <span className="text-4xl">{pack.icon}</span>
+                        </div>
+
+                        <h4 className="text-2xl font-black text-white uppercase tracking-tight mb-2">{pack.name}</h4>
+                        <p className="text-slate-300 text-xs leading-relaxed mb-4">{pack.description}</p>
+                        
+                        <div className="bg-black/60 p-3 rounded-xl border border-white/10 mb-6 text-[11px] font-mono text-amber-300">
+                          <p className="font-bold mb-1">PROBABILIDADES:</p>
+                          <p>{pack.rates}</p>
+                        </div>
+                      </div>
+
+                      <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-slate-400 text-xs font-bold uppercase">PRECIO:</span>
+                          <span className="text-2xl font-black text-yellow-400">🪙 {pack.price} Shekels</span>
+                        </div>
+
+                        <button
+                          disabled={!canAfford}
+                          onClick={() => {
+                            if (!canAfford) {
+                              alert("No tienes suficientes monedas del Templo 🪙. Juega las misiones de Bomberman & Mario para conseguir más monedas.");
+                              return;
+                            }
+
+                            // Deducir monedas
+                            updateStudentProgress(prev => ({
+                              ...prev,
+                              shekels: prev.shekels - pack.price,
+                              packsOpened: (prev.packsOpened || 0) + 1
+                            }));
+
+                            // Seleccionar 3 cartas
+                            const alreadyOwnedIds = studentProgress.unlockedCards || [];
+                            const unownedCards = biblicalCardsDB.filter(c => !alreadyOwnedIds.includes(c.id));
+
+                            const drawn = [];
+                            for (let i = 0; i < 3; i++) {
+                              let pool = unownedCards.filter(c => !drawn.some(d => d.id === c.id));
+                              if (pool.length === 0) {
+                                pool = biblicalCardsDB.filter(c => !drawn.some(d => d.id === c.id));
+                              }
+                              if (pool.length === 0) pool = biblicalCardsDB;
+
+                              const rand = Math.random();
+                              let targetRarity = 'COMÚN';
+                              if (pack.id === 'pack_sion') {
+                                targetRarity = rand < 0.40 ? 'LEGENDARIA' : (rand < 0.90 ? 'ÉPICA' : 'RARA');
+                              } else if (pack.id === 'pack_reyes') {
+                                targetRarity = rand < 0.10 ? 'LEGENDARIA' : (rand < 0.35 ? 'ÉPICA' : (rand < 0.85 ? 'RARA' : 'COMÚN'));
+                              } else {
+                                targetRarity = rand < 0.08 ? 'ÉPICA' : (rand < 0.35 ? 'RARA' : 'COMÚN');
+                              }
+
+                              const rarityPool = pool.filter(c => c.rarity === targetRarity);
+                              const finalPool = rarityPool.length > 0 ? rarityPool : pool;
+                              drawn.push(finalPool[Math.floor(Math.random() * finalPool.length)]);
+                            }
+
+                            setRevealedPackCards(drawn);
+                            setFlippedIndices([]);
+                            setPackStage('sealed');
+                            setOpeningPack(pack);
+                            playRetroSound('secret');
+                          }}
+                          className={`w-full py-4 rounded-2xl font-black uppercase tracking-wider text-sm transition-all cursor-pointer shadow-lg flex items-center justify-center gap-2 ${
+                            canAfford 
+                              ? 'bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-black hover:scale-105' 
+                              : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                          }`}>
+                          {canAfford ? '⚡ COMPRAR Y ABRIR SOBRE' : '🔒 MONEDAS INSUFICIENTES'}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ════════════════════════════════════════════════════════════ */}
+          {/* ── PESTAÑA 3: MI ÁLBUM SAGRADO (24 CARTAS & CAPTURA) ────── */}
+          {/* ════════════════════════════════════════════════════════════ */}
+          {studentTab === 'album' && (
+            <div className="relative z-10 w-full max-w-6xl mx-auto pb-20 animate-in fade-in duration-300">
+              <div className="text-center md:text-left mb-6 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-indigo-900/40 pb-4">
+                <div>
+                  <h3 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+                    🃏 CÓDICE DE CARTAS DEL ANTIGUO TESTAMENTO
+                  </h3>
+                  <p className="text-slate-400 text-xs sm:text-sm mt-1">
+                    Colecciona las 24 cartas sagradas. Haz clic en cualquier carta desbloqueada para <strong>descargarla en alta calidad o verla en pantalla completa para captura de pantalla</strong> y presentarla a tu profesor Eder.
+                  </p>
+                </div>
+                <div className="bg-[#101426] border border-purple-500/50 px-5 py-3 rounded-2xl text-center">
+                  <p className="text-purple-300 text-xs font-black uppercase">PROGRESO TOTAL</p>
+                  <p className="text-2xl font-black text-white">{studentProgress.unlockedCards?.length || 0} / 24 <span className="text-xs text-purple-400 font-bold">CARTAS</span></p>
+                </div>
+              </div>
+
+              {/* Filtros de Categoría */}
+              <div className="flex flex-wrap gap-2 mb-6 justify-center sm:justify-start">
+                {['TODAS', 'LÍDERES', 'HEROÍNAS', 'RELIQUIAS', 'PROFETAS'].map(cat => (
+                  <button
+                    key={cat}
+                    onClick={() => setCardFilterCategory(cat)}
+                    className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
+                      cardFilterCategory === cat 
+                        ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]' 
+                        : 'bg-[#101426] text-slate-400 hover:text-white border border-slate-800'
+                    }`}>
+                    {cat}
+                  </button>
+                ))}
+              </div>
+
+              {/* Grid de 24 Cartas */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {biblicalCardsDB.filter(c => cardFilterCategory === 'TODAS' || c.category === cardFilterCategory).map(card => {
+                  const isOwned = (studentProgress.unlockedCards || []).includes(card.id);
+                  return (
+                    <div 
+                      key={card.id}
+                      onClick={() => {
+                        if (isOwned) {
+                          setInspectingCard(card);
+                          playRetroSound('secret');
+                        }
+                      }}
+                      className={`relative aspect-[5/7] rounded-2xl p-3 flex flex-col justify-between transition-all duration-300 border-2 select-none ${
+                        isOwned 
+                          ? `bg-gradient-to-b ${card.gradient} ${card.border} cursor-pointer hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] shadow-xl` 
+                          : 'bg-[#090b14] border-slate-800 opacity-50 cursor-not-allowed'
+                      }`}>
+                      
+                      {/* Cabecera de la Tarjeta */}
+                      <div className="flex justify-between items-start">
+                        <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase ${isOwned ? card.badgeColor : 'bg-slate-800 text-slate-500'}`}>
+                          {card.rarity.substring(0, 3)}
+                        </span>
+                        <span className="text-xl">{isOwned ? card.icon : '❓'}</span>
+                      </div>
+
+                      {/* Cuerpo de la Tarjeta */}
+                      <div className="text-center my-auto">
+                        <p className={`font-black uppercase tracking-tight line-clamp-2 text-xs leading-tight ${isOwned ? 'text-white drop-shadow' : 'text-slate-600'}`}>
+                          {isOwned ? card.name : 'BLOQUEADA'}
+                        </p>
+                        {isOwned ? (
+                          <p className="text-[8px] text-cyan-300 font-mono mt-1 truncate">{card.pasaje}</p>
+                        ) : (
+                          <p className="text-[8px] text-slate-600 font-bold mt-1">Abre sobres 📦</p>
+                        )}
+                      </div>
+
+                      {/* Pie de la Tarjeta */}
+                      <div className="pt-2 border-t border-white/10 flex justify-between items-center text-[9px] font-black">
+                        <span className={isOwned ? 'text-amber-300' : 'text-slate-600'}>
+                          {isOwned ? `+${card.clanXP} XP` : '???'}
+                        </span>
+                        {isOwned && (
+                          <span className="text-[8px] bg-black/50 px-1 py-0.5 rounded text-white">📸 VER</span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* ════════════════════════════════════════════════════════════ */}
+          {/* ── PESTAÑA 4: CINEMÁTICAS & HISTORIA BÍBLICA ─────────────── */}
+          {/* ════════════════════════════════════════════════════════════ */}
+          {studentTab === 'cinematicas' && (
+            <div className="relative z-10 w-full max-w-6xl mx-auto pb-20 animate-in fade-in duration-300">
+              <div className="text-center md:text-left mb-6 border-b border-indigo-900/40 pb-4">
+                <h3 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tight flex items-center gap-3">
+                  🎬 CINEMÁTICAS ÉPICAS Y BSO DE LAS MISIONES
+                </h3>
+                <p className="text-slate-400 text-xs sm:text-sm mt-1">
+                  Revive las introducciones cinematográficas con música orquestal de Canva, historias bíblicas narradas y textos cinemáticos en pantalla completa.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Intro Global */}
+                <div className="bg-gradient-to-br from-[#120a05] to-[#0a0502] border-2 border-amber-600/60 rounded-3xl p-6 shadow-2xl flex flex-col justify-between">
+                  <div>
+                    <span className="bg-amber-900/60 text-amber-300 text-[10px] font-black px-3 py-1 rounded-full uppercase border border-amber-500/40">
+                      PRÓLOGO MULTIVERSAL
+                    </span>
+                    <h4 className="text-2xl font-black text-white uppercase tracking-tight mt-3 mb-2">
+                      LA ODISEA BÍBLICA: EL DESPERTAR
+                    </h4>
+                    <p className="text-slate-300 text-xs leading-relaxed italic font-serif">
+                      "El tiempo y el espacio se han fracturado... Siete linajes se levantarán del polvo en el desierto para forjar líderes en la fe."
+                    </p>
+                  </div>
+                  <button 
+                    onClick={() => { setStartGlobalCinematic(true); setView('intro_master'); }} 
+                    className="mt-6 w-full bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
+                    <Play className="w-4 h-4"/> REPRODUCIR CINEMÁTICA GLOBAL
+                  </button>
+                </div>
+
+                {/* 5 Misiones */}
+                {soloMissions.map((m) => (
+                  <div key={m.id} className="bg-gradient-to-br from-[#0c0f1f] to-[#060812] border-2 border-indigo-900/60 rounded-3xl p-6 shadow-2xl flex flex-col justify-between">
+                    <div>
+                      <span className="bg-indigo-900/60 text-indigo-300 text-[10px] font-black px-3 py-1 rounded-full uppercase border border-indigo-500/40">
+                        {m.worldNum} • {m.theme}
+                      </span>
+                      <h4 className="text-2xl font-black text-white uppercase tracking-tight mt-3 mb-2">
+                        {m.title}
+                      </h4>
+                      <p className="text-slate-300 text-xs leading-relaxed italic font-serif">
+                        "{m.lore}"
+                      </p>
+                    </div>
                     <button 
-                      onClick={() => { setActiveSoloMission(idx); setView('student_mario_game'); }} 
-                      className="w-full md:w-auto shrink-0 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-black uppercase tracking-wider px-8 py-4 rounded-2xl text-base shadow-[0_0_25px_rgba(245,158,11,0.4)] cursor-pointer hover:scale-105 transition-all">
-                      JUGAR RETO
+                      onClick={() => setActiveCinematicModal(m)} 
+                      className="mt-6 w-full bg-indigo-700 hover:bg-indigo-600 text-white font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
+                      <Play className="w-4 h-4 text-yellow-300"/> VER INTRO CON BSO ({m.worldNum})
                     </button>
-                 </div>
-               ))}
-             </div>
-          </div>
-          
-          <button onClick={() => { setStudentAuth(null); setStudentLoginStep(1); setView('selector'); }} className="fixed bottom-6 right-6 z-40 bg-black/80 hover:bg-red-950 text-slate-400 hover:text-white border border-slate-700 px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest cursor-pointer transition-colors">Cerrar Sesión</button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Botón Salir */}
+          <button onClick={() => { setStudentAuth(null); setStudentLoginStep(1); setView('selector'); }} className="fixed bottom-6 right-6 z-40 bg-black/80 hover:bg-red-950 text-slate-400 hover:text-white border border-slate-700 px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest cursor-pointer transition-colors shadow-2xl">
+            Cerrar Sesión
+          </button>
+
+          {/* ════════════════════════════════════════════════════════════ */}
+          {/* ── MODAL 1: APERTURA DE SOBRES EN 3D (PACK OPENING) ──────── */}
+          {/* ════════════════════════════════════════════════════════════ */}
+          {openingPack && (
+            <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 animate-in fade-in">
+              <div className="max-w-4xl w-full bg-[#0d1022] border-2 border-yellow-500/70 rounded-3xl p-6 sm:p-10 text-center relative shadow-[0_0_100px_rgba(234,179,8,0.4)] flex flex-col items-center">
+                
+                <h3 className="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-white to-amber-400 uppercase tracking-tight mb-1">
+                  📦 {openingPack.name}
+                </h3>
+                <p className="text-amber-400 text-xs sm:text-sm font-bold uppercase tracking-widest mb-6">
+                  {packStage === 'sealed' ? 'SOBRE SELLADO • TOCA EL SOBRE PARA RASGARLO' : '¡TOCA CADA CARTA PARA REVELARLA Y SUMAR XP A TU CLAN!'}
+                </p>
+
+                {packStage === 'sealed' ? (
+                  <div className="flex flex-col items-center my-8 animate-in zoom-in">
+                    <div 
+                      onClick={() => { setPackStage('opened'); playRetroSound('powerup'); }}
+                      className="w-48 h-64 sm:w-56 sm:h-76 bg-gradient-to-b from-amber-600 via-yellow-500 to-amber-800 rounded-3xl border-4 border-yellow-300 p-6 flex flex-col items-center justify-between shadow-[0_0_50px_rgba(245,158,11,0.8)] cursor-pointer hover:scale-110 transition-transform animate-pulse">
+                      <span className="text-xs font-black uppercase text-black bg-white/80 px-3 py-1 rounded-full">
+                        {openingPack.tier}
+                      </span>
+                      <span className="text-6xl sm:text-7xl">📦</span>
+                      <span className="text-xs font-black uppercase text-black tracking-widest">
+                        ¡TOCA PARA ABRIR!
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 my-6 w-full max-w-3xl animate-in zoom-in">
+                    {revealedPackCards.map((card, cIdx) => {
+                      const isFlipped = flippedIndices.includes(cIdx);
+                      const isAlreadyOwned = (studentProgress.unlockedCards || []).includes(card.id);
+
+                      return (
+                        <div 
+                          key={cIdx} 
+                          onClick={() => {
+                            if (!isFlipped) {
+                              setFlippedIndices(prev => [...prev, cIdx]);
+                              playRetroSound('powerup');
+
+                              if (!isAlreadyOwned) {
+                                // Agregar a colección
+                                updateStudentProgress(prev => ({
+                                  ...prev,
+                                  unlockedCards: [...(prev.unlockedCards || []), card.id]
+                                }));
+
+                                // SUMAR PUNTOS DIRECTOS AL CLAN!
+                                if (studentAuth?.clanId) {
+                                  updateScore(studentAuth.clanId, card.clanXP, studentAuth.aula);
+                                }
+                              } else {
+                                // Bendición de carta duplicada (+15 XP)
+                                if (studentAuth?.clanId) {
+                                  updateScore(studentAuth.clanId, 15, studentAuth.aula);
+                                }
+                              }
+                            }
+                          }}
+                          className={`aspect-[5/7] rounded-3xl p-4 flex flex-col justify-between border-2 transition-all cursor-pointer shadow-2xl relative select-none ${
+                            !isFlipped 
+                              ? 'bg-gradient-to-b from-[#1c1833] to-[#0a0717] border-amber-500/80 hover:scale-105 shadow-[0_0_20px_rgba(245,158,11,0.3)] animate-pulse' 
+                              : `bg-gradient-to-b ${card.gradient} ${card.border} shadow-[0_0_35px_rgba(255,255,255,0.4)] animate-in zoom-in`
+                          }`}>
+
+                          {!isFlipped ? (
+                            <div className="w-full h-full flex flex-col items-center justify-center text-center">
+                              <span className="text-4xl sm:text-5xl mb-3">🎴</span>
+                              <span className="text-xs font-black uppercase text-amber-300 tracking-wider">
+                                TOCA PARA REVELAR
+                              </span>
+                            </div>
+                          ) : (
+                            <>
+                              <div className="flex justify-between items-start">
+                                <span className={`${card.badgeColor} text-[9px] font-black px-2 py-0.5 rounded-full uppercase`}>
+                                  {card.rarity}
+                                </span>
+                                <span className="text-2xl">{card.icon}</span>
+                              </div>
+
+                              <div className="text-center my-auto">
+                                <h5 className="font-black text-white text-sm uppercase leading-tight line-clamp-2 drop-shadow">
+                                  {card.name}
+                                </h5>
+                                <p className="text-[10px] text-cyan-300 font-mono mt-1">{card.pasaje}</p>
+                              </div>
+
+                              <div className="pt-2 border-t border-white/20 text-center">
+                                {!isAlreadyOwned ? (
+                                  <span className="bg-emerald-500 text-black text-[9px] font-black px-2 py-1 rounded-full uppercase tracking-wider block">
+                                    ✨ ¡NUEVA! +{card.clanXP} XP AL CLAN
+                                  </span>
+                                ) : (
+                                  <span className="bg-purple-900 text-purple-200 text-[9px] font-bold px-2 py-1 rounded-full uppercase block">
+                                    REPETIDA (+15 XP BENDICIÓN)
+                                  </span>
+                                )}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Botones de Cierre */}
+                {packStage === 'opened' && flippedIndices.length === 3 && (
+                  <div className="flex flex-wrap gap-4 justify-center mt-6 animate-in slide-in-from-bottom-4">
+                    <button 
+                      onClick={() => { setOpeningPack(null); setStudentTab('album'); }}
+                      className="bg-purple-700 hover:bg-purple-600 text-white font-black uppercase tracking-wider px-8 py-3.5 rounded-2xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer">
+                      🃏 VER MI COLECCIÓN EN EL ÁLBUM
+                    </button>
+                    <button 
+                      onClick={() => setOpeningPack(null)} 
+                      className="bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-wider px-8 py-3.5 rounded-2xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer">
+                      📦 ABRIR OTRO SOBRE
+                    </button>
+                  </div>
+                )}
+
+              </div>
+            </div>
+          )}
+
+          {/* ════════════════════════════════════════════════════════════ */}
+          {/* ── MODAL 2: VISOR HOLOGRÁFICO & CAPTURA DE PANTALLA ─────── */}
+          {/* ════════════════════════════════════════════════════════════ */}
+          {inspectingCard && (
+            <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 animate-in zoom-in duration-300">
+              
+              {!fullScreenCaptureMode ? (
+                <div className="max-w-xl w-full bg-[#0a0c16] border-2 border-amber-500/80 rounded-3xl p-6 sm:p-8 flex flex-col items-center relative shadow-[0_0_80px_rgba(245,158,11,0.5)]">
+                  
+                  {/* Encabezado con Botón Cerrar */}
+                  <div className="w-full flex justify-between items-center border-b border-white/10 pb-4 mb-6">
+                    <span className="text-amber-400 text-xs font-black uppercase tracking-widest flex items-center gap-2">
+                      <Sparkles className="w-4 h-4"/> TARJETA COLECCIONABLE OFICIAL
+                    </span>
+                    <button 
+                      onClick={() => setInspectingCard(null)} 
+                      className="text-slate-400 hover:text-white bg-black/60 p-2 rounded-full cursor-pointer">
+                      <X className="w-5 h-5"/>
+                    </button>
+                  </div>
+
+                  {/* Tarjeta Enmarcada */}
+                  <div className={`w-72 sm:w-80 aspect-[5/7] rounded-3xl p-6 flex flex-col justify-between border-4 ${inspectingCard.border} bg-gradient-to-b ${inspectingCard.gradient} shadow-[0_0_40px_rgba(255,255,255,0.4)] relative mb-6 select-none`}>
+                    <div className="flex justify-between items-start">
+                      <span className={`${inspectingCard.badgeColor} text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider`}>
+                        {inspectingCard.rarity}
+                      </span>
+                      <span className="text-4xl">{inspectingCard.icon}</span>
+                    </div>
+
+                    <div className="text-center my-auto">
+                      <h4 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">
+                        {inspectingCard.name}
+                      </h4>
+                      <p className="text-xs text-cyan-300 font-mono mt-1 font-bold">« {inspectingCard.pasaje} »</p>
+                      <p className="text-xs text-yellow-200 italic mt-3 font-serif line-clamp-3 bg-black/40 p-2.5 rounded-xl border border-white/10">
+                        {inspectingCard.quote}
+                      </p>
+                    </div>
+
+                    {/* Sello de Identidad del Recluta */}
+                    <div className="bg-black/70 p-2.5 rounded-xl border border-white/20 text-center">
+                      <p className="text-[10px] font-black text-amber-400 uppercase tracking-widest">
+                        RECLUTA: {studentAuth.name.toUpperCase()}
+                      </p>
+                      <p className="text-[9px] text-slate-300 font-bold uppercase">
+                        CLAN: {clansData.find(c=>c.id===studentAuth.clanId)?.name || 'SAGRADO'} • SALÓN: {studentAuth.aula}
+                      </p>
+                      <p className="text-[8px] text-emerald-400 font-black mt-0.5">
+                        VALOR: +{inspectingCard.clanXP} XP AL CLAN
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Botones de Captura y Descarga */}
+                  <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button 
+                      onClick={() => downloadCardImage(inspectingCard)} 
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
+                      📸 DESCARGAR TARJETA (PNG)
+                    </button>
+                    <button 
+                      onClick={() => setFullScreenCaptureMode(true)} 
+                      className="bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
+                      🔍 PANTALLA COMPLETA PARA FOTO
+                    </button>
+                  </div>
+
+                </div>
+              ) : (
+                /* Modo Enfoque Limpio para Captura de Pantalla en Celular o PC */
+                <div className="flex flex-col items-center justify-center text-center animate-in zoom-in">
+                  <div className={`w-80 sm:w-96 aspect-[5/7] rounded-3xl p-6 sm:p-8 flex flex-col justify-between border-4 ${inspectingCard.border} bg-gradient-to-b ${inspectingCard.gradient} shadow-[0_0_80px_rgba(255,255,255,0.6)] mb-6 select-none`}>
+                    <div className="flex justify-between items-start">
+                      <span className={`${inspectingCard.badgeColor} text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider`}>
+                        ★ {inspectingCard.rarity} ★
+                      </span>
+                      <span className="text-5xl">{inspectingCard.icon}</span>
+                    </div>
+
+                    <div className="text-center my-auto">
+                      <h4 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight drop-shadow-md">
+                        {inspectingCard.name}
+                      </h4>
+                      <p className="text-sm text-cyan-300 font-mono mt-1 font-bold">« {inspectingCard.pasaje} »</p>
+                      <p className="text-sm text-yellow-200 italic mt-4 font-serif bg-black/50 p-3 rounded-2xl border border-white/20">
+                        {inspectingCard.quote}
+                      </p>
+                      <p className="text-xs text-slate-200 mt-2 font-sans font-bold">
+                        {inspectingCard.power}
+                      </p>
+                    </div>
+
+                    <div className="bg-black/80 p-3 rounded-2xl border border-white/30 text-center">
+                      <p className="text-xs font-black text-amber-400 uppercase tracking-widest">
+                        RECLUTA OFICIAL: {studentAuth.name.toUpperCase()}
+                      </p>
+                      <p className="text-[10px] text-slate-300 font-bold uppercase mt-0.5">
+                        CLAN: {clansData.find(c=>c.id===studentAuth.clanId)?.name || 'SAGRADO'} • SALÓN {studentAuth.aula}
+                      </p>
+                      <p className="text-[9px] text-slate-400 mt-1 font-mono">
+                        CERTIFICADO OFICIAL LA ODISEA BÍBLICA 2026 - PROF. EDER CARRASCO
+                      </p>
+                    </div>
+                  </div>
+
+                  <button 
+                    onClick={() => setFullScreenCaptureMode(false)} 
+                    className="bg-white/20 hover:bg-white/40 text-white font-black uppercase tracking-wider px-8 py-3 rounded-xl text-xs transition-colors cursor-pointer">
+                    ⬅️ VOLVER AL PANEL
+                  </button>
+                  <p className="text-slate-400 text-xs mt-3">
+                    📸 Toma una captura de pantalla ahora (Power + Vol Abajo en celular, o Win+Shift+S en PC)
+                  </p>
+                </div>
+              )}
+
+            </div>
+          )}
+
+          {/* ════════════════════════════════════════════════════════════ */}
+          {/* ── MODAL 3: REPRODUCTOR DE CINEMÁTICA CON BSO ───────────── */}
+          {/* ════════════════════════════════════════════════════════════ */}
+          {activeCinematicModal && (
+            <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center p-4 animate-in fade-in">
+              <div className="max-w-4xl w-full bg-[#080914] border-2 border-amber-600/70 rounded-3xl p-6 sm:p-8 relative shadow-2xl flex flex-col items-center">
+                
+                <div className="w-full flex justify-between items-center border-b border-amber-900/40 pb-4 mb-4">
+                  <div>
+                    <span className="text-amber-400 text-[10px] font-black uppercase tracking-widest">
+                      CINEMÁTICA CON BSO OFICIAL
+                    </span>
+                    <h3 className="text-xl sm:text-2xl font-black text-white uppercase">{activeCinematicModal.title}</h3>
+                  </div>
+                  <button 
+                    onClick={() => setActiveCinematicModal(null)} 
+                    className="text-slate-400 hover:text-white bg-black/60 p-2 rounded-full cursor-pointer">
+                    <X className="w-5 h-5"/>
+                  </button>
+                </div>
+
+                <div className="w-full aspect-video bg-black rounded-2xl overflow-hidden border border-amber-500/40 shadow-xl mb-6">
+                  <iframe 
+                    src={activeCinematicModal.videoUrl} 
+                    className="w-full h-full border-0" 
+                    allowFullScreen 
+                    title={activeCinematicModal.title}
+                  />
+                </div>
+
+                <p className="text-slate-300 text-sm italic font-serif text-center max-w-xl mb-6">
+                  "{activeCinematicModal.lore}"
+                </p>
+
+                <div className="flex gap-4">
+                  <button 
+                    onClick={() => {
+                      const idx = soloMissions.findIndex(m => m.id === activeCinematicModal.id);
+                      setActiveCinematicModal(null);
+                      if (idx !== -1) {
+                        setActiveSoloMission(idx);
+                        setView('student_mario_game');
+                      }
+                    }} 
+                    className="bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-wider px-8 py-3.5 rounded-2xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer">
+                    🎮 ENTRAR AL RETO DE ESTA MISIÓN
+                  </button>
+                  <button 
+                    onClick={() => setActiveCinematicModal(null)} 
+                    className="bg-slate-800 hover:bg-slate-700 text-white font-bold uppercase tracking-wider px-6 py-3.5 rounded-2xl text-xs transition-colors cursor-pointer">
+                    Cerrar
+                  </button>
+                </div>
+
+              </div>
+            </div>
+          )}
+
         </div>
       )}
 
-      {/* ── MINIJUEGO MARIO BROS EN EJECUCIÓN ── */}
+      {/* ── MINIJUEGO MARIO BROS & BOMBERMAN EN EJECUCIÓN ── */}
       {view === 'student_mario_game' && (
         <MarioBrosSoloGame 
           missionIndex={activeSoloMission}
           studentAuth={studentAuth || { name: 'RECLUTA', aula: selectedClass || '1A', clanId: 'c1', isGodMode: false, lives: 3 }}
           onExit={() => setView('student_dashboard')}
           onWin={(pts) => {
-            if (studentAuth?.clanId) {
-              updateScore(studentAuth.clanId, pts || 50, studentAuth.aula);
+            const mId = activeSoloMission + 1;
+            const isFirstTime = !studentProgress?.completedMissions?.[mId];
+
+            if (isFirstTime) {
+              // Primera victoria: otorga +100 XP base directo al Clan
+              if (studentAuth?.clanId) {
+                updateScore(studentAuth.clanId, 100, studentAuth.aula);
+              }
+              updateStudentProgress(prev => ({
+                ...prev,
+                shekels: (prev.shekels || 0) + (pts || 50) + 100, // Bono extra de monedas
+                completedMissions: { ...(prev.completedMissions || {}), [mId]: true }
+              }));
+              alert(`🏆 ¡PRIMERA VICTORIA DE LA MISIÓN ${mId}!
+Has otorgado +100 XP a tu Clan (${studentAuth.aula}) y ganado ${pts + 100} Monedas del Templo 🪙 para abrir sobres de cartas en la Tienda.`);
+            } else {
+              // Misión ya superada previamente: NO otorga puntos base de clan de nuevo, pero otorga monedas para la Tienda!
+              updateStudentProgress(prev => ({
+                ...prev,
+                shekels: (prev.shekels || 0) + (pts || 50)
+              }));
+              alert(`⭐ ¡MISIÓN SUPERADA NUEVAMENTE!
+Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${pts} Monedas del Templo 🪙 para abrir sobres en la Tienda y desbloquear nuevas cartas para tu Clan.`);
             }
           }}
           onLose={(pts) => {
-            if (studentAuth?.clanId) {
-              updateScore(studentAuth.clanId, pts || -30, studentAuth.aula);
-            }
+            // No penalizamos bruscamente el Clan para incentivar la práctica
           }}
         />
       )}
@@ -2781,6 +4301,40 @@ export default function OdiseaBiblica() {
                 <div className="mb-10 text-center">
                   <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter uppercase mb-2 drop-shadow-lg">ARCHIVOS CLASIFICADOS</h2>
                   <p className="text-slate-500 text-xs tracking-widest md:tracking-[0.3em] font-bold uppercase">LO QUE ENFRENTAREMOS ESTE BIMESTRE</p>
+                </div>
+
+                {/* Panel Exclusivo para el Docente: Códices de Acceso de Videos */}
+                <div className="max-w-5xl mx-auto mb-10 bg-gradient-to-r from-amber-950/40 via-[#0d1020] to-indigo-950/40 border-2 border-amber-500/50 rounded-3xl p-6 shadow-2xl">
+                  <div className="flex flex-col md:flex-row justify-between items-center border-b border-amber-900/40 pb-4 mb-4 gap-4">
+                    <div className="flex items-center gap-3">
+                      <Key className="w-8 h-8 text-amber-400 animate-pulse"/>
+                      <div>
+                        <h4 className="text-lg font-black text-white uppercase tracking-wider">CÓDICES SECRETOS DE LOS VIDEOS (MODO ESTUDIANTE)</h4>
+                        <p className="text-slate-400 text-xs">Entrega cada contraseña a tus estudiantes para que puedan desbloquear su aventura Bomberman individual.</p>
+                      </div>
+                    </div>
+                    <span className="bg-amber-500 text-black text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-wider">
+                      5 CLAVES ÚNICAS
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                    {[
+                      { num: "01", tema: "SACERDOTES", code: "SANTIDAD77", color: "border-amber-500/60 text-amber-400" },
+                      { num: "02", tema: "JUECES", code: "JUECES300", color: "border-blue-500/60 text-blue-400" },
+                      { num: "03", tema: "REYES", code: "CORONA777", color: "border-purple-500/60 text-purple-400" },
+                      { num: "04", tema: "PROFETAS", code: "FUEGO18", color: "border-fuchsia-500/60 text-fuchsia-400" },
+                      { num: "05", tema: "HEROÍNAS", code: "VALIENTES12", color: "border-emerald-500/60 text-emerald-400" }
+                    ].map(item => (
+                      <div key={item.num} className={`bg-black/60 border ${item.color} p-3 rounded-2xl text-center shadow-lg`}>
+                        <p className="text-[10px] text-slate-400 font-black uppercase">MISIÓN {item.num} • {item.tema}</p>
+                        <p className="text-base font-black tracking-widest text-white mt-1 font-mono">{item.code}</p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-center text-[11px] text-amber-300/80 mt-3 font-mono">
+                    👑 Clave Maestra Dios (Profesor): <strong>EDER2026</strong> (desbloquea cualquier nivel al instante)
+                  </p>
                 </div>
                 <div className="space-y-6 max-w-5xl mx-auto">
                   {[
