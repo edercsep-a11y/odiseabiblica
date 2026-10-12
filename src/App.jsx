@@ -11,6 +11,54 @@ import { clansData, unassignedStudentsDB, defaultRoster, defaultScores, pectoral
 import { db } from './firebase.js';
 import { doc, onSnapshot, setDoc, getDoc, updateDoc, increment } from 'firebase/firestore';
 
+// ─── CONSTANTES INTERNAS ULTRA-SEGURAS (PREVIENE PANTALLAS BLANCAS) ─────
+const INTERNAL_CLANS_DATA = [
+  { id: 'c1', name: 'Leones de Judá', attribute: 'Autoridad y Liderazgo', color: 'text-amber-500', border: 'border-amber-500/50', bg: 'bg-amber-950/30', hero: 'David y Judá', symbol: 'El Cetro Real y el León', lema: '"De nosotros viene el cetro."', icon: <Shield className="w-8 h-8 text-amber-500"/> },
+  { id: 'c2', name: 'Águilas de Isaías', attribute: 'Visión y Profecía', color: 'text-blue-400', border: 'border-blue-500/50', bg: 'bg-blue-950/30', hero: 'Isaías y el Remanente', symbol: 'El Carbón y las Alas', lema: '"Vemos lo que está por venir."', icon: <Eye className="w-8 h-8 text-blue-400"/> },
+  { id: 'c3', name: 'Guerreros de Josué', attribute: 'Valor y Conquista', color: 'text-red-500', border: 'border-red-500/50', bg: 'bg-red-950/30', hero: 'Josué y Caleb', symbol: 'Trompetas y Espada', lema: '"Ni un paso atrás."', icon: <Swords className="w-8 h-8 text-red-500"/> },
+  { id: 'c4', name: 'Sabios de Salomón', attribute: 'Sabiduría y Discernimiento', color: 'text-purple-400', border: 'border-purple-500/50', bg: 'bg-purple-950/30', hero: 'Salomón', symbol: 'El Manuscrito', lema: '"La mente sobre la espada."', icon: <Scroll className="w-8 h-8 text-purple-400"/> },
+  { id: 'c5', name: 'Centinelas de Nehemías', attribute: 'Restauración y Vigilancia', color: 'text-orange-500', border: 'border-orange-500/50', bg: 'bg-orange-950/30', hero: 'Nehemías', symbol: 'La Lanza y la Cuchara', lema: '"Reconstruimos las ruinas."', icon: <ShieldAlert className="w-8 h-8 text-orange-500"/> },
+  { id: 'c6', name: 'Valientes de David', attribute: 'Lealtad y Sacrificio', color: 'text-green-500', border: 'border-green-500/50', bg: 'bg-green-950/30', hero: 'Los Tres Valientes', symbol: 'Honda y Vasija', lema: '"Hasta la última gota."', icon: <Target className="w-8 h-8 text-green-500"/> },
+  { id: 'c7', name: 'Llamas de Elías', attribute: 'Celo y Fuego Divino', color: 'text-cyan-400', border: 'border-cyan-500/50', bg: 'bg-cyan-950/30', hero: 'Elías el Tesbita', symbol: 'El Altar en Fuego', lema: '"Que el fuego responda."', icon: <Flame className="w-8 h-8 text-cyan-400"/> }
+];
+
+const INTERNAL_PECTORAL_STONES = [
+  { id: 'p1', tribu: 'JUDÁ', piedra: 'SARDO', color: 'bg-red-600', palabra: 'ALABANZA', pista: '"Brota de los labios cuando el corazón rebosa de gratitud a Dios."' },
+  { id: 'p2', tribu: 'ISACAR', piedra: 'TOPACIO', color: 'bg-yellow-600', palabra: 'RECOMPENSA', pista: '"El fruto del esfuerzo, la paga del jornalero fiel."' },
+  { id: 'p3', tribu: 'ZABULÓN', piedra: 'CARBUNCLO', color: 'bg-red-800', palabra: 'REFUGIO', pista: '"Puerto seguro para los barcos en medio de la tormenta."' },
+  { id: 'p4', tribu: 'RUBÉN', piedra: 'ESMERALDA', color: 'bg-green-700', palabra: 'VISION', pista: '"Lo que el primogénito debe tener para guiar a sus hermanos."' },
+  { id: 'p5', tribu: 'SIMEÓN', piedra: 'ZAFIRO', color: 'bg-blue-600', palabra: 'ESCUCHAR', pista: '"El primer paso para obedecer a Dios."' },
+  { id: 'p6', tribu: 'GAD', piedra: 'DIAMANTE', color: 'bg-slate-300', palabra: 'VICTORIA', pista: '"El resultado final cuando un escuadrón confía en Yahveh."' },
+  { id: 'p7', tribu: 'EFRAÍN', piedra: 'JACINTO', color: 'bg-orange-500', palabra: 'FRUCTIFERO', pista: '"Un árbol plantado junto a corrientes de agua."' },
+  { id: 'p8', tribu: 'MANASÉS', piedra: 'ÁGATA', color: 'bg-slate-600', palabra: 'OLVIDO', pista: '"Lo que Dios hace con nuestros pecados cuando nos perdona."' },
+  { id: 'p9', tribu: 'BENJAMÍN', piedra: 'AMATISTA', color: 'bg-purple-500', palabra: 'PROTECCION', pista: '"El hijo amado descansa seguro entre los hombros del Padre."' },
+  { id: 'p10', tribu: 'DAN', piedra: 'BERILO', color: 'bg-teal-300', palabra: 'JUSTICIA', pista: '"Lo que debe reinar en el tribunal para que haya paz."' },
+  { id: 'p11', tribu: 'ASER', piedra: 'ÓNICE', color: 'bg-gray-800', palabra: 'BENDICION', pista: '"El pan abundante y las delicias de un rey."' },
+  { id: 'p12', tribu: 'NEFTALÍ', piedra: 'JASPE', color: 'bg-amber-400', palabra: 'LIBERTAD', pista: '"Una cierva suelta que pronuncia palabras hermosas."' }
+];
+
+const INTERNAL_CASOS_TRIBUNAL = [
+  { id: 1, titulo: "LA FUERZA DESBORDADA", descripcion: "\"El alumno más brillante de su clan hace todo el trabajo solo en 1 minuto y no deja que nadie más participe.\"", tipo: "NIVEL 1", exigencia: "Relacionen esta actitud con el EGO de Gedeón. Defiendan: ¿Por qué el talento debe servir al equipo y no al ego personal?", juez_asociado: "Gedeón (Jueces 7)", pregunta: "¿Debe el talentoso hacer el trabajo solo para asegurar la buena nota del grupo, o arriesgarse a una nota menor enseñando a los demás?" },
+  { id: 2, titulo: "EL VOTO ABSURDO", descripcion: "\"En desesperación, un líder de clan grita: '¡Si nos ayudas a ganar, te daremos todas nuestras notas!'.\"", tipo: "NIVEL 1", exigencia: "Como Jefté, hicieron una promesa ignorante. Defiendan: ¿Por qué un líder debe controlar sus emociones antes de hablar?", juez_asociado: "Jefté (Jueces 11)", pregunta: "¿Por qué un líder debe controlar sus palabras y emociones antes de comprometer al clan?" },
+  { id: 3, titulo: "EL NARCISISTA", descripcion: "\"Un estudiante con gran habilidad se burla de los más débiles de su clan, creyéndose superior.\"", tipo: "NIVEL 1", exigencia: "Como Sansón, su fuerza lo ciega moralmente. Propongan una defensa oral sobre la humildad en el salón.", juez_asociado: "Sansón (Jueces 16)", pregunta: "¿Debe el clan apoyar a su líder por lealtad, o confrontarlo aunque eso les reste popularidad?" },
+  { id: 4, titulo: "LA GUERRA CIVIL", descripcion: "\"Dos clanes del mismo salón empiezan a sabotearse e insultarse para ver quién gana.\"", tipo: "NIVEL 1", exigencia: "Al final de Jueces, las tribus se mataron entre sí. Defiendan una postura de convivencia pacífica inter-clanes.", juez_asociado: "Jueces 19-21", pregunta: "¿Cómo superar la rivalidad destructiva para defender el bien común del aula?" },
+  { id: 5, titulo: "ÍDOLOS FALSOS", descripcion: "\"Un alumno popular sugiere copiarse en el examen, y todos le siguen la corriente ciegamente.\"", tipo: "NIVEL 1", exigencia: "Israel adoraba ídolos por presión social. Defiendan: ¿Cómo actuar con integridad frente a la mala influencia?", juez_asociado: "Jueces 2", pregunta: "¿Cómo actuar con integridad frente a la mala influencia del grupo?" },
+  { id: 6, titulo: "EL BOTÍN DE GUERRA", descripcion: "\"Alguien esconde los útiles de un compañero de otro clan como 'broma', causando angustia.\"", tipo: "NIVEL 1", exigencia: "El robo destruye la paz. Defiendan el respeto a la propiedad ajena y la empatía en el aula.", juez_asociado: "Jueces 18", pregunta: "¿Por qué el respeto mutuo debe estar por encima de bromas de mal gusto?" },
+  { id: 7, titulo: "SILENCIO CÓMPLICE", descripcion: "\"Un miembro de su clan sufre burlas, y el resto solo mira hacia otro lado por miedo a involucrarse.\"", tipo: "NIVEL 1", exigencia: "La opresión avanzaba cuando nadie clamaba. Defiendan por qué el clan debe proteger al más débil.", juez_asociado: "Débora (Jueces 4)", pregunta: "¿Qué estudiante debe dar el primer paso para proteger al que sufre burlas?" },
+  { id: 8, titulo: "LA VENGANZA DE SANSÓN", descripcion: "\"Alguien ofendió a su clan, y planean arruinar el trabajo del otro equipo en represalia.\"", tipo: "COMPLEJO (NIVEL 8)", exigencia: "Sansón destruyó campos por venganza. Defiendan: ¿Cuál es el camino superior a la venganza en el colegio?", juez_asociado: "Sansón (Jueces 15)", pregunta: "¿Cuál es el camino superior a la venganza en la convivencia escolar?" },
+  { id: 9, titulo: "EL LIDERAZGO TÓXICO", descripcion: "\"El líder de clan amenaza: 'O hacen lo que digo, o le digo al profesor que no trabajaron para que les ponga cero'.\"", tipo: "COMPLEJO (NIVEL 8)", exigencia: "Ese es el dominio del tirano. Defiendan: ¿Qué atributos de servicio debe tener un líder positivo?", juez_asociado: "Abimelec (Jueces 9)", pregunta: "¿Qué atributos de servicio distinguen al verdadero líder del tirano?" },
+  { id: 10, titulo: "ALIANZAS PELIGROSAS", descripcion: "\"Su clan decide no hablarle a los que no tienen sus mismos gustos, creando un grupo elitista.\"", tipo: "COMPLEJO (NIVEL 8)", exigencia: "Israel pactó con quienes no debía. Defiendan una postura radical sobre la inclusión.", juez_asociado: "Jueces 1", pregunta: "¿Por qué la inclusión y la fraternidad deben prevalecer sobre el elitismo?" },
+  { id: 11, titulo: "EL HÉROE CANSADO", descripcion: "\"El único que trabaja se cansa y dice: 'Ya no hago nada, que reprueben todos', dejando que el caos los consuma.\"", tipo: "COMPLEJO (NIVEL 8)", exigencia: "Aunque Gedeón se cansó, siguió luchando. Defiendan: ¿Cómo se fomenta la corresponsabilidad?", juez_asociado: "Gedeón (Jueces 8)", pregunta: "¿Cómo restaurar el compromiso mutuo antes de que el grupo colapse?" },
+  { id: 12, titulo: "LA CAÍDA DEL ALTAR", descripcion: "\"Durante la oración o un momento serio de la clase, miembros de su clan sabotean el respeto del aula.\"", tipo: "COMPLEJO (NIVEL 8)", exigencia: "Profanar lo sagrado era el primer paso al caos. Defiendan por qué salvaguardar el respeto es vital.", juez_asociado: "Gedeón (Jueces 6)", pregunta: "¿Por qué el respeto a lo sagrado y a los momentos solemnes es innegociable?" },
+  { id: 13, titulo: "ANARQUÍA TOTAL", descripcion: "\"El profesor sale un minuto, y el salón estalla en caos. 'Cada quien hace lo que le parece'.\"", tipo: "COMPLEJO (NIVEL 8)", exigencia: "Defiendan: ¿Por qué la verdadera disciplina es la que se mantiene cuando la autoridad NO está mirando?", juez_asociado: "Jueces 21:25", pregunta: "¿Por qué la integridad y el autocontrol valen más que la vigilancia externa?" },
+  { id: 14, titulo: "EL TRIBUNAL FINAL", descripcion: "\"Un clan acusa falsamente a otro de hacer trampa solo para que les quiten puntos y ganar ellos.\"", tipo: "COMPLEJO (NIVEL 8)", exigencia: "El falso testimonio destruye la justicia. Defiendan el honor absoluto y las consecuencias de la mentira.", juez_asociado: "Moisés y Jueces", pregunta: "¿Por qué la verdad y el honor deben guiar todas nuestras acciones?" }
+];
+
+const safeClansData = (Array.isArray(clansData) && clansData.length >= 7) ? clansData : INTERNAL_CLANS_DATA;
+const safePectoralStones = (Array.isArray(pectoralStones) && pectoralStones.length >= 12) ? pectoralStones : INTERNAL_PECTORAL_STONES;
+const safeCasosTribunal = (Array.isArray(casosTribunal) && casosTribunal.length >= 14) ? casosTribunal : INTERNAL_CASOS_TRIBUNAL;
+
+
 
 // ─── STORAGE HELPERS ────────────────────────────────────────────
 const STORAGE_KEY_USERS = 'odiseaUsersDB_V1';
@@ -198,25 +246,35 @@ const soloMissions = [
     id: 4,
     worldNum: "4-1",
     title: "MISIÓN 4: VOCES DEL DESIERTO",
-    theme: "LOS PROFETAS Y EL FUEGO",
-    videoUrl: "https://www.canva.com/design/DAHWugF3r_Y/CGzIAO7oBeFfkhz_SVDLvQ/view?embed",
-    lore: "Los reyes han corrompido el trono. Dios envía a sus profetas: voces incansables que enfrentan imperios y encienden el fuego de la verdad.",
+    theme: "LOS PROFETAS Y EL FUEGO DE LA VERDAD",
+    videoUrl: "https://www.canva.com/design/DAHWugF3r_Y/CGzIAO7oBeFfkhz_SVDLvQ/watch?embed",
+    lore: "Los reyes han corrompido el trono. Yahveh levanta hombres y mujeres valientes: voces incansables que enfrentan imperios, defienden a los oprimidos y encienden el fuego de la justicia.",
     secretWord: "FUEGO",
     questions: [
       {
-        q: "¿Qué profeta hizo descender fuego del cielo en el Monte Carmelo desafiando a Baal?",
-        options: ["Elías el Tesbita", "Eliseo", "Jeremías"],
+        q: "¿Qué profeta desafió a 450 falsos profetas en el Monte Carmelo enseñándonos a no seguir a la masa?",
+        options: ["Elías el Tesbita", "Eliseo", "Jonás"],
         correct: 0
       },
       {
-        q: "¿Qué profeta oró tres veces al día desafiando el decreto imperial en Babilonia?",
-        options: ["Daniel", "Ezequiel", "Jonás"],
+        q: "¿Qué profeta fue arrojado al foso de los leones por negarse a violar su integridad en Babilonia?",
+        options: ["Daniel", "Ezequiel", "Jeremías"],
         correct: 0
       },
       {
-        q: "¿Cuál es la misión esencial de un profeta según las Escrituras?",
-        options: ["Adivinar el futuro por dinero", "Llamar a la conversión y la justicia", "Gobernar ejércitos"],
-        correct: 1
+        q: "¿Qué profeta defendió a los pobres y oprimidos clamando: 'Corra el juicio como las aguas'?",
+        options: ["Amós", "Oseas", "Habacuc"],
+        correct: 0
+      },
+      {
+        q: "¿Qué profeta sintetizó la vida justa en Miqueas 6:8 con justicia, misericordia y humildad?",
+        options: ["Miqueas", "Zacarías", "Malaquías"],
+        correct: 0
+      },
+      {
+        q: "¿Qué profeta perseveró proclamando la verdad a pesar de ser encarcelado y rechazado por todos?",
+        options: ["Jeremías", "Eliseo", "Hageo"],
+        correct: 0
       }
     ]
   },
@@ -249,124 +307,309 @@ const soloMissions = [
 ];
 
 function MarioBrosSoloGame({ missionIndex, studentAuth, onWin, onLose, onExit }) {
-  const mission = soloMissions[missionIndex || 0] || soloMissions[0];
-  const [phase, setPhase] = useState('video_gate'); // 'video_gate' | 'playing' | 'won' | 'lost'
-  const [videoCodeInput, setVideoCodeInput] = useState('');
-  const [gateUnlocked, setGateUnlocked] = useState(false);
-  const [gateError, setGateError] = useState('');
+  const safeMissionIndex = (typeof missionIndex === 'number' && missionIndex >= 0 && missionIndex < soloMissions.length) ? missionIndex : 0;
+  const mission = soloMissions[safeMissionIndex] || soloMissions[0];
+  const questions = (Array.isArray(mission?.questions) && mission.questions.length > 0) ? mission.questions : [
+    { q: "¿Cuál es el principio supremo de este desafío?", options: ["Servicio y Justicia", "Egoísmo", "Indiferencia"], correct: 0 }
+  ];
 
-  // Estados del juego estilo Mario
+  // Fases del minijuego: 'video_gate' | 'playing' | 'flagpole' | 'won' | 'lost'
+  const [phase, setPhase] = useState('video_gate');
+  const [videoCodeInput, setVideoCodeInput] = useState('');
+  const [gateUnlocked, setGateUnlocked] = useState(Boolean(studentAuth?.isGodMode));
+  const [gateError, setGateError] = useState('');
+  const [showCodeHint, setShowCodeHint] = useState(false);
+
+  // Estados del juego estilo Mario Bros
   const [qIndex, setQIndex] = useState(0);
   const [scoreCoins, setScoreCoins] = useState(0);
-  const [posX, setPosX] = useState(10);
+  const [currentLives, setCurrentLives] = useState(studentAuth?.isGodMode ? 999 : (studentAuth?.lives || 3));
+  
+  // Física del Personaje (Mario)
+  const [marioX, setMarioX] = useState(12); // porcentaje 5% - 92%
+  const [marioY, setMarioY] = useState(0); // px arriba del suelo (0 = en suelo)
+  const [facing, setFacing] = useState('right'); // 'left' | 'right'
+  const [isMoving, setIsMoving] = useState(false);
   const [isJumping, setIsJumping] = useState(false);
+  const [isHit, setIsHit] = useState(false);
+  
+  // Bloques interactivos [?]
   const [hitBlock, setHitBlock] = useState(null);
   const [evaluating, setEvaluating] = useState(false);
-  const [currentLives, setCurrentLives] = useState(studentAuth?.isGodMode ? 999 : (studentAuth?.lives || 3));
+  const [blockStatus, setBlockStatus] = useState({}); // { 0: 'hit_correct' | 'hit_wrong' }
+  const [coinEffect, setCoinEffect] = useState(null); // { idx, type: 'correct'|'wrong' }
 
-  const blockPositions = [25, 52, 79];
+  // Enemigo patrullando (Goomba)
+  const [goombaX, setGoombaX] = useState(62);
+  const [goombaDir, setGoombaDir] = useState(1);
+  const [goombaStomped, setGoombaStomped] = useState(false);
 
-  // Comprobar contraseña del video
+  // Celebración Bandera y Castillo
+  const [flagDropped, setFlagDropped] = useState(false);
+
+  // Controles activos
+  const keysRef = useRef({ left: false, right: false });
+  const animRef = useRef(null);
+  const marioPosRef = useRef({ x: 12, y: 0, vy: 0 });
+
+  const safeQIndex = Math.min(Math.max(0, qIndex), questions.length - 1);
+  const currentQuestion = questions[safeQIndex] || questions[0];
+  const blockPositions = [24, 50, 76]; // Porcentaje horizontal de los 3 bloques [ ? ]
+
+  // Desbloqueo del video
   const handleUnlockVideoGate = (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     const code = videoCodeInput.trim().toUpperCase();
     const validCodes = [
-      mission.secretWord, 
-      'EDER2026', 
-      'ZAMITOECSA', 
-      'ODISEA2026', 
-      'EDER1A', 
-      'EDER1B', 
-      'EDER1C', 
-      '1A', 
-      '1B', 
-      '1C'
+      (mission.secretWord || '').toUpperCase(),
+      'EDER2026',
+      'ZAMITOECSA',
+      'ODISEA2026',
+      'EDER1A',
+      'EDER1B',
+      'EDER1C',
+      '1A',
+      '1B',
+      '1C',
+      'MAESTRO',
+      'SANTIDAD',
+      'JUSTICIA',
+      'CORONA',
+      'FUEGO',
+      'VALOR'
     ];
 
-    if (validCodes.includes(code) || code.length >= 3) {
+    if (studentAuth?.isGodMode || validCodes.includes(code) || code.length >= 3) {
       setGateUnlocked(true);
       setGateError('');
       playRetroSound('powerup');
     } else {
-      setGateError('Contraseña incorrecta. Pídesela a tu maestro o encuéntrala en el video.');
+      setGateError('Contraseña incorrecta. Mira el video, pídesela a tu docente o pulsa "Ver Pista".');
       playRetroSound('hit');
     }
   };
 
-  // Movimiento automático del personaje
-  useEffect(() => {
-    if (phase === 'playing' && !evaluating) {
-      const timer = setInterval(() => {
-        setPosX(prev => {
-          if (prev >= 95) {
-            return 10; // Reinicia carrera si da la vuelta
-          }
-          return prev + 1.2;
-        });
-      }, 50);
-      return () => clearInterval(timer);
+  // Salto de Mario
+  const triggerJump = useCallback(() => {
+    if (phase !== 'playing' || evaluating) return;
+    if (marioPosRef.current.y <= 4) {
+      marioPosRef.current.vy = 15;
+      setIsJumping(true);
+      playRetroSound('jump');
     }
   }, [phase, evaluating]);
 
-  // Salto al estilo Mario
-  const handleJump = () => {
-    if (isJumping || phase !== 'playing' || evaluating) return;
-    setIsJumping(true);
-    playRetroSound('jump');
+  // Manejo de teclado
+  useEffect(() => {
+    if (phase !== 'playing') return;
 
-    // Verificar si golpea un bloque [?]
-    let hitIdx = -1;
-    for (let i = 0; i < blockPositions.length; i++) {
-      if (Math.abs(posX - blockPositions[i]) < 13) {
-        hitIdx = i;
-        break;
+    const handleKeyDown = (e) => {
+      if (e.repeat) return;
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        keysRef.current.left = true;
+        setFacing('left');
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        keysRef.current.right = true;
+        setFacing('right');
+      } else if (e.key === ' ' || e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W') {
+        e.preventDefault();
+        triggerJump();
       }
-    }
+    };
 
-    if (hitIdx !== -1) {
-      setHitBlock(hitIdx);
-      setEvaluating(true);
+    const handleKeyUp = (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        keysRef.current.left = false;
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        keysRef.current.right = false;
+      }
+    };
 
-      const isCorrect = hitIdx === mission.questions[qIndex].correct;
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [phase, triggerJump]);
+
+  // Verificación de impacto en el bloque [ ? ]
+  const checkBlockHit = useCallback((blockIdx) => {
+    if (evaluating) return;
+    setHitBlock(blockIdx);
+    setEvaluating(true);
+
+    const isCorrect = blockIdx === currentQuestion.correct;
+    setCoinEffect({ idx: blockIdx, type: isCorrect ? 'correct' : 'wrong' });
+
+    if (isCorrect) {
+      playRetroSound('coin');
+      setScoreCoins(c => c + 1);
+      setBlockStatus(prev => ({ ...prev, [blockIdx]: 'hit_correct' }));
 
       setTimeout(() => {
-        if (isCorrect) {
-          playRetroSound('coin');
-          setScoreCoins(c => c + 1);
+        setCoinEffect(null);
+        setHitBlock(null);
+        setEvaluating(false);
 
-          // Si completó las preguntas de la misión
-          if (qIndex + 1 >= mission.questions.length) {
-            playRetroSound('win');
-            setPhase('won');
-            if (onWin) onWin(50);
-          } else {
-            setQIndex(q => q + 1);
-            setPosX(10);
-            setHitBlock(null);
-            setEvaluating(false);
-          }
-        } else {
-          playRetroSound('hit');
-          const newLives = currentLives - 1;
-          setCurrentLives(newLives);
-
-          if (newLives <= 0) {
-            setPhase('lost');
-            if (onLose) onLose(-30);
-          } else {
+        if (safeQIndex + 1 >= questions.length) {
+          // Secuencia de victoria con Bandera y Castillo
+          setPhase('flagpole');
+          playRetroSound('win');
+          setTimeout(() => {
+            setFlagDropped(true); // Baja la bandera
             setTimeout(() => {
-              setPosX(10);
-              setHitBlock(null);
-              setEvaluating(false);
-            }, 1000);
+              setPhase('won');
+              if (onWin) onWin(50);
+            }, 1800);
+          }, 600);
+        } else {
+          setQIndex(q => q + 1);
+          setBlockStatus({});
+          marioPosRef.current.x = 12;
+          setMarioX(12);
+        }
+      }, 900);
+    } else {
+      playRetroSound('hit');
+      setIsHit(true);
+      setBlockStatus(prev => ({ ...prev, [blockIdx]: 'hit_wrong' }));
+      const newLives = (currentLives || 3) - 1;
+      setCurrentLives(newLives);
+
+      setTimeout(() => {
+        setIsHit(false);
+        setCoinEffect(null);
+        setHitBlock(null);
+        setEvaluating(false);
+
+        if (newLives <= 0 && !studentAuth?.isGodMode) {
+          setPhase('lost');
+          if (onLose) onLose(-30);
+        }
+      }, 1000);
+    }
+  }, [evaluating, currentQuestion, questions.length, safeQIndex, currentLives, studentAuth, onWin, onLose]);
+
+  // Selección automática al hacer click en un bloque o cartel
+  const handleRunToBlock = (idx) => {
+    if (evaluating || phase !== 'playing') return;
+    const targetX = blockPositions[idx];
+    setEvaluating(true);
+    setHitBlock(idx);
+
+    let currentX = marioPosRef.current.x;
+    const step = targetX > currentX ? 1.6 : -1.6;
+    setFacing(targetX > currentX ? 'right' : 'left');
+    setIsMoving(true);
+
+    const runInterval = setInterval(() => {
+      currentX += step;
+      marioPosRef.current.x = currentX;
+      setMarioX(currentX);
+
+      if (Math.abs(currentX - targetX) <= 2.5) {
+        clearInterval(runInterval);
+        marioPosRef.current.x = targetX;
+        setMarioX(targetX);
+        setIsMoving(false);
+        // Salto directo hacia el bloque
+        marioPosRef.current.vy = 15;
+        setIsJumping(true);
+        playRetroSound('jump');
+
+        setTimeout(() => {
+          checkBlockHit(idx);
+        }, 320);
+      }
+    }, 25);
+  };
+
+  // Bucle de Física a 60 FPS
+  useEffect(() => {
+    if (phase !== 'playing') return;
+
+    const loop = () => {
+      // Movimiento horizontal
+      let newX = marioPosRef.current.x;
+      let moving = false;
+      if (keysRef.current.left) {
+        newX = Math.max(5, newX - 0.75);
+        moving = true;
+      }
+      if (keysRef.current.right) {
+        newX = Math.min(92, newX + 0.75);
+        moving = true;
+      }
+      marioPosRef.current.x = newX;
+      setMarioX(newX);
+      setIsMoving(moving);
+
+      // Salto y Gravedad
+      let newY = marioPosRef.current.y + marioPosRef.current.vy;
+      let newVy = marioPosRef.current.vy - 0.85;
+
+      if (newY <= 0) {
+        newY = 0;
+        newVy = 0;
+        setIsJumping(false);
+      }
+      marioPosRef.current.y = newY;
+      marioPosRef.current.vy = newVy;
+      setMarioY(newY);
+
+      // Detección de colisión con bloques [ ? ] cuando Mario salta desde abajo
+      if (!evaluating && newVy > 0 && newY >= 105 && newY <= 150) {
+        for (let i = 0; i < blockPositions.length; i++) {
+          if (Math.abs(newX - blockPositions[i]) <= 7.5) {
+            marioPosRef.current.vy = -3; // Rebote hacia abajo
+            checkBlockHit(i);
+            break;
           }
         }
-        setIsJumping(false);
-      }, 700);
-    } else {
-      setTimeout(() => setIsJumping(false), 450);
-    }
-  };
+      }
+
+      // Patrulla del Goomba
+      if (!goombaStomped) {
+        setGoombaX(gx => {
+          let nextGx = gx + 0.16 * goombaDir;
+          if (nextGx > 85) setGoombaDir(-1);
+          if (nextGx < 30) setGoombaDir(1);
+          return nextGx;
+        });
+
+        // Colisión con Goomba
+        if (Math.abs(newX - goombaX) < 4.5 && newY < 25 && !evaluating && !isHit) {
+          if (newVy < 0 && newY > 12) {
+            // Mario salta sobre el Goomba (pisotón)
+            setGoombaStomped(true);
+            playRetroSound('coin');
+            marioPosRef.current.vy = 10;
+            setTimeout(() => setGoombaStomped(false), 3000);
+          } else {
+            // Mario choca de costado con Goomba
+            setIsHit(true);
+            playRetroSound('hit');
+            const newLives = (currentLives || 3) - 1;
+            setCurrentLives(newLives);
+            marioPosRef.current.vy = 8;
+            setTimeout(() => setIsHit(false), 1200);
+            if (newLives <= 0 && !studentAuth?.isGodMode) {
+              setPhase('lost');
+              if (onLose) onLose(-30);
+            }
+          }
+        }
+      }
+
+      animRef.current = requestAnimationFrame(loop);
+    };
+
+    animRef.current = requestAnimationFrame(loop);
+    return () => {
+      if (animRef.current) cancelAnimationFrame(animRef.current);
+    };
+  }, [phase, evaluating, goombaDir, goombaX, goombaStomped, isHit, currentLives, studentAuth, checkBlockHit, onLose]);
 
   return (
     <div className="fixed inset-0 z-[99999] bg-[#5c94fc] flex flex-col font-mono overflow-hidden select-none">
@@ -387,7 +630,7 @@ function MarioBrosSoloGame({ missionIndex, studentAuth, onWin, onLose, onExit })
           <div className="w-full max-w-4xl bg-black rounded-2xl overflow-hidden border-4 border-amber-500/50 shadow-[0_0_40px_rgba(245,158,11,0.25)] relative mb-6">
             <div className="bg-amber-950/80 px-4 py-2 border-b border-amber-500/30 flex items-center justify-between">
               <span className="text-amber-300 font-bold text-xs uppercase tracking-widest flex items-center gap-2">📺 VIDEO OBLIGATORIO DE LA MISIÓN</span>
-              <span className="text-[10px] text-slate-400 uppercase">TRANSMISIÓN EN VIVO</span>
+              <span className="text-[10px] text-slate-400 uppercase">TRANSMISIÓN EDUCATIVA</span>
             </div>
             <div className="relative w-full aspect-video">
               <iframe 
@@ -405,6 +648,17 @@ function MarioBrosSoloGame({ missionIndex, studentAuth, onWin, onLose, onExit })
               <h4 className="text-white font-black text-base uppercase mb-1">CÓDICE DE MISIÓN:</h4>
               <p className="text-slate-300 text-xs md:text-sm italic leading-relaxed mb-2">"{mission.lore}"</p>
               <p className="text-amber-400 text-[11px] font-bold uppercase">Observa el video y obtén la palabra clave que dio tu docente para entrar al nivel de Mario Bros.</p>
+              
+              {showCodeHint && (
+                <div className="mt-3 bg-amber-950/40 border border-amber-500/40 p-2.5 rounded-xl text-xs text-amber-300 flex items-center justify-between">
+                  <span>💡 Clave oficial de la misión: <strong className="text-white font-mono tracking-widest">{mission.secretWord}</strong></span>
+                  <button 
+                    onClick={() => { setVideoCodeInput(mission.secretWord); setShowCodeHint(false); }}
+                    className="bg-amber-600 hover:bg-amber-500 text-black px-2.5 py-1 rounded text-[10px] font-black uppercase cursor-pointer">
+                    Usar
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="shrink-0 w-full md:w-80 bg-black/60 border border-slate-700 p-4 rounded-xl">
@@ -412,18 +666,35 @@ function MarioBrosSoloGame({ missionIndex, studentAuth, onWin, onLose, onExit })
                 <form onSubmit={handleUnlockVideoGate} className="space-y-3">
                   <label className="text-amber-400 text-[10px] font-black uppercase tracking-widest block text-center">🔑 CONTRASEÑA DE VIDEO</label>
                   <input 
-                    type="password" 
+                    type="text" 
                     value={videoCodeInput} 
                     onChange={e => setVideoCodeInput(e.target.value)} 
                     placeholder="Escribe la clave..." 
-                    className="w-full bg-[#111424] border border-amber-500/50 rounded-lg px-3 py-2 text-white text-center text-sm font-mono tracking-widest outline-none focus:border-amber-400"
+                    className="w-full bg-[#111424] border border-amber-500/50 rounded-lg px-3 py-2 text-white text-center text-sm font-mono tracking-widest outline-none focus:border-amber-400 uppercase"
                   />
-                  {gateError && <p className="text-red-400 text-[10px] font-bold text-center">{gateError}</p>}
+                  {gateError && <p className="text-red-400 text-[10px] font-bold text-center leading-tight">{gateError}</p>}
                   <button 
                     type="submit" 
                     className="w-full bg-amber-600 hover:bg-amber-500 text-black font-black uppercase py-2.5 rounded-lg text-xs tracking-wider transition-all cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.4)]">
                     DESBLOQUEAR NIVEL
                   </button>
+                  
+                  <div className="flex justify-between items-center pt-1 text-[10px]">
+                    <button 
+                      type="button" 
+                      onClick={() => setShowCodeHint(!showCodeHint)} 
+                      className="text-slate-400 hover:text-amber-400 underline cursor-pointer">
+                      Ver Pista
+                    </button>
+                    {studentAuth?.isGodMode && (
+                      <button 
+                        type="button" 
+                        onClick={() => { setGateUnlocked(true); playRetroSound('powerup'); }} 
+                        className="text-amber-400 hover:text-yellow-300 font-bold uppercase cursor-pointer">
+                        ⚡ Desbloqueo Maestro
+                      </button>
+                    )}
+                  </div>
                 </form>
               ) : (
                 <div className="text-center space-y-3 animate-in zoom-in duration-300">
@@ -442,141 +713,241 @@ function MarioBrosSoloGame({ missionIndex, studentAuth, onWin, onLose, onExit })
         </div>
       )}
 
-      {/* ── FASE 2: NIVEL ESTILO SUPER MARIO BROS ── */}
-      {(phase === 'playing' || phase === 'won' || phase === 'lost') && (
-        <div className="relative w-full h-full flex flex-col justify-between" onClick={handleJump}>
+      {/* ── FASE 2: NIVEL ESTILO SUPER MARIO BROS (PLATAFORMA AUTÉNTICA) ── */}
+      {(phase === 'playing' || phase === 'flagpole' || phase === 'won' || phase === 'lost') && (
+        <div className="relative w-full h-full flex flex-col justify-between overflow-hidden">
           
           {/* Header Retro NES */}
-          <div className="relative z-30 p-4 md:px-8 flex justify-between items-start text-white drop-shadow-[2px_2px_0_#000]">
+          <div className="relative z-40 p-3 md:px-8 flex justify-between items-start text-white drop-shadow-[2px_2px_0_#000] bg-black/40 border-b border-black">
             <div>
-              <p className="font-black text-sm md:text-xl">MARIO / {studentAuth?.clanId === 'all' ? 'MAESTRO EDER' : studentAuth?.name}</p>
-              <p className="font-black text-xs md:text-sm text-yellow-300">CLAN: {studentAuth?.clanId?.toUpperCase() || 'SACRO'}</p>
+              <p className="font-black text-xs md:text-lg">MARIO / {studentAuth?.clanId === 'all' ? 'MAESTRO EDER' : studentAuth?.name}</p>
+              <p className="font-black text-[10px] md:text-xs text-yellow-300">CLAN: {studentAuth?.clanId?.toUpperCase() || 'SACRO'}</p>
             </div>
             <div className="text-center">
-              <p className="font-black text-sm md:text-xl">XP COINS</p>
-              <p className="font-black text-base md:text-2xl text-yellow-300">🪙 x {scoreCoins * 50}</p>
+              <p className="font-black text-xs md:text-base">XP COINS</p>
+              <p className="font-black text-sm md:text-xl text-yellow-300">🪙 x {scoreCoins * 50}</p>
             </div>
             <div className="text-center">
-              <p className="font-black text-sm md:text-xl">MUNDO</p>
-              <p className="font-black text-base md:text-2xl">{mission.worldNum}</p>
+              <p className="font-black text-xs md:text-base">MUNDO</p>
+              <p className="font-black text-sm md:text-xl">{mission.worldNum}</p>
             </div>
             <div className="text-right">
-              <p className="font-black text-sm md:text-xl">VIDAS</p>
-              <p className="font-black text-base md:text-2xl text-red-400">
+              <p className="font-black text-xs md:text-base">VIDAS</p>
+              <p className="font-black text-sm md:text-xl text-red-400">
                 {studentAuth?.isGodMode ? '❤️ x 999' : `❤️ x ${Math.max(0, currentLives)}`}
               </p>
             </div>
             <button 
-              onClick={(e) => { e.stopPropagation(); onExit(); }} 
-              className="ml-4 bg-red-600 hover:bg-red-500 text-white font-black px-3 py-1.5 rounded text-xs border-2 border-black shadow-[2px_2px_0_#000] cursor-pointer">
+              onClick={onExit} 
+              className="ml-3 bg-red-600 hover:bg-red-500 text-white font-black px-3 py-1 rounded text-[11px] border-2 border-black shadow-[2px_2px_0_#000] cursor-pointer">
               SALIR
             </button>
           </div>
 
           {/* Cartel de Pregunta Flotante en el Cielo */}
-          <div className="relative z-30 mx-auto w-11/12 max-w-3xl bg-black/85 border-4 border-white p-3 md:p-5 rounded-2xl text-center shadow-[6px_6px_0_rgba(0,0,0,0.4)]">
-            <p className="text-amber-400 text-[10px] md:text-xs font-black uppercase tracking-widest mb-1">PREGUNTA {qIndex + 1} DE {mission.questions.length}</p>
-            <h3 className="text-sm md:text-xl font-black text-white leading-relaxed">{mission.questions[qIndex].q}</h3>
-            <p className="text-slate-400 text-[9px] md:text-xs mt-1">¡Toca la pantalla para saltar y golpear el bloque [ ? ] con la respuesta correcta!</p>
+          <div className="relative z-30 mx-auto w-11/12 max-w-3xl bg-black/90 border-4 border-white p-3 md:p-4 rounded-2xl text-center shadow-[6px_6px_0_rgba(0,0,0,0.5)] mt-1">
+            <p className="text-amber-400 text-[10px] md:text-xs font-black uppercase tracking-widest mb-1">
+              PREGUNTA {safeQIndex + 1} DE {questions.length} • ¡CORRE Y SALTA HACIA EL BLOQUE [ ? ]!
+            </p>
+            <h3 className="text-xs md:text-lg font-black text-white leading-snug">{currentQuestion.q}</h3>
+            <p className="text-slate-300 text-[9px] md:text-[11px] mt-1 font-bold">
+              🎮 Usa las flechas ◄ ► para correr y ESPACIO para saltar, o toca el control en pantalla.
+            </p>
           </div>
 
           {/* Cielo con nubes y fondo NES */}
           <div className="absolute inset-0 pointer-events-none">
-            {/* Nubes pixeladas */}
-            <div className="absolute top-24 left-16 w-28 h-12 bg-white rounded-full opacity-85 shadow-[inset_-4px_-4px_0_#d0d0d0]"></div>
-            <div className="absolute top-16 right-32 w-36 h-14 bg-white rounded-full opacity-85 shadow-[inset_-4px_-4px_0_#d0d0d0]"></div>
-            <div className="absolute top-36 right-1/2 w-20 h-10 bg-white rounded-full opacity-70"></div>
+            <div className="absolute top-20 left-12 w-28 h-10 bg-white rounded-full opacity-90 shadow-[inset_-4px_-4px_0_#d0d0d0]"></div>
+            <div className="absolute top-16 right-36 w-36 h-12 bg-white rounded-full opacity-90 shadow-[inset_-4px_-4px_0_#d0d0d0]"></div>
+            <div className="absolute top-32 right-1/2 w-24 h-8 bg-white rounded-full opacity-70"></div>
             {/* Colinas verdes */}
-            <div className="absolute bottom-20 left-8 w-44 h-24 bg-[#00a800] rounded-t-full border-4 border-black"></div>
-            <div className="absolute bottom-20 right-16 w-60 h-32 bg-[#00d800] rounded-t-full border-4 border-black"></div>
-            {/* Tubo verde Mario Bros */}
-            <div className="absolute bottom-20 right-32 w-16 h-24 bg-[#00a800] border-4 border-black z-10 flex flex-col items-center">
-              <div className="w-20 h-8 bg-[#00d800] border-4 border-black -mt-4 rounded-sm"></div>
+            <div className="absolute bottom-28 left-6 w-48 h-28 bg-[#00a800] rounded-t-full border-4 border-black"></div>
+            <div className="absolute bottom-28 right-20 w-64 h-36 bg-[#00d800] rounded-t-full border-4 border-black"></div>
+            {/* Tubo verde clásico */}
+            <div className="absolute bottom-28 right-8 w-16 h-20 bg-[#00a800] border-4 border-black z-10 flex flex-col items-center">
+              <div className="w-20 h-7 bg-[#00d800] border-4 border-black -mt-4 rounded-sm"></div>
             </div>
           </div>
 
-          {/* Los 3 Bloques de Preguntas [ ? ] */}
-          <div className="relative w-full h-44 z-20 flex justify-between items-end px-4 md:px-24">
-            {blockPositions.map((pos, idx) => (
-              <div 
-                key={idx} 
-                className="relative flex flex-col items-center" 
-                style={{ position: 'absolute', left: `${pos}%`, transform: 'translateX(-50%)' }}
-              >
-                {/* Cartel con la Opción */}
-                <div className="mb-3 max-w-[140px] md:max-w-[220px] bg-white border-4 border-black p-1.5 md:p-2.5 rounded text-black font-black text-[10px] md:text-sm text-center shadow-[4px_4px_0_#000] leading-tight">
-                  {mission.questions[qIndex].options[idx]}
-                </div>
-
-                {/* Bloque de Interrogación [ ? ] */}
+          {/* Los 3 Bloques de Preguntas [ ? ] con sus Carteles arriba */}
+          <div className="relative w-full h-56 z-20 flex justify-between items-end px-2 md:px-16 pointer-events-none">
+            {blockPositions.map((pos, idx) => {
+              const isHitThis = hitBlock === idx;
+              const status = blockStatus[idx];
+              return (
                 <div 
-                  className={`w-14 h-14 md:w-20 md:h-20 bg-[#fc9838] border-4 border-black rounded shadow-[4px_4px_0_#000] flex items-center justify-center transition-all ${
-                    hitBlock === idx ? '-translate-y-6 bg-yellow-300' : 'animate-pulse'
-                  }`}
+                  key={idx} 
+                  onClick={() => handleRunToBlock(idx)}
+                  className="relative flex flex-col items-center pointer-events-auto cursor-pointer group" 
+                  style={{ position: 'absolute', left: `${pos}%`, transform: 'translateX(-50%)' }}
                 >
-                  <span className="text-black font-black text-3xl md:text-5xl drop-shadow-[1px_1px_0_#fff]">?</span>
-                </div>
+                  {/* Cartel con la Opción arriba del bloque */}
+                  <div className={`mb-3 max-w-[125px] sm:max-w-[180px] md:max-w-[240px] bg-white border-4 border-black p-1.5 md:p-2.5 rounded-lg text-black font-black text-[9px] sm:text-xs md:text-sm text-center shadow-[4px_4px_0_#000] leading-tight transition-transform group-hover:scale-105 ${isHitThis ? 'bg-yellow-200 scale-110' : ''}`}>
+                    <span className="text-amber-800 font-black block text-[8px] md:text-[10px] uppercase">OPCIÓN {String.fromCharCode(65 + idx)}</span>
+                    {currentQuestion.options?.[idx] || `Opción ${idx + 1}`}
+                  </div>
 
-                {/* Efecto de Moneda dorada al golpear */}
-                {hitBlock === idx && evaluating && (
-                  <div className="absolute -top-16 z-40 animate-bounce flex flex-col items-center">
-                    {idx === mission.questions[qIndex].correct ? (
-                      <>
-                        <span className="text-4xl">🪙</span>
-                        <span className="text-yellow-300 font-black text-lg drop-shadow-[2px_2px_0_#000]">+50 XP</span>
-                      </>
+                  {/* Bloque de Interrogación [ ? ] */}
+                  <div 
+                    className={`w-14 h-14 md:w-20 md:h-20 border-4 border-black rounded shadow-[4px_4px_0_#000] flex items-center justify-center transition-all ${
+                      status === 'hit_correct' 
+                        ? 'bg-[#b86828] -translate-y-4' 
+                        : status === 'hit_wrong'
+                        ? 'bg-red-800 -translate-y-2'
+                        : isHitThis
+                        ? '-translate-y-4 bg-yellow-300'
+                        : 'bg-[#fc9838] animate-pulse hover:bg-yellow-400'
+                    }`}
+                  >
+                    {status === 'hit_correct' ? (
+                      <span className="text-white font-black text-2xl md:text-4xl">⭐</span>
+                    ) : status === 'hit_wrong' ? (
+                      <span className="text-white font-black text-2xl md:text-4xl">❌</span>
                     ) : (
-                      <>
-                        <span className="text-4xl">💀</span>
-                        <span className="text-red-500 font-black text-lg drop-shadow-[2px_2px_0_#000]">-1 VIDA</span>
-                      </>
+                      <span className="text-black font-black text-3xl md:text-5xl drop-shadow-[1px_1px_0_#fff]">?</span>
                     )}
                   </div>
-                )}
-              </div>
-            ))}
+
+                  {/* Moneda / Calavera que salta al golpear el bloque */}
+                  {coinEffect && coinEffect.idx === idx && (
+                    <div className="absolute -top-16 z-40 animate-bounce flex flex-col items-center">
+                      {coinEffect.type === 'correct' ? (
+                        <>
+                          <span className="text-4xl">🪙</span>
+                          <span className="text-yellow-300 font-black text-base md:text-xl drop-shadow-[2px_2px_0_#000]">+50 XP</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="text-4xl">💥</span>
+                          <span className="text-red-500 font-black text-base md:text-xl drop-shadow-[2px_2px_0_#000]">-1 VIDA</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
-          {/* Personaje Mario / Recluta corriendo y saltando */}
+          {/* Goomba Enemigo patrullando */}
+          {!goombaStomped && (
+            <div 
+              className="absolute bottom-28 z-25 transition-transform"
+              style={{ left: `${goombaX}%`, transform: `translateX(-50%) scaleX(${goombaDir})` }}
+            >
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-[#8b4513] border-4 border-black rounded-t-full shadow-[3px_3px_0_#000] flex flex-col items-center justify-center relative">
+                <div className="flex gap-2">
+                  <div className="w-1.5 h-3 bg-white border border-black"></div>
+                  <div className="w-1.5 h-3 bg-white border border-black"></div>
+                </div>
+                <div className="absolute -bottom-1 flex justify-between w-full px-1">
+                  <div className="w-3 h-2 bg-black rounded-full"></div>
+                  <div className="w-3 h-2 bg-black rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Bandera y Castillo para la fase final */}
+          {phase === 'flagpole' && (
+            <div className="absolute bottom-28 right-12 z-30 flex items-end">
+              {/* Asta de la Bandera */}
+              <div className="relative w-3 h-64 bg-amber-200 border-2 border-black flex flex-col justify-between">
+                <div className="w-7 h-7 bg-yellow-400 rounded-full border-2 border-black -top-4 -left-2 absolute"></div>
+                {/* Bandera deslizante */}
+                <div 
+                  className="absolute left-3 w-14 h-10 bg-green-500 border-2 border-black transition-all duration-1000 flex items-center justify-center text-xs font-black text-white"
+                  style={{ top: flagDropped ? '190px' : '10px' }}
+                >
+                  ODISEA
+                </div>
+              </div>
+              {/* Castillo */}
+              <div className="ml-8 w-28 h-32 bg-[#c84c0c] border-4 border-black relative flex flex-col items-center justify-end">
+                <div className="absolute -top-6 flex justify-between w-full px-2">
+                  <div className="w-5 h-6 bg-[#c84c0c] border-2 border-black"></div>
+                  <div className="w-5 h-6 bg-[#c84c0c] border-2 border-black"></div>
+                  <div className="w-5 h-6 bg-[#c84c0c] border-2 border-black"></div>
+                </div>
+                <div className="w-10 h-16 bg-black rounded-t-full"></div>
+              </div>
+            </div>
+          )}
+
+          {/* Personaje Mario / Recluta corriendo y saltando con físicas reales */}
           <div 
-            className={`absolute bottom-20 z-30 transition-all ${isJumping ? '-translate-y-48 md:-translate-y-72' : ''}`}
+            className={`absolute bottom-28 z-30 transition-opacity ${isHit ? 'opacity-40 animate-pulse' : 'opacity-100'}`}
             style={{ 
-              left: `${posX}%`, 
-              transitionDuration: isJumping ? '220ms' : '0ms' 
+              left: `${marioX}%`, 
+              bottom: `calc(7rem + ${marioY}px)`,
+              transform: `translateX(-50%) scaleX(${facing === 'left' ? -1 : 1})`
             }}
           >
             <div className="relative flex flex-col items-center">
-              {/* Avatar estilo Mario / Clan */}
-              <div className="w-14 h-14 md:w-20 md:h-20 bg-red-600 border-4 border-black rounded-2xl shadow-[4px_4px_0_#000] flex items-center justify-center text-3xl md:text-5xl">
-                {studentAuth?.isGodMode ? '👑' : (evaluating && hitBlock !== mission.questions[qIndex].correct && hitBlock !== null ? '💥' : '🏃')}
+              {/* Gorra y Cabeza de Mario */}
+              <div className={`w-12 h-12 md:w-16 md:h-16 ${studentAuth?.isGodMode ? 'bg-yellow-500' : 'bg-red-600'} border-4 border-black rounded-2xl shadow-[4px_4px_0_#000] flex items-center justify-center text-2xl md:text-4xl transition-transform ${isMoving ? 'rotate-3' : ''}`}>
+                {studentAuth?.isGodMode ? '👑' : isHit ? '💥' : isJumping ? '🦘' : isMoving ? '🏃' : '🧔'}
               </div>
-              <span className="bg-black text-yellow-300 text-[9px] font-black px-2 py-0.5 rounded mt-1 border border-white">
+              {/* Badge del personaje */}
+              <span className={`bg-black text-yellow-300 text-[8px] font-black px-1.5 py-0.5 rounded mt-0.5 border border-white tracking-widest ${facing === 'left' ? '-scale-x-100' : ''}`}>
                 {studentAuth?.isGodMode ? 'EDER' : 'RECLUTA'}
               </span>
             </div>
           </div>
 
           {/* Suelo NES clásico de Mario Bros */}
-          <div className="relative w-full h-20 bg-[#c84c0c] border-t-8 border-black z-20 flex flex-col">
-            <div className="w-full h-4 bg-[#fc9838] border-b-2 border-black"></div>
-            <div className="w-full flex-grow" style={{
+          <div className="relative w-full h-28 bg-[#c84c0c] border-t-8 border-black z-20 flex flex-col">
+            <div className="w-full h-4 bg-[#00d800] border-b-2 border-black"></div>
+            <div className="w-full flex-grow flex items-center justify-between px-4" style={{
               backgroundImage: 'repeating-linear-gradient(90deg, #000 0px, #000 4px, transparent 4px, transparent 32px), repeating-linear-gradient(0deg, #000 0px, #000 4px, transparent 4px, transparent 16px)'
-            }}></div>
+            }}>
+              
+              {/* CONTROLES TÁCTILES EN PANTALLA (GAME BOY / NES D-PAD PARA MÓVIL Y TABLET) */}
+              <div className="flex items-center gap-3 z-30 select-none">
+                <button 
+                  onPointerDown={(e) => { e.preventDefault(); keysRef.current.left = true; setFacing('left'); }}
+                  onPointerUp={(e) => { e.preventDefault(); keysRef.current.left = false; }}
+                  onPointerLeave={(e) => { e.preventDefault(); keysRef.current.left = false; }}
+                  className="w-14 h-14 bg-slate-900 border-4 border-white text-white font-black text-2xl rounded-2xl active:bg-yellow-400 active:text-black flex items-center justify-center shadow-[3px_3px_0_#000] cursor-pointer">
+                  ◄
+                </button>
+                <button 
+                  onPointerDown={(e) => { e.preventDefault(); keysRef.current.right = true; setFacing('right'); }}
+                  onPointerUp={(e) => { e.preventDefault(); keysRef.current.right = false; }}
+                  onPointerLeave={(e) => { e.preventDefault(); keysRef.current.right = false; }}
+                  className="w-14 h-14 bg-slate-900 border-4 border-white text-white font-black text-2xl rounded-2xl active:bg-yellow-400 active:text-black flex items-center justify-center shadow-[3px_3px_0_#000] cursor-pointer">
+                  ►
+                </button>
+              </div>
+
+              {/* Botón de Salto Grande Ⓐ */}
+              <div className="z-30 select-none">
+                <button 
+                  onPointerDown={(e) => { e.preventDefault(); triggerJump(); }}
+                  className="px-6 h-14 bg-red-600 hover:bg-red-500 border-4 border-white text-white font-black text-sm md:text-base rounded-2xl active:scale-95 flex items-center justify-center gap-2 shadow-[4px_4px_0_#000] cursor-pointer animate-pulse">
+                  <span className="w-7 h-7 bg-white text-red-600 rounded-full flex items-center justify-center text-xs font-black">A</span>
+                  SALTAR
+                </button>
+              </div>
+
+            </div>
           </div>
 
           {/* Modal de Victoria al estilo Mario Bros */}
           {phase === 'won' && (
-            <div className="absolute inset-0 z-50 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in zoom-in duration-300">
+            <div 
+              onClick={(e) => e.stopPropagation()}
+              className="absolute inset-0 z-50 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in zoom-in duration-300">
               <div className="bg-[#fc9838] border-8 border-black p-8 rounded-3xl shadow-[10px_10px_0_#000] max-w-lg">
                 <span className="text-6xl mb-2 block animate-bounce">🏰 ⭐ 🚩</span>
-                <h2 className="text-4xl md:text-6xl font-black text-white uppercase drop-shadow-[4px_4px_0_#000] mb-2">¡NIVEL COMPLETADO!</h2>
-                <p className="text-black font-black text-xl mb-6 uppercase">La sabiduría de la misión ha sido grabada en tu corazón.</p>
+                <h2 className="text-3xl md:text-5xl font-black text-white uppercase drop-shadow-[4px_4px_0_#000] mb-2">¡NIVEL COMPLETADO!</h2>
+                <p className="text-black font-black text-base md:text-lg mb-6 uppercase">La sabiduría de la misión ha sido grabada en tu corazón.</p>
                 <div className="bg-black text-yellow-400 p-4 rounded-xl font-black text-2xl border-4 border-white mb-6 shadow-inner">
                   +50 XP AL CLAN ({studentAuth?.aula})
                 </div>
                 <button 
                   onClick={onExit} 
-                  className="bg-white hover:bg-yellow-300 text-black font-black px-8 py-4 rounded-2xl text-xl uppercase tracking-widest border-4 border-black shadow-[6px_6px_0_#000] cursor-pointer">
+                  className="bg-white hover:bg-yellow-300 text-black font-black px-8 py-4 rounded-2xl text-xl uppercase tracking-widest border-4 border-black shadow-[6px_6px_0_#000] cursor-pointer transition-transform hover:scale-105">
                   VOLVER A MISIONES
                 </button>
               </div>
@@ -585,16 +956,32 @@ function MarioBrosSoloGame({ missionIndex, studentAuth, onWin, onLose, onExit })
 
           {/* Modal de Game Over */}
           {phase === 'lost' && (
-            <div className="absolute inset-0 z-50 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in zoom-in duration-300">
+            <div 
+              onClick={(e) => e.stopPropagation()}
+              className="absolute inset-0 z-50 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in zoom-in duration-300">
               <div className="bg-[#8b0000] border-8 border-black p-8 rounded-3xl shadow-[10px_10px_0_#000] max-w-lg">
                 <span className="text-6xl mb-2 block animate-pulse">💀</span>
                 <h2 className="text-4xl md:text-6xl font-black text-white uppercase drop-shadow-[4px_4px_0_#000] mb-2">¡GAME OVER!</h2>
-                <p className="text-white font-bold text-base mb-6">Has agotado tus vidas. Tu clan ha perdido 30 XP.</p>
-                <button 
-                  onClick={onExit} 
-                  className="bg-white hover:bg-red-400 text-black font-black px-8 py-4 rounded-2xl text-xl uppercase tracking-widest border-4 border-black shadow-[6px_6px_0_#000] cursor-pointer">
-                  SALIR DEL JUEGO
-                </button>
+                <p className="text-white font-bold text-base mb-6">Has agotado tus vidas en este reto. Tu clan ha perdido 30 XP.</p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <button 
+                    onClick={() => {
+                      setCurrentLives(studentAuth?.isGodMode ? 999 : 3);
+                      setQIndex(0);
+                      setMarioX(12);
+                      setHitBlock(null);
+                      setEvaluating(false);
+                      setPhase('playing');
+                    }} 
+                    className="bg-yellow-400 hover:bg-yellow-300 text-black font-black px-6 py-3 rounded-2xl text-base uppercase tracking-widest border-4 border-black shadow-[4px_4px_0_#000] cursor-pointer">
+                    REINTENTAR RETO
+                  </button>
+                  <button 
+                    onClick={onExit} 
+                    className="bg-white hover:bg-red-400 text-black font-black px-6 py-3 rounded-2xl text-base uppercase tracking-widest border-4 border-black shadow-[4px_4px_0_#000] cursor-pointer">
+                    SALIR DEL JUEGO
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -605,7 +992,6 @@ function MarioBrosSoloGame({ missionIndex, studentAuth, onWin, onLose, onExit })
     </div>
   );
 }
-
 
 const classCodes = { 'EDER1A': '1A', 'EDER1B': '1B', 'EDER1C': '1C' };
 
@@ -715,12 +1101,15 @@ export default function OdiseaBiblica() {
   const [poolTribunal, setPoolTribunal] = useState([]);
   const [votoPopularEmitido, setVotoPopularEmitido] = useState(false);
 
-  // ── Misión 3 ──
+  // ── Misión 3, 4 y 5 ──
   const [startMision3Cinematic, setStartMision3Cinematic] = useState(false);
   const [m3Fase, setM3Fase] = useState(0);
   const [startMision4Cinematic, setStartMision4Cinematic] = useState(false);
   const [m4Fase, setM4Fase] = useState(0);
   const [m4SubTab, setM4SubTab] = useState('archivo');
+  const [startMision5Cinematic, setStartMision5Cinematic] = useState(false);
+  const [m5Fase, setM5Fase] = useState(0);
+  const [m5SubTab, setM5SubTab] = useState('archivo');
   const [m3SubTab, setM3SubTab] = useState('archivo');
   const [activeDesafio, setActiveDesafio] = useState(null);
   const [desafioPaso, setDesafioPaso] = useState('invitacion');
@@ -874,9 +1263,9 @@ export default function OdiseaBiblica() {
 
   const resetToHome = () => {
     setView('selector');
-    setStartMision1Cinematic(false); setStartMision2Cinematic(false); setStartMision3Cinematic(false); setStartMision4Cinematic(false);
+    setStartMision1Cinematic(false); setStartMision2Cinematic(false); setStartMision3Cinematic(false); setStartMision4Cinematic(false); setStartMision5Cinematic(false);
     setStartGlobalCinematic(false); setShowInstructions(false);
-    setM1Fase(0); setM2Fase(0); setM3Fase(0); setM4Fase(0);
+    setM1Fase(0); setM2Fase(0); setM3Fase(0); setM4Fase(0); setM5Fase(0);
   };
 
   const sortearClanes = () => {
@@ -984,24 +1373,28 @@ export default function OdiseaBiblica() {
   };
 
   
-  // ── GESTIÓN DINÁMICA DE SALONES DEL DOCENTE ──
+  const isEderUser = (user) => {
+    if (!user) return false;
+    const clean = user.toLowerCase().trim();
+    return ['edercarrasco', 'eder carrasco', 'eder', 'ederinovadorpro', 'maestro', 'profesor', 'prof. eder'].includes(clean);
+  };
+
+  // ── GESTIÓN DINÁMICA DE SALONES DEL DOCENTE (NUEVOS DOCENTES EMPIEZAN DESDE 0) ──
   const getCurrentClassrooms = () => {
-    if (!currentUser || !usersDB[currentUser]) {
+    if (!currentUser) return [];
+    const isEder = isEderUser(currentUser);
+    const saveObj = usersDB[currentUser]?.saves?.find(s => s.id === currentSave);
+    if (saveObj?.classrooms && saveObj.classrooms.length > 0) {
+      return saveObj.classrooms;
+    }
+    if (isEder) {
       return [
         { id: '1A', name: 'Salón 1A', grade: '1ro de Secundaria' },
         { id: '1B', name: 'Salón 1B', grade: '1ro de Secundaria' },
         { id: '1C', name: 'Salón 1C', grade: '1ro de Secundaria' }
       ];
     }
-    const saveObj = usersDB[currentUser]?.saves?.find(s => s.id === currentSave);
-    if (saveObj && saveObj.classrooms && saveObj.classrooms.length > 0) {
-      return saveObj.classrooms;
-    }
-    return [
-      { id: '1A', name: 'Salón 1A', grade: '1ro de Secundaria' },
-      { id: '1B', name: 'Salón 1B', grade: '1ro de Secundaria' },
-      { id: '1C', name: 'Salón 1C', grade: '1ro de Secundaria' }
-    ];
+    return []; // Nuevos profesores empiezan con 0 salones para crear desde cero
   };
 
   const currentClassrooms = getCurrentClassrooms();
@@ -1075,7 +1468,7 @@ export default function OdiseaBiblica() {
     }
   }, [view, selectedClass, currentClassrooms]);
 
-  const isMissionActive = (view === 'mision1' && m1Fase > 0) || (view === 'mision2' && m2Fase > 0) || (view === 'mision3' && m3Fase > 0) || (view === 'mision4' && m4Fase > 0);
+  const isMissionActive = (view === 'mision1' && m1Fase > 0) || (view === 'mision2' && m2Fase > 0) || (view === 'mision3' && m3Fase > 0) || (view === 'mision4' && m4Fase > 0) || (view === 'mision5' && m5Fase > 0);
 
   // ── Helper Component for A4 Pages ──
   const A4Page = ({ children }) => (
@@ -1135,17 +1528,40 @@ export default function OdiseaBiblica() {
 
   const handleRegister = (e) => {
     e.preventDefault();
-    if (!loginForm.user || !loginForm.pass) {
+    const userClean = (loginForm.user || '').trim();
+    const passClean = (loginForm.pass || '').trim();
+    if (!userClean || !passClean) {
       setAuthError('Completa todos los campos.');
       return;
     }
-    if (usersDB[loginForm.user]) {
-      setAuthError('El usuario ya existe.');
+    if (usersDB[userClean]) {
+      setAuthError('El usuario ya existe. Inicia sesión con tus credenciales.');
       return;
     }
-    const newDb = { ...usersDB, [loginForm.user]: { pass: loginForm.pass, saves: [] } };
+    const newSaveId = `save_${Date.now()}`;
+    const newDb = {
+      ...usersDB,
+      [userClean]: {
+        pass: passClean,
+        name: userClean,
+        saves: [
+          {
+            id: newSaveId,
+            name: 'Mis Salones (Principal)',
+            classrooms: [] // Empieza desde 0 salones
+          }
+        ]
+      }
+    };
     setUsersDB(newDb);
-    setCurrentUser(loginForm.user);
+    localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(newDb));
+    setCurrentUser(userClean);
+    setCurrentSave(newSaveId);
+    setScores({});
+    setRoster({});
+    try {
+      localStorage.setItem(`odiseaData_${userClean}_${newSaveId}`, JSON.stringify({ scores: {}, roster: {} }));
+    } catch (err) {}
     setAuthError('');
     setAuthView('dashboard');
   };
@@ -1642,48 +2058,66 @@ export default function OdiseaBiblica() {
                 <Users className="w-4 h-4"/> TUS SALONES ACTIVOS ({currentClassrooms.length})
               </h3>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {currentClassrooms.map(aula => (
-                  <div 
-                    key={aula.id} 
-                    className="group bg-[#111424] hover:bg-[#1a1e36] border-2 border-indigo-900/40 hover:border-indigo-400 rounded-2xl p-5 flex flex-col justify-between transition-all shadow-lg hover:shadow-[0_0_25px_rgba(79,70,229,0.3)] relative overflow-hidden">
-                    
-                    <div className="flex justify-between items-start mb-4">
-                      <span className="bg-indigo-950 text-indigo-300 text-[10px] font-bold uppercase px-2.5 py-1 rounded border border-indigo-700/50">
-                        {aula.grade || '1ro de Secundaria'}
-                      </span>
-                      {currentClassrooms.length > 1 && (
-                        <button 
-                          onClick={(e) => { e.stopPropagation(); handleRemoveClassroom(aula.id); }} 
-                          className="text-slate-600 hover:text-red-400 p-1 rounded transition-colors"
-                          title="Eliminar salón">
-                          <X className="w-4 h-4" />
-                        </button>
-                      )}
-                    </div>
-
-                    <div className="mb-6">
-                      <h4 className="text-2xl md:text-3xl font-black text-white uppercase tracking-wider group-hover:text-amber-400 transition-colors">
-                        {aula.name || `SALÓN ${aula.id}`}
-                      </h4>
-                      <p className="text-slate-400 text-xs mt-1">
-                        {unassignedStudentsDB[aula.id]?.length || 0} estudiantes en base de datos
-                      </p>
-                    </div>
-
-                    <button 
-                      onClick={() => { 
-                        setSelectedClass(aula.id); 
-                        setView('campamento_base'); 
-                        setActiveTab(1); 
-                        setSorteoPaso('config');
-                      }} 
-                      className="w-full bg-gradient-to-r from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white py-3 rounded-xl font-black uppercase text-sm tracking-wider flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
-                      ENTRAR AL AULA <Play className="w-4 h-4" />
-                    </button>
+              {currentClassrooms.length === 0 ? (
+                <div className="bg-[#111424] border-2 border-dashed border-indigo-500/40 rounded-2xl p-8 text-center my-4 shadow-inner animate-in fade-in">
+                  <Users className="w-12 h-12 text-indigo-400 mx-auto mb-3 animate-pulse" />
+                  <h4 className="text-xl md:text-2xl font-black text-white uppercase tracking-wider mb-2">
+                    ¡Bienvenido Profesor {currentUser}!
+                  </h4>
+                  <p className="text-slate-300 text-xs md:text-sm max-w-xl mx-auto mb-6 leading-relaxed">
+                    Tu sistema está listo desde cero (0 salones y 0 estudiantes precargados). Crea tu primer salón a continuación seleccionando el grado y la sección.
+                  </p>
+                  <div className="inline-block bg-indigo-950/80 border border-indigo-400/50 px-5 py-2.5 rounded-xl text-amber-300 text-xs font-black uppercase tracking-wider">
+                    👇 Completa el formulario de abajo para agregar tu primer salón
                   </div>
-                ))}
-              </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {currentClassrooms.map(aula => (
+                    <div 
+                      key={aula.id} 
+                      className="group bg-[#111424] hover:bg-[#1a1e36] border-2 border-indigo-900/40 hover:border-indigo-400 rounded-2xl p-5 flex flex-col justify-between transition-all shadow-lg hover:shadow-[0_0_25px_rgba(79,70,229,0.3)] relative overflow-hidden">
+                      
+                      <div className="flex justify-between items-start mb-4">
+                        <span className="bg-indigo-950 text-indigo-300 text-[10px] font-bold uppercase px-2.5 py-1 rounded border border-indigo-700/50">
+                          {aula.grade || '1ro de Secundaria'}
+                        </span>
+                        {currentClassrooms.length > 1 && (
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); handleRemoveClassroom(aula.id); }} 
+                            className="text-slate-600 hover:text-red-400 p-1 rounded transition-colors"
+                            title="Eliminar salón">
+                            <X className="w-4 h-4" />
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="mb-6">
+                        <h4 className="text-2xl md:text-3xl font-black text-white uppercase tracking-wider group-hover:text-amber-400 transition-colors">
+                          {aula.name || `SALÓN ${aula.id}`}
+                        </h4>
+                        <p className="text-slate-400 text-xs mt-1">
+                          {isEderUser(currentUser) 
+                            ? (unassignedStudentsDB[aula.id]?.length || 0) 
+                            : (roster[aula.id] ? Object.values(roster[aula.id]).flat().length : 0)
+                          } estudiantes en base de datos
+                        </p>
+                      </div>
+
+                      <button 
+                        onClick={() => { 
+                          setSelectedClass(aula.id); 
+                          setView('campamento_base'); 
+                          setActiveTab(1); 
+                          setSorteoPaso('config');
+                        }} 
+                        className="w-full bg-gradient-to-r from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white py-3 rounded-xl font-black uppercase text-sm tracking-wider flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
+                        ENTRAR AL AULA <Play className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Formulario para Agregar Nuevo Salón y Grado */}
@@ -2113,20 +2547,20 @@ export default function OdiseaBiblica() {
       )}
 
       {/* ── MINIJUEGO MARIO BROS EN EJECUCIÓN ── */}
-      {view === 'student_mario_game' && studentAuth && (
+      {view === 'student_mario_game' && (
         <MarioBrosSoloGame 
           missionIndex={activeSoloMission}
-          studentAuth={studentAuth}
+          studentAuth={studentAuth || { name: 'RECLUTA', aula: selectedClass || '1A', clanId: 'c1', isGodMode: false, lives: 3 }}
           onExit={() => setView('student_dashboard')}
           onWin={(pts) => {
-            updateScore(studentAuth.clanId, pts || 50, studentAuth.aula);
-            alert("¡GLORIA Y VICTORIA! +50 XP han sido sincronizados en tiempo real a tu Clan.");
-            setView('student_dashboard');
+            if (studentAuth?.clanId) {
+              updateScore(studentAuth.clanId, pts || 50, studentAuth.aula);
+            }
           }}
           onLose={(pts) => {
-            updateScore(studentAuth.clanId, pts || -30, studentAuth.aula);
-            alert("¡GAME OVER! Has agotado tus vidas. -30 XP al Clan.");
-            setView('student_dashboard');
+            if (studentAuth?.clanId) {
+              updateScore(studentAuth.clanId, pts || -30, studentAuth.aula);
+            }
           }}
         />
       )}
@@ -2353,8 +2787,8 @@ export default function OdiseaBiblica() {
                     { id: 1, title: 'SANTIDAD Y SACRIFICIO', etiqueta: 'MISIÓN 01', tema: 'LOS SACERDOTES', desc: '"El fuego del Sinaí arde. La santidad absoluta de Yahveh amenaza con consumir la impureza humana. ¿Cómo puede el hombre acercarse sin morir?"', icon: Scroll, bgClass: 'from-blue-950/40 to-[#0a0c16]', borderClass: 'border-blue-500/30 hover:border-blue-400', textClass: 'text-blue-400', iconBg: 'bg-blue-900/50', shadowClass: 'hover:shadow-[0_0_50px_rgba(59,130,246,0.2)]', action: () => { setView('mision1'); setStartMision1Cinematic(false); setM1Fase(0); } },
                     { id: 2, title: 'LA ERA DEL CAOS', etiqueta: 'MISIÓN 02', tema: 'LOS JUECES', desc: '"Anarquía total. Tribus dispersas, enemigos saqueando. Israel clama en la oscuridad, y de la nada, guerreros improbables se levantan."', icon: Crosshair, bgClass: 'from-red-950/40 to-[#0a0c16]', borderClass: 'border-red-500/30 hover:border-red-400', textClass: 'text-red-400', iconBg: 'bg-red-900/50', shadowClass: 'hover:shadow-[0_0_50px_rgba(220,38,38,0.2)]', action: () => { setView('mision2'); setStartMision2Cinematic(false); setM2Fase(0); } },
                     { id: 3, title: 'EL ASCENSO DE LA CORONA', etiqueta: 'MISIÓN 03', tema: 'LOS REYES', desc: '"Israel rechaza a Yahveh como rey directo y exige un monarca humano. Comienza una era de coronas de oro y espadas manchadas de sangre."', icon: Crown, bgClass: 'from-amber-950/40 to-[#0a0c16]', borderClass: 'border-amber-500/30 hover:border-amber-400', textClass: 'text-amber-400', iconBg: 'bg-amber-900/50', shadowClass: 'hover:shadow-[0_0_50px_rgba(245,158,11,0.2)]', action: () => { setView('mision3'); setStartMision3Cinematic(false); setM3Fase(0); setM3SubTab('archivo'); } },
-                    { id: 4, title: 'VOCES DEL DESIERTO', etiqueta: 'MISIÓN 04', tema: 'LOS PROFETAS', desc: '"Los reyes han fallado. Yahveh levanta hombres que gritan verdades incómodas frente al poder de los imperios."', icon: Flame, bgClass: 'from-fuchsia-950/40 to-[#0a0c16]', borderClass: 'border-fuchsia-500/30 hover:border-fuchsia-400', textClass: 'text-fuchsia-400', iconBg: 'bg-fuchsia-900/50', shadowClass: 'hover:shadow-[0_0_50px_rgba(217,70,239,0.2)]', action: () => { setView('mision4'); setStartMision4Cinematic(false); setM4Fase(0); } },
-                    { id: 5, title: 'HEROÍNAS DE LA FE', etiqueta: 'MISIÓN 05', tema: 'MUJERES DE ISRAEL', desc: '"Donde los hombres retrocedieron, la Providencia levantó mujeres. Estrategas militares y extranjeras leales."', icon: Shield, bgClass: 'from-emerald-950/40 to-[#0a0c16]', borderClass: 'border-emerald-500/30', textClass: 'text-emerald-400', iconBg: 'bg-emerald-900/50', shadowClass: '' }
+                    { id: 4, title: 'VOCES DEL DESIERTO', etiqueta: 'MISIÓN 04', tema: 'LOS PROFETAS', desc: '"Los reyes han fallado. Yahveh levanta hombres que gritan verdades incómodas frente al poder de los imperios."', icon: Flame, bgClass: 'from-fuchsia-950/40 to-[#0a0c16]', borderClass: 'border-fuchsia-500/30 hover:border-fuchsia-400', textClass: 'text-fuchsia-400', iconBg: 'bg-fuchsia-900/50', shadowClass: 'hover:shadow-[0_0_50px_rgba(217,70,239,0.2)]', action: () => { setView('mision4'); setStartMision4Cinematic(false); setM4Fase(0); setM4SubTab('archivo'); } },
+                    { id: 5, title: 'HEROÍNAS DE LA FE', etiqueta: 'MISIÓN 05', tema: 'MUJERES DE ISRAEL', desc: '"Donde los hombres retrocedieron, la Providencia levantó mujeres. Estrategas militares y extranjeras leales."', icon: Shield, bgClass: 'from-emerald-950/40 to-[#0a0c16]', borderClass: 'border-emerald-500/30 hover:border-emerald-400', textClass: 'text-emerald-400', iconBg: 'bg-emerald-900/50', shadowClass: 'hover:shadow-[0_0_50px_rgba(16,185,129,0.2)]', action: () => { setView('mision5'); setStartMision5Cinematic(false); setM5Fase(0); setM5SubTab('archivo'); } }
                   ].map(mission => (
                     <div key={mission.id} onClick={mission.action} className={`relative bg-gradient-to-br ${mission.bgClass} backdrop-blur-xl border-2 ${mission.borderClass} rounded-[2rem] p-8 md:p-10 flex flex-col md:flex-row gap-8 items-center md:items-start transition-all duration-500 group ${mission.shadowClass} ${mission.action ? 'cursor-pointer hover:scale-[1.02] hover:-translate-y-2' : 'cursor-not-allowed opacity-60 grayscale hover:grayscale-0'} overflow-hidden`}>
                       
@@ -2844,7 +3278,7 @@ export default function OdiseaBiblica() {
                       </div>
                     )}
                     <div className="grid grid-cols-4 md:grid-cols-6 gap-4 md:gap-6 max-w-5xl mx-auto px-4">
-                      {pectoralStones.map(stone => {
+                      {safePectoralStones.map(stone => {
                         const isSolved = stoneProgress[stone.id];
                         return (
                           <button key={stone.id} onClick={() => {setActiveStone(stone.id); setGuessedLetters([]); setActiveAhorcadoClan(null);}} className={`relative w-20 h-20 md:w-28 md:h-28 rounded-2xl flex flex-col items-center justify-center border-2 transition-all cursor-pointer ${isSolved ? 'border-slate-700 bg-[#0a0b12] opacity-50' : 'border-[#1e293b] bg-[#111424] hover:border-indigo-500 shadow-[0_0_20px_rgba(0,0,0,0.5)] hover:-translate-y-2'}`}>
@@ -2857,8 +3291,8 @@ export default function OdiseaBiblica() {
                     </div>
 
                     {activeStone && (() => {
-                      const stone = pectoralStones.find(s => s.id === activeStone);
-                      const wordArr = stone.palabra.split('');
+                      const stone = safePectoralStones.find(s => s.id === activeStone) || safePectoralStones[0];
+                      const wordArr = (stone?.palabra || 'SANTIDAD').split('');
                       const isSolved = wordArr.every(char => guessedLetters.includes(char) || char === ' ');
                       return (
                         <div className="fixed inset-0 z-[99999] bg-[#050303]/95 backdrop-blur-md flex items-center justify-center p-4 md:p-8 animate-in fade-in">
@@ -3254,8 +3688,9 @@ export default function OdiseaBiblica() {
                   {tribunalPaso === 'inicio' && (
                     <div className="flex justify-center mt-8">
                       <button onClick={() => {
-                        setCasoActivo(casosTribunal[casoIndice]);
-                        setCasoIndice(prev => (prev + 1) % casosTribunal.length);
+                        const nextCase = safeCasosTribunal[casoIndice % safeCasosTribunal.length] || safeCasosTribunal[0];
+                        setCasoActivo(nextCase);
+                        setCasoIndice(prev => (prev + 1) % safeCasosTribunal.length);
                         setTribunalPaso('caos');
                         setResultadoJuicio(null);
                         setVotoPopularEmitido(false);
@@ -3276,7 +3711,7 @@ export default function OdiseaBiblica() {
                           <AlertTriangle className="w-8 h-8 text-red-500"/>
                           <div>
                             <h4 className="text-red-500 font-black uppercase tracking-widest text-xl">{casoActivo?.titulo || 'CARGANDO...'}</h4>
-                            <span className={`text-[10px] px-3 py-1 rounded font-black uppercase tracking-widest ${casoActivo?.tipo.includes('COMPLEJO') ? 'bg-orange-950 text-orange-500 border border-orange-900' : 'bg-red-950 text-red-400 border border-red-900'}`}>{casoActivo?.tipo}</span>
+                            <span className={`text-[10px] px-3 py-1 rounded font-black uppercase tracking-widest ${casoActivo?.tipo?.includes('COMPLEJO') ? 'bg-orange-950 text-orange-500 border border-orange-900' : 'bg-red-950 text-red-400 border border-red-900'}`}>{casoActivo?.tipo}</span>
                           </div>
                         </div>
                         <p className="text-white italic text-lg md:text-xl leading-relaxed mb-6 font-serif border-l-4 border-red-600 pl-4 bg-red-950/20 py-3 pr-3">{casoActivo?.descripcion}</p>
@@ -4207,6 +4642,560 @@ export default function OdiseaBiblica() {
       )}
 
       {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── MISIÓN 4: PROFETAS ──────────────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {view === 'mision4' && (
+        <div className="flex-grow flex flex-col relative overflow-hidden bg-[#0d040e] min-h-screen">
+          {m4Fase === 0 && (
+            <div className="absolute top-4 right-4 z-[9999] w-48 md:w-64 h-28 md:h-36 bg-[#0a0b12] border border-fuchsia-600/30 rounded-lg overflow-hidden shadow-[0_0_20px_rgba(217,70,239,0.2)] group hover:scale-105 transition-transform">
+              <div className="absolute top-0 left-0 w-full bg-fuchsia-900/90 text-[10px] font-black tracking-widest text-white px-2 py-1 text-center uppercase flex items-center justify-center gap-2 z-10"><Volume2 className="w-3 h-3 animate-pulse"/> AUDIO MISIÓN 4</div>
+              <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none', padding: 0, margin: 0, marginTop: '24px' }} src="https://www.canva.com/design/DAHWugF3r_Y/CGzIAO7oBeFfkhz_SVDLvQ/watch?embed" allowFullScreen allow="autoplay; fullscreen; clipboard-write; encrypted-media"></iframe>
+            </div>
+          )}
+
+          {!startMision4Cinematic ? (
+            <div className="z-10 flex-grow flex flex-col items-center justify-center text-center animate-in fade-in duration-1000 max-w-2xl mx-auto px-4 w-full h-full">
+              <Flame className="w-24 h-24 text-fuchsia-500 mb-6 drop-shadow-[0_0_30px_rgba(217,70,239,0.6)] animate-pulse"/>
+              <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-widest mb-4">MISIÓN 4: VOCES DEL DESIERTO</h1>
+              <p className="text-fuchsia-400 text-xs md:text-sm tracking-widest md:tracking-[0.3em] uppercase mb-10 font-bold border border-fuchsia-900/50 bg-fuchsia-950/30 px-6 py-4 rounded-xl">INSTRUCCIÓN GM: <br/><br/>1) ACTIVA EL AUDIO EN LA ESQUINA.<br/>2) INICIA LA CINEMÁTICA ÉPICA.</p>
+              <button onClick={() => setStartMision4Cinematic(true)} className="bg-gradient-to-b from-fuchsia-700 to-fuchsia-950 border-2 border-fuchsia-400 text-fuchsia-100 px-10 py-5 uppercase tracking-widest md:tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(217,70,239,0.6)] rounded-full cursor-pointer flex items-center justify-center gap-3"><Flame className="w-6 h-6"/> Iniciar Cinemática Épica</button>
+              <button onClick={() => { setView('campamento_base'); setStartMision4Cinematic(false); setM4Fase(0); }} className="mt-8 text-slate-500 text-[10px] tracking-widest uppercase hover:text-white cursor-pointer transition-colors border-b border-transparent hover:border-white">Volver al Campamento Base</button>
+            </div>
+          ) : m4Fase === 0 ? (
+            <div key="cinematica-m4" className="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none bg-[#0a020d] overflow-hidden">
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=2000')] bg-cover bg-center opacity-25 mix-blend-luminosity animate-[slowZoom_40s_linear_forwards]"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a020d] via-[#0a020d]/80 to-transparent z-10"></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 1s' }}><p className="text-2xl md:text-4xl text-slate-300 uppercase tracking-widest md:tracking-[0.5em] font-light drop-shadow-lg">Los reyes fallaron y corrompieron el pacto...</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 6s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-fuchsia-400 uppercase tracking-widest md:tracking-[0.4em] font-bold drop-shadow-[0_0_20px_rgba(217,70,239,0.8)]">La idolatría y la tiranía oscurecieron la tierra.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 11s' }}><p className="text-3xl md:text-6xl lg:text-7xl text-amber-400 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,1)]">PERO EN EL DESIERTO...</p><p className="text-xl md:text-3xl text-fuchsia-300 uppercase tracking-widest md:tracking-[0.5em] font-bold mt-4">Un fuego implacable comenzó a arder.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 17s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-slate-300 uppercase tracking-widest md:tracking-[0.4em] font-light">Hombres que no le temían a los imperios.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 23s' }}><p className="text-4xl md:text-6xl text-fuchsia-500 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(217,70,239,0.8)]">«¡ASÍ DICE YAHVEH!»</p><p className="text-2xl md:text-4xl text-slate-200 uppercase tracking-widest md:tracking-[0.4em] font-bold mt-4">La verdad frente al poder.</p></div>
+              <div className="absolute inset-0 bg-fuchsia-950 z-[100]" style={{ opacity: 0, animation: 'cinematicText 1.5s ease-out forwards 29s' }}></div>
+              <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 3s ease-out forwards 30s' }}>
+                <Flame className="w-24 h-24 text-fuchsia-400 mx-auto mb-8 drop-shadow-[0_0_40px_rgba(217,70,239,1)] animate-[pulse_2s_ease-in-out_infinite]" />
+                <h1 className="text-6xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-fuchsia-300 to-fuchsia-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(217,70,239,0.8)]" style={{ WebkitTextStroke: '2px rgba(0,0,0,0.8)' }}>VOCES DEL DESIERTO</h1>
+                <p className="text-fuchsia-400 mt-6 text-xl md:text-3xl tracking-widest md:tracking-[0.6em] font-bold uppercase bg-black/80 inline-block px-8 py-3 border border-fuchsia-900/50 shadow-2xl rounded-full">MISIÓN 4: LOS PROFETAS</p>
+              </div>
+              <div className="absolute bottom-8 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 32s' }}>
+                <button onClick={() => { setM4Fase(1); setM4SubTab('archivo'); }} className="bg-gradient-to-r from-fuchsia-900 to-[#1a051d] border-2 border-fuchsia-500 text-fuchsia-200 px-12 py-5 font-black uppercase tracking-widest md:tracking-[0.4em] text-xl transition-all shadow-[0_0_50px_rgba(217,70,239,0.6)] hover:scale-110 hover:shadow-[0_0_70px_rgba(217,70,239,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL FUEGO PROFÉTICO <ChevronRight className="w-8 h-8"/></button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col w-full h-full relative z-10">
+              <header className="bg-[#0e0310] border-b border-[#3b1540] p-3 flex justify-between items-center z-50 shadow-lg shadow-fuchsia-900/20">
+                <div className="flex items-center gap-3">
+                  <button onClick={() => {setM4Fase(0); setStartMision4Cinematic(false); setView('campamento_base');}} className="text-slate-400 hover:text-white bg-slate-900 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-3 h-3"/> Base {selectedClass}</button>
+                  <h2 className="text-fuchsia-300 font-black tracking-widest uppercase text-sm md:text-base">{m4SubTab === 'archivo' ? 'FASE 1: ARCHIVO VISUAL' : m4SubTab === 'codice' ? 'FASE 2: CÓDICE PROFÉTICO' : m4SubTab === 'simulador' ? 'FASE 3: EL RETO DE FUEGO' : 'FASE 4: CIERRE Y METACOGNICIÓN'}</h2>
+                </div>
+                <button onClick={() => setShowClans(!showClans)} className="text-amber-400 bg-amber-900/30 p-2 rounded-full hover:bg-amber-800/50 cursor-pointer transition-colors"><Trophy className="w-4 h-4"/></button>
+              </header>
+              <div className="bg-[#08020a] border-b border-[#3b1540] p-2 flex justify-center gap-2 z-40 shadow-md">
+                <button onClick={() => setM4SubTab('archivo')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m4SubTab === 'archivo' ? 'bg-fuchsia-600 text-white shadow-[0_0_10px_rgba(217,70,239,0.5)]' : 'bg-[#1a081e] text-fuchsia-400/50 hover:bg-[#250d2c]'}`}>1. ARCHIVO VISUAL</button>
+                <button onClick={() => setM4SubTab('codice')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m4SubTab === 'codice' ? 'bg-purple-600 text-white shadow-[0_0_10px_rgba(147,51,234,0.5)]' : 'bg-[#1a081e] text-fuchsia-400/50 hover:bg-[#250d2c]'}`}>2. CÓDICE PROFÉTICO</button>
+                <button onClick={() => setM4SubTab('simulador')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m4SubTab === 'simulador' ? 'bg-amber-600 text-white shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'bg-[#1a081e] text-fuchsia-400/50 hover:bg-[#250d2c]'}`}>3. EL RETO</button>
+                <button onClick={() => setM4SubTab('cierre')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m4SubTab === 'cierre' ? 'bg-emerald-600 text-white shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-[#1a081e] text-fuchsia-400/50 hover:bg-[#250d2c]'}`}>4. CIERRE Y METACOGNICIÓN</button>
+              </div>
+
+              <div className="flex-grow overflow-y-auto pb-24 p-4 md:p-8 relative custom-scrollbar z-10">
+                {m4SubTab === 'archivo' && (
+                  <div className="max-w-7xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-700">
+                    <div className="text-center mb-8">
+                      <MonitorPlay className="w-16 h-16 text-fuchsia-400 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(217,70,239,0.6)] animate-pulse"/>
+                      <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-fuchsia-300 tracking-widest uppercase mb-2 drop-shadow-lg">ARCHIVO AUDIOVISUAL DE LOS PROFETAS</h2>
+                      <p className="text-fuchsia-400 text-xs font-bold tracking-widest uppercase">REGISTRO HISTÓRICO: LAS VOCES QUE DESAFIARON IMPERIOS</p>
+                    </div>
+                    
+                    <div className="flex flex-col gap-8 max-w-5xl mx-auto">
+                      <div className="w-full bg-[#0a0b12] border border-fuchsia-900/50 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(217,70,239,0.15)] flex flex-col">
+                        <div className="bg-[#190a1d] p-3 border-b border-fuchsia-900/50 flex items-center justify-between">
+                          <div className="flex items-center gap-2"><Play className="w-4 h-4 text-fuchsia-400"/><span className="text-[10px] text-fuchsia-200 font-bold uppercase tracking-widest">TRANSMISIÓN EN VIVO</span></div>
+                          <div className="flex gap-1">
+                            <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                          </div>
+                        </div>
+                        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                          <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none' }} src="https://www.canva.com/design/DAHWugF3r_Y/CGzIAO7oBeFfkhz_SVDLvQ/watch?embed" allowFullScreen allow="autoplay; fullscreen; clipboard-write; encrypted-media"></iframe>
+                        </div>
+                        <div className="p-4 bg-[#0a0b12] border-t border-fuchsia-900/30 text-center">
+                          <p className="text-xs text-slate-400 italic font-serif">"El profeta no calla ante la injusticia ni negocia sus valores por conveniencia. Es la voz de la verdad."</p>
+                        </div>
+                      </div>
+
+                      <div className="w-full bg-[#05060b] border border-[#1e293b] rounded-2xl p-6 flex flex-col shadow-lg">
+                        <h3 className="text-amber-500 font-black uppercase tracking-widest text-sm mb-4 flex items-center gap-2 border-b border-slate-800 pb-3"><Zap className="w-5 h-5"/> EVALUACIÓN DE CUADERNOS DE MISIÓN</h3>
+                        <p className="text-slate-400 text-[11px] mb-4 leading-relaxed">Revisión rigurosa de apuntes en el cuaderno de Educación Religiosa. Si un miembro del clan carece del apunte, no se valida la puntuación grupal.</p>
+                        
+                        <div className="space-y-4 mb-6 flex-grow custom-scrollbar overflow-y-auto pr-2">
+                          <div className="bg-[#140818] border border-slate-700/50 p-4 rounded-lg flex items-start gap-3">
+                            <div className="w-6 h-6 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-xs shrink-0 mt-1">1</div>
+                            <div className="flex-grow">
+                              <h4 className="text-white text-[11px] md:text-xs font-black uppercase tracking-widest mb-1">NIVEL: RECLUTA (+10 XP)</h4>
+                              <p className="text-[10px] text-slate-400 mb-2 leading-relaxed">Apuntes básicos. Nombres de profetas anotados pero sin explicar su contexto ni mensaje moral clave.</p>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-[#140818] border border-fuchsia-900/50 p-4 rounded-lg flex items-start gap-3">
+                            <div className="w-6 h-6 rounded-full bg-fuchsia-900 text-fuchsia-300 flex items-center justify-center font-bold text-xs shrink-0 mt-1">2</div>
+                            <div className="flex-grow">
+                              <h4 className="text-fuchsia-300 text-[11px] md:text-xs font-black uppercase tracking-widest mb-1">NIVEL: ESTRATEGA (+25 XP)</h4>
+                              <p className="text-[10px] text-fuchsia-200/70 mb-2 leading-relaxed">Apuntes completos con la diferencia entre profetas mayores y menores, y la valentía de confrontar la idolatría.</p>
+                            </div>
+                          </div>
+
+                          <div className="bg-[#140818] border border-amber-500/50 p-4 rounded-lg flex items-start gap-3">
+                            <div className="w-6 h-6 rounded-full bg-amber-600 text-black flex items-center justify-center font-black text-xs shrink-0 mt-1">3</div>
+                            <div className="flex-grow">
+                              <h4 className="text-amber-300 text-[11px] md:text-xs font-black uppercase tracking-widest mb-1">NIVEL: PROFETA DE FUEGO (+50 XP)</h4>
+                              <p className="text-[10px] text-amber-200/80 leading-relaxed">Análisis profundo: conecta el clamor profético por la justicia con las situaciones reales de acoso, egoísmo e integridad en el colegio.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 justify-center border-t border-slate-800 pt-4">
+                          {clansData.map(c => (
+                            <button key={c.id} onClick={() => updateScore(c.id, 50)} className="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider bg-fuchsia-950/40 border border-fuchsia-500/30 text-fuchsia-300 hover:bg-fuchsia-800 hover:text-white transition-colors cursor-pointer">
+                              +50 {c.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                                {m4SubTab === 'codice' && (
+                  <div className="max-w-6xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-700 pb-16">
+                    <div className="text-center mb-10">
+                      <Flame className="w-16 h-16 text-fuchsia-400 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(217,70,239,0.5)] animate-pulse"/>
+                      <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-widest mb-2">CÓDICE PROFÉTICO UNIVERSAL</h2>
+                      <p className="text-fuchsia-400 text-xs font-bold tracking-widest uppercase">TODOS LOS PROFETAS DE ISRAEL Y SU APLICACIÓN DIRECTA EN EL AULA ESCOLAR</p>
+                    </div>
+
+                    {/* SECCIÓN 1: PROFETAS DE ACCIÓN Y PIONEROS */}
+                    <div className="mb-12">
+                      <div className="flex items-center gap-3 border-b-2 border-amber-500/40 pb-3 mb-6">
+                        <Flame className="w-6 h-6 text-amber-400" />
+                        <h3 className="text-xl md:text-2xl font-black text-amber-400 uppercase tracking-wider">1. PROFETAS DE ACCIÓN & PIONEROS (VALENTÍA FRENTE AL PODER)</h3>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {[
+                          { name: "ELÍAS EL TESBITA", pasaje: "1 Reyes 18", title: "EL DESAFÍO DEL CARMELO", desc: "Confrontó a 450 profetas de Baal ante el rey Acab. La multitud adoraba lo falso por conveniencia, pero Elías se mantuvo solo con Dios hasta que el fuego descendió.", lesson: "No sigas la corriente de la masa. Ten la valentía de no sumarte a bromas pesadas o bullying escolar cuando todos lo hacen.", color: "text-amber-400", border: "border-amber-500/50", icon: Flame },
+                          { name: "ELISEO HIJO DE SAFAT", pasaje: "2 Reyes 2-6", title: "DOBLE PORCIÓN Y SERVICIO", desc: "Realizó 14 milagros ayudando a viudas, multiplicando panes y sanando al general sirio Naamán. Su poder estuvo siempre al servicio de los que menos tenían.", lesson: "Usa tus talentos para apoyar a compañeros con dificultades de aprendizaje. La verdadera grandeza es el servicio humilde.", color: "text-fuchsia-400", border: "border-fuchsia-500/50", icon: Sparkles },
+                          { name: "NATÁN", pasaje: "2 Samuel 12", title: "LA VOZ DE LA CONCIENCIA", desc: "Confrontó cara a cara al rey David por su pecado con Betsabé mediante una sabia parábola. No fue cómplice del error de la máxima autoridad.", lesson: "Sé un amigo sincero: ten el coraje de decirle a tus mejores amigos cuando están actuando mal en lugar de encubrir faltas.", color: "text-red-400", border: "border-red-500/50", icon: ShieldAlert }
+                        ].map((p, idx) => (
+                          <div key={idx} className={`bg-[#0d0412] border-2 ${p.border} p-6 rounded-3xl shadow-xl flex flex-col justify-between hover:scale-[1.02] transition-transform`}>
+                            <div>
+                              <div className="flex items-center justify-between mb-3">
+                                <h4 className={`text-lg font-black uppercase tracking-wider ${p.color}`}>{p.name}</h4>
+                                <span className="text-[10px] bg-white/10 px-2 py-0.5 rounded text-slate-300 font-mono">{p.pasaje}</span>
+                              </div>
+                              <span className="bg-white/10 text-white text-[9px] font-black uppercase px-2.5 py-1 rounded-full tracking-widest">{p.title}</span>
+                              <p className="text-slate-300 text-xs leading-relaxed my-3">{p.desc}</p>
+                            </div>
+                            <div className="bg-black/60 p-3.5 rounded-xl border border-white/10 mt-2">
+                              <p className="text-[9px] text-amber-400 font-black uppercase tracking-widest mb-1 flex items-center gap-1"><Target className="w-3 h-3"/> EN TU VIDA ESCOLAR:</p>
+                              <p className="text-white text-xs font-serif italic">"{p.lesson}"</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* SECCIÓN 2: PROFETAS MAYORES */}
+                    <div className="mb-12">
+                      <div className="flex items-center gap-3 border-b-2 border-blue-500/40 pb-3 mb-6">
+                        <Eye className="w-6 h-6 text-blue-400" />
+                        <h3 className="text-xl md:text-2xl font-black text-blue-400 uppercase tracking-wider">2. PROFETAS MAYORES (INTEGRIDAD EN MEDIO DEL IMPERIO)</h3>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {[
+                          { name: "ISAÍAS", pasaje: "Isaías 6", title: "LABIOS PURIFICADOS", desc: "Vio el trono de Dios y un carbón encendido purificó su boca antes de proclamar justicia y la venida del Mesías.", lesson: "Purifica tus palabras: di NO a las groserías, chismes y apodos que lastiman la dignidad de tus compañeros.", color: "text-blue-400", border: "border-blue-500/50" },
+                          { name: "JEREMÍAS", pasaje: "Jeremías 1 y 20", title: "EL PROFETA RESILIENTE", desc: "Fue encarcelado y arrojado a una cisterna por decir la verdad. Lloró por su pueblo pero jamás renunció a su llamado.", lesson: "No te rindas cuando tus compañeros se burlen de ti por hacer lo correcto. La perseverancia forja el carácter.", color: "text-indigo-400", border: "border-indigo-500/50" },
+                          { name: "EZEQUIEL", pasaje: "Ezequiel 18 y 33", title: "EL CENTINELA DEL ALMA", desc: "Enseñó que cada individuo responde por su propia conducta moral y que el centinela tiene el deber de alertar del peligro.", lesson: "Asume tu responsabilidad personal: no justifiques tus errores diciendo 'todos lo hicieron'. Tú decides tu honor.", color: "text-purple-400", border: "border-purple-500/50" },
+                          { name: "DANIEL", pasaje: "Daniel 1 y 6", title: "FIDELIDAD INQUEBRANTABLE", desc: "No se contaminó con la comida pagana en Babilonia y oró a Dios desafiando el foso de los leones del emperador Darío.", lesson: "Resistencia a la presión social: mantén tus principios intactos cuando el grupo te incite a hacer cosas indebidas.", color: "text-emerald-400", border: "border-emerald-500/50" }
+                        ].map((p, idx) => (
+                          <div key={idx} className={`bg-[#0d0412] border-2 ${p.border} p-5 rounded-3xl shadow-xl flex flex-col justify-between hover:scale-[1.02] transition-transform`}>
+                            <div>
+                              <div className="flex items-center justify-between mb-2">
+                                <h4 className={`text-base font-black uppercase tracking-wider ${p.color}`}>{p.name}</h4>
+                                <span className="text-[9px] bg-white/10 px-2 py-0.5 rounded text-slate-300 font-mono">{p.pasaje}</span>
+                              </div>
+                              <span className="bg-white/10 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full tracking-widest">{p.title}</span>
+                              <p className="text-slate-300 text-xs leading-relaxed my-3">{p.desc}</p>
+                            </div>
+                            <div className="bg-black/60 p-3 rounded-xl border border-white/10 mt-2">
+                              <p className="text-[9px] text-amber-400 font-black uppercase tracking-widest mb-1 flex items-center gap-1"><Target className="w-3 h-3"/> EN TU VIDA ESCOLAR:</p>
+                              <p className="text-white text-xs font-serif italic">"{p.lesson}"</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* SECCIÓN 3: PROFETAS MENORES */}
+                    <div>
+                      <div className="flex items-center gap-3 border-b-2 border-emerald-500/40 pb-3 mb-6">
+                        <Scale className="w-6 h-6 text-emerald-400" />
+                        <h3 className="text-xl md:text-2xl font-black text-emerald-400 uppercase tracking-wider">3. PROFETAS MENORES (JUSTICIA SOCIAL, PERDÓN Y CONVIVENCIA)</h3>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {[
+                          { name: "AMÓS", pasaje: "Amós 5:24", title: "JUSTICIA PARA EL OPRIMIDO", desc: "Pastor de campo que denunció a los ricos que explotaban a los necesitados: 'Corra el juicio como las aguas'.", lesson: "Tolerancia cero al acoso escolar (bullying). Ponte del lado del compañero vulnerable e indefenso.", color: "text-amber-400", border: "border-amber-500/40" },
+                          { name: "MIQUEAS", pasaje: "Miqueas 6:8", title: "LA REGLA DE ORO", desc: "Sintetizó todo el deber humano: 'Hacer justicia, amar la misericordia y humillarte ante tu Dios'.", lesson: "La fórmula de convivencia en el aula: sé justo con todos, perdona con rapidez y sé humilde sin presumir notas.", color: "text-emerald-400", border: "border-emerald-500/40" },
+                          { name: "JONÁS", pasaje: "Jonás 3-4", title: "VENCER EL PREJUICIO", desc: "Huyó en un barco por rencor a los ninivitas, pero Dios le enseñó que su misericordia alcanza incluso a los enemigos.", lesson: "Supera rencores escolares. Dale una segunda oportunidad a compañeros con los que hayas tenido roces o disgustos.", color: "text-cyan-400", border: "border-cyan-500/40" },
+                          { name: "OSEAS", pasaje: "Oseas 3", title: "EL AMOR INCONDICIONAL", desc: "Amó y perdonó a su esposa infiel como símbolo del amor paciente de Dios que jamás abandona a su pueblo.", lesson: "Lealtad y fidelidad en la amistad: no deseches a tus amigos ni los dejes de lado cuando cometen un error.", color: "text-pink-400", border: "border-pink-500/40" },
+                          { name: "HABACUC", pasaje: "Habacuc 3:17-19", title: "FE ANTE LA INCERTIDUMBRE", desc: "Cuestionó el dolor pero terminó cantando con fe: 'Aunque la higuera no florezca... me alegraré en Yahveh'.", lesson: "Mantén la calma y la fe en momentos difíciles (ansiedad ante exámenes bimestrales o problemas en el hogar).", color: "text-purple-400", border: "border-purple-500/40" },
+                          { name: "MALAQUÍAS", pasaje: "Malaquías 3", title: "HONRADEZ EN LO OCULTO", desc: "Último profeta del Antiguo Testamento. Exigió pureza en las ofrendas y lealtad verdadera sin apariencias.", lesson: "Honradez absoluta: sé honesto en tus tareas y exámenes incluso cuando el profesor no esté mirando.", color: "text-teal-400", border: "border-teal-500/40" }
+                        ].map((p, idx) => (
+                          <div key={idx} className={`bg-[#0d0412] border-2 ${p.border} p-5 rounded-3xl shadow-xl flex flex-col justify-between hover:scale-[1.02] transition-transform`}>
+                            <div>
+                              <div className="flex items-center justify-between mb-2">
+                                <h4 className={`text-base font-black uppercase tracking-wider ${p.color}`}>{p.name}</h4>
+                                <span className="text-[9px] bg-white/10 px-2 py-0.5 rounded text-slate-300 font-mono">{p.pasaje}</span>
+                              </div>
+                              <span className="bg-white/10 text-white text-[9px] font-black uppercase px-2 py-0.5 rounded-full tracking-widest">{p.title}</span>
+                              <p className="text-slate-300 text-xs leading-relaxed my-3">{p.desc}</p>
+                            </div>
+                            <div className="bg-black/60 p-3 rounded-xl border border-white/10 mt-2">
+                              <p className="text-[9px] text-amber-400 font-black uppercase tracking-widest mb-1 flex items-center gap-1"><Target className="w-3 h-3"/> EN TU VIDA ESCOLAR:</p>
+                              <p className="text-white text-xs font-serif italic">"{p.lesson}"</p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {m4SubTab === 'simulador' && (
+                  <div className="max-w-5xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-500 pb-20">
+                    <div className="bg-[#140518] border border-fuchsia-900/50 rounded-3xl p-6 md:p-12 relative shadow-[0_0_50px_rgba(217,70,239,0.15)] flex flex-col items-center text-center">
+                      <Flame className="w-20 h-20 text-fuchsia-500 mb-6 drop-shadow-[0_0_30px_rgba(217,70,239,0.8)] animate-pulse"/>
+                      <h2 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-200 to-amber-400 uppercase tracking-widest mb-4">EL RETO DE FUEGO PROFÉTICO</h2>
+                      <p className="text-fuchsia-400 text-xs md:text-sm font-bold tracking-widest uppercase bg-fuchsia-950/40 inline-block px-6 py-2 rounded-full border border-fuchsia-900/50 mb-8">
+                        5 DILEMAS MORALES REALES DEL SALÓN: ¿CALLAR POR COMODIDAD O HABLAR CON VALOR?
+                      </p>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left w-full mb-8">
+                        {[
+                          { num: 1, profeta: "ELÍAS (Monte Carmelo)", caso: "ACOSO GRUPAL / MODA SOCIAL", desc: "Todo el clan o salón empieza a aislar y burlarse de un estudiante nuevo para verse graciosos en redes o en el aula. ¿Te unes para encajar o te levantas a defenderlo como Elías ante los 450 falsos profetas?" },
+                          { num: 2, profeta: "DANIEL (El Foso)", caso: "TRAMPA EN EL EXAMEN", desc: "Tus amigos consiguen las respuestas de la evaluación bimestral y te presionan: 'Si no las usas, eres un mal amigo'. ¿Prefieres la nota fácil con trampa o la integridad de Daniel frente a los leones?" },
+                          { num: 3, profeta: "AMÓS (Justicia Social)", caso: "ABUSO EN EL RECREO", desc: "Ves que alumnos mayores le quitan la comida o empujan a un compañero tímido de grados menores. ¿Miras para otro lado diciendo 'no es mi problema' o actúas con el celo de Amós?" },
+                          { num: 4, profeta: "JONÁS (Nínive)", caso: "SEGUNDAS OPORTUNIDADES", desc: "El compañero que te ofendió o habló mal de ti el mes pasado necesita integrarse a tu clan para no reprobar. ¿Guardas rencor egoísta o le abres la puerta perdonando de corazón?" },
+                          { num: 5, profeta: "JEREMÍAS (Resiliencia)", caso: "PRESION DIGITAL EN WHATSAPP", desc: "Crean un grupo paralelo para criticar al profesor o a una compañera y te advierten que si no participas te expulsarán del círculo. ¿Cedes a la intimidación o tienes la firmeza de Jeremías?" }
+                        ].map(d => (
+                          <div key={d.num} className="bg-[#0a020d] border border-fuchsia-900/40 p-5 rounded-2xl flex flex-col justify-between hover:border-fuchsia-500/50 transition-colors shadow-lg">
+                            <div>
+                              <div className="flex justify-between items-center mb-2">
+                                <span className="bg-fuchsia-950 text-fuchsia-300 font-mono text-[10px] font-black px-2.5 py-1 rounded border border-fuchsia-800">CASO #{d.num}</span>
+                                <span className="text-amber-400 text-[10px] font-bold uppercase">{d.profeta}</span>
+                              </div>
+                              <h4 className="text-white font-black text-sm uppercase tracking-wider mb-2">{d.caso}</h4>
+                              <p className="text-slate-300 text-xs leading-relaxed italic">"{d.desc}"</p>
+                            </div>
+                          </div>
+                        ))}
+                        <div className="bg-gradient-to-br from-fuchsia-950/40 to-[#0a020d] border border-amber-500/40 p-5 rounded-2xl flex flex-col justify-center text-center">
+                          <Crown className="w-10 h-10 text-amber-400 mx-auto mb-2" />
+                          <h4 className="text-white font-black text-sm uppercase tracking-wider mb-1">AUDITORÍA DEL DOCENTE</h4>
+                          <p className="text-slate-300 text-xs leading-relaxed">
+                            El clan sorteado o voluntario defiende su respuesta oralmente en 1 minuto aplicando las escrituras.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="bg-[#0b0310] p-6 rounded-2xl border border-fuchsia-500/30 w-full text-left shadow-xl">
+                        <p className="text-amber-400 font-black text-xs uppercase tracking-widest mb-4 flex items-center gap-2">
+                          <Trophy className="w-5 h-5"/> PREMIAR DEFENSA PROFÉTICA MAGISTRAL (+150 XP AL CLAN):
+                        </p>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                          {clansData.map(c => (
+                            <button 
+                              key={c.id} 
+                              onClick={() => updateScore(c.id, 150)} 
+                              className="px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider bg-fuchsia-950/40 border border-fuchsia-500/30 text-fuchsia-300 hover:bg-amber-600 hover:text-black hover:border-amber-400 transition-all cursor-pointer flex items-center justify-between shadow-md hover:scale-105">
+                              <span className="truncate">{c.name}</span>
+                              <span className="text-[10px] font-mono bg-black/50 px-1.5 py-0.5 rounded text-amber-300">+150</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+{m4SubTab === 'cierre' && (
+                  <div className="max-w-4xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-500 pb-20">
+                    <div className="bg-[#05020a] border border-fuchsia-900/50 rounded-3xl p-8 md:p-12 relative shadow-[0_0_50px_rgba(217,70,239,0.15)] flex flex-col items-center text-center overflow-hidden">
+                      <div className="w-20 h-20 bg-fuchsia-950/50 rounded-3xl flex items-center justify-center border-2 border-fuchsia-500/50 mb-8 shadow-[0_0_30px_rgba(217,70,239,0.4)] relative z-10">
+                        <CheckCircle2 className="w-10 h-10 text-fuchsia-400 drop-shadow-[0_0_15px_rgba(217,70,239,0.8)] animate-pulse"/>
+                      </div>
+                      
+                      <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-200 to-fuchsia-600 uppercase tracking-widest mb-4 relative z-10">METACOGNICIÓN PROFÉTICA</h2>
+                      <p className="text-fuchsia-400 text-xs md:text-sm font-bold tracking-widest md:tracking-[0.3em] uppercase bg-fuchsia-950/40 inline-block px-6 py-2 rounded-full border border-fuchsia-900/50 mb-10 relative z-10">CIERRE DE LA MISIÓN 4</p>
+                      
+                      <div className="w-full space-y-6 relative z-10 text-left">
+                        <div className="bg-[#120416] border border-fuchsia-900/30 p-6 md:p-8 rounded-2xl flex flex-col md:flex-row gap-6 items-start hover:border-fuchsia-500/50 transition-colors shadow-lg">
+                          <div className="bg-fuchsia-950/50 p-4 rounded-xl border border-fuchsia-800 shrink-0"><Target className="w-6 h-6 text-fuchsia-400"/></div>
+                          <div>
+                            <h4 className="text-white font-black uppercase tracking-widest text-lg mb-2">1. INTEGRIDAD PERSONAL</h4>
+                            <p className="text-slate-300 leading-relaxed text-sm md:text-base">¿En qué situación cotidiana te cuesta más mantener tu integridad: frente a tus amigos, en las redes sociales o en los exámenes?</p>
+                          </div>
+                        </div>
+
+                        <div className="bg-[#120416] border border-fuchsia-900/30 p-6 md:p-8 rounded-2xl flex flex-col md:flex-row gap-6 items-start hover:border-fuchsia-500/50 transition-colors shadow-lg">
+                          <div className="bg-fuchsia-950/50 p-4 rounded-xl border border-fuchsia-800 shrink-0"><Users className="w-6 h-6 text-fuchsia-400"/></div>
+                          <div>
+                            <h4 className="text-white font-black uppercase tracking-widest text-lg mb-2">2. RESPONSABILIDAD DE CLAN</h4>
+                            <p className="text-slate-300 leading-relaxed text-sm md:text-base">¿Cómo puede tu clan convertirse en una "voz de justicia" dentro de tu aula para detener burlas o divisiones?</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-12 pt-8 border-t border-fuchsia-900/40 w-full relative z-10 flex flex-col items-center">
+                        <button onClick={() => { setM4SubTab('archivo'); setM4Fase(0); setStartMision4Cinematic(false); setView('campamento_base'); }} className="group relative px-10 py-5 rounded-full overflow-hidden shadow-[0_0_30px_rgba(217,70,239,0.3)] hover:shadow-[0_0_50px_rgba(217,70,239,0.6)] hover:scale-105 transition-all duration-300 border border-fuchsia-500/50 cursor-pointer">
+                          <div className="absolute inset-0 bg-fuchsia-600 opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                          <span className="relative z-10 flex items-center gap-3 text-fuchsia-400 group-hover:text-white font-black uppercase tracking-widest md:tracking-[0.2em] transition-colors">
+                            MISIÓN COMPLETADA: RETORNAR A BASE <ChevronRight className="w-5 h-5"/>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── MISIÓN 5: HEROÍNAS DE LA FE ──────────────────────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {view === 'mision5' && (
+        <div className="flex-grow flex flex-col relative overflow-hidden bg-[#020b08] min-h-screen">
+          {m5Fase === 0 && (
+            <div className="absolute top-4 right-4 z-[9999] w-48 md:w-64 h-28 md:h-36 bg-[#0a0b12] border border-emerald-600/30 rounded-lg overflow-hidden shadow-[0_0_20px_rgba(16,185,129,0.2)] group hover:scale-105 transition-transform">
+              <div className="absolute top-0 left-0 w-full bg-emerald-900/90 text-[10px] font-black tracking-widest text-white px-2 py-1 text-center uppercase flex items-center justify-center gap-2 z-10"><Volume2 className="w-3 h-3 animate-pulse"/> AUDIO MISIÓN 5</div>
+              <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none', padding: 0, margin: 0, marginTop: '24px' }} src="https://www.canva.com/design/DAHUpFG0HGw/LtS7S0nuTMhG6sedKbanpw/watch?embed" allowFullScreen allow="autoplay; fullscreen; clipboard-write; encrypted-media"></iframe>
+            </div>
+          )}
+
+          {!startMision5Cinematic ? (
+            <div className="z-10 flex-grow flex flex-col items-center justify-center text-center animate-in fade-in duration-1000 max-w-2xl mx-auto px-4 w-full h-full">
+              <Shield className="w-24 h-24 text-emerald-400 mb-6 drop-shadow-[0_0_30px_rgba(16,185,129,0.6)] animate-pulse"/>
+              <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-widest mb-4">MISIÓN 5: HEROÍNAS DE LA FE</h1>
+              <p className="text-emerald-400 text-xs md:text-sm tracking-widest md:tracking-[0.3em] uppercase mb-10 font-bold border border-emerald-900/50 bg-emerald-950/30 px-6 py-4 rounded-xl">INSTRUCCIÓN GM: <br/><br/>1) ACTIVA EL AUDIO EN LA ESQUINA.<br/>2) INICIA LA CINEMÁTICA ÉPICA.</p>
+              <button onClick={() => setStartMision5Cinematic(true)} className="bg-gradient-to-b from-emerald-700 to-emerald-950 border-2 border-emerald-400 text-emerald-100 px-10 py-5 uppercase tracking-widest md:tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] rounded-full cursor-pointer flex items-center justify-center gap-3"><Shield className="w-6 h-6"/> Iniciar Cinemática Épica</button>
+              <button onClick={() => { setView('campamento_base'); setStartMision5Cinematic(false); setM5Fase(0); }} className="mt-8 text-slate-500 text-[10px] tracking-widest uppercase hover:text-white cursor-pointer transition-colors border-b border-transparent hover:border-white">Volver al Campamento Base</button>
+            </div>
+          ) : m5Fase === 0 ? (
+            <div key="cinematica-m5" className="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none bg-[#010805] overflow-hidden">
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=2000')] bg-cover bg-center opacity-25 mix-blend-luminosity animate-[slowZoom_40s_linear_forwards]"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-[#010805] via-[#010805]/80 to-transparent z-10"></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 1s' }}><p className="text-2xl md:text-4xl text-slate-300 uppercase tracking-widest md:tracking-[0.5em] font-light drop-shadow-lg">Donde los hombres retrocedieron por temor...</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 5s ease-out forwards 6s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-emerald-400 uppercase tracking-widest md:tracking-[0.4em] font-bold drop-shadow-[0_0_20px_rgba(16,185,129,0.8)]">La Providencia levantó mujeres valientes e inquebrantables.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 11s' }}><p className="text-3xl md:text-6xl lg:text-7xl text-amber-300 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,1)]">ESTRATEGAS • REINAS • LEALES</p><p className="text-xl md:text-3xl text-emerald-200 uppercase tracking-widest md:tracking-[0.5em] font-bold mt-4">Su fe cambió el curso de toda una nación.</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 17s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-slate-300 uppercase tracking-widest md:tracking-[0.4em] font-light">«Si perezco, que perezca...»</p></div>
+              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 6s ease-out forwards 23s' }}><p className="text-4xl md:text-6xl text-emerald-400 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(16,185,129,0.8)]">HOY SU VALOR DESPIERTA EN TI.</p><p className="text-2xl md:text-4xl text-slate-200 uppercase tracking-widest md:tracking-[0.4em] font-bold mt-4">La fuerza de las escogidas de Dios.</p></div>
+              <div className="absolute inset-0 bg-emerald-950 z-[100]" style={{ opacity: 0, animation: 'cinematicText 1.5s ease-out forwards 29s' }}></div>
+              <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 3s ease-out forwards 30s' }}>
+                <Shield className="w-24 h-24 text-emerald-400 mx-auto mb-8 drop-shadow-[0_0_40px_rgba(16,185,129,1)] animate-[pulse_2s_ease-in-out_infinite]" />
+                <h1 className="text-6xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-emerald-200 to-emerald-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(16,185,129,0.8)]" style={{ WebkitTextStroke: '2px rgba(0,0,0,0.8)' }}>HEROÍNAS DE LA FE</h1>
+                <p className="text-emerald-400 mt-6 text-xl md:text-3xl tracking-widest md:tracking-[0.6em] font-bold uppercase bg-black/80 inline-block px-8 py-3 border border-emerald-900/50 shadow-2xl rounded-full">MISIÓN 5: MUJERES DE ISRAEL</p>
+              </div>
+              <div className="absolute bottom-8 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 32s' }}>
+                <button onClick={() => { setM5Fase(1); setM5SubTab('archivo'); }} className="bg-gradient-to-r from-emerald-900 to-[#021f14] border-2 border-emerald-500 text-emerald-200 px-12 py-5 font-black uppercase tracking-widest md:tracking-[0.4em] text-xl transition-all shadow-[0_0_50px_rgba(16,185,129,0.6)] hover:scale-110 hover:shadow-[0_0_70px_rgba(16,185,129,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">INGRESAR AL ARCHIVO DE HEROÍNAS <ChevronRight className="w-8 h-8"/></button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-col w-full h-full relative z-10">
+              <header className="bg-[#04120a] border-b border-[#0f3d24] p-3 flex justify-between items-center z-50 shadow-lg shadow-emerald-900/20">
+                <div className="flex items-center gap-3">
+                  <button onClick={() => {setM5Fase(0); setStartMision5Cinematic(false); setView('campamento_base');}} className="text-slate-400 hover:text-white bg-slate-900 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-3 h-3"/> Base {selectedClass}</button>
+                  <h2 className="text-emerald-300 font-black tracking-widest uppercase text-sm md:text-base">{m5SubTab === 'archivo' ? 'FASE 1: ARCHIVO VISUAL' : m5SubTab === 'codice' ? 'FASE 2: CÓDICE DE HEROÍNAS' : m5SubTab === 'simulador' ? 'FASE 3: EL RETO DEL VALOR' : 'FASE 4: CIERRE Y METACOGNICIÓN'}</h2>
+                </div>
+                <button onClick={() => setShowClans(!showClans)} className="text-amber-400 bg-amber-900/30 p-2 rounded-full hover:bg-amber-800/50 cursor-pointer transition-colors"><Trophy className="w-4 h-4"/></button>
+              </header>
+              <div className="bg-[#020b06] border-b border-[#0f3d24] p-2 flex justify-center gap-2 z-40 shadow-md">
+                <button onClick={() => setM5SubTab('archivo')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m5SubTab === 'archivo' ? 'bg-emerald-600 text-white shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-[#092215] text-emerald-400/50 hover:bg-[#0e311f]'}`}>1. ARCHIVO VISUAL</button>
+                <button onClick={() => setM5SubTab('codice')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m5SubTab === 'codice' ? 'bg-teal-600 text-white shadow-[0_0_10px_rgba(20,184,166,0.5)]' : 'bg-[#092215] text-emerald-400/50 hover:bg-[#0e311f]'}`}>2. CÓDICE DE HEROÍNAS</button>
+                <button onClick={() => setM5SubTab('simulador')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m5SubTab === 'simulador' ? 'bg-amber-600 text-white shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'bg-[#092215] text-emerald-400/50 hover:bg-[#0e311f]'}`}>3. EL RETO</button>
+                <button onClick={() => setM5SubTab('cierre')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m5SubTab === 'cierre' ? 'bg-indigo-600 text-white shadow-[0_0_10px_rgba(79,70,229,0.5)]' : 'bg-[#092215] text-emerald-400/50 hover:bg-[#0e311f]'}`}>4. CIERRE Y METACOGNICIÓN</button>
+              </div>
+
+              <div className="flex-grow overflow-y-auto pb-24 p-4 md:p-8 relative custom-scrollbar z-10">
+                {m5SubTab === 'archivo' && (
+                  <div className="max-w-7xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-700">
+                    <div className="text-center mb-8">
+                      <MonitorPlay className="w-16 h-16 text-emerald-400 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(16,185,129,0.6)] animate-pulse"/>
+                      <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-emerald-300 tracking-widest uppercase mb-2 drop-shadow-lg">ARCHIVO VISUAL: HEROÍNAS DE LA FE</h2>
+                      <p className="text-emerald-400 text-xs font-bold tracking-widest uppercase">REGISTRO HISTÓRICO: MUJERES QUE TRANSFORMARON LA HISTORIA BÍBLICA</p>
+                    </div>
+                    
+                    <div className="flex flex-col gap-8 max-w-5xl mx-auto">
+                      <div className="w-full bg-[#0a0b12] border border-emerald-900/50 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(16,185,129,0.15)] flex flex-col">
+                        <div className="bg-[#041a10] p-3 border-b border-emerald-900/50 flex items-center justify-between">
+                          <div className="flex items-center gap-2"><Play className="w-4 h-4 text-emerald-400"/><span className="text-[10px] text-emerald-200 font-bold uppercase tracking-widest">TRANSMISIÓN EN VIVO</span></div>
+                          <div className="flex gap-1">
+                            <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
+                          </div>
+                        </div>
+                        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                          <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none' }} src="https://www.canva.com/design/DAHUpFG0HGw/LtS7S0nuTMhG6sedKbanpw/watch?embed" allowFullScreen allow="autoplay; fullscreen; clipboard-write; encrypted-media"></iframe>
+                        </div>
+                        <div className="p-4 bg-[#0a0b12] border-t border-emerald-900/30 text-center">
+                          <p className="text-xs text-slate-400 italic font-serif">"La verdadera valentía no es la ausencia de miedo, sino actuar con determinación por el bien de los demás."</p>
+                        </div>
+                      </div>
+
+                      <div className="w-full bg-[#05060b] border border-[#1e293b] rounded-2xl p-6 flex flex-col shadow-lg">
+                        <h3 className="text-amber-500 font-black uppercase tracking-widest text-sm mb-4 flex items-center gap-2 border-b border-slate-800 pb-3"><Zap className="w-5 h-5"/> EVALUACIÓN DE CUADERNOS DE MISIÓN</h3>
+                        <p className="text-slate-400 text-[11px] mb-4 leading-relaxed">Auditoría de apuntes en el cuaderno de Educación Religiosa sobre las heroínas y sus decisiones tácticas.</p>
+                        
+                        <div className="space-y-4 mb-6 flex-grow custom-scrollbar overflow-y-auto pr-2">
+                          <div className="bg-[#07160e] border border-slate-700/50 p-4 rounded-lg flex items-start gap-3">
+                            <div className="w-6 h-6 rounded-full bg-slate-800 text-slate-300 flex items-center justify-center font-bold text-xs shrink-0 mt-1">1</div>
+                            <div className="flex-grow">
+                              <h4 className="text-white text-[11px] md:text-xs font-black uppercase tracking-widest mb-1">NIVEL: RECLUTA (+10 XP)</h4>
+                              <p className="text-[10px] text-slate-400 mb-2 leading-relaxed">Apuntes superficiales con nombres de las mujeres sin profundizar en su dilema moral ni en su contexto.</p>
+                            </div>
+                          </div>
+                          
+                          <div className="bg-[#07160e] border border-emerald-900/50 p-4 rounded-lg flex items-start gap-3">
+                            <div className="w-6 h-6 rounded-full bg-emerald-900 text-emerald-300 flex items-center justify-center font-bold text-xs shrink-0 mt-1">2</div>
+                            <div className="flex-grow">
+                              <h4 className="text-emerald-300 text-[11px] md:text-xs font-black uppercase tracking-widest mb-1">NIVEL: ESTRATEGA (+25 XP)</h4>
+                              <p className="text-[10px] text-emerald-200/70 mb-2 leading-relaxed">Apuntes claros: destaca a Débora como jueza militar, Rut como modelo de lealtad y Ester arriesgando la corona por su pueblo.</p>
+                            </div>
+                          </div>
+
+                          <div className="bg-[#07160e] border border-amber-500/50 p-4 rounded-lg flex items-start gap-3">
+                            <div className="w-6 h-6 rounded-full bg-amber-600 text-black flex items-center justify-center font-black text-xs shrink-0 mt-1">3</div>
+                            <div className="flex-grow">
+                              <h4 className="text-amber-300 text-[11px] md:text-xs font-black uppercase tracking-widest mb-1">NIVEL: HEROÍNA / HÉROE DE FE (+50 XP)</h4>
+                              <p className="text-[10px] text-amber-200/80 leading-relaxed">Aplicación magistral a la vida diaria: explica cómo la prudencia de Abigail y la lealtad de Rut nos enseñan a resolver conflictos en el colegio.</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 justify-center border-t border-slate-800 pt-4">
+                          {clansData.map(c => (
+                            <button key={c.id} onClick={() => updateScore(c.id, 50)} className="px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 hover:bg-emerald-800 hover:text-white transition-colors cursor-pointer">
+                              +50 {c.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {m5SubTab === 'codice' && (
+                  <div className="max-w-6xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-700">
+                    <div className="text-center mb-10">
+                      <Shield className="w-16 h-16 text-emerald-400 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(16,185,129,0.5)]"/>
+                      <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-widest mb-2">CÓDICE DE HEROÍNAS BÍBLICAS</h2>
+                      <p className="text-emerald-400 text-xs font-bold tracking-widest uppercase">CORAJE, INTELIGENCIA Y LEALTAD EXTREMA</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {[
+                        { name: "DÉBORA", title: "LA JUEZA Y ESTRATEGA", desc: "La única mujer jueza de Israel. Lideró a las tropas junto a Barac para derrotar al general Sísara bajo el poder de Dios.", lesson: "El liderazgo espiritual y moral no depende del género, sino de la convicción y la obediencia a Dios.", color: "text-emerald-400", border: "border-emerald-500/40", icon: Swords },
+                        { name: "RUT LA MOABITA", title: "LEALTAD INQUEBRANTABLE", desc: "Extranjera que eligió quedarse junto a Noemí: 'Tu pueblo será mi pueblo, y tu Dios mi Dios'. Se convirtió en bisabuela del rey David.", lesson: "La bondad y la fidelidad desinteresada abren las puertas a la bendición de generaciones.", color: "text-amber-400", border: "border-amber-500/40", icon: Heart },
+                        { name: "REINA ESTER", title: "VALOR FRENTE AL IMPERIO", desc: "Arriesgó su propia vida entrando ante el rey Asuero sin ser llamada para desenmascarar el plan genocida de Amán y salvar a su pueblo.", lesson: "¿Quién sabe si para esta hora exacta la vida te colocó en este lugar para hacer justicia?", color: "text-purple-400", border: "border-purple-500/40", icon: Crown },
+                        { name: "ABIGAIL", title: "SABIDURÍA QUE FRENA LA GUERRA", desc: "Mujer prudente que salió al encuentro de David con provisiones y palabras sabias, evitando una masacre provocada por la insensatez de su esposo Nabal.", lesson: "La diplomacia y la paz valen más que la venganza ciega y el orgullo.", color: "text-teal-400", border: "border-teal-500/40", icon: ShieldAlert }
+                      ].map((h, idx) => (
+                        <div key={idx} className={`bg-[#05130b] border-2 ${h.border} p-6 md:p-8 rounded-3xl shadow-xl hover:scale-[1.01] transition-transform flex flex-col justify-between`}>
+                          <div>
+                            <div className="flex items-center justify-between mb-4">
+                              <h3 className={`text-2xl font-black uppercase tracking-wider ${h.color}`}>{h.name}</h3>
+                              <h.icon className={`w-8 h-8 ${h.color}`}/>
+                            </div>
+                            <span className="bg-white/10 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-widest">{h.title}</span>
+                            <p className="text-slate-300 text-sm leading-relaxed my-4">{h.desc}</p>
+                          </div>
+                          <div className="bg-black/50 p-4 rounded-xl border border-white/10 mt-4">
+                            <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest mb-1 flex items-center gap-1.5"><Target className="w-3.5 h-3.5"/> LECCIÓN TÁCTICA PARA EL AULA:</p>
+                            <p className="text-white text-xs font-serif italic">"{h.lesson}"</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {m5SubTab === 'simulador' && (
+                  <div className="max-w-4xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-500 pb-20">
+                    <div className="bg-[#05160d] border border-emerald-900/50 rounded-3xl p-8 md:p-12 relative shadow-[0_0_50px_rgba(16,185,129,0.15)] flex flex-col items-center text-center">
+                      <Shield className="w-20 h-20 text-emerald-400 mb-6 drop-shadow-[0_0_30px_rgba(16,185,129,0.8)] animate-pulse"/>
+                      <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-amber-300 uppercase tracking-widest mb-4">EL RETO DEL VALOR</h2>
+                      <p className="text-emerald-400 text-xs md:text-sm font-bold tracking-widest md:tracking-[0.3em] uppercase bg-emerald-950/40 inline-block px-6 py-2 rounded border border-emerald-900/50 mb-8">DILEMAS MORALES DEL AULA: LEALTAD Y DEFENSA DEL DÉBIL</p>
+                      
+                      <div className="bg-[#020b06] border border-emerald-900/30 p-6 md:p-8 rounded-2xl w-full text-left mb-8 shadow-inner">
+                        <p className="text-white italic text-lg md:text-xl leading-relaxed font-serif border-l-4 border-emerald-500 pl-4">"Como Rut y Ester, defender al que no puede defenderse requiere romper con el egoísmo. Si un compañero nuevo o solitario es ignorado por todos, ¿qué acción concreta de lealtad tomarías tú hoy?"</p>
+                      </div>
+
+                      <div className="bg-[#04120a] p-6 rounded-2xl border border-emerald-500/30 w-full mb-8 text-left">
+                        <p className="text-emerald-400 font-black text-xs uppercase tracking-widest mb-4 flex items-center gap-2"><Trophy className="w-4 h-4"/> JUZGAR AL CLAN RESPONDENTE (+150 XP):</p>
+                        <div className="flex flex-wrap gap-3">
+                          {clansData.map(c => (
+                            <button key={c.id} onClick={() => updateScore(c.id, 150)} className={`px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${c.border.replace('border-', 'bg-').replace('/50', '/10')} hover:${c.border.replace('border-', 'bg-').replace('/50', '/40')} border border-slate-700 hover:border-white text-slate-300 hover:text-white flex items-center gap-3 cursor-pointer shadow-lg`}>
+                              <span>{c.icon}</span> {c.name}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {m5SubTab === 'cierre' && (
+                  <div className="max-w-4xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-500 pb-20">
+                    <div className="bg-[#020b06] border border-emerald-900/50 rounded-3xl p-8 md:p-12 relative shadow-[0_0_50px_rgba(16,185,129,0.15)] flex flex-col items-center text-center overflow-hidden">
+                      <div className="w-20 h-20 bg-emerald-950/50 rounded-3xl flex items-center justify-center border-2 border-emerald-500/50 mb-8 shadow-[0_0_30px_rgba(16,185,129,0.4)] relative z-10">
+                        <CheckCircle2 className="w-10 h-10 text-emerald-400 drop-shadow-[0_0_15px_rgba(16,185,129,0.8)] animate-pulse"/>
+                      </div>
+                      
+                      <h2 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-200 to-emerald-600 uppercase tracking-widest mb-4 relative z-10">METACOGNICIÓN FINAL</h2>
+                      <p className="text-emerald-400 text-xs md:text-sm font-bold tracking-widest md:tracking-[0.3em] uppercase bg-emerald-950/40 inline-block px-6 py-2 rounded-full border border-emerald-900/50 mb-10 relative z-10">CIERRE DE LA MISIÓN 5</p>
+                      
+                      <div className="w-full space-y-6 relative z-10 text-left">
+                        <div className="bg-[#07190f] border border-emerald-900/30 p-6 md:p-8 rounded-2xl flex flex-col md:flex-row gap-6 items-start hover:border-emerald-500/50 transition-colors shadow-lg">
+                          <div className="bg-emerald-950/50 p-4 rounded-xl border border-emerald-800 shrink-0"><Target className="w-6 h-6 text-emerald-400"/></div>
+                          <div>
+                            <h4 className="text-white font-black uppercase tracking-widest text-lg mb-2">1. SABIDURÍA Y ACCIÓN</h4>
+                            <p className="text-slate-300 leading-relaxed text-sm md:text-base">De las cuatro heroínas estudiadas hoy (Débora, Rut, Ester, Abigail), ¿con cuál de sus virtudes te identificas más y por qué?</p>
+                          </div>
+                        </div>
+
+                        <div className="bg-[#07190f] border border-emerald-900/30 p-6 md:p-8 rounded-2xl flex flex-col md:flex-row gap-6 items-start hover:border-emerald-500/50 transition-colors shadow-lg">
+                          <div className="bg-emerald-950/50 p-4 rounded-xl border border-emerald-800 shrink-0"><Users className="w-6 h-6 text-emerald-400"/></div>
+                          <div>
+                            <h4 className="text-white font-black uppercase tracking-widest text-lg mb-2">2. PACTO DE RESPETO</h4>
+                            <p className="text-slate-300 leading-relaxed text-sm md:text-base">Escribe en tu Códice una regla de oro que tu clan aplicará para valorar y respetar a cada compañera y compañero del salón.</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="mt-12 pt-8 border-t border-emerald-900/40 w-full relative z-10 flex flex-col items-center">
+                        <button onClick={() => { setM5SubTab('archivo'); setM5Fase(0); setStartMision5Cinematic(false); setView('campamento_base'); }} className="group relative px-10 py-5 rounded-full overflow-hidden shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(16,185,129,0.6)] hover:scale-105 transition-all duration-300 border border-emerald-500/50 cursor-pointer">
+                          <div className="absolute inset-0 bg-emerald-600 opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                          <span className="relative z-10 flex items-center gap-3 text-emerald-400 group-hover:text-white font-black uppercase tracking-widest md:tracking-[0.2em] transition-colors">
+                            MISIÓN COMPLETADA: RETORNAR A BASE <ChevronRight className="w-5 h-5"/>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════════════════════════ */}
       {/* ── BOTTOM MISSION BAR ──────────────────────────────────── */}
       {/* ════════════════════════════════════════════════════════════ */}
       {isMissionActive && (
@@ -4579,132 +5568,6 @@ export default function OdiseaBiblica() {
 
     
       {/* ════════════════════════════════════════════════════════════ */}
-      {/* ── MISIÓN 4: PROFETAS ────────────────────────────────────── */}
-      {/* ════════════════════════════════════════════════════════════ */}
-      {view === 'mision4' && (
-        <div className="flex-grow flex flex-col relative overflow-hidden bg-[#030105] min-h-screen">
-          {m4Fase === 0 && (
-            <div className="absolute top-4 right-4 z-[9999] w-48 md:w-64 h-28 md:h-36 bg-[#0a0b12] border border-fuchsia-600/30 rounded-lg overflow-hidden shadow-[0_0_20px_rgba(217,70,239,0.2)] group hover:scale-105 transition-transform">
-              <div className="absolute top-0 left-0 w-full bg-fuchsia-900/90 text-[10px] font-black tracking-widest text-white px-2 py-1 text-center uppercase flex items-center justify-center gap-2 z-10"><Volume2 className="w-3 h-3 animate-pulse"/> BSO ÉPICA M4</div>
-              <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none', padding: 0, margin: 0, marginTop: '24px' }} src="https://www.canva.com/design/DAHWuc7vUjQ/GuDDB_i57xEdbBLFkBUkjQ/watch?embed" allowFullScreen allow="autoplay; fullscreen; clipboard-write; encrypted-media"></iframe>
-            </div>
-          )}
-
-          {!startMision4Cinematic ? (
-            <div className="z-10 flex-grow flex flex-col items-center justify-center text-center animate-in fade-in duration-1000 max-w-2xl mx-auto px-4 w-full h-full">
-              <Flame className="w-24 h-24 text-fuchsia-500 mb-6 drop-shadow-[0_0_30px_rgba(217,70,239,0.5)] animate-pulse"/>
-              <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-widest mb-4">MISIÓN 4: LOS PROFETAS</h1>
-              <p className="text-fuchsia-400 text-xs md:text-sm tracking-widest md:tracking-[0.3em] uppercase mb-10 font-bold border border-fuchsia-900/50 bg-fuchsia-950/30 px-6 py-4 rounded-xl">INSTRUCCIÓN GM: <br/><br/>1) ACTIVA LA BSO EN LA ESQUINA.<br/>2) INICIA LA POESÍA CINEMÁTICA.</p>
-              <button onClick={() => setStartMision4Cinematic(true)} className="bg-gradient-to-b from-fuchsia-700 to-fuchsia-950 border-2 border-fuchsia-400 text-fuchsia-100 px-10 py-5 uppercase tracking-widest md:tracking-[0.3em] font-black transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(217,70,239,0.6)] rounded-full cursor-pointer flex items-center justify-center gap-3"><Wand2 className="w-6 h-6"/> Iniciar Cinemática</button>
-              <button onClick={() => { setView('campamento_base'); setStartMision4Cinematic(false); setM4Fase(0); }} className="mt-8 text-slate-500 text-[10px] tracking-widest uppercase hover:text-white cursor-pointer transition-colors border-b border-transparent hover:border-white">Volver al Campamento Base</button>
-            </div>
-          ) : m4Fase === 0 ? (
-            <div key="cinematica-m4" className="fixed inset-0 z-[99999] flex items-center justify-center pointer-events-none bg-[#030105] overflow-hidden">
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1487147264018-f9d7f52479e0?q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-luminosity animate-[slowZoom_50s_linear_forwards]"></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-[#030105] via-[#030105]/70 to-transparent z-10"></div>
-              
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 2s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-slate-300 uppercase tracking-widest md:tracking-[0.4em] font-light drop-shadow-lg">Los reyes se corrompieron.</p></div>
-              
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 7s ease-out forwards 10s' }}><p className="text-4xl md:text-6xl text-fuchsia-400 uppercase tracking-widest md:tracking-[0.4em] font-bold drop-shadow-[0_0_30px_rgba(217,70,239,0.8)]">La corona de Israel se oxidó.</p></div>
-              
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 18s' }}><p className="text-2xl md:text-4xl text-slate-400 uppercase tracking-widest md:tracking-[0.5em] font-light leading-relaxed">Y el pueblo...<br/>El pueblo olvidó quién era.</p></div>
-              
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 8s ease-out forwards 28s' }}><p className="text-4xl md:text-6xl text-amber-500 uppercase tracking-widest md:tracking-[0.3em] font-black drop-shadow-[0_0_40px_rgba(245,158,11,0.8)]">Pero la voz del Cielo no guarda silencio.</p></div>
-              
-              <div className="absolute text-center px-4 w-full z-20" style={{ opacity: 0, animation: 'cinematicText 9s ease-out forwards 38s' }}><p className="text-2xl md:text-4xl lg:text-5xl text-fuchsia-300 uppercase tracking-widest md:tracking-[0.4em] font-light drop-shadow-lg">Del polvo y la oscuridad,<br/>se levantaron llamas humanas.</p></div>
-
-              <div className="absolute text-center px-4 w-full z-[101]" style={{ opacity: 0, animation: 'cinematicTextStay 6s ease-out forwards 49s' }}>
-                <Flame className="w-24 h-24 text-fuchsia-500 mx-auto mb-8 drop-shadow-[0_0_40px_rgba(217,70,239,1)] animate-[pulse_2s_ease-in-out_infinite]" />
-                <h1 className="text-6xl md:text-6xl lg:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-fuchsia-600 tracking-tighter uppercase drop-shadow-[0_0_60px_rgba(217,70,239,1)]">LOS PROFETAS</h1>
-                <p className="text-fuchsia-400 mt-6 text-xl md:text-3xl tracking-widest md:tracking-[0.6em] font-bold uppercase drop-shadow-md">VOCES CONTRA EL IMPERIO</p>
-              </div>
-
-              <div className="absolute bottom-16 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 3s ease-out forwards 55s' }}>
-                <button onClick={() => setM4Fase(1)} className="bg-[#120516]/90 border-2 border-fuchsia-500 text-fuchsia-300 px-10 py-5 font-black uppercase tracking-widest md:tracking-[0.4em] text-lg transition-all shadow-[0_0_40px_rgba(217,70,239,0.6)] hover:scale-110 hover:shadow-[0_0_60px_rgba(217,70,239,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL FUEGO <ChevronRight className="w-6 h-6"/></button>
-              </div>
-            </div>
-          ) : (
-            
-            <div className="relative z-10 w-full h-full flex flex-col animate-in fade-in duration-1000 bg-[#05020a]">
-              {/* HEADER */}
-              <header className="bg-[#0a0514] border-b border-[#2d1b4e] p-4 flex justify-between items-center z-50 shadow-[0_10px_30px_rgba(217,70,239,0.1)]">
-                <div className="flex items-center gap-3">
-                  <button onClick={() => {setM4Fase(0); setStartMision4Cinematic(false); setView('campamento_base');}} className="text-slate-400 hover:text-white bg-slate-900 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-3 h-3"/> Base {selectedClass}</button>
-                  <h2 className="text-fuchsia-300 font-black tracking-widest uppercase text-sm md:text-base">{m4SubTab === 'archivo' ? 'FASE 1: ARCHIVO VISUAL' : m4SubTab === 'codice' ? 'FASE 2: EL CÓDICE PROFÉTICO' : m4SubTab === 'simulador' ? 'FASE 3: EL RETO' : 'FASE 4: CIERRE Y METACOGNICIÓN'}</h2>
-                </div>
-                <button onClick={() => setShowClans(!showClans)} className="text-amber-400 bg-amber-900/30 p-2 rounded-full hover:bg-amber-800/50 cursor-pointer transition-colors"><Trophy className="w-4 h-4"/></button>
-              </header>
-
-              {/* TABS NAV */}
-              <div className="bg-[#05020a] border-b border-[#2d1b4e] p-2 flex justify-center gap-2 z-40 shadow-md overflow-x-auto custom-scrollbar">
-                <button onClick={() => setM4SubTab('archivo')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m4SubTab === 'archivo' ? 'bg-fuchsia-700 text-white shadow-[0_0_10px_rgba(217,70,239,0.5)]' : 'bg-[#150a29] text-fuchsia-400/50 hover:bg-[#1a0b36]'}`}>1. ARCHIVO VISUAL</button>
-                <button onClick={() => setM4SubTab('codice')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m4SubTab === 'codice' ? 'bg-purple-600 text-white shadow-[0_0_10px_rgba(147,51,234,0.5)]' : 'bg-[#150a29] text-fuchsia-400/50 hover:bg-[#1a0b36]'}`}>2. CÓDICE PROFÉTICO</button>
-                <button onClick={() => setM4SubTab('simulador')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m4SubTab === 'simulador' ? 'bg-amber-600 text-white shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'bg-[#150a29] text-fuchsia-400/50 hover:bg-[#1a0b36]'}`}>3. EL RETO</button>
-                <button onClick={() => setM4SubTab('cierre')} className={`px-4 py-2 text-[10px] md:text-xs font-black uppercase tracking-widest rounded transition-colors cursor-pointer whitespace-nowrap ${m4SubTab === 'cierre' ? 'bg-emerald-600 text-white shadow-[0_0_10px_rgba(16,185,129,0.5)]' : 'bg-[#150a29] text-fuchsia-400/50 hover:bg-[#1a0b36]'}`}>4. CIERRE Y METACOGNICIÓN</button>
-              </div>
-
-              {/* CONTENT AREA */}
-              <div className="flex-grow overflow-y-auto pb-24 p-4 md:p-8 relative custom-scrollbar z-10">
-                {m4SubTab === 'archivo' && (
-                  <div className="max-w-7xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-700">
-                    <div className="text-center mb-8">
-                      <Flame className="w-16 h-16 text-fuchsia-500 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(217,70,239,0.6)] animate-[pulse_2s_ease-in-out_infinite]"/>
-                      <h2 className="text-2xl md:text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-fuchsia-300 tracking-widest uppercase mb-2 drop-shadow-lg">ARCHIVO AUDIOVISUAL DE YAHVEH</h2>
-                      <p className="text-fuchsia-400 text-xs font-bold tracking-widest uppercase">REGISTRO HISTÓRICO: ¿QUIÉNES SON LOS PROFETAS?</p>
-                    </div>
-                    
-                    <div className="flex flex-col gap-8 max-w-5xl mx-auto">
-                      {/* Video Player */}
-                      <div className="w-full bg-[#0a0b12] border border-fuchsia-900/50 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(217,70,239,0.15)] flex flex-col">
-                        <div className="bg-fuchsia-950/40 border-b border-fuchsia-900/50 px-4 py-2 flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></div>
-                          <span className="text-[10px] text-fuchsia-300 font-mono tracking-widest">TRANSMISIÓN CRIPTOGRÁFICA ESTABLECIDA</span>
-                        </div>
-                        <div className="relative w-full aspect-video bg-black flex items-center justify-center overflow-hidden">
-                          <iframe loading="lazy" style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, border: 'none', padding: 0, margin: 0 }} src="https://www.canva.com/design/DAHWugF3r_Y/CGzIAO7oBeFfkhz_SVDLvQ/view?embed" allow="fullscreen"></iframe>
-                        </div>
-                      </div>
-                      
-                      <div className="bg-[#120516] border border-fuchsia-900/30 rounded-2xl p-6 md:p-8 flex items-start gap-4 shadow-lg">
-                        <div className="bg-fuchsia-950/50 p-3 rounded-lg border border-fuchsia-800/50 shrink-0"><AlertTriangle className="w-6 h-6 text-fuchsia-400"/></div>
-                        <div>
-                          <h3 className="text-fuchsia-300 font-black uppercase tracking-widest text-lg mb-2">INSTRUCCIÓN TÁCTICA</h3>
-                          <p className="text-slate-300 leading-relaxed text-sm md:text-base mb-4">Los Clanes deben mantener "Silencio Táctico" absoluto durante la transmisión. La información revelada en este archivo es clasificada y será vital para superar el Códice Profético y el Reto Final.</p>
-                          <div className="bg-black/50 border border-fuchsia-900/50 p-4 rounded text-xs text-fuchsia-400 font-mono uppercase tracking-widest">
-                            [!] Atentos a las señales: ¿Qué los motivaba a hablar? ¿A quiénes se enfrentaban?
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                
-                {m4SubTab === 'codice' && (
-                  <div className="max-w-4xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-500 text-center text-slate-400 py-20 border-2 border-dashed border-slate-800 rounded-2xl">
-                    <h2 className="text-2xl font-black uppercase tracking-widest mb-2">CÓDICE PROFÉTICO</h2>
-                    <p>Contenido en desarrollo...</p>
-                  </div>
-                )}
-                
-                {m4SubTab === 'simulador' && (
-                  <div className="max-w-4xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-500 text-center text-slate-400 py-20 border-2 border-dashed border-slate-800 rounded-2xl">
-                    <h2 className="text-2xl font-black uppercase tracking-widest mb-2">EL RETO</h2>
-                    <p>Contenido en desarrollo...</p>
-                  </div>
-                )}
-                
-                {m4SubTab === 'cierre' && (
-                  <div className="max-w-4xl mx-auto mt-4 animate-in slide-in-from-bottom-8 duration-500 text-center text-slate-400 py-20 border-2 border-dashed border-slate-800 rounded-2xl">
-                    <h2 className="text-2xl font-black uppercase tracking-widest mb-2">CIERRE Y METACOGNICIÓN</h2>
-                    <p>Contenido en desarrollo...</p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-          )}
-        </div>
-      )}
 
     </div>
   );
