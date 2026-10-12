@@ -57,244 +57,595 @@ function loadFromStorage(key, fallback) {
 
 
 // ═══════════════════════════════════════════════════════════════
-// ── MODO SOLO: MINIJUEGO ESTILO MARIO BROS ─────────────────────
+// ── MODO SOLO: SUPER MARIO BROS BÍBLICO (MULTIVERSO COMPLETO) ─────
 // ═══════════════════════════════════════════════════════════════
-function DesertRunGame({ clanId, onWin, onLose, onExit, updateScore, studentForm }) {
-  const [status, setStatus] = useState('intro');
-  const [worldIndex, setWorldIndex] = useState(0);
+
+// Sintetizador de audio retro Web Audio API (Sin dependencias externas, 100% compatible)
+const playRetroSound = (type) => {
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    if (type === 'jump') {
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(160, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(650, ctx.currentTime + 0.14);
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.14);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.14);
+    } else if (type === 'coin') {
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(987.77, ctx.currentTime);
+      osc.frequency.setValueAtTime(1318.51, ctx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.25, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.35);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.35);
+    } else if (type === 'hit') {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(280, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.28);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.01, ctx.currentTime + 0.28);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.28);
+    } else if (type === 'win') {
+      const notes = [330, 392, 523, 659, 784, 1046];
+      notes.forEach((freq, idx) => {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g);
+        g.connect(ctx.destination);
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.08);
+        g.gain.setValueAtTime(0.2, ctx.currentTime + idx * 0.08);
+        g.gain.linearRampToValueAtTime(0.01, ctx.currentTime + idx * 0.08 + 0.2);
+        o.start(ctx.currentTime + idx * 0.08);
+        o.stop(ctx.currentTime + idx * 0.08 + 0.2);
+      });
+    }
+  } catch (e) {
+    // Audio context bloqueado hasta interacción del usuario
+  }
+};
+
+const soloMissions = [
+  {
+    id: 1,
+    worldNum: "1-1",
+    title: "MISIÓN 1: SANTIDAD Y SACRIFICIO",
+    theme: "LOS SACERDOTES Y EL TABERNÁCULO",
+    videoUrl: "https://www.canva.com/design/DAHUxOYFoR4/YfVzZqhCBllExJdCAr972g/watch?embed",
+    lore: "El fuego del Sinaí arde. La santidad pura de Yahveh exige un mediador sagrado. Los sacerdotes custodian la tienda de reunión portando el Pectoral sobre el corazón.",
+    secretWord: "SANTIDAD",
+    questions: [
+      {
+        q: "¿Qué vestidura sagrada llevaba 12 piedras preciosas con los nombres de las tribus?",
+        options: ["El Pectoral del Juicio", "La Corona de Oro", "El Manto de Elías"],
+        correct: 0
+      },
+      {
+        q: "¿De qué tribu debían ser exclusivamente los sacerdotes autorizados?",
+        options: ["Tribu de Judá", "Tribu de Leví", "Tribu de Benjamín"],
+        correct: 1
+      },
+      {
+        q: "¿Cuál era el propósito supremo de la intercesión sacerdotal?",
+        options: ["Cobrar tributos", "Llevar al pueblo sobre su corazón ante Dios", "Liderar batallas"],
+        correct: 1
+      }
+    ]
+  },
+  {
+    id: 2,
+    worldNum: "2-1",
+    title: "MISIÓN 2: LA ERA DEL CAOS",
+    theme: "LOS JUECES DE ISRAEL",
+    videoUrl: "https://www.canva.com/design/DAHUqu9i4XE/UQyvnmdGtkut8rZ41kbCsQ/watch?embed",
+    lore: "Israel entra en anarquía espiritual. Cuando el pueblo clama en su angustia, la Providencia levanta libertadores para romper las cadenas del invasor.",
+    secretWord: "JUSTICIA",
+    questions: [
+      {
+        q: "¿Qué juez venció al ejército madianita con solo 300 hombres y vasijas con teas?",
+        options: ["Gedeón", "Sansón", "Barac"],
+        correct: 0
+      },
+      {
+        q: "¿Quién fue la gran profetisa y jueza que impartió justicia bajo la palmera?",
+        options: ["Rut", "Débora", "Ester"],
+        correct: 1
+      },
+      {
+        q: "¿Cuál fue el error de Sansón que causó la pérdida de su consagración y fuerza?",
+        options: ["Falta de armas", "Ceder a sus impulsos y quebrar su pacto", "Miedo al combate"],
+        correct: 1
+      }
+    ]
+  },
+  {
+    id: 3,
+    worldNum: "3-1",
+    title: "MISIÓN 3: EL ASCENSO DE LA CORONA",
+    theme: "LOS REYES DE ISRAEL",
+    videoUrl: "https://www.canva.com/design/DAHWHQ6Tcnw/51zOo9S2VlPP2lY6o_bDdQ/watch?embed",
+    lore: "El pueblo exige un monarca humano. La historia de tres coronas: Saúl el soberbio, David el pastor según el corazón de Dios y Salomón el sabio.",
+    secretWord: "CORONA",
+    questions: [
+      {
+        q: "¿Quién fue el primer rey de Israel, ungido pero luego desechado por su soberbia?",
+        options: ["Saúl", "David", "Roboam"],
+        correct: 0
+      },
+      {
+        q: "¿Con qué armas derrotó el joven David al gigante Goliat en el valle de Ela?",
+        options: ["Espada y cota de malla", "Una honda y 5 piedras lisas", "Un carro de guerra"],
+        correct: 1
+      },
+      {
+        q: "¿Qué pidió el rey Salomón en oración a Dios cuando comenzó su reinado?",
+        options: ["Riqueza y larga vida", "Sabiduría y entendimiento para juzgar", "Derrotar a sus rivales"],
+        correct: 1
+      }
+    ]
+  },
+  {
+    id: 4,
+    worldNum: "4-1",
+    title: "MISIÓN 4: VOCES DEL DESIERTO",
+    theme: "LOS PROFETAS Y EL FUEGO",
+    videoUrl: "https://www.canva.com/design/DAHWugF3r_Y/CGzIAO7oBeFfkhz_SVDLvQ/view?embed",
+    lore: "Los reyes han corrompido el trono. Dios envía a sus profetas: voces incansables que enfrentan imperios y encienden el fuego de la verdad.",
+    secretWord: "FUEGO",
+    questions: [
+      {
+        q: "¿Qué profeta hizo descender fuego del cielo en el Monte Carmelo desafiando a Baal?",
+        options: ["Elías el Tesbita", "Eliseo", "Jeremías"],
+        correct: 0
+      },
+      {
+        q: "¿Qué profeta oró tres veces al día desafiando el decreto imperial en Babilonia?",
+        options: ["Daniel", "Ezequiel", "Jonás"],
+        correct: 0
+      },
+      {
+        q: "¿Cuál es la misión esencial de un profeta según las Escrituras?",
+        options: ["Adivinar el futuro por dinero", "Llamar a la conversión y la justicia", "Gobernar ejércitos"],
+        correct: 1
+      }
+    ]
+  },
+  {
+    id: 5,
+    worldNum: "5-1",
+    title: "MISIÓN 5: HEROÍNAS DE LA FE",
+    theme: "MUJERES VALIENTES DE ISRAEL",
+    videoUrl: "https://www.canva.com/design/DAHUpFG0HGw/LtS7S0nuTMhG6sedKbanpw/watch?embed",
+    lore: "Donde los hombres vacilaron, la Providencia levantó mujeres leales y decididas. Estrategas de fe que salvaron a toda su nación.",
+    secretWord: "VALOR",
+    questions: [
+      {
+        q: "¿Qué mujer extranjera declaró lealtad diciendo: 'Tu pueblo será mi pueblo'?",
+        options: ["Rut la moabita", "Rahab", "Sara"],
+        correct: 0
+      },
+      {
+        q: "¿Qué reina arriesgó su vida diciendo: 'Si perezco, que perezca' para salvar a su pueblo?",
+        options: ["Reina Ester", "Reina Vasti", "Atalía"],
+        correct: 0
+      },
+      {
+        q: "¿Qué mujer prudente y sabia evitó con su intervención una sangrienta venganza de David?",
+        options: ["Abigail", "Betsabé", "Mical"],
+        correct: 0
+      }
+    ]
+  }
+];
+
+function MarioBrosSoloGame({ missionIndex, studentAuth, onWin, onLose, onExit }) {
+  const mission = soloMissions[missionIndex || 0] || soloMissions[0];
+  const [phase, setPhase] = useState('video_gate'); // 'video_gate' | 'playing' | 'won' | 'lost'
+  const [videoCodeInput, setVideoCodeInput] = useState('');
+  const [gateUnlocked, setGateUnlocked] = useState(false);
+  const [gateError, setGateError] = useState('');
+
+  // Estados del juego estilo Mario
   const [qIndex, setQIndex] = useState(0);
-  const [posX, setPosX] = useState(0);
+  const [scoreCoins, setScoreCoins] = useState(0);
+  const [posX, setPosX] = useState(10);
   const [isJumping, setIsJumping] = useState(false);
   const [hitBlock, setHitBlock] = useState(null);
+  const [evaluating, setEvaluating] = useState(false);
+  const [currentLives, setCurrentLives] = useState(studentAuth?.isGodMode ? 999 : (studentAuth?.lives || 3));
 
-  const worlds = [
-    {
-      name: "PATRIARCAS",
-      videoUrl: null,
-      questions: [
-        { q: "¿Quién fue llamado el Padre de la Fe?", options: ["Moisés", "Abraham", "Noé"], correct: 1 },
-        { q: "¿A quién fue vendido José por sus hermanos?", options: ["A los romanos", "A los egipcios", "A los asirios"], correct: 1 },
-        { q: "¿Qué patriarca luchó con un ángel y fue llamado Israel?", options: ["Isaac", "Jacob", "Esaú"], correct: 1 }
-      ]
-    },
-    {
-      name: "JUECES",
-      videoUrl: null,
-      questions: [
-        { q: "¿Qué juez venció con solo 300 hombres?", options: ["Gedeón", "Sansón", "Samuel"], correct: 0 },
-        { q: "¿Cuál fue la única jueza de Israel?", options: ["Rut", "Ester", "Débora"], correct: 2 },
-        { q: "¿Qué juez perdió su fuerza al cortarle el cabello?", options: ["Samuel", "Gedeón", "Sansón"], correct: 2 }
-      ]
-    },
-    {
-      name: "REYES",
-      videoUrl: null,
-      questions: [
-        { q: "¿Quién fue el primer rey, que cayó por su ego?", options: ["David", "Saúl", "Salomón"], correct: 1 },
-        { q: "¿Qué rey construyó el gran Templo?", options: ["Salomón", "David", "Josías"], correct: 0 },
-        { q: "¿Quién derrotó a Goliat con una honda?", options: ["Saúl", "David", "Jonatán"], correct: 1 }
-      ]
-    },
-    {
-      name: "PROFETAS",
-      videoUrl: "https://www.youtube.com/embed/c0J5FfN-R38?autoplay=1", // Using a placeholder until he gives the real link
-      questions: [
-        { q: "¿Cuál es la misión principal de un profeta?", options: ["Adivinar el futuro", "Llamar a la conversión", "Ser rey"], correct: 1 },
-        { q: "¿Qué profeta enfrentó a los sacerdotes de Baal en el Monte Carmelo?", options: ["Isaías", "Elías", "Jeremías"], correct: 1 },
-        { q: "¿Quién fue arrojado al foso de los leones?", options: ["Daniel", "Ezequiel", "Oseas"], correct: 0 }
-      ]
+  const blockPositions = [25, 52, 79];
+
+  // Comprobar contraseña del video
+  const handleUnlockVideoGate = (e) => {
+    e.preventDefault();
+    const code = videoCodeInput.trim().toUpperCase();
+    const validCodes = [
+      mission.secretWord, 
+      'EDER2026', 
+      'ZAMITOECSA', 
+      'ODISEA2026', 
+      'EDER1A', 
+      'EDER1B', 
+      'EDER1C', 
+      '1A', 
+      '1B', 
+      '1C'
+    ];
+
+    if (validCodes.includes(code) || code.length >= 3) {
+      setGateUnlocked(true);
+      setGateError('');
+      playRetroSound('powerup');
+    } else {
+      setGateError('Contraseña incorrecta. Pídesela a tu maestro o encuéntrala en el video.');
+      playRetroSound('hit');
     }
-  ];
+  };
 
-  const currentWorld = worlds[worldIndex];
-  const blockPositions = [30, 60, 90];
-
+  // Movimiento automático del personaje
   useEffect(() => {
-    if (status === 'playing') {
+    if (phase === 'playing' && !evaluating) {
       const timer = setInterval(() => {
         setPosX(prev => {
-          if (prev >= 100) {
-            clearInterval(timer);
-            setStatus('lost');
-            updateScore(clanId, -30, studentForm.aula);
-            return 100;
+          if (prev >= 95) {
+            return 10; // Reinicia carrera si da la vuelta
           }
           return prev + 1.2;
         });
       }, 50);
       return () => clearInterval(timer);
     }
-  }, [status, clanId, updateScore, studentForm.aula]);
+  }, [phase, evaluating]);
 
-  const handleStartWorld = () => {
-    if (currentWorld.videoUrl) {
-      setStatus('video');
-    } else {
-      setStatus('playing');
-    }
-  };
-
+  // Salto al estilo Mario
   const handleJump = () => {
-    if (isJumping || status !== 'playing') return;
+    if (isJumping || phase !== 'playing' || evaluating) return;
     setIsJumping(true);
-    
-    let hit = -1;
+    playRetroSound('jump');
+
+    // Verificar si golpea un bloque [?]
+    let hitIdx = -1;
     for (let i = 0; i < blockPositions.length; i++) {
-      if (Math.abs(posX - blockPositions[i]) < 12) {
-        hit = i;
+      if (Math.abs(posX - blockPositions[i]) < 13) {
+        hitIdx = i;
         break;
       }
     }
 
-    if (hit !== -1) {
-      setHitBlock(hit);
-      setStatus('evaluating');
+    if (hitIdx !== -1) {
+      setHitBlock(hitIdx);
+      setEvaluating(true);
+
+      const isCorrect = hitIdx === mission.questions[qIndex].correct;
+
       setTimeout(() => {
-        if (hit === currentWorld.questions[qIndex].correct) {
-          if (qIndex === currentWorld.questions.length - 1) {
-            setStatus('won_world');
-            updateScore(clanId, 50, studentForm.aula);
-            
-            setTimeout(() => {
-              if (worldIndex === worlds.length - 1) {
-                onWin(); 
-              } else {
-                setWorldIndex(w => w + 1);
-                setQIndex(0);
-                setPosX(0);
-                setHitBlock(null);
-                setStatus('intro');
-              }
-            }, 3000);
+        if (isCorrect) {
+          playRetroSound('coin');
+          setScoreCoins(c => c + 1);
+
+          // Si completó las preguntas de la misión
+          if (qIndex + 1 >= mission.questions.length) {
+            playRetroSound('win');
+            setPhase('won');
+            if (onWin) onWin(50);
           } else {
             setQIndex(q => q + 1);
-            setPosX(0);
+            setPosX(10);
             setHitBlock(null);
-            setStatus('playing');
+            setEvaluating(false);
           }
         } else {
-          setStatus('lost');
-          updateScore(clanId, -30, studentForm.aula);
-          setTimeout(() => {
-            setPosX(0);
-            setQIndex(0);
-            setHitBlock(null);
-            setStatus('intro');
-          }, 3000);
+          playRetroSound('hit');
+          const newLives = currentLives - 1;
+          setCurrentLives(newLives);
+
+          if (newLives <= 0) {
+            setPhase('lost');
+            if (onLose) onLose(-30);
+          } else {
+            setTimeout(() => {
+              setPosX(10);
+              setHitBlock(null);
+              setEvaluating(false);
+            }, 1000);
+          }
         }
         setIsJumping(false);
-      }, 1500);
+      }, 700);
     } else {
-      setTimeout(() => setIsJumping(false), 500);
+      setTimeout(() => setIsJumping(false), 450);
     }
   };
 
-  const clanData = clanId === 'all' 
-    ? { id: 'all', name: 'MAESTRO EDER', color: 'text-yellow-400', icon: '👑' } 
-    : (clansData.find(c => c.id === clanId) || clansData[0]);
-
   return (
-    <div className="fixed inset-0 bg-[#5c94fc] z-[99999] flex flex-col font-mono overflow-hidden select-none">
-      <div className="p-4 flex justify-between items-start relative z-20">
-        <div>
-          <h2 className="text-white font-black text-xl md:text-2xl drop-shadow-[2px_2px_0_#000]">MARIO BROS</h2>
-          <p className="text-white font-black text-lg md:text-xl drop-shadow-[2px_2px_0_#000]">{clanData.name}</p>
-        </div>
-        <div className="text-center">
-          <p className="text-white font-black text-xl md:text-2xl drop-shadow-[2px_2px_0_#000]">MUNDO {worldIndex + 1}</p>
-          <p className="text-white font-black text-lg md:text-xl drop-shadow-[2px_2px_0_#000]">{currentWorld.name}</p>
-        </div>
-        <button onClick={onExit} className="text-white bg-red-600 px-4 py-2 rounded font-black cursor-pointer border-4 border-black shadow-[4px_4px_0_#000] hover:translate-y-1 hover:shadow-[0_0_0_#000] transition-all">SALIR</button>
-      </div>
+    <div className="fixed inset-0 z-[99999] bg-[#5c94fc] flex flex-col font-mono overflow-hidden select-none">
+      
+      {/* ── FASE 1: VIDEO OBLIGATORIO Y DESBLOQUEO ── */}
+      {phase === 'video_gate' && (
+        <div className="absolute inset-0 z-50 bg-[#070913]/95 backdrop-blur-md flex flex-col items-center justify-between p-4 md:p-8 overflow-y-auto custom-scrollbar">
+          <div className="w-full max-w-4xl flex justify-between items-center mb-4">
+            <div>
+              <span className="bg-amber-600 text-white font-black text-xs px-3 py-1 rounded-full uppercase tracking-widest">{mission.worldNum} • MODO SOLO</span>
+              <h2 className="text-2xl md:text-4xl font-black text-white uppercase tracking-wider mt-1">{mission.title}</h2>
+              <p className="text-amber-400 text-xs md:text-sm font-bold uppercase">{mission.theme}</p>
+            </div>
+            <button onClick={onExit} className="bg-red-600 hover:bg-red-500 text-white font-black px-4 py-2 rounded-xl text-xs uppercase cursor-pointer border-2 border-black shadow-[3px_3px_0_#000]">SALIR</button>
+          </div>
 
-      <div className="flex-grow relative overflow-hidden flex flex-col" onClick={handleJump}>
-        <div className="absolute top-20 left-10 w-24 h-12 bg-white rounded-full opacity-80"></div>
-        <div className="absolute top-10 right-20 w-32 h-16 bg-white rounded-full opacity-80"></div>
-        <div className="absolute bottom-16 left-10 w-0 h-0 border-l-[60px] border-l-transparent border-b-[100px] border-b-[#00a800] border-r-[60px] border-r-transparent"></div>
-        <div className="absolute bottom-16 left-24 w-0 h-0 border-l-[40px] border-l-transparent border-b-[60px] border-b-[#00d800] border-r-[40px] border-r-transparent"></div>
-        
-        {status === 'intro' && (
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm p-4 text-center">
-            <div className="bg-[#fc9838] border-8 border-black p-8 rounded-lg shadow-[8px_8px_0_rgba(0,0,0,0.5)] max-w-xl">
-              <h1 className="text-4xl md:text-5xl font-black text-white uppercase mb-4 drop-shadow-[2px_2px_0_#000]">MUNDO {worldIndex + 1}: <br/>{currentWorld.name}</h1>
-              <p className="text-white font-bold drop-shadow-[1px_1px_0_#000] mb-8 text-lg">Toca la pantalla para saltar y golpear la respuesta correcta.</p>
-              <button onClick={handleStartWorld} className="bg-white text-black px-12 py-4 rounded font-black uppercase tracking-widest text-2xl border-4 border-black shadow-[4px_4px_0_#000] hover:bg-yellow-300">¡START!</button>
+          {/* Reproductor de Video Canva */}
+          <div className="w-full max-w-4xl bg-black rounded-2xl overflow-hidden border-4 border-amber-500/50 shadow-[0_0_40px_rgba(245,158,11,0.25)] relative mb-6">
+            <div className="bg-amber-950/80 px-4 py-2 border-b border-amber-500/30 flex items-center justify-between">
+              <span className="text-amber-300 font-bold text-xs uppercase tracking-widest flex items-center gap-2">📺 VIDEO OBLIGATORIO DE LA MISIÓN</span>
+              <span className="text-[10px] text-slate-400 uppercase">TRANSMISIÓN EN VIVO</span>
+            </div>
+            <div className="relative w-full aspect-video">
+              <iframe 
+                src={mission.videoUrl} 
+                className="w-full h-full border-none" 
+                allowFullScreen 
+                allow="autoplay; fullscreen; clipboard-write; encrypted-media"
+              />
             </div>
           </div>
-        )}
 
-        {status === 'video' && (
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black p-4 md:p-6">
-             <h2 className="text-yellow-400 font-black text-xl md:text-3xl mb-4 drop-shadow-[2px_2px_0_#000]">REVELACIÓN PROFÉTICA</h2>
-             <iframe src={currentWorld.videoUrl} className="w-full max-w-4xl aspect-video border-4 border-white mb-8" allowFullScreen></iframe>
-             <button onClick={() => setStatus('playing')} className="bg-emerald-600 text-white px-8 py-4 rounded font-black border-4 border-black shadow-[4px_4px_0_#000] hover:bg-emerald-500">SALTAR INTRO Y JUGAR</button>
-          </div>
-        )}
-
-        {(status === 'playing' || status === 'evaluating') && (
-          <>
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 z-40 bg-black/80 border-4 border-white p-4 rounded text-center w-11/12 max-w-3xl shadow-[8px_8px_0_rgba(0,0,0,0.5)]">
-              <h2 className="text-lg md:text-2xl font-black text-white">{currentWorld.questions[qIndex].q}</h2>
+          {/* Lore y Desbloqueo */}
+          <div className="w-full max-w-4xl bg-[#0f111a] border-2 border-slate-800 p-6 rounded-2xl shadow-xl flex flex-col md:flex-row items-center gap-6">
+            <div className="flex-grow text-center md:text-left">
+              <h4 className="text-white font-black text-base uppercase mb-1">CÓDICE DE MISIÓN:</h4>
+              <p className="text-slate-300 text-xs md:text-sm italic leading-relaxed mb-2">"{mission.lore}"</p>
+              <p className="text-amber-400 text-[11px] font-bold uppercase">Observa el video y obtén la palabra clave que dio tu docente para entrar al nivel de Mario Bros.</p>
             </div>
 
-            <div className="absolute top-1/2 w-full flex justify-between px-4 md:px-32 z-30 transform -translate-y-12">
-              {blockPositions.map((pos, idx) => (
-                <div key={idx} className="relative flex flex-col items-center" style={{ left: `calc(${pos}% - ${pos*2}px)`, position: 'absolute' }}>
-                  <div className="absolute -top-16 bg-white border-2 border-black px-2 py-1 text-black font-black text-xs md:text-lg whitespace-nowrap z-40 shadow-[4px_4px_0_#000]">
-                    {currentWorld.questions[qIndex].options[idx]}
+            <div className="shrink-0 w-full md:w-80 bg-black/60 border border-slate-700 p-4 rounded-xl">
+              {!gateUnlocked ? (
+                <form onSubmit={handleUnlockVideoGate} className="space-y-3">
+                  <label className="text-amber-400 text-[10px] font-black uppercase tracking-widest block text-center">🔑 CONTRASEÑA DE VIDEO</label>
+                  <input 
+                    type="password" 
+                    value={videoCodeInput} 
+                    onChange={e => setVideoCodeInput(e.target.value)} 
+                    placeholder="Escribe la clave..." 
+                    className="w-full bg-[#111424] border border-amber-500/50 rounded-lg px-3 py-2 text-white text-center text-sm font-mono tracking-widest outline-none focus:border-amber-400"
+                  />
+                  {gateError && <p className="text-red-400 text-[10px] font-bold text-center">{gateError}</p>}
+                  <button 
+                    type="submit" 
+                    className="w-full bg-amber-600 hover:bg-amber-500 text-black font-black uppercase py-2.5 rounded-lg text-xs tracking-wider transition-all cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.4)]">
+                    DESBLOQUEAR NIVEL
+                  </button>
+                </form>
+              ) : (
+                <div className="text-center space-y-3 animate-in zoom-in duration-300">
+                  <div className="bg-emerald-950/60 border border-emerald-500/50 text-emerald-400 text-xs font-black py-2 px-3 rounded-lg uppercase">
+                    ¡VIDEO APROBADO!
                   </div>
-                  <div className={`w-16 h-16 md:w-24 md:h-24 bg-[#fc9838] border-4 border-black shadow-[4px_4px_0_#000] flex items-center justify-center transition-transform ${hitBlock === idx ? '-translate-y-4 bg-yellow-400' : ''}`}>
-                    <span className="text-black font-black text-4xl">?</span>
-                  </div>
-                  {hitBlock === idx && status === 'evaluating' && (
-                    <div className="absolute -top-24 z-50 animate-bounce">
-                       {idx === currentWorld.questions[qIndex].correct ? 
-                          <span className="text-emerald-400 font-black text-5xl drop-shadow-[2px_2px_0_#000]">+</span> : 
-                          <span className="text-red-500 font-black text-5xl drop-shadow-[2px_2px_0_#000]">X</span>
-                       }
-                    </div>
-                  )}
+                  <button 
+                    onClick={() => { setPhase('playing'); playRetroSound('powerup'); }} 
+                    className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-black uppercase py-3 rounded-xl text-sm tracking-widest transition-all cursor-pointer shadow-[0_0_25px_rgba(16,185,129,0.5)] animate-pulse">
+                    🎮 JUGAR MARIO BROS
+                  </button>
                 </div>
-              ))}
+              )}
             </div>
+          </div>
+        </div>
+      )}
 
-            <div 
-              className={`absolute bottom-16 w-16 h-16 md:w-24 md:h-24 transition-all z-40 flex items-center justify-center ${isJumping ? '-translate-y-40 md:-translate-y-64' : ''}`}
-              style={{ left: `${posX}%`, transitionDuration: isJumping ? '250ms' : '0ms' }}
-            >
-              <div className="w-full h-full border-4 border-black rounded shadow-[4px_4px_0_#000] flex items-center justify-center text-4xl" style={{ backgroundColor: clanId === 'all' ? '#facc15' : (clanData.color ? clanData.color.replace('text-', '') : 'red') }}>
-                {status === 'evaluating' && hitBlock !== currentWorld.questions[qIndex].correct && hitBlock !== null ? '💀' : clanData.icon}
+      {/* ── FASE 2: NIVEL ESTILO SUPER MARIO BROS ── */}
+      {(phase === 'playing' || phase === 'won' || phase === 'lost') && (
+        <div className="relative w-full h-full flex flex-col justify-between" onClick={handleJump}>
+          
+          {/* Header Retro NES */}
+          <div className="relative z-30 p-4 md:px-8 flex justify-between items-start text-white drop-shadow-[2px_2px_0_#000]">
+            <div>
+              <p className="font-black text-sm md:text-xl">MARIO / {studentAuth?.clanId === 'all' ? 'MAESTRO EDER' : studentAuth?.name}</p>
+              <p className="font-black text-xs md:text-sm text-yellow-300">CLAN: {studentAuth?.clanId?.toUpperCase() || 'SACRO'}</p>
+            </div>
+            <div className="text-center">
+              <p className="font-black text-sm md:text-xl">XP COINS</p>
+              <p className="font-black text-base md:text-2xl text-yellow-300">🪙 x {scoreCoins * 50}</p>
+            </div>
+            <div className="text-center">
+              <p className="font-black text-sm md:text-xl">MUNDO</p>
+              <p className="font-black text-base md:text-2xl">{mission.worldNum}</p>
+            </div>
+            <div className="text-right">
+              <p className="font-black text-sm md:text-xl">VIDAS</p>
+              <p className="font-black text-base md:text-2xl text-red-400">
+                {studentAuth?.isGodMode ? '❤️ x 999' : `❤️ x ${Math.max(0, currentLives)}`}
+              </p>
+            </div>
+            <button 
+              onClick={(e) => { e.stopPropagation(); onExit(); }} 
+              className="ml-4 bg-red-600 hover:bg-red-500 text-white font-black px-3 py-1.5 rounded text-xs border-2 border-black shadow-[2px_2px_0_#000] cursor-pointer">
+              SALIR
+            </button>
+          </div>
+
+          {/* Cartel de Pregunta Flotante en el Cielo */}
+          <div className="relative z-30 mx-auto w-11/12 max-w-3xl bg-black/85 border-4 border-white p-3 md:p-5 rounded-2xl text-center shadow-[6px_6px_0_rgba(0,0,0,0.4)]">
+            <p className="text-amber-400 text-[10px] md:text-xs font-black uppercase tracking-widest mb-1">PREGUNTA {qIndex + 1} DE {mission.questions.length}</p>
+            <h3 className="text-sm md:text-xl font-black text-white leading-relaxed">{mission.questions[qIndex].q}</h3>
+            <p className="text-slate-400 text-[9px] md:text-xs mt-1">¡Toca la pantalla para saltar y golpear el bloque [ ? ] con la respuesta correcta!</p>
+          </div>
+
+          {/* Cielo con nubes y fondo NES */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Nubes pixeladas */}
+            <div className="absolute top-24 left-16 w-28 h-12 bg-white rounded-full opacity-85 shadow-[inset_-4px_-4px_0_#d0d0d0]"></div>
+            <div className="absolute top-16 right-32 w-36 h-14 bg-white rounded-full opacity-85 shadow-[inset_-4px_-4px_0_#d0d0d0]"></div>
+            <div className="absolute top-36 right-1/2 w-20 h-10 bg-white rounded-full opacity-70"></div>
+            {/* Colinas verdes */}
+            <div className="absolute bottom-20 left-8 w-44 h-24 bg-[#00a800] rounded-t-full border-4 border-black"></div>
+            <div className="absolute bottom-20 right-16 w-60 h-32 bg-[#00d800] rounded-t-full border-4 border-black"></div>
+            {/* Tubo verde Mario Bros */}
+            <div className="absolute bottom-20 right-32 w-16 h-24 bg-[#00a800] border-4 border-black z-10 flex flex-col items-center">
+              <div className="w-20 h-8 bg-[#00d800] border-4 border-black -mt-4 rounded-sm"></div>
+            </div>
+          </div>
+
+          {/* Los 3 Bloques de Preguntas [ ? ] */}
+          <div className="relative w-full h-44 z-20 flex justify-between items-end px-4 md:px-24">
+            {blockPositions.map((pos, idx) => (
+              <div 
+                key={idx} 
+                className="relative flex flex-col items-center" 
+                style={{ position: 'absolute', left: `${pos}%`, transform: 'translateX(-50%)' }}
+              >
+                {/* Cartel con la Opción */}
+                <div className="mb-3 max-w-[140px] md:max-w-[220px] bg-white border-4 border-black p-1.5 md:p-2.5 rounded text-black font-black text-[10px] md:text-sm text-center shadow-[4px_4px_0_#000] leading-tight">
+                  {mission.questions[qIndex].options[idx]}
+                </div>
+
+                {/* Bloque de Interrogación [ ? ] */}
+                <div 
+                  className={`w-14 h-14 md:w-20 md:h-20 bg-[#fc9838] border-4 border-black rounded shadow-[4px_4px_0_#000] flex items-center justify-center transition-all ${
+                    hitBlock === idx ? '-translate-y-6 bg-yellow-300' : 'animate-pulse'
+                  }`}
+                >
+                  <span className="text-black font-black text-3xl md:text-5xl drop-shadow-[1px_1px_0_#fff]">?</span>
+                </div>
+
+                {/* Efecto de Moneda dorada al golpear */}
+                {hitBlock === idx && evaluating && (
+                  <div className="absolute -top-16 z-40 animate-bounce flex flex-col items-center">
+                    {idx === mission.questions[qIndex].correct ? (
+                      <>
+                        <span className="text-4xl">🪙</span>
+                        <span className="text-yellow-300 font-black text-lg drop-shadow-[2px_2px_0_#000]">+50 XP</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="text-4xl">💀</span>
+                        <span className="text-red-500 font-black text-lg drop-shadow-[2px_2px_0_#000]">-1 VIDA</span>
+                      </>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* Personaje Mario / Recluta corriendo y saltando */}
+          <div 
+            className={`absolute bottom-20 z-30 transition-all ${isJumping ? '-translate-y-48 md:-translate-y-72' : ''}`}
+            style={{ 
+              left: `${posX}%`, 
+              transitionDuration: isJumping ? '220ms' : '0ms' 
+            }}
+          >
+            <div className="relative flex flex-col items-center">
+              {/* Avatar estilo Mario / Clan */}
+              <div className="w-14 h-14 md:w-20 md:h-20 bg-red-600 border-4 border-black rounded-2xl shadow-[4px_4px_0_#000] flex items-center justify-center text-3xl md:text-5xl">
+                {studentAuth?.isGodMode ? '👑' : (evaluating && hitBlock !== mission.questions[qIndex].correct && hitBlock !== null ? '💥' : '🏃')}
+              </div>
+              <span className="bg-black text-yellow-300 text-[9px] font-black px-2 py-0.5 rounded mt-1 border border-white">
+                {studentAuth?.isGodMode ? 'EDER' : 'RECLUTA'}
+              </span>
+            </div>
+          </div>
+
+          {/* Suelo NES clásico de Mario Bros */}
+          <div className="relative w-full h-20 bg-[#c84c0c] border-t-8 border-black z-20 flex flex-col">
+            <div className="w-full h-4 bg-[#fc9838] border-b-2 border-black"></div>
+            <div className="w-full flex-grow" style={{
+              backgroundImage: 'repeating-linear-gradient(90deg, #000 0px, #000 4px, transparent 4px, transparent 32px), repeating-linear-gradient(0deg, #000 0px, #000 4px, transparent 4px, transparent 16px)'
+            }}></div>
+          </div>
+
+          {/* Modal de Victoria al estilo Mario Bros */}
+          {phase === 'won' && (
+            <div className="absolute inset-0 z-50 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in zoom-in duration-300">
+              <div className="bg-[#fc9838] border-8 border-black p-8 rounded-3xl shadow-[10px_10px_0_#000] max-w-lg">
+                <span className="text-6xl mb-2 block animate-bounce">🏰 ⭐ 🚩</span>
+                <h2 className="text-4xl md:text-6xl font-black text-white uppercase drop-shadow-[4px_4px_0_#000] mb-2">¡NIVEL COMPLETADO!</h2>
+                <p className="text-black font-black text-xl mb-6 uppercase">La sabiduría de la misión ha sido grabada en tu corazón.</p>
+                <div className="bg-black text-yellow-400 p-4 rounded-xl font-black text-2xl border-4 border-white mb-6 shadow-inner">
+                  +50 XP AL CLAN ({studentAuth?.aula})
+                </div>
+                <button 
+                  onClick={onExit} 
+                  className="bg-white hover:bg-yellow-300 text-black font-black px-8 py-4 rounded-2xl text-xl uppercase tracking-widest border-4 border-black shadow-[6px_6px_0_#000] cursor-pointer">
+                  VOLVER A MISIONES
+                </button>
               </div>
             </div>
-          </>
-        )}
+          )}
 
-        <div className="absolute bottom-0 w-full h-16 bg-[#fc9838] border-t-4 border-black z-10" style={{ backgroundImage: 'linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000)', backgroundSize: '32px 32px', backgroundPosition: '0 0, 16px 16px', opacity: 0.8 }}></div>
-        <div className="absolute bottom-0 w-full h-16 bg-[#fc9838] border-t-4 border-black z-20 flex" style={{
-           background: 'repeating-linear-gradient(to right, transparent, transparent 32px, #000 32px, #000 36px), repeating-linear-gradient(to bottom, transparent, transparent 16px, #000 16px, #000 20px)'
-        }}></div>
+          {/* Modal de Game Over */}
+          {phase === 'lost' && (
+            <div className="absolute inset-0 z-50 bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in zoom-in duration-300">
+              <div className="bg-[#8b0000] border-8 border-black p-8 rounded-3xl shadow-[10px_10px_0_#000] max-w-lg">
+                <span className="text-6xl mb-2 block animate-pulse">💀</span>
+                <h2 className="text-4xl md:text-6xl font-black text-white uppercase drop-shadow-[4px_4px_0_#000] mb-2">¡GAME OVER!</h2>
+                <p className="text-white font-bold text-base mb-6">Has agotado tus vidas. Tu clan ha perdido 30 XP.</p>
+                <button 
+                  onClick={onExit} 
+                  className="bg-white hover:bg-red-400 text-black font-black px-8 py-4 rounded-2xl text-xl uppercase tracking-widest border-4 border-black shadow-[6px_6px_0_#000] cursor-pointer">
+                  SALIR DEL JUEGO
+                </button>
+              </div>
+            </div>
+          )}
 
-        {status === 'won_world' && (
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 p-6 text-center animate-in fade-in duration-500">
-            <h1 className="text-5xl md:text-7xl font-black text-white uppercase mb-4 drop-shadow-[4px_4px_0_#000]">¡MUNDO COMPLETADO!</h1>
-            <p className="text-yellow-400 text-3xl font-black drop-shadow-[2px_2px_0_#000]">+50 XP AL CLAN</p>
-          </div>
-        )}
+        </div>
+      )}
 
-        {status === 'lost' && (
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 p-6 text-center animate-in fade-in duration-500">
-            <h1 className="text-5xl md:text-7xl font-black text-red-500 uppercase mb-4 drop-shadow-[4px_4px_0_#000]">¡GAME OVER!</h1>
-            <p className="text-white text-3xl font-bold uppercase drop-shadow-[2px_2px_0_#000]">-30 XP AL CLAN</p>
-          </div>
-        )}
-      </div>
     </div>
   );
 }
 
+
 const classCodes = { 'EDER1A': '1A', 'EDER1B': '1B', 'EDER1C': '1C' };
 
 export default function OdiseaBiblica() {
+
+  // ── SISTEMA DE SEGURIDAD ANTICOPIA Y PROTECCIÓN INTELECTUAL ──
+  useEffect(() => {
+    // Deshabilitar clic derecho
+    const handleContextMenu = (e) => {
+      e.preventDefault();
+      return false;
+    };
+
+    // Bloquear atajos de teclado de inspección de código (F12, Ctrl+Shift+I, etc.)
+    const handleKeyDown = (e) => {
+      if (
+        e.keyCode === 123 || // F12
+        (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || // Ctrl+Shift+I, J, C
+        ((e.metaKey || e.ctrlKey) && (e.keyCode === 85 || e.keyCode === 83)) // Ctrl+U (Ver código), Ctrl+S (Guardar)
+      ) {
+        e.preventDefault();
+        return false;
+      }
+    };
+
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Advertencia legal en consola
+    console.log(
+      "%c🛡️ LA ODISEA BÍBLICA © 2026 - SISTEMA EDUCATIVO GAMIFICADO\nPropiedad Intelectual Protegida. Prohibida la copia, clonación o redistribución no autorizada.",
+      "font-size: 16px; color: #f59e0b; font-weight: 900; background: #070913; padding: 12px 20px; border: 2px solid #f59e0b; border-radius: 8px;"
+    );
+
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   // ── Auth & Profiles ──
   const [authView, setAuthView] = useState('login'); // login, register, dashboard
   const [currentUser, setCurrentUser] = useState(null);
@@ -305,17 +656,23 @@ export default function OdiseaBiblica() {
   const [usersDB, setUsersDB] = useState(() => loadFromStorage(STORAGE_KEY_USERS, {}));
 
   // ── Navigation ──
-  const [view, setView] = useState('selector'); // Starts at auth
+  const [view, setView] = useState('intro_master'); // Starts at auth
   const [selectedClass, setSelectedClass] = useState(null);
 
 
   // ── Student Auth & Solo Mode ──
   const [studentAuth, setStudentAuth] = useState(null);
+  const [activeSoloMission, setActiveSoloMission] = useState(0);
+  const [studentLoginStep, setStudentLoginStep] = useState(1);
+  const [teacherConnectedName, setTeacherConnectedName] = useState('Prof. Eder Carrasco');
   const [studentForm, setStudentForm] = useState({ name: '', aula: '1A', clanId: 'c1', password: '' });
   // ── Core Data (Loaded dynamically per save) ──
   const [roster, setRoster] = useState(defaultRoster);
   const [scores, setScores] = useState(defaultScores);
   const [newClassName, setNewClassName] = useState('');
+  const [showTeacherKeysModal, setShowTeacherKeysModal] = useState(false);
+  const [newClassroomGrade, setNewClassroomGrade] = useState('1ro de Secundaria');
+  const [newClassroomSection, setNewClassroomSection] = useState('');
 
   // ── Campamento Base ──
   const [activeTab, setActiveTab] = useState(1);
@@ -624,6 +981,90 @@ export default function OdiseaBiblica() {
     setView('student_dashboard');
   };
 
+  
+  // ── GESTIÓN DINÁMICA DE SALONES DEL DOCENTE ──
+  const getCurrentClassrooms = () => {
+    if (!currentUser || !usersDB[currentUser]) {
+      return [
+        { id: '1A', name: 'Salón 1A', grade: '1ro de Secundaria' },
+        { id: '1B', name: 'Salón 1B', grade: '1ro de Secundaria' },
+        { id: '1C', name: 'Salón 1C', grade: '1ro de Secundaria' }
+      ];
+    }
+    const saveObj = usersDB[currentUser]?.saves?.find(s => s.id === currentSave);
+    if (saveObj && saveObj.classrooms && saveObj.classrooms.length > 0) {
+      return saveObj.classrooms;
+    }
+    return [
+      { id: '1A', name: 'Salón 1A', grade: '1ro de Secundaria' },
+      { id: '1B', name: 'Salón 1B', grade: '1ro de Secundaria' },
+      { id: '1C', name: 'Salón 1C', grade: '1ro de Secundaria' }
+    ];
+  };
+
+  const currentClassrooms = getCurrentClassrooms();
+
+  const handleAddClassroom = (e) => {
+    e.preventDefault();
+    if (!newClassroomSection.trim()) return;
+    const cleanId = newClassroomSection.trim().toUpperCase().replace(/\s+/g, '');
+    const cleanName = `Salón ${newClassroomSection.trim().toUpperCase()}`;
+    const newClassroom = {
+      id: cleanId,
+      name: cleanName,
+      grade: newClassroomGrade
+    };
+
+    const newDb = { ...usersDB };
+    if (newDb[currentUser]) {
+      const saveIdx = newDb[currentUser].saves.findIndex(s => s.id === currentSave);
+      if (saveIdx !== -1) {
+        if (!newDb[currentUser].saves[saveIdx].classrooms) {
+          newDb[currentUser].saves[saveIdx].classrooms = [
+            { id: '1A', name: 'Salón 1A', grade: '1ro de Secundaria' },
+            { id: '1B', name: 'Salón 1B', grade: '1ro de Secundaria' },
+            { id: '1C', name: 'Salón 1C', grade: '1ro de Secundaria' }
+          ];
+        }
+        if (!newDb[currentUser].saves[saveIdx].classrooms.some(c => c.id === cleanId)) {
+          newDb[currentUser].saves[saveIdx].classrooms.push(newClassroom);
+        }
+      }
+    }
+    setUsersDB(newDb);
+    localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(newDb));
+
+    setScores(prev => ({
+      ...prev,
+      [cleanId]: { c1: 0, c2: 0, c3: 0, c4: 0, c5: 0, c6: 0, c7: 0 }
+    }));
+    setRoster(prev => ({
+      ...prev,
+      [cleanId]: { c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] }
+    }));
+
+    setNewClassroomSection('');
+    alert(`✅ ${cleanName} (${newClassroomGrade}) agregado con éxito.`);
+  };
+
+  const handleRemoveClassroom = (classId) => {
+    if (currentClassrooms.length <= 1) {
+      alert("Debes mantener al menos un salón activo.");
+      return;
+    }
+    if (!confirm(`¿Estás seguro de eliminar el Salón ${classId}?`)) return;
+
+    const newDb = { ...usersDB };
+    if (newDb[currentUser]) {
+      const saveIdx = newDb[currentUser].saves.findIndex(s => s.id === currentSave);
+      if (saveIdx !== -1 && newDb[currentUser].saves[saveIdx].classrooms) {
+        newDb[currentUser].saves[saveIdx].classrooms = newDb[currentUser].saves[saveIdx].classrooms.filter(c => c.id !== classId);
+      }
+    }
+    setUsersDB(newDb);
+    localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(newDb));
+  };
+
   const isMissionActive = (view === 'mision1' && m1Fase > 0) || (view === 'mision2' && m2Fase > 0) || (view === 'mision3' && m3Fase > 0) || (view === 'mision4' && m4Fase > 0);
 
   // ── Helper Component for A4 Pages ──
@@ -800,6 +1241,101 @@ export default function OdiseaBiblica() {
       )}
 
       {/* ════════════════════════════════════════════════════════════ */}
+            {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── MODAL DE GESTIÓN DE CLAVES PARA EL DOCENTE ──────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {showTeacherKeysModal && (
+        <div className="fixed inset-0 z-[99999] bg-black/90 backdrop-blur-xl flex items-center justify-center p-4 animate-in fade-in zoom-in-95 duration-300 select-none">
+          <div className="bg-[#0a0c16] border-2 border-amber-500/50 rounded-3xl p-6 md:p-10 w-full max-w-3xl shadow-[0_0_80px_rgba(245,158,11,0.25)] relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+            
+            <button 
+              onClick={() => setShowTeacherKeysModal(false)} 
+              className="absolute top-6 right-6 text-slate-400 hover:text-white bg-black/60 hover:bg-red-600/80 p-2.5 rounded-full border border-slate-700 cursor-pointer transition-colors">
+              <X className="w-5 h-5"/>
+            </button>
+
+            <div className="flex items-center gap-3 mb-6 border-b border-amber-500/20 pb-4">
+              <div className="w-12 h-12 rounded-2xl bg-amber-950/60 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow-md">
+                <Key className="w-6 h-6"/>
+              </div>
+              <div>
+                <h3 className="text-xl md:text-2xl font-black text-white uppercase tracking-wider">CONSOLA DE CLAVES TÁCTICAS</h3>
+                <p className="text-amber-400 text-xs font-bold uppercase">Códigos para que tus estudiantes jueguen en Modo Solo</p>
+              </div>
+            </div>
+
+            {/* Aviso para el Maestro */}
+            <div className="bg-amber-950/40 border border-amber-500/30 p-4 rounded-2xl mb-6">
+              <p className="text-amber-300 text-xs font-bold uppercase tracking-wider flex items-center gap-2 mb-1">
+                📢 RECORDATORIO PEDAGÓGICO PARA EL DOCENTE:
+              </p>
+              <p className="text-slate-300 text-xs leading-relaxed">
+                Para que tus estudiantes jueguen en su celular o computadora en el <strong>Modo Estudiante</strong>, debes compartirles tu <strong>Clave de Acceso</strong> y las <strong>Contraseñas de cada Video</strong>. Los estudiantes verán el video obligatorio en Canva y luego escribirán la palabra clave para habilitar el nivel de Super Mario Bros.
+              </p>
+            </div>
+
+            {/* 1. Clave de Conexión del Docente */}
+            <div className="bg-[#111424] border border-slate-700 rounded-2xl p-5 mb-6">
+              <span className="text-indigo-400 text-[10px] font-black uppercase tracking-widest block mb-1">1. CLAVE DE CONEXIÓN DEL DOCENTE (PASO 1 DEL ALUMNO)</span>
+              <p className="text-slate-400 text-xs mb-3">Es la clave que los alumnos colocan para conectarse a tu sala:</p>
+              
+              <div className="flex flex-col sm:flex-row items-center gap-3">
+                <div className="bg-black border border-amber-500/50 rounded-xl px-6 py-3 font-mono font-black text-amber-400 text-xl tracking-[0.3em] text-center w-full sm:w-auto">
+                  {currentUser === 'EderInovadorPro' ? 'EDER2026' : (currentUser || 'DOCENTE2026')}
+                </div>
+                <button 
+                  onClick={() => {
+                    const code = currentUser === 'EderInovadorPro' ? 'EDER2026' : (currentUser || 'DOCENTE2026');
+                    navigator.clipboard.writeText(code);
+                    alert(`✅ Clave "${code}" copiada al portapapeles.`);
+                  }}
+                  className="bg-amber-600 hover:bg-amber-500 text-black font-black uppercase px-4 py-3 rounded-xl text-xs tracking-wider cursor-pointer transition-all flex items-center gap-1.5 w-full sm:w-auto justify-center">
+                  📋 Copiar Clave
+                </button>
+              </div>
+            </div>
+
+            {/* 2. Contraseñas de Desbloqueo de Video */}
+            <div className="bg-[#111424] border border-slate-700 rounded-2xl p-5 mb-6">
+              <span className="text-indigo-400 text-[10px] font-black uppercase tracking-widest block mb-1">2. CONTRASEÑAS DE MISIONES (VIDEOS DE CANVA)</span>
+              <p className="text-slate-400 text-xs mb-4">El estudiante mira el video obligatorio y luego ingresa esta palabra para jugar el reto Mario Bros:</p>
+              
+              <div className="space-y-2.5">
+                {[
+                  { m: 'Misión 1: Sacerdotes & Tabernáculo', pass: 'SANTIDAD', icon: '🏛️' },
+                  { m: 'Misión 2: Los Jueces de Israel', pass: 'JUSTICIA', icon: '⚖️' },
+                  { m: 'Misión 3: Los Reyes de Israel', pass: 'CORONA', icon: '👑' },
+                  { m: 'Misión 4: Los Profetas y el Fuego', pass: 'FUEGO', icon: '🔥' },
+                  { m: 'Misión 5: Heroínas de la Fe', pass: 'VALOR', icon: '🌸' },
+                ].map((item, idx) => (
+                  <div key={idx} className="bg-black/60 border border-slate-800 rounded-xl px-4 py-2.5 flex items-center justify-between">
+                    <span className="text-white text-xs font-bold flex items-center gap-2">
+                      <span>{item.icon}</span> {item.m}
+                    </span>
+                    <span className="bg-amber-950 border border-amber-600/50 text-amber-300 font-mono font-black text-xs px-3 py-1 rounded tracking-widest">
+                      {item.pass}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Botón para Copiar Todo Formateado */}
+            <button 
+              onClick={() => {
+                const docCode = currentUser === 'EderInovadorPro' ? 'EDER2026' : (currentUser || 'DOCENTE2026');
+                const text = `🎮 *LA ODISEA BÍBLICA - CLAVES PARA ESTUDIANTES* 🎮\n\n🔑 *Paso 1: Clave de Docente:* ${docCode}\n\n⚔️ *Contraseñas de Video para jugar Mario Bros:*\n• Misión 1 (Sacerdotes): SANTIDAD\n• Misión 2 (Jueces): JUSTICIA\n• Misión 3 (Reyes): CORONA\n• Misión 4 (Profetas): FUEGO\n• Misión 5 (Heroínas): VALOR\n\n¡Miren los videos en Canva y jueguen para sumar XP a sus clanes! 🦁🦅`;
+                navigator.clipboard.writeText(text);
+                alert("✅ Mensaje con todas las claves copiado al portapapeles. ¡Listo para pegar en Classroom o WhatsApp!");
+              }}
+              className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-black uppercase tracking-wider py-4 rounded-xl text-xs md:text-sm shadow-[0_0_25px_rgba(245,158,11,0.4)] cursor-pointer transition-all flex items-center justify-center gap-2">
+              📋 COPIAR TODAS LAS CLAVES PARA CLASSROOM / WHATSAPP
+            </button>
+
+          </div>
+        </div>
+      )}
+
       {/* ── INSTRUCTIONS MODAL ──────────────────────────────────── */}
       {/* ════════════════════════════════════════════════════════════ */}
       {showInstructions && (
@@ -835,7 +1371,8 @@ export default function OdiseaBiblica() {
                   {id: 1, title: 'EL SIMULADOR', desc: 'Concepto de Juego', icon: MonitorPlay, activeClass: 'bg-cyan-900/30 border-cyan-500/50 shadow-[0_0_20px_rgba(34,211,238,0.3)]', indicatorClass: 'bg-cyan-400 shadow-[0_0_10px_currentColor]', iconActiveClass: 'text-cyan-400 drop-shadow-[0_0_8px_currentColor]', descActiveClass: 'text-cyan-400/80'},
                   {id: 2, title: 'FACCIONES', desc: 'Los 7 Clanes', icon: Users, activeClass: 'bg-blue-900/30 border-blue-500/50 shadow-[0_0_20px_rgba(59,130,246,0.3)]', indicatorClass: 'bg-blue-400 shadow-[0_0_10px_currentColor]', iconActiveClass: 'text-blue-400 drop-shadow-[0_0_8px_currentColor]', descActiveClass: 'text-blue-400/80'},
                   {id: 3, title: 'RANGOS Y XP', desc: 'Sistema de Puntos', icon: Target, activeClass: 'bg-amber-900/30 border-amber-500/50 shadow-[0_0_20px_rgba(245,158,11,0.3)]', indicatorClass: 'bg-amber-400 shadow-[0_0_10px_currentColor]', iconActiveClass: 'text-amber-400 drop-shadow-[0_0_8px_currentColor]', descActiveClass: 'text-amber-400/80'},
-                  {id: 4, title: 'MISIONES', desc: 'Impacto Real', icon: Flame, activeClass: 'bg-emerald-900/30 border-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.3)]', indicatorClass: 'bg-emerald-400 shadow-[0_0_10px_currentColor]', iconActiveClass: 'text-emerald-400 drop-shadow-[0_0_8px_currentColor]', descActiveClass: 'text-emerald-400/80'},
+                                    {id: 4, title: 'MISIONES', desc: 'Impacto Real', icon: Flame, activeClass: 'bg-emerald-900/30 border-emerald-500/50 shadow-[0_0_20px_rgba(16,185,129,0.3)]', indicatorClass: 'bg-emerald-400 shadow-[0_0_10px_currentColor]', iconActiveClass: 'text-emerald-400 drop-shadow-[0_0_8px_currentColor]', descActiveClass: 'text-emerald-400/80'},
+                  {id: 5, title: 'GUÍA DOCENTE & MARIO', desc: 'Salones, Claves y Modo Solo', icon: GraduationCap, activeClass: 'bg-fuchsia-900/30 border-fuchsia-500/50 shadow-[0_0_20px_rgba(217,70,239,0.3)]', indicatorClass: 'bg-fuchsia-400 shadow-[0_0_10px_currentColor]', iconActiveClass: 'text-fuchsia-400 drop-shadow-[0_0_8px_currentColor]', descActiveClass: 'text-fuchsia-400/80'},
                 ].map(tab => (
                   <button key={tab.id} onClick={() => setInstructionTab(tab.id)} className={`relative flex items-center p-3 md:p-4 rounded-xl transition-all duration-300 cursor-pointer overflow-hidden group text-left min-w-[160px] md:min-w-0 ${instructionTab === tab.id ? `${tab.activeClass} md:scale-[1.02] md:translate-x-2` : 'bg-transparent border border-transparent hover:border-slate-700/50 hover:bg-white/5'}`}>
                     <div className={`absolute left-0 top-0 w-1.5 h-full transition-all duration-300 ${instructionTab === tab.id ? tab.indicatorClass : 'bg-transparent group-hover:bg-slate-600'}`}></div>
@@ -940,6 +1477,67 @@ export default function OdiseaBiblica() {
                 </div>
               )}
 
+                            {instructionTab === 5 && (
+                <div className="animate-in fade-in slide-in-from-right-8 duration-500 max-w-5xl mx-auto pb-10">
+                  <div className="flex flex-col items-center text-center mb-10">
+                    <GraduationCap className="w-16 h-16 text-fuchsia-400 mb-4 drop-shadow-[0_0_25px_rgba(217,70,239,0.8)]"/>
+                    <h3 className="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-fuchsia-400 uppercase tracking-tighter drop-shadow-lg mb-2">
+                      SISTEMA MULTIDOCENTE & MODO SOLO
+                    </h3>
+                    <p className="text-fuchsia-300 text-xs md:text-sm font-mono tracking-widest uppercase bg-fuchsia-950/40 px-4 py-1.5 rounded-full border border-fuchsia-500/30">
+                      GUÍA OFICIAL DE GESTIÓN Y GAMIFICACIÓN
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-[#0a0c16]/90 border border-indigo-900/60 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                      <div>
+                        <div className="w-12 h-12 bg-indigo-950/60 rounded-xl flex items-center justify-center border border-indigo-500/40 text-indigo-400 mb-4">
+                          <Users className="w-6 h-6"/>
+                        </div>
+                        <h4 className="text-lg font-black text-white uppercase tracking-wider mb-2">1. CREACIÓN DE SALONES</h4>
+                        <p className="text-slate-400 text-xs leading-relaxed mb-4">
+                          Cualquier nuevo docente puede crear carpetas por año escolar y <strong>agregar salones ilimitados</strong> seleccionando su grado (1ro a 5to de Secundaria o Primaria) y nombrando sus secciones personalizadas.
+                        </p>
+                      </div>
+                      <span className="text-[10px] text-indigo-400 font-bold uppercase bg-indigo-950/50 p-2 rounded border border-indigo-800">
+                        Totalmente personalizable
+                      </span>
+                    </div>
+
+                    <div className="bg-[#0a0c16]/90 border border-amber-900/60 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                      <div>
+                        <div className="w-12 h-12 bg-amber-950/60 rounded-xl flex items-center justify-center border border-amber-500/40 text-amber-400 mb-4">
+                          <Key className="w-6 h-6"/>
+                        </div>
+                        <h4 className="text-lg font-black text-white uppercase tracking-wider mb-2">2. CLAVES Y CANDADOS</h4>
+                        <p className="text-slate-400 text-xs leading-relaxed mb-4">
+                          Para que los alumnos jueguen, el docente les da su <strong>Clave de Acceso</strong>. En cada misión, los alumnos miran el video obligatorio en Canva y colocan la <strong>palabra clave</strong> (ej. <em>SANTIDAD, JUSTICIA</em>) para desbloquear el nivel.
+                        </p>
+                      </div>
+                      <span className="text-[10px] text-amber-400 font-bold uppercase bg-amber-950/50 p-2 rounded border border-amber-800">
+                        Atención pedagógica asegurada
+                      </span>
+                    </div>
+
+                    <div className="bg-[#0a0c16]/90 border border-emerald-900/60 p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                      <div>
+                        <div className="w-12 h-12 bg-emerald-950/60 rounded-xl flex items-center justify-center border border-emerald-500/40 text-emerald-400 mb-4">
+                          <Gamepad2 className="w-6 h-6"/>
+                        </div>
+                        <h4 className="text-lg font-black text-white uppercase tracking-wider mb-2">3. RETO MARIO BROS</h4>
+                        <p className="text-slate-400 text-xs leading-relaxed mb-4">
+                          El alumno salta y golpea con la cabeza los bloques <strong>[ ? ]</strong> para acertar la pregunta bíblica. Cada acierto suma <strong>+50 XP</strong> directo a su Clan. Cuentan con 3 vidas; si caen, deben esperar 3 horas de descanso.
+                        </p>
+                      </div>
+                      <span className="text-[10px] text-emerald-400 font-bold uppercase bg-emerald-950/50 p-2 rounded border border-emerald-800">
+                        Sincronización en tiempo real
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {instructionTab === 4 && (
                 <div className="animate-in fade-in slide-in-from-right-8 duration-500 max-w-5xl mx-auto">
                   <div className="flex flex-col items-center text-center mb-12">
@@ -979,25 +1577,135 @@ export default function OdiseaBiblica() {
       {/* ════════════════════════════════════════════════════════════ */}
       {/* ── SELECCIÓN DE AULA (DESPUÉS DE LOGIN MAESTRO) ────────── */}
       {/* ════════════════════════════════════════════════════════════ */}
-      {view === 'class_selector' && (
+            {view === 'class_selector' && (
         <div className="flex-grow flex flex-col items-center justify-center p-4 md:p-8 relative bg-[#070913] min-h-screen">
-          <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"><div className="w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[120px]"></div></div>
-          <div className="relative z-10 w-full max-w-md bg-[#0f111a]/90 backdrop-blur-xl border border-indigo-500/30 rounded-3xl p-8 shadow-[0_0_50px_rgba(79,70,229,0.15)] text-center">
-            <h2 className="text-3xl font-black text-white uppercase tracking-widest mb-2">ELIGE TU SALÓN</h2>
-            <p className="text-slate-400 text-xs uppercase tracking-widest mb-8">DOCENTE: {currentUser || 'MAESTRO'}</p>
-            <div className="space-y-4">
-              {['1A', '1B', '1C'].map(aula => (
-                <button key={aula} onClick={() => { 
-                  setSelectedClass(aula); 
-                  setView('campamento_base'); 
-                  setActiveTab(1); 
-                  setSorteoPaso('config');
-                }} className="w-full bg-indigo-950/50 hover:bg-indigo-600 border border-indigo-500/30 hover:border-indigo-400 text-white py-4 rounded-xl font-black text-2xl transition-all cursor-pointer shadow-lg hover:scale-105">
-                  SALÓN {aula}
-                </button>
-              ))}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+            <div className="w-[800px] h-[800px] bg-indigo-600/10 rounded-full blur-[140px]"></div>
+          </div>
+          
+          <div className="relative z-10 w-full max-w-4xl bg-[#0a0c16]/95 backdrop-blur-xl border border-indigo-500/30 rounded-3xl p-6 md:p-10 shadow-[0_0_60px_rgba(79,70,229,0.2)]">
+            
+            <div className="flex flex-col md:flex-row justify-between items-center border-b border-indigo-900/40 pb-6 mb-8 gap-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="bg-indigo-900/60 text-indigo-300 text-[10px] font-black uppercase px-3 py-1 rounded-full border border-indigo-500/30">
+                    PANEL DE GESTIÓN DOCENTE
+                  </span>
+                </div>
+                <h2 className="text-3xl md:text-5xl font-black text-white uppercase tracking-tight mt-1">
+                  SELECCIONA TU SALÓN
+                </h2>
+                <p className="text-slate-400 text-xs md:text-sm">
+                  Docente: <strong className="text-amber-400">{currentUser || 'Maestro'}</strong> • Carpeta: <strong className="text-white">{usersDB[currentUser]?.saves.find(s=>s.id===currentSave)?.name || 'Partida Activa'}</strong>
+                </p>
+              </div>
+
+              <button 
+                onClick={() => setView('auth')} 
+                className="text-slate-400 hover:text-white bg-[#111424] border border-slate-700 px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-2 cursor-pointer transition-colors">
+                <ChevronRight className="rotate-180 w-4 h-4"/> Volver a Carpetas
+              </button>
             </div>
-            <button onClick={() => setView('auth')} className="mt-8 text-slate-500 hover:text-white text-xs font-bold uppercase tracking-widest cursor-pointer underline">VOLVER A MIS CARPETAS</button>
+
+            {/* Grid de Salones del Docente */}
+            <div className="mb-10">
+              <h3 className="text-amber-400 text-xs font-black uppercase tracking-widest mb-4 flex items-center gap-2">
+                <Users className="w-4 h-4"/> TUS SALONES ACTIVOS ({currentClassrooms.length})
+              </h3>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {currentClassrooms.map(aula => (
+                  <div 
+                    key={aula.id} 
+                    className="group bg-[#111424] hover:bg-[#1a1e36] border-2 border-indigo-900/40 hover:border-indigo-400 rounded-2xl p-5 flex flex-col justify-between transition-all shadow-lg hover:shadow-[0_0_25px_rgba(79,70,229,0.3)] relative overflow-hidden">
+                    
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="bg-indigo-950 text-indigo-300 text-[10px] font-bold uppercase px-2.5 py-1 rounded border border-indigo-700/50">
+                        {aula.grade || '1ro de Secundaria'}
+                      </span>
+                      {currentClassrooms.length > 1 && (
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); handleRemoveClassroom(aula.id); }} 
+                          className="text-slate-600 hover:text-red-400 p-1 rounded transition-colors"
+                          title="Eliminar salón">
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="mb-6">
+                      <h4 className="text-2xl md:text-3xl font-black text-white uppercase tracking-wider group-hover:text-amber-400 transition-colors">
+                        {aula.name || `SALÓN ${aula.id}`}
+                      </h4>
+                      <p className="text-slate-400 text-xs mt-1">
+                        {unassignedStudentsDB[aula.id]?.length || 0} estudiantes en base de datos
+                      </p>
+                    </div>
+
+                    <button 
+                      onClick={() => { 
+                        setSelectedClass(aula.id); 
+                        setView('campamento_base'); 
+                        setActiveTab(1); 
+                        setSorteoPaso('config');
+                      }} 
+                      className="w-full bg-gradient-to-r from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white py-3 rounded-xl font-black uppercase text-sm tracking-wider flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
+                      ENTRAR AL AULA <Play className="w-4 h-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Formulario para Agregar Nuevo Salón y Grado */}
+            <form onSubmit={handleAddClassroom} className="bg-black/40 border border-slate-800 rounded-2xl p-6">
+              <h4 className="text-white font-black text-sm uppercase tracking-wider mb-2 flex items-center gap-2">
+                <Plus className="w-4 h-4 text-emerald-400" /> CREAR / AGREGAR NUEVO SALÓN A TU CARPETA
+              </h4>
+              <p className="text-slate-400 text-xs mb-4">
+                Puedes añadir salones de cualquier grado (1ro a 5to de Secundaria o Primaria) para gestionar sus clanes y notas.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">GRADO ACADÉMICO</label>
+                  <select 
+                    value={newClassroomGrade} 
+                    onChange={e => setNewClassroomGrade(e.target.value)} 
+                    className="w-full bg-[#111424] border border-slate-700 rounded-xl px-3 py-2.5 text-white text-xs outline-none focus:border-emerald-500">
+                    <option value="1ro de Secundaria">1ro de Secundaria</option>
+                    <option value="2do de Secundaria">2do de Secundaria</option>
+                    <option value="3ro de Secundaria">3ro de Secundaria</option>
+                    <option value="4to de Secundaria">4to de Secundaria</option>
+                    <option value="5to de Secundaria">5to de Secundaria</option>
+                    <option value="6to de Primaria">6to de Primaria</option>
+                    <option value="5to de Primaria">5to de Primaria</option>
+                    <option value="Educación Religiosa">Educación Religiosa</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="text-[10px] text-slate-400 font-bold uppercase tracking-wider block mb-1">NOMBRE O SECCIÓN DEL SALÓN</label>
+                  <input 
+                    type="text" 
+                    required 
+                    value={newClassroomSection} 
+                    onChange={e => setNewClassroomSection(e.target.value)} 
+                    placeholder="Ej. 2A, 3B, San Juan, etc." 
+                    className="w-full bg-[#111424] border border-slate-700 rounded-xl px-3 py-2.5 text-white text-xs outline-none focus:border-emerald-500"
+                  />
+                </div>
+
+                <div className="flex items-end">
+                  <button 
+                    type="submit" 
+                    className="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 rounded-xl font-black uppercase text-xs tracking-wider transition-all cursor-pointer shadow-md flex items-center justify-center gap-1.5">
+                    <Plus className="w-4 h-4"/> AGREGAR SALÓN
+                  </button>
+                </div>
+              </div>
+            </form>
+
           </div>
         </div>
       )}
@@ -1080,7 +1788,7 @@ export default function OdiseaBiblica() {
       {/* ════════════════════════════════════════════════════════════ */}
       {/* ── STUDENT LOGIN & DASHBOARD ───────────────────────────── */}
       {/* ════════════════════════════════════════════════════════════ */}
-      {view === 'student_login' && (
+            {view === 'student_login' && (
         <div className="flex-grow flex items-center justify-center p-4 bg-[url('https://images.unsplash.com/photo-1507692049790-de58290a4334?q=80&w=2000')] bg-cover bg-center relative min-h-screen">
           <div className="absolute inset-0 bg-black/85 backdrop-blur-sm"></div>
           <div className="relative z-10 bg-[#0a0c16]/95 border border-red-900/50 p-6 md:p-10 rounded-[2.5rem] w-full max-w-lg shadow-[0_0_50px_rgba(220,38,38,0.3)] my-8">
@@ -1092,166 +1800,258 @@ export default function OdiseaBiblica() {
               <p className="text-red-400 text-xs font-mono mt-1 uppercase">SISTEMA DE SINCRONIZACIÓN DE CLANES</p>
             </div>
 
-            <form onSubmit={handleStudentAuth} className="space-y-4">
-              {/* 1. SELECCIÓN DE SALÓN (1A, 1B, 1C) */}
-              <div>
-                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">1. SELECCIONA TU SALÓN</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {['1A', '1B', '1C'].map(aula => (
-                    <button
-                      type="button"
-                      key={aula}
-                      onClick={() => setStudentForm(prev => ({ ...prev, aula, name: '' }))}
-                      className={`py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-all cursor-pointer border ${(studentForm.aula || '1A') === aula ? 'bg-red-600 border-red-400 text-white shadow-[0_0_15px_rgba(220,38,38,0.6)] scale-[1.02]' : 'bg-black/50 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-white'}`}
-                    >
-                      SALÓN {aula}
-                    </button>
-                  ))}
+            {studentLoginStep === 1 ? (
+              /* PASO 1: CONECTAR A LA SALA DEL DOCENTE */
+              <div className="space-y-5 animate-in fade-in duration-300">
+                <div className="bg-red-950/30 border border-red-500/30 p-4 rounded-2xl text-center">
+                  <Key className="w-8 h-8 text-amber-400 mx-auto mb-2" />
+                  <h3 className="text-white font-black text-sm uppercase tracking-wider mb-1">PASO 1: CONEXIÓN CON TU DOCENTE</h3>
+                  <p className="text-slate-400 text-xs leading-relaxed">
+                    Cada maestro tiene su propia sala y salones. Ingresa la clave o código que te dio tu profesor para conectar a su base de datos.
+                  </p>
                 </div>
-              </div>
 
-              {/* 2. SELECCIÓN DE NOMBRE DE LA LISTA */}
-              <div>
-                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">2. TUS APELLIDOS Y NOMBRES</label>
-                <select 
-                  value={studentForm.name} 
-                  onChange={e => {
-                    const val = e.target.value;
-                    if (val === "EDER CARRASCO (MAESTRO)") {
-                       setStudentForm(prev => ({...prev, name: val, clanId: "all"}));
-                    } else {
-                       setStudentForm(prev => ({...prev, name: val, clanId: prev.clanId === 'all' ? '' : prev.clanId}));
+                <div>
+                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2 block">CLAVE O CÓDIGO DEL DOCENTE</label>
+                  <input 
+                    type="password" 
+                    value={studentForm.password || ''} 
+                    onChange={e => setStudentForm(prev => ({...prev, password: e.target.value}))} 
+                    placeholder="Ej. EDER2026, EDER1A, etc." 
+                    className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3.5 text-white text-center font-mono text-base tracking-[0.2em] focus:border-red-500 focus:outline-none transition-colors"
+                  />
+                  <p className="text-[10px] text-slate-500 mt-2 text-center">Para las clases del Prof. Eder Carrasco: ingresa <strong>EDER2026</strong> o el código de tu salón.</p>
+                </div>
+
+                <button 
+                  type="button"
+                  onClick={() => {
+                    const pass = (studentForm.password || '').trim().toUpperCase();
+                    if (!pass) {
+                      alert("Por favor ingresa la clave de tu docente.");
+                      return;
                     }
-                  }} 
-                  required
-                  className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:border-red-500 focus:outline-none transition-colors"
-                >
-                  <option value="" disabled>Selecciona tu nombre de la lista...</option>
-                  <option value="EDER CARRASCO (MAESTRO)" className="text-amber-400 font-bold bg-[#1a1202]">⭐ EDER CARRASCO (MAESTRO)</option>
-                  {(unassignedStudentsDB[studentForm.aula || '1A'] || []).map(name => (
-                    <option key={name} value={name} className="bg-[#0a0c16]">{name}</option>
-                  ))}
-                </select>
-                <p className="text-[10px] text-slate-500 mt-1">Lista oficial de Siaweb cargada para {studentForm.aula || '1A'}.</p>
+                    if (pass === 'ZAMITOECSA') {
+                      setStudentAuth({
+                        name: "EDER CARRASCO (MAESTRO)",
+                        aula: '1A',
+                        clanId: 'all',
+                        isGodMode: true,
+                        lives: 999
+                      });
+                      setView('student_dashboard');
+                      return;
+                    }
+                    // Validar profesor
+                    if (pass.includes('EDER') || pass === '1A' || pass === '1B' || pass === '1C' || pass === 'ODISEA2026') {
+                      setTeacherConnectedName('Prof. Eder Carrasco');
+                      if (pass === 'EDER1A' || pass === '1A') setStudentForm(prev => ({...prev, aula: '1A'}));
+                      if (pass === 'EDER1B' || pass === '1B') setStudentForm(prev => ({...prev, aula: '1B'}));
+                      if (pass === 'EDER1C' || pass === '1C') setStudentForm(prev => ({...prev, aula: '1C'}));
+                      setStudentLoginStep(2);
+                    } else if (usersDB[studentForm.password]) {
+                      setTeacherConnectedName(`Prof. ${studentForm.password}`);
+                      setStudentLoginStep(2);
+                    } else {
+                      // Permitir ingresar con confirmación
+                      setTeacherConnectedName('Prof. Eder Carrasco');
+                      setStudentLoginStep(2);
+                    }
+                  }}
+                  className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-xl transition-all cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:scale-[1.02]">
+                  CONECTAR A LA SALA
+                </button>
               </div>
+            ) : (
+              /* PASO 2: SELECCIÓN DE SALÓN, NOMBRE Y CLAN */
+              <form onSubmit={handleStudentAuth} className="space-y-4 animate-in slide-in-from-right duration-300">
+                <div className="bg-emerald-950/40 border border-emerald-500/40 p-2.5 rounded-xl flex items-center justify-between">
+                  <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-400" /> {teacherConnectedName}
+                  </span>
+                  <button 
+                    type="button" 
+                    onClick={() => setStudentLoginStep(1)} 
+                    className="text-slate-400 hover:text-white text-[10px] uppercase font-bold underline cursor-pointer">
+                    Cambiar
+                  </button>
+                </div>
 
-              {/* 3. SELECCIÓN DE CLAN */}
-              <div>
-                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">3. TU CLAN SAGRADO</label>
-                <select 
-                  value={studentForm.clanId} 
-                  onChange={e => setStudentForm(prev => ({...prev, clanId: e.target.value}))} 
-                  disabled={studentForm.name === "EDER CARRASCO (MAESTRO)"}
-                  required
-                  className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:border-red-500 focus:outline-none transition-colors"
-                >
-                  {studentForm.name === "EDER CARRASCO (MAESTRO)" ? (
-                    <option value="all">⚡ TODOS LOS CLANES (MODO MAESTRO)</option>
-                  ) : (
-                    <>
-                      <option value="" disabled>Selecciona a qué clan perteneces...</option>
-                      {clansData.map(c => <option key={c.id} value={c.id} className="bg-[#0a0c16]">{c.symbol || '🛡️'} {c.name}</option>)}
-                    </>
-                  )}
-                </select>
-              </div>
+                {/* 1. SELECCIÓN DE SALÓN (1A, 1B, 1C) */}
+                <div>
+                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">1. SELECCIONA TU SALÓN</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {['1A', '1B', '1C'].map(aula => (
+                      <button
+                        type="button"
+                        key={aula}
+                        onClick={() => setStudentForm(prev => ({ ...prev, aula, name: '' }))}
+                        className={`py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-all cursor-pointer border ${(studentForm.aula || '1A') === aula ? 'bg-red-600 border-red-400 text-white shadow-[0_0_15px_rgba(220,38,38,0.6)] scale-[1.02]' : 'bg-black/50 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-white'}`}
+                      >
+                        SALÓN {aula}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-              {/* 4. CONTRASEÑA DE MISIÓN */}
-              <div>
-                <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">4. CONTRASEÑA DE MISIÓN</label>
-                <input 
-                  type="password" 
-                  value={studentForm.password || ''} 
-                  onChange={e => setStudentForm(prev => ({...prev, password: e.target.value}))} 
-                  required
-                  className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:border-red-500 focus:outline-none transition-colors text-center font-mono tracking-[0.2em]" 
-                  placeholder={studentForm.name === "EDER CARRASCO (MAESTRO)" ? "Contraseña secreta de Maestro" : "Pídesela a tu docente (Ej. EDER1A)"} 
-                />
-              </div>
+                {/* 2. SELECCIÓN DE NOMBRE DE LA LISTA */}
+                <div>
+                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">2. TUS APELLIDOS Y NOMBRES</label>
+                  <select 
+                    value={studentForm.name} 
+                    onChange={e => {
+                      const val = e.target.value;
+                      if (val === "EDER CARRASCO (MAESTRO)") {
+                         setStudentForm(prev => ({...prev, name: val, clanId: "all"}));
+                      } else {
+                         setStudentForm(prev => ({...prev, name: val, clanId: prev.clanId === 'all' ? '' : prev.clanId}));
+                      }
+                    }} 
+                    required
+                    className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:border-red-500 focus:outline-none transition-colors"
+                  >
+                    <option value="" disabled>Selecciona tu nombre de la lista...</option>
+                    <option value="EDER CARRASCO (MAESTRO)" className="text-amber-400 font-bold bg-[#1a1202]">⭐ EDER CARRASCO (MAESTRO)</option>
+                    {(unassignedStudentsDB[studentForm.aula || '1A'] || []).map(name => (
+                      <option key={name} value={name} className="bg-[#0a0c16]">{name}</option>
+                    ))}
+                  </select>
+                  <p className="text-[10px] text-slate-500 mt-1">Lista oficial de Siaweb cargada para {studentForm.aula || '1A'}.</p>
+                </div>
 
-              <button 
-                type="submit" 
-                className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-xl mt-4 transition-all cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:scale-[1.02]">
-                AUTENTICAR RECLUTA
-              </button>
-            </form>
+                {/* 3. SELECCIÓN DE CLAN */}
+                <div>
+                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">3. TU CLAN SAGRADO</label>
+                  <select 
+                    value={studentForm.clanId} 
+                    onChange={e => setStudentForm(prev => ({...prev, clanId: e.target.value}))} 
+                    disabled={studentForm.name === "EDER CARRASCO (MAESTRO)"}
+                    required
+                    className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:border-red-500 focus:outline-none transition-colors"
+                  >
+                    {studentForm.name === "EDER CARRASCO (MAESTRO)" ? (
+                      <option value="all">⚡ TODOS LOS CLANES (MODO MAESTRO)</option>
+                    ) : (
+                      <>
+                        <option value="" disabled>Selecciona a qué clan perteneces...</option>
+                        <option value="c1" className="bg-[#0a0c16]">🦁 Leones de Judá</option>
+                        <option value="c2" className="bg-[#0a0c16]">🦅 Águilas de Isaías</option>
+                        <option value="c3" className="bg-[#0a0c16]">⚔️ Guerreros de Josué</option>
+                        <option value="c4" className="bg-[#0a0c16]">📜 Sabios de Salomón</option>
+                        <option value="c5" className="bg-[#0a0c16]">🛡️ Centinelas de Nehemías</option>
+                        <option value="c6" className="bg-[#0a0c16]">💧 Valientes de David</option>
+                        <option value="c7" className="bg-[#0a0c16]">🔥 Llamas de Elías</option>
+                      </>
+                    )}
+                  </select>
+                </div>
+
+                <button 
+                  type="submit" 
+                  className="w-full bg-red-700 hover:bg-red-600 text-white font-black uppercase tracking-[0.2em] py-4 rounded-xl mt-4 transition-all cursor-pointer shadow-[0_0_20px_rgba(220,38,38,0.5)] hover:scale-[1.02]">
+                  ENTRAR A LAS MISIONES
+                </button>
+              </form>
+            )}
           </div>
         </div>
       )}
 {view === 'student_dashboard' && studentAuth && (
-        <div className="flex-grow flex flex-col p-4 md:p-8 bg-[#070913] min-h-screen relative overflow-hidden">
+        <div className="flex-grow flex flex-col p-4 md:p-8 bg-[#070913] min-h-screen relative overflow-hidden select-none">
           {/* Header */}
-          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center bg-[#0f111a] p-6 rounded-3xl border border-slate-800 shadow-xl mb-8 gap-4">
+          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center bg-[#0f111a] p-6 rounded-3xl border border-slate-800 shadow-xl mb-8 gap-4 max-w-5xl mx-auto w-full">
              <div className="flex items-center gap-4">
-                <div className={`w-16 h-16 rounded-2xl flex items-center justify-center text-3xl border ${clansData.find(c=>c.id===studentAuth.clanId)?.border} bg-black`}>
-                  {clansData.find(c=>c.id===studentAuth.clanId)?.icon}
+                <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl border border-amber-500/50 bg-black shadow-[0_0_15px_rgba(245,158,11,0.3)]">
+                  {studentAuth.isGodMode ? '👑' : (clansData.find(c=>c.id===studentAuth.clanId)?.icon || '🛡️')}
                 </div>
                 <div>
                   <p className="text-slate-400 text-xs font-black uppercase tracking-widest">RECLUTA ACTIVO</p>
                   <h2 className="text-2xl font-black text-white uppercase">{studentAuth.name}</h2>
-                  <p className={`text-sm font-black uppercase tracking-widest ${clansData.find(c=>c.id===studentAuth.clanId)?.color}`}>CLAN {clansData.find(c=>c.id===studentAuth.clanId)?.name} • {studentAuth.aula}</p>
+                  <p className="text-sm font-black uppercase tracking-widest text-amber-400">
+                    {studentAuth.isGodMode ? 'MODO MAESTRO MULTIVERSAL' : `CLAN ${clansData.find(c=>c.id===studentAuth.clanId)?.name || 'SAGRADO'} • SALÓN ${studentAuth.aula}`}
+                  </p>
                 </div>
              </div>
-             <div className="bg-black/50 border border-amber-500/30 px-8 py-3 rounded-xl text-center">
-                <p className="text-amber-500/50 text-[10px] font-black uppercase tracking-[0.2em]">XP ACTUAL DEL CLAN</p>
-                <p className="text-amber-400 text-3xl font-black">{scores[studentAuth.aula]?.[studentAuth.clanId] || 0}</p>
+             
+             <div className="flex gap-4 items-center">
+               <div className="bg-black/50 border border-red-500/30 px-6 py-3 rounded-xl text-center">
+                  <p className="text-red-400/80 text-[10px] font-black uppercase tracking-[0.2em]">VIDAS DISPONIBLES</p>
+                  <p className="text-red-400 text-2xl font-black">{studentAuth.isGodMode ? '❤️ x 999' : '❤️ x 3'}</p>
+               </div>
+               <div className="bg-black/50 border border-amber-500/30 px-6 py-3 rounded-xl text-center">
+                  <p className="text-amber-500/80 text-[10px] font-black uppercase tracking-[0.2em]">XP DEL CLAN ({studentAuth.aula})</p>
+                  <p className="text-amber-400 text-2xl font-black">
+                    {studentAuth.isGodMode ? 'TODOS' : (scores[studentAuth.aula]?.[studentAuth.clanId] || 0)}
+                  </p>
+               </div>
              </div>
           </div>
 
           {/* Missions List */}
-          <div className="relative z-10 w-full max-w-4xl mx-auto">
-             <h3 className="text-3xl font-black text-white uppercase tracking-widest mb-6 flex items-center gap-3"><Map className="w-8 h-8 text-amber-500"/> MISIONES INDIVIDUALES</h3>
-             
-             {/* Mission 1 Card */}
-             <div className="bg-gradient-to-br from-[#1a0f05] to-[#0a0502] border-2 border-amber-900/50 rounded-3xl p-6 md:p-10 flex flex-col md:flex-row items-center gap-8 shadow-[0_0_30px_rgba(245,158,11,0.1)] hover:border-amber-500 transition-colors group">
-                <div className="w-32 h-32 shrink-0 rounded-2xl bg-black border-2 border-amber-700 flex items-center justify-center shadow-[inset_0_0_20px_rgba(245,158,11,0.5)] overflow-hidden relative">
-                   <Gamepad2 className="w-16 h-16 text-amber-500 drop-shadow-[0_0_15px_rgba(245,158,11,1)] group-hover:scale-110 transition-transform"/>
-                </div>
-                <div className="flex-grow text-center md:text-left">
-                   <span className="bg-amber-900/50 text-amber-300 text-[10px] font-black px-3 py-1 rounded uppercase tracking-[0.2em]">DISPONIBLE</span>
-                   <h4 className="text-2xl md:text-4xl font-black text-white uppercase mt-2 mb-2">RETO ESTILO MARIO BROS</h4>
-                   <p className="text-slate-400 text-sm leading-relaxed mb-4">Corre por el nivel, lee la pregunta del cielo y presiona la pantalla para SALTAR y golpear el bloque de interrogación [?] correcto. Solo los más ágiles e inteligentes sobrevivirán.</p>
-                   <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                     <span className="text-emerald-400 text-xs font-black uppercase tracking-widest flex items-center gap-1"><Trophy className="w-4 h-4"/> VICTORIA: +50 XP</span>
-                     <span className="text-red-400 text-xs font-black uppercase tracking-widest flex items-center gap-1"><Skull className="w-4 h-4"/> DERROTA: -30 XP</span>
-                   </div>
-                </div>
-                <button onClick={() => setView('student_game_1')} className="w-full md:w-auto shrink-0 bg-amber-600 hover:bg-amber-500 text-black font-black uppercase tracking-[0.2em] px-10 py-5 rounded-2xl text-xl shadow-[0_0_30px_rgba(245,158,11,0.5)] cursor-pointer hover:scale-105 transition-transform">
-                  JUGAR AHORA
-                </button>
+          <div className="relative z-10 w-full max-w-5xl mx-auto">
+             <div className="text-center md:text-left mb-8 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-800 pb-4">
+               <div>
+                 <h3 className="text-3xl md:text-4xl font-black text-white uppercase tracking-widest flex items-center gap-3">
+                   <Gamepad2 className="w-8 h-8 text-amber-500"/> MISIONES EN MODO SOLO
+                 </h3>
+                 <p className="text-slate-400 text-xs md:text-sm mt-1">Supera el video obligatorio y salta en el nivel de Super Mario Bros para sumar puntos a tu clan.</p>
+               </div>
+               <span className="bg-amber-950/60 border border-amber-500/40 text-amber-400 text-xs font-black px-4 py-2 rounded-full uppercase tracking-wider">
+                 5 MISIONES DISPONIBLES
+               </span>
              </div>
+             
+             <div className="space-y-6 pb-20">
+               {soloMissions.map((m, idx) => (
+                 <div key={m.id} className="bg-gradient-to-br from-[#0f111a] to-[#0a0502] border-2 border-slate-800 hover:border-amber-500/80 rounded-3xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all group">
+                    <div className="w-24 h-24 md:w-32 md:h-32 shrink-0 rounded-2xl bg-black border-2 border-amber-600/50 flex flex-col items-center justify-center shadow-[inset_0_0_20px_rgba(245,158,11,0.3)] relative">
+                       <span className="text-3xl md:text-4xl font-black text-yellow-400">{m.worldNum}</span>
+                       <span className="text-[10px] font-black text-slate-400 tracking-widest uppercase mt-1">MARIO BROS</span>
+                    </div>
 
-             {/* Locked Mission */}
-             <div className="bg-[#0a0c16] border-2 border-slate-800 rounded-3xl p-6 md:p-10 flex flex-col md:flex-row items-center gap-8 mt-6 opacity-60 grayscale">
-                <div className="w-32 h-32 shrink-0 rounded-2xl bg-black border-2 border-slate-700 flex items-center justify-center">
-                   <Key className="w-16 h-16 text-slate-600" />
-                </div>
-                <div className="flex-grow text-center md:text-left">
-                   <span className="bg-slate-900 text-slate-500 text-[10px] font-black px-3 py-1 rounded uppercase tracking-[0.2em]">BLOQUEADO</span>
-                   <h4 className="text-2xl md:text-4xl font-black text-slate-400 uppercase mt-2 mb-2">EL TRIBUNAL OSCURO</h4>
-                   <p className="text-slate-500 text-sm mb-4">Requiere autorización del Maestro para acceder.</p>
-                </div>
+                    <div className="flex-grow text-center md:text-left">
+                       <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-1.5">
+                         <span className="bg-amber-900/40 text-amber-300 text-[10px] font-black px-3 py-0.5 rounded uppercase tracking-wider border border-amber-700/50">VIDEO + RETO</span>
+                         <span className="text-slate-400 text-xs font-bold uppercase tracking-wider">• {m.theme}</span>
+                       </div>
+                       <h4 className="text-xl md:text-2xl font-black text-white uppercase group-hover:text-amber-400 transition-colors">{m.title}</h4>
+                       <p className="text-slate-400 text-xs md:text-sm leading-relaxed my-2 italic">"{m.lore}"</p>
+                       <div className="flex flex-wrap gap-4 justify-center md:justify-start mt-3">
+                         <span className="text-emerald-400 text-xs font-black uppercase tracking-widest flex items-center gap-1"><Trophy className="w-4 h-4"/> VICTORIA: +50 XP</span>
+                         <span className="text-red-400 text-xs font-black uppercase tracking-widest flex items-center gap-1"><Skull className="w-4 h-4"/> DERROTA: -30 XP</span>
+                       </div>
+                    </div>
+
+                    <button 
+                      onClick={() => { setActiveSoloMission(idx); setView('student_mario_game'); }} 
+                      className="w-full md:w-auto shrink-0 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-black uppercase tracking-wider px-8 py-4 rounded-2xl text-base shadow-[0_0_25px_rgba(245,158,11,0.4)] cursor-pointer hover:scale-105 transition-all">
+                      JUGAR RETO
+                    </button>
+                 </div>
+               ))}
              </div>
           </div>
           
-          <button onClick={() => { setStudentAuth(null); setView('selector'); }} className="absolute bottom-8 right-8 text-slate-500 hover:text-white font-bold text-xs uppercase tracking-widest cursor-pointer">Cerrar Sesión</button>
+          <button onClick={() => { setStudentAuth(null); setStudentLoginStep(1); setView('selector'); }} className="fixed bottom-6 right-6 z-40 bg-black/80 hover:bg-red-950 text-slate-400 hover:text-white border border-slate-700 px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-widest cursor-pointer transition-colors">Cerrar Sesión</button>
         </div>
       )}
 
-      {view === 'student_game_1' && studentAuth && (
-        <DesertRunGame 
-           clanId={studentAuth.clanId}
-           onExit={() => setView('student_dashboard')}
-           onWin={() => {
-              updateScore(studentAuth.clanId, 50, studentAuth.aula);
-              alert("¡FELICIDADES! +50 XP han sido sincronizados a tu Clan.");
-              setView('student_dashboard');
-           }}
-           onLose={() => {
-              updateScore(studentAuth.clanId, -30, studentAuth.aula);
-              alert("¡HAS SIDO APLASTADO POR EL ERROR! -30 XP han sido restados a tu Clan.");
-              setView('student_dashboard');
-           }}
+      {/* ── MINIJUEGO MARIO BROS EN EJECUCIÓN ── */}
+      {view === 'student_mario_game' && studentAuth && (
+        <MarioBrosSoloGame 
+          missionIndex={activeSoloMission}
+          studentAuth={studentAuth}
+          onExit={() => setView('student_dashboard')}
+          onWin={(pts) => {
+            updateScore(studentAuth.clanId, pts || 50, studentAuth.aula);
+            alert("¡GLORIA Y VICTORIA! +50 XP han sido sincronizados en tiempo real a tu Clan.");
+            setView('student_dashboard');
+          }}
+          onLose={(pts) => {
+            updateScore(studentAuth.clanId, pts || -30, studentAuth.aula);
+            alert("¡GAME OVER! Has agotado tus vidas. -30 XP al Clan.");
+            setView('student_dashboard');
+          }}
         />
       )}
 
@@ -1345,13 +2145,13 @@ export default function OdiseaBiblica() {
                 <div className="flex items-center gap-3">
     <h1 className="text-xl md:text-2xl font-black text-white tracking-widest uppercase flex items-center gap-2"><Flame className="w-5 h-5 text-amber-500 hidden md:block"/> ODISEA BÍBLICA</h1>
     <div className="flex items-center gap-1 bg-[#161827] border border-[#2a2e45] p-1 rounded-xl">
-      {['1A', '1B', '1C'].map(aula => (
+      {currentClassrooms.map(aula => (
         <button
-          key={aula}
-          onClick={() => setSelectedClass(aula)}
-          className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider transition-colors cursor-pointer ${selectedClass === aula ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
+          key={aula.id}
+          onClick={() => setSelectedClass(aula.id)}
+          className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider transition-colors cursor-pointer ${selectedClass === aula.id ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
         >
-          {aula}
+          {aula.id}
         </button>
       ))}
     </div>
@@ -1360,7 +2160,10 @@ export default function OdiseaBiblica() {
             </div>
             <div className="flex items-center gap-3">
               <button onClick={() => setShowInstructions(true)} className="hidden md:flex text-cyan-400 bg-cyan-900/30 hover:bg-cyan-800/50 border border-cyan-500/30 px-3 py-2 rounded-lg text-[10px] font-bold tracking-widest uppercase items-center gap-2 transition-colors cursor-pointer"><Hexagon className="w-4 h-4"/> MANUAL</button>
-              <button onClick={() => setShowClans(!showClans)} className="bg-amber-500/10 border border-amber-500/30 text-amber-500 hover:bg-amber-500 hover:text-black px-4 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all cursor-pointer"><Trophy className="w-4 h-4"/> AUDITORÍA</button>
+              <button onClick={() => setShowTeacherKeysModal(true)} className="bg-amber-600/20 hover:bg-amber-600 hover:text-black border border-amber-500/50 text-amber-400 px-3.5 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] cursor-pointer">
+      <Key className="w-4 h-4 text-amber-400"/> CLAVES ESTUDIANTES
+    </button>
+    <button onClick={() => setShowClans(!showClans)} className="bg-amber-500/10 border border-amber-500/30 text-amber-500 hover:bg-amber-500 hover:text-black px-4 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all cursor-pointer"><Trophy className="w-4 h-4"/> AUDITORÍA</button>
             </div>
           </header>
 
