@@ -5,7 +5,7 @@ import {
   Crown, MonitorPlay, ShieldAlert, Scroll, Shield, Flame,
   Wand2, Compass, CheckCircle2, Users, Settings, Plus, X, Sparkles, UserPlus, BookOpen, Globe,
   Music, Volume2, Eye, Zap, RefreshCw, Scale, Hourglass, Loader2, Gamepad2, GraduationCap, Hexagon, Layers,
-  Swords, Heart, Timer, Pause, RotateCcw
+  Swords, Heart, Timer, Pause, RotateCcw, Lock
 } from 'lucide-react';
 import { clansData, unassignedStudentsDB, defaultRoster, defaultScores, pectoralStones, casosTribunal } from './data.jsx';
 import { db } from './firebase.js';
@@ -193,9 +193,9 @@ const playRetroSound = (type) => {
 };
 
 // ─── COLECCIÓN OFICIAL DE CARTAS DEL ANTIGUO TESTAMENTO (TCG BÍBLICO) ────────
-// ─── 50 CARTAS BÍBLICAS DE COLECCIÓN ESTILO YU-GI-OH! ───────────────────────
+// ─── 50 CARTAS BÍBLICAS DE COLECCIÓN DEL ANTIGUO TESTAMENTO ───────────────────────
 export const biblicalCardsDB = [
-  // ── 1. SACERDOTES DE ISRAEL (MISIÓN 1 - DISEÑOS OFICIALES YU-GI-OH!) ──
+  // ── 1. SACERDOTES DE ISRAEL (MISIÓN 1 - DISEÑOS OFICIALES DEL PACTO) ──
   {
     id: "card_sac_01",
     name: "Nadab y Abiú",
@@ -756,6 +756,331 @@ export const biblicalCardsDB = [
     effectName: "[INICIO DEL VIAJE]",
     power: "Da el primer paso fuera de la idolatría mesopotámica rumbo a la tierra prometida.",
     serialCode: "ODISEA-PAT009"
+  },
+
+  // ── 3. JUECES DE ISRAEL (MISIÓN 2 - DISEÑOS OFICIALES DEL PACTO) ──
+  {
+    id: "card_juez_01",
+    name: "Otoniel",
+    englishName: "OTONIEL",
+    category: "JUECES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[PRIMER JUEZ / VALOR / EFECTO]",
+    atk: 2200,
+    def: 2000,
+    frameStyle: "effect",
+    badgeColor: "bg-emerald-500 text-white font-black",
+    gradient: "from-emerald-900 via-stone-900 to-black",
+    border: "border-emerald-400",
+    glow: "shadow-[0_0_35px_rgba(16,185,129,0.8)]",
+    icon: "🗡️",
+    image: "/cards/card_juez_otoniel.jpg",
+    pasaje: "Jueces 3:9-10",
+    clanXP: 250,
+    quote: "«El Espíritu de Yahveh vino sobre él, y juzgó a Israel y salió a la batalla.»",
+    effectName: "[PRIMER LIBERTADOR]",
+    power: "Sobrino de Caleb. Derrota al rey de Mesopotamia y trae 40 años de paz a la tierra prometida.",
+    serialCode: "ODISEA-JUEZ001"
+  },
+  {
+    id: "card_juez_02",
+    name: "Aod",
+    englishName: "AOD",
+    category: "JUECES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[JUEZ GUERRERO / ESTRATEGA / EFECTO]",
+    atk: 2300,
+    def: 1700,
+    frameStyle: "effect",
+    badgeColor: "bg-red-500 text-white font-black",
+    gradient: "from-red-900 via-amber-950 to-black",
+    border: "border-red-400",
+    glow: "shadow-[0_0_35px_rgba(239,68,68,0.8)]",
+    icon: "🗡️",
+    image: "/cards/card_juez_aod.jpg",
+    pasaje: "Jueces 3:15-16",
+    clanXP: 260,
+    quote: "«Y los hijos de Israel clamaron a Yahveh; y Yahveh les levantó libertador, a Aod... hombre zurdo.»",
+    effectName: "[DAGA OCULTA DEL PACTO]",
+    power: "Estrategia audaz y sigilo. Libera al pueblo del yugo de Eglón rey de Moab.",
+    serialCode: "ODISEA-JUEZ002"
+  },
+  {
+    id: "card_juez_03",
+    name: "Samgar",
+    englishName: "SAMGAR",
+    category: "JUECES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[HÉROE IMPROBABLE / VALOR / EFECTO]",
+    atk: 2400,
+    def: 1600,
+    frameStyle: "effect",
+    badgeColor: "bg-orange-500 text-black font-black",
+    gradient: "from-orange-900 via-amber-950 to-black",
+    border: "border-orange-400",
+    glow: "shadow-[0_0_35px_rgba(249,115,22,0.8)]",
+    icon: "🌾",
+    image: "/cards/card_juez_samgar.jpg",
+    pasaje: "Jueces 3:31",
+    clanXP: 270,
+    quote: "«Después de él fue Samgar hijo de Anat, el cual mató a seiscientos hombres de los filisteos con una aguijada de bueyes.»",
+    effectName: "[AGUIJADA VICTORIOSA]",
+    power: "Usa herramientas cotidianas para realizar hazañas imposibles cuando el Espíritu de Dios lo respalda.",
+    serialCode: "ODISEA-JUEZ003"
+  },
+  {
+    id: "card_juez_04",
+    name: "Elí",
+    englishName: "ELÍ",
+    category: "JUECES",
+    rarity: "COMÚN",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO NORMAL",
+    monsterType: "[JUEZ Y SUMO SACERDOTE / SILO]",
+    atk: 1600,
+    def: 1900,
+    frameStyle: "normal",
+    badgeColor: "bg-amber-600 text-white font-black",
+    gradient: "from-amber-800 via-stone-900 to-black",
+    border: "border-amber-400",
+    glow: "shadow-[0_0_20px_rgba(245,158,11,0.5)]",
+    icon: "🏛️",
+    image: "/cards/card_juez_eli.jpg",
+    pasaje: "1 Samuel 4:18",
+    clanXP: 60,
+    quote: "«Y él había juzgado a Israel cuarenta años en el santuario de Silo.»",
+    effectName: "[GUARDIÁN DEL ARCA EN SILO]",
+    power: "Gobernó y ministró en el santuario antes del surgimiento de la monarquía de Israel.",
+    serialCode: "ODISEA-JUEZ004"
+  },
+  {
+    id: "card_juez_05",
+    name: "Débora, Jueza y Profetisa",
+    englishName: "DEBORAH, JUDGE OF ISRAEL",
+    category: "JUECES",
+    rarity: "ULTRA RARA",
+    stars: 8,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[JUEZA / ESTRATEGA / EFECTO]",
+    atk: 2800,
+    def: 3000,
+    frameStyle: "effect",
+    badgeColor: "bg-amber-400 text-black font-black",
+    gradient: "from-amber-600 via-yellow-700 to-black",
+    border: "border-yellow-400",
+    glow: "shadow-[0_0_30px_rgba(245,158,11,0.8)]",
+    icon: "🌴",
+    pasaje: "Jueces 4:4",
+    clanXP: 210,
+    quote: "«Gobernaba en aquel tiempo a Israel una mujer, Débora, profetisa... y los hijos de Israel subían a ella a juicio.»",
+    effectName: "[PALMERA DE JUSTICIA]",
+    power: "Liderazgo y discernimiento sin miedo. Dirige el ejército con Barac hacia la victoria en el monte Tabor.",
+    serialCode: "ODISEA-JUEZ005"
+  },
+  {
+    id: "card_juez_06",
+    name: "Gedeón",
+    englishName: "GEDEÓN",
+    category: "JUECES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[GUERRERO DE FE / ESTRATEGA / EFECTO]",
+    atk: 2500,
+    def: 2100,
+    frameStyle: "effect",
+    badgeColor: "bg-amber-500 text-black font-black",
+    gradient: "from-orange-700 via-red-900 to-black",
+    border: "border-orange-400",
+    glow: "shadow-[0_0_35px_rgba(249,115,22,0.8)]",
+    icon: "🏺",
+    image: "/cards/card_juez_gedeon.jpg",
+    pasaje: "Jueces 7:16-20",
+    clanXP: 270,
+    quote: "«Gedeón, inicialmente temeroso, liberó a Israel de los madianitas con una táctica de confusión, utilizando un ejército reducido a solo 300 hombres equipados con trompetas, antorchas y cántaros vacíos.»",
+    effectName: "[ANTORCHAS Y CÁNTAROS DEL VALLE]",
+    power: "Confusión letal en las filas enemigas. Derriba el orgullo de los madianitas con 300 valientes y el fuego de Dios.",
+    serialCode: "ODISEA-JUEZ006"
+  },
+  {
+    id: "card_juez_07",
+    name: "Sansón",
+    englishName: "SAMSON",
+    category: "JUECES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[NAZAREO / FUERZA SOBRENATURAL / EFECTO]",
+    atk: 2800,
+    def: 2000,
+    frameStyle: "effect",
+    badgeColor: "bg-red-500 text-white font-black",
+    gradient: "from-red-900 via-amber-950 to-black",
+    border: "border-red-400",
+    glow: "shadow-[0_0_35px_rgba(239,68,68,0.9)]",
+    icon: "🦁",
+    image: "/cards/card_juez_sanson.jpg",
+    pasaje: "Jueces 16:28-30",
+    clanXP: 290,
+    quote: "«Sansón: El juez más famoso y solitario. Consagrado a Dios desde antes de nacer, poseía una fuerza sobrenatural. Dedicó su vida a acosar a los filisteos y es recordado por su fuerza física, su impulsividad y su traición a manos de Dalila.»",
+    effectName: "[DERRIBO DE LAS COLUMNAS]",
+    power: "Fuerza colosal que derriba los cimientos de la idolatría y la opresión en un clamor final a Dios.",
+    serialCode: "ODISEA-JUEZ007"
+  },
+  {
+    id: "card_juez_08",
+    name: "Samuel, El Último Juez",
+    englishName: "SAMUEL: EL ÚLTIMO JUEZ DE ISRAEL",
+    category: "JUECES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[JUEZ SACERDOTAL / UNCIÓN / EFECTO]",
+    atk: 2500,
+    def: 2700,
+    frameStyle: "effect",
+    badgeColor: "bg-sky-400 text-black font-black",
+    gradient: "from-sky-700 via-indigo-950 to-black",
+    border: "border-sky-300",
+    glow: "shadow-[0_0_35px_rgba(56,189,248,0.8)]",
+    icon: "🏺",
+    image: "/cards/card_juez_samuel.jpg",
+    pasaje: "1 Samuel 7:15; 10:1",
+    clanXP: 300,
+    quote: "«Samuel: El último juez de Israel, además de sacerdote y profeta. Líder que unificó espiritualmente a la nación y ungió a los primeros reyes (Saúl y David), marcando el fin oficial de la era de los jueces.»",
+    effectName: "[UNCIÓN DE REYES Y TRANSICIÓN SAGRADA]",
+    power: "Voz profética incorruptible. Guio a Israel en oración, marcó el fin de los jueces y ungió la monarquía.",
+    serialCode: "ODISEA-JUEZ008"
+  },
+  {
+    id: "card_juez_09",
+    name: "Jefté",
+    englishName: "JEPHTHAH",
+    category: "JUECES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[GUERRERO / VALOR / EFECTO]",
+    atk: 2400,
+    def: 1800,
+    frameStyle: "effect",
+    badgeColor: "bg-red-500 text-white font-black",
+    gradient: "from-red-900 via-amber-950 to-black",
+    border: "border-red-400",
+    glow: "shadow-[0_0_35px_rgba(239,68,68,0.8)]",
+    icon: "🗡️",
+    image: "/cards/card_juez_jefte.jpg",
+    pasaje: "Jueces 11:30-31",
+    clanXP: 260,
+    quote: "«Jefté: Guerrero proscrito llamado por su tribu para luchar contra los amonitas. Recordado por su voto solemne a Dios. Una advertencia sobre promesas impulsivas.»",
+    effectName: "[VOTO DE GALAAD]",
+    power: "Lidera con valentía implacable ante enemigos superiores. Exige templanza y fidelidad a la palabra empeñada.",
+    serialCode: "ODISEA-JUEZ009"
+  },
+  {
+    id: "card_juez_10",
+    name: "Ibzán, Elón y Abdón",
+    englishName: "IBZÁN, ELÓN Y ABDÓN",
+    category: "JUECES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO NORMAL",
+    monsterType: "[JUECES MENORES / PAZ / LEY]",
+    atk: 1900,
+    def: 2200,
+    frameStyle: "normal",
+    badgeColor: "bg-amber-400 text-black font-black",
+    gradient: "from-amber-800 via-yellow-950 to-black",
+    border: "border-amber-400",
+    glow: "shadow-[0_0_30px_rgba(245,158,11,0.7)]",
+    icon: "📜",
+    image: "/cards/card_juez_ibzan_elon_abdon.jpg",
+    pasaje: "Jueces 12:8-15",
+    clanXP: 140,
+    quote: "«Ibzán, Elón y Abdón: Tres jueces menores sucesivos de los que se registran pocos detalles bélicos, pero que mantuvieron el orden en Israel por un total de 25 años combinados.»",
+    effectName: "[PAZ Y GOBIERNO DEL PACTO]",
+    power: "Administración justa y diplomacia que aseguraron la estabilidad institucional de las doce tribus.",
+    serialCode: "ODISEA-JUEZ010"
+  },
+  {
+    id: "card_juez_11",
+    name: "Tola y Jair",
+    englishName: "TOLA Y JAIR",
+    category: "JUECES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO NORMAL",
+    monsterType: "[JUECES MENORES / ESTABILIDAD]",
+    atk: 1850,
+    def: 2000,
+    frameStyle: "normal",
+    badgeColor: "bg-orange-500 text-black font-black",
+    gradient: "from-orange-900 via-amber-950 to-black",
+    border: "border-orange-400",
+    glow: "shadow-[0_0_30px_rgba(249,115,22,0.7)]",
+    icon: "⛺",
+    image: "/cards/card_juez_tola_y_jair.jpg",
+    pasaje: "Jueces 10:1-4",
+    clanXP: 130,
+    quote: "«Tola y Jair: Jueces menores que lideraron en un período de relativa estabilidad (23 y 22 años de gobierno, respectivamente).»",
+    effectName: "[ESTABILIDAD DE LAS COLINAS]",
+    power: "Gobernaron a Israel durante 45 años acumulados, pacificando la tierra y consolidando las familias de Galaad.",
+    serialCode: "ODISEA-JUEZ011"
+  },
+  {
+    id: "card_juez_12",
+    name: "Ester, Reina y Libertadora",
+    englishName: "ESTHER",
+    category: "JUECES",
+    rarity: "ULTRA RARA",
+    stars: 7,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[REINA / LIBERTADORA / EFECTO]",
+    atk: 2700,
+    def: 2900,
+    frameStyle: "effect",
+    badgeColor: "bg-purple-400 text-black font-black",
+    gradient: "from-purple-900 via-indigo-950 to-black",
+    border: "border-purple-300",
+    glow: "shadow-[0_0_35px_rgba(192,132,252,0.8)]",
+    icon: "👑",
+    image: "/cards/card_juez_esther.jpg",
+    pasaje: "Ester 4:14-16",
+    clanXP: 280,
+    quote: "«Ester: La valiente reina judía de Persia. Arriesgó su vida al presentarse ante el rey para revelar el complot de Amán, salvando a su pueblo de la destrucción.»",
+    effectName: "[CETRO DE GRACIA Y SALVACIÓN]",
+    power: "«¿Y quién sabe si para esta hora has llegado al reino?» Intervención diplomática que anula decretos de opresión.",
+    serialCode: "ODISEA-JUEZ012"
   }
 ];
 
@@ -793,29 +1118,31 @@ export const packStoreCatalog = [
     glow: "shadow-[0_0_50px_rgba(34,211,238,0.8)]",
     badge: "bg-gradient-to-r from-cyan-400 to-blue-300 text-black font-black",
     cardsCount: 4,
-    description: "Contiene 4 Cartas con los DISEÑOS REALES YU-GI-OH! subidos por el profesor. Aarón, Nadab y Abiú, y Melquisedec son extremadamente difíciles de sacar.",
+    description: "Contiene 4 Cartas con los DISEÑOS SAGRADOS OFICIALES del profesor. Aarón, Nadab y Abiú, y Melquisedec son extremadamente difíciles de conseguir.",
     rates: "4 Cartas • 60% Común • 25% Rara • 10% Súper Rara • 3.5% Ultra Rara • 1.5% SECRETA RARA",
     weights: { "COMÚN": 0.60, "RARA": 0.25, "SÚPER RARA": 0.10, "ULTRA RARA": 0.035, "SECRETA RARA": 0.015, "MÍTICA DIVINA": 0.0 },
     isEmpty: false
   },
-
-  // ── CAJAS VACÍAS (EN FORJA - ESPERANDO CARTAS DEL PROFESOR) ──
   {
     id: "box_jueces",
     name: "Cofre de los Jueces de Israel",
     type: "caja",
-    tier: "PRÓXIMAMENTE",
-    price: 350,
-    icon: "📭",
-    gradient: "from-stone-900 via-neutral-950 to-black",
-    border: "border-stone-800",
-    glow: "shadow-none opacity-60",
-    badge: "bg-stone-800 text-stone-400 font-bold",
-    cardsCount: 0,
-    description: "Caja vacía por ahora. Esperando los nuevos diseños de cartas que el profesor está forjando.",
-    rates: "0 Cartas disponibles • Caja Vacía",
-    isEmpty: true
+    tier: "COFRE GUERRERO",
+    price: 320,
+    icon: "⚔️",
+    targetCategory: "JUECES",
+    gradient: "from-stone-900 via-amber-950 to-black",
+    border: "border-amber-500",
+    glow: "shadow-[0_0_50px_rgba(245,158,11,0.8)]",
+    badge: "bg-gradient-to-r from-amber-500 to-orange-400 text-black font-black",
+    cardsCount: 4,
+    description: "Contiene 4 Cartas con los GUERREROS Y JUECES DE ISRAEL (Otoniel, Aod, Samgar, Elí, Gedeón, Jefté, Ibzán/Elón/Abdón, Tola y Jair, Ester, Débora, Sansón y Samuel). ¡Desata la fuerza de la era de los jueces!",
+    rates: "4 Cartas • 55% Común • 25% Rara • 12% Súper Rara • 6% Ultra Rara • 2% SECRETA RARA",
+    weights: { "COMÚN": 0.55, "RARA": 0.25, "SÚPER RARA": 0.12, "ULTRA RARA": 0.06, "SECRETA RARA": 0.02, "MÍTICA DIVINA": 0.0 },
+    isEmpty: false
   },
+
+  // ── CAJAS VACÍAS (EN FORJA - ESPERANDO CARTAS DEL PROFESOR) ──
   {
     id: "box_reyes",
     name: "Cofre de los Reyes de Judá",
@@ -2252,7 +2579,7 @@ export default function OdiseaBiblica() {
     // Si la cuenta maestra de Eder no existe, la creamos y migramos los datos legacy
     if (!db['EderInovadorPro']) {
       db['EderInovadorPro'] = {
-        pass: 'Eder2026YugiJD',
+        pass: 'Eder2026Master',
         saves: [{ id: 'master_base', name: 'Base de Datos Histórica (No Borrar)' }]
       };
       
@@ -2468,7 +2795,7 @@ export default function OdiseaBiblica() {
 
     if (name === "EDER CARRASCO (MAESTRO)") {
       const enteredPass = (studentForm.masterPassword || password || '').trim();
-      const validMaster = ['zamitoecsa', 'eder2026', 'eder2026yugijd', '1234', 'eder'];
+      const validMaster = ['zamitoecsa', 'eder2026', 'eder2026master', 'eder2026yugijd', '1234', 'eder'];
       if (!validMaster.includes(enteredPass.toLowerCase())) {
         alert("❌ Contraseña de Maestro incorrecta. Por favor ingresa tu contraseña en el campo de maestro.");
         return;
@@ -2552,11 +2879,11 @@ export default function OdiseaBiblica() {
     try {
       const canvas = document.createElement('canvas');
       canvas.width = 800;
-      canvas.height = 1160; // Proporción áurea clásica Yu-Gi-Oh! (59x86 mm)
+      canvas.height = 1160; // Proporción áurea clásica de carta sagrada (59x86 mm)
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      // ── MARCO YU-GI-OH! SEGÚN ATRIBUTO Y TIPO ──
+      // ── MARCO SAGRADO SEGÚN ATRIBUTO Y TIPO ──
       let frameColor = '#8c4a1e'; // Naranja/Cobre Efecto
       let innerFrameColor = '#c27638';
 
@@ -2648,7 +2975,7 @@ export default function OdiseaBiblica() {
       ctx.textAlign = 'center';
       ctx.fillText(card.icon || '⚔️', 400, 470);
 
-      // Caja de Texto y Efecto (Pergamino Yu-Gi-Oh!)
+      // Caja de Texto y Efecto (Pergamino Sagrado)
       ctx.fillStyle = 'rgba(254, 243, 199, 0.95)';
       ctx.fillRect(48, 680, 704, 390);
       ctx.strokeStyle = '#000000';
@@ -2733,7 +3060,7 @@ export default function OdiseaBiblica() {
       ctx.font = 'bold 15px sans-serif';
       ctx.fillText(`CERTIFICADO: ${rName} • ${rClan} (${rAula}) • PROF. EDER CARRASCO © 2026`, 48, 1130);
 
-      // Holograma Dorado Yu-Gi-Oh!
+      // Sello Sagrado de Autenticidad
       const holoX = 720;
       const holoY = 1088;
       ctx.fillStyle = '#f59e0b';
@@ -2748,11 +3075,11 @@ export default function OdiseaBiblica() {
       ctx.fillText('SEAL', holoX + 18, holoY + 22);
 
       const a = document.createElement('a');
-      a.download = `YUGIOH_${(card.name || 'CARTA').replace(/\s+/g, '_')}_${rName.replace(/\s+/g, '_')}.png`;
+      a.download = `CARTA_SAGRADA_${(card.name || 'CARTA').replace(/\s+/g, '_')}_${rName.replace(/\s+/g, '_')}.png`;
       a.href = canvas.toDataURL('image/png');
       a.click();
     } catch (err) {
-      console.error('Error al generar tarjeta Yu-Gi-Oh!:', err);
+      console.error('Error al generar carta sagrada:', err);
       alert('Descarga no compatible directamente en este navegador. Usa el botón "Pantalla Completa" para tomar captura.');
     }
   }, [studentAuth]);
@@ -2891,7 +3218,7 @@ export default function OdiseaBiblica() {
 
     // Compatibilidad automática para el maestro Eder Carrasco
     const isEderUser = ['edercarrasco', 'eder carrasco', 'eder', 'ederinovadorpro', 'maestro', 'profesor', 'prof. eder'].includes(userClean.toLowerCase());
-    const isEderPass = ['zamitoecsa', 'eder2026yugijd', 'eder2026', '1234', 'admin'].includes(passClean.toLowerCase());
+    const isEderPass = ['zamitoecsa', 'eder2026master', 'eder2026', 'eder2026yugijd', '1234', 'admin'].includes(passClean.toLowerCase());
 
     if (isEderUser && isEderPass) {
       const activeUser = usersDB['EderInovadorPro'] ? 'EderInovadorPro' : userClean;
@@ -3698,7 +4025,7 @@ export default function OdiseaBiblica() {
                       alert("Por favor ingresa la clave de tu docente.");
                       return;
                     }
-                    if (pass === 'ZAMITOECSA' || pass === 'EDER2026YUGIJD') {
+                    if (pass === 'ZAMITOECSA' || pass === 'EDER2026' || pass === 'EDER2026MASTER' || pass === 'EDER2026YUGIJD') {
                       setStudentAuth({
                         name: "EDER CARRASCO (MAESTRO)",
                         aula: '1A',
@@ -4039,7 +4366,7 @@ export default function OdiseaBiblica() {
                     🛍️ MERCADO SAGRADO & COFRES DE AVENTURA
                   </h3>
                   <p className="text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
-                    Canjea tus Monedas del Templo 🪙 para abrir la <strong>Caja de los Patriarcas</strong> y el <strong>Cofre de los Sacerdotes</strong> estilo Yu-Gi-Oh!. ¡Las cartas más raras son muy difíciles de conseguir y desatan una <strong>aparición cinematográfica</strong>!
+                    Canjea tus Monedas del Templo 🪙 para abrir la <strong>Caja de los Patriarcas</strong> y el <strong>Cofre de los Sacerdotes</strong> de la Odisea Bíblica. ¡Las cartas más raras son muy difíciles de conseguir y desatan una <strong>aparición cinematográfica</strong>!
                   </p>
                 </div>
                 <div className="bg-[#121528] border-2 border-yellow-500/60 p-4 rounded-2xl text-center shadow-lg">
@@ -4061,7 +4388,7 @@ export default function OdiseaBiblica() {
                     <h4 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300 uppercase tracking-wider">
                       CAJAS SAGRADAS ACTIVAS (4 CARTAS POR COFRE)
                     </h4>
-                    <p className="text-slate-400 text-xs">Cofres del Pacto con cartas auténticas coleccionables Yu-Gi-Oh! y probabilidad de revelación legendaria.</p>
+                    <p className="text-slate-400 text-xs">Cofres del Pacto con cartas auténticas coleccionables del Antiguo Testamento y probabilidad de revelación legendaria.</p>
                   </div>
                 </div>
 
@@ -4207,14 +4534,14 @@ export default function OdiseaBiblica() {
           )}
 
           {/* ════════════════════════════════════════════════════════════ */}
-          {/* ── SECCIÓN 4: ÁLBUM SAGRADO DE CARTAS (ÁLBUM YU-GI-OH!) ──── */}
+          {/* ── SECCIÓN 4: ÁLBUM SAGRADO DE CARTAS (ÁLBUM DEL PACTO) ──── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {studentTab === 'album' && (
             <div className="relative z-10 w-full max-w-6xl mx-auto pb-20 animate-in fade-in duration-300">
               <div className="text-center md:text-left mb-8 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-indigo-900/40 pb-6">
                 <div>
                   <h3 className="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 uppercase tracking-tight flex items-center gap-3">
-                    🃏 ÁLBUM DE CARTAS YU-GI-OH! BÍBLICAS
+                    🃏 ÁLBUM DE CARTAS DEL ANTIGUO TESTAMENTO
                   </h3>
                   <p className="text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
                     Colecciona los <strong>Sacerdotes</strong> y <strong>Patriarcas</strong>. Toca cualquier carta desbloqueada para abrir el <strong>Visor Holográfico</strong>, inspeccionar sus estadísticas o <strong>descargar su versión oficial</strong> para tu evidencia escolar.
@@ -4240,7 +4567,7 @@ export default function OdiseaBiblica() {
                   { id: 'all', label: 'TODAS LAS ACTIVAS' },
                   { id: 'SACERDOTES', label: 'SACERDOTES (DISEÑOS OFICIALES)' },
                   { id: 'PATRIARCAS', label: 'PATRIARCAS (GÉNESIS)' },
-                  { id: 'JUECES', label: 'JUECES (VACÍA)' },
+                  { id: 'JUECES', label: 'JUECES DE ISRAEL (MISIÓN 2)' },
                   { id: 'REYES', label: 'REYES (VACÍA)' },
                   { id: 'PROFETAS', label: 'PROFETAS (VACÍA)' },
                   { id: 'HEROÍNAS', label: 'HEROÍNAS (VACÍA)' }
@@ -4283,15 +4610,13 @@ export default function OdiseaBiblica() {
                         <div
                           key={card.id}
                           onClick={() => {
-                            if (isUnlocked) {
-                              setInspectingCard(card);
-                              playRetroSound('coin');
-                            }
+                            setInspectingCard(card);
+                            playRetroSound('coin');
                           }}
-                          className={`group aspect-[5/7.2] rounded-2xl p-2.5 sm:p-3 flex flex-col justify-between border-2 transition-all relative overflow-hidden select-none ${
+                          className={`group aspect-[5/7.2] rounded-2xl p-2.5 sm:p-3 flex flex-col justify-between border-2 transition-all relative overflow-hidden select-none cursor-pointer ${
                             isUnlocked
-                              ? `bg-gradient-to-b ${card.gradient} ${card.border} hover:scale-105 cursor-pointer shadow-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] ring-1 ring-white/20`
-                              : 'bg-black/60 border-slate-800/80 cursor-not-allowed opacity-50'
+                              ? `bg-gradient-to-b ${card.gradient} ${card.border} hover:scale-105 shadow-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] ring-1 ring-white/20`
+                              : 'bg-black/80 border-amber-500/40 hover:border-amber-400 hover:scale-[1.02] shadow-[0_0_15px_rgba(245,158,11,0.15)] ring-1 ring-amber-500/20'
                           }`}>
 
                           {isUnlocked ? (
@@ -4340,10 +4665,42 @@ export default function OdiseaBiblica() {
                               </>
                             )
                           ) : (
-                            <div className="w-full h-full flex flex-col items-center justify-center text-center p-2">
-                              <span className="text-3xl sm:text-4xl text-slate-600 mb-2">🔒</span>
-                              <p className="text-[9px] font-black uppercase text-slate-500 tracking-wider">BLOQUEADA</p>
-                              <span className="text-[8px] font-mono text-slate-600 mt-1">{card.serialCode}</span>
+                            /* CARTA DIFUMINADA (VISTA PREVIA MISTERIOSA PARA VISUALIZARLA Y COLECCIONARLA) */
+                            <div className="w-full h-full relative rounded-xl overflow-hidden flex flex-col justify-between">
+                              {card.image ? (
+                                <img 
+                                  src={card.image} 
+                                  alt={card.name} 
+                                  className="absolute inset-0 w-full h-full object-cover filter blur-[3.5px] brightness-[0.65] contrast-[1.1] scale-105 group-hover:blur-[2.5px] group-hover:brightness-[0.75] transition-all duration-300" 
+                                />
+                              ) : (
+                                <div className={`absolute inset-0 bg-gradient-to-b ${card.gradient} filter blur-[4px] opacity-60`}></div>
+                              )}
+                              
+                              <div className="relative z-10 flex justify-between items-center bg-black/80 px-1.5 py-0.5 rounded text-[8px] font-black text-amber-300 border border-amber-500/30">
+                                <span>{card.attributeIcon || '🌟'}</span>
+                                <span className="bg-amber-500/30 text-amber-300 px-1.5 py-0.2 rounded text-[7px] tracking-wider uppercase font-mono">
+                                  🔒 DIFUMINADA
+                                </span>
+                              </div>
+
+                              <div className="relative z-10 my-auto text-center px-1">
+                                <div className="w-7 h-7 rounded-full bg-black/85 border border-amber-400 mx-auto flex items-center justify-center shadow-lg mb-1 group-hover:scale-110 transition-transform">
+                                  <Lock className="w-3.5 h-3.5 text-amber-400" />
+                                </div>
+                                <p className="text-[9px] sm:text-[10px] font-black text-white uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,1)] line-clamp-1 px-1">
+                                  {card.name}
+                                </p>
+                                <p className="text-[7px] text-amber-300 font-mono font-bold mt-0.5">
+                                  {card.rarity}
+                                </p>
+                              </div>
+
+                              <div className="relative z-10 bg-black/85 px-1.5 py-1 rounded text-center border-t border-amber-500/30">
+                                <span className="text-[7px] text-amber-200/90 font-bold block uppercase tracking-wider">
+                                  👁️ TOCA PARA VISUALIZAR
+                                </span>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -4354,8 +4711,7 @@ export default function OdiseaBiblica() {
               })()}
             </div>
           )}
-
-          {/* ════════════════════════════════════════════════════════════ */}
+{/* ════════════════════════════════════════════════════════════ */}
           {/* ── MODAL 1: APERTURA DE SOBRES Y CAJAS DE AVENTURA 3D ───── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {openingPack && (
@@ -4608,7 +4964,7 @@ export default function OdiseaBiblica() {
           )}
 
           {/* ════════════════════════════════════════════════════════════ */}
-          {/* ── MODAL 2: VISOR HOLOGRÁFICO YU-GI-OH! & CAPTURA ───────── */}
+          {/* ── MODAL 2: VISOR HOLOGRÁFICO DEL PACTO & CAPTURA ───────── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {inspectingCard && (
             <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-3 sm:p-6 animate-in zoom-in duration-300 overflow-y-auto">
@@ -4619,7 +4975,7 @@ export default function OdiseaBiblica() {
                   {/* Encabezado con Botón Cerrar */}
                   <div className="w-full flex justify-between items-center border-b border-white/10 pb-3 mb-4">
                     <span className="text-amber-400 text-xs font-black uppercase tracking-widest flex items-center gap-2">
-                      <Sparkles className="w-4 h-4"/> CARTA OFICIAL YU-GI-OH! • COLECCIÓN SAGRADA
+                      <Sparkles className="w-4 h-4"/> CARTA SAGRADA OFICIAL • LA ODISEA BÍBLICA
                     </span>
                     <button 
                       onClick={() => setInspectingCard(null)} 
@@ -4628,7 +4984,7 @@ export default function OdiseaBiblica() {
                     </button>
                   </div>
 
-                  {/* ── CARTA YU-GI-OH! FÍSICA AUTÉNTICA EN PANTALLA ── */}
+                  {/* ── CARTA FÍSICA AUTÉNTICA DEL PACTO EN PANTALLA ── */}
                   {inspectingCard.image ? (
                     <div className="w-72 sm:w-84 aspect-[5/7] rounded-2xl overflow-hidden border-4 border-yellow-400 shadow-[0_0_50px_rgba(245,158,11,0.7)] relative mb-6 select-none ring-2 ring-white/30">
                       <img src={inspectingCard.image} alt={inspectingCard.name} className="w-full h-full object-cover" />
@@ -4636,7 +4992,7 @@ export default function OdiseaBiblica() {
                   ) : (
                     <div className="w-72 sm:w-84 aspect-[5/7.2] rounded-2xl p-3 sm:p-4 flex flex-col justify-between border-8 border-[#26170d] bg-gradient-to-b from-[#8c4a1e] via-[#6d3916] to-[#42220b] shadow-[0_0_50px_rgba(245,158,11,0.6)] relative mb-6 select-none ring-2 ring-yellow-400/60">
                       
-                      {/* Barra de Título Yu-Gi-Oh! */}
+                      {/* Barra de Título Sagrada */}
                       <div className="bg-black/60 border-2 border-yellow-300/80 px-2 py-1.5 rounded-lg flex justify-between items-center shadow-inner">
                         <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-tight truncate max-w-[210px] font-serif">
                           {inspectingCard.name}
@@ -4665,7 +5021,7 @@ export default function OdiseaBiblica() {
                         </span>
                       </div>
 
-                      {/* Caja de Efecto Yu-Gi-Oh! (Pergamino Dorado) */}
+                      {/* Caja de Efecto del Pacto (Pergamino Dorado) */}
                       <div className="bg-[#fef3c7] border-2 border-black p-2 rounded-lg text-black text-left flex flex-col justify-between shadow-inner">
                         <div className="text-[10px] font-black uppercase text-slate-900 font-sans border-b border-black/30 pb-0.5">
                           {inspectingCard.monsterType || '[GUERRERO / PROFETA / EFECTO]'}
@@ -4702,7 +5058,7 @@ export default function OdiseaBiblica() {
                       onClick={() => {
                         if (inspectingCard.image) {
                           const a = document.createElement('a');
-                          a.download = `YUGIOH_${(inspectingCard.name || 'CARTA').replace(/\s+/g, '_')}.jpg`;
+                          a.download = `CARTA_SAGRADA_${(inspectingCard.name || 'CARTA').replace(/\s+/g, '_')}.jpg`;
                           a.href = inspectingCard.image;
                           a.click();
                         } else {
