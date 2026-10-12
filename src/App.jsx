@@ -164,402 +164,1280 @@ const playRetroSound = (type) => {
 };
 
 // ─── COLECCIÓN OFICIAL DE CARTAS DEL ANTIGUO TESTAMENTO (TCG BÍBLICO) ────────
+// ─── 50 CARTAS BÍBLICAS DE COLECCIÓN ESTILO YU-GI-OH! ───────────────────────
 export const biblicalCardsDB = [
-  // ── LÍDERES Y HÉROES ──
+  // ── PATRIARCAS Y EL PACTO ORIGINAL (GÉNESIS) ──
   {
     id: "card_01",
-    name: "Moisés y las Tablas de la Ley",
-    category: "LÍDERES",
-    rarity: "LEGENDARIA",
-    badgeColor: "bg-yellow-500 text-black",
-    gradient: "from-amber-500 via-yellow-600 to-amber-900",
-    border: "border-yellow-400",
-    glow: "shadow-[0_0_35px_rgba(234,179,8,0.7)]",
-    icon: "📜",
-    pasaje: "Éxodo 20:1-17",
-    clanXP: 120,
-    quote: "«Habló Dios todas estas palabras... no tendrás dioses ajenos delante de mí.»",
-    power: "Autoridad Suprema de la Ley: Rompe cualquier trampa moral o injusticia en el aula.",
-    desc: "El libertador de Israel que habló con Dios cara a cara en el Sinaí, trayendo el pacto eterno para forjar una nación santa."
+    name: "Abraham, Padre de las Naciones",
+    category: "PATRIARCAS",
+    rarity: "MÍTICA DIVINA",
+    stars: 12,
+    attribute: "DIVINO",
+    attributeIcon: "🌟",
+    cardType: "DIVINIDAD ANCESTRAL",
+    monsterType: "[PATRIARCA / PACTO / EFECTO]",
+    atk: 4000,
+    def: 4000,
+    frameStyle: "divine",
+    badgeColor: "bg-amber-400 text-black font-black",
+    gradient: "from-amber-600 via-yellow-500 to-amber-900",
+    border: "border-yellow-300",
+    glow: "shadow-[0_0_40px_rgba(250,204,21,0.8)]",
+    icon: "🌌",
+    pasaje: "Génesis 15:5",
+    clanXP: 350,
+    quote: "«Mira ahora los cielos y cuenta las estrellas... Así será tu descendencia. Y creyó a Yahveh.»",
+    effectName: "[PACTO ETERNO INQUEBRANTABLE]",
+    power: "La fe que desafía imposibles. Otorga bendición suprema y multiplica el puntaje del equipo.",
+    serialCode: "ODISEA-ES001"
   },
   {
     id: "card_02",
-    name: "Josué y la Caída de Jericó",
-    category: "LÍDERES",
-    rarity: "ÉPICA",
-    badgeColor: "bg-purple-500 text-white",
-    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
-    border: "border-purple-400",
-    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
-    icon: "⚔️",
-    pasaje: "Josué 6:20",
-    clanXP: 75,
-    quote: "«El pueblo gritó y las trompetas sonaron, y los muros cayeron a plomo.»",
-    power: "Grito de la Conquista: Derrumba gigantes del miedo y la cobardía grupal.",
-    desc: "Sucesor de Moisés, líder de fe inquebrantable que no dio ni un solo paso atrás ante los gigantes de Canaán."
+    name: "Isaac en el Monte Moriah",
+    category: "PATRIARCAS",
+    rarity: "ULTRA RARA",
+    stars: 8,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[HEREDERO / OBEDIENCIA / EFECTO]",
+    atk: 2800,
+    def: 3000,
+    frameStyle: "effect",
+    badgeColor: "bg-yellow-500 text-black font-black",
+    gradient: "from-amber-500 via-yellow-600 to-amber-950",
+    border: "border-yellow-400",
+    glow: "shadow-[0_0_30px_rgba(234,179,8,0.7)]",
+    icon: "🐑",
+    pasaje: "Génesis 22:8",
+    clanXP: 180,
+    quote: "«Dios proveerá de cordero para el holocausto, hijo mío. Y fueron ambos juntos.»",
+    effectName: "[PROVISIÓN DE MORIAH]",
+    power: "Obediencia incondicional. Transforma situaciones de pérdida en rescate providencial.",
+    serialCode: "ODISEA-ES002"
   },
   {
     id: "card_03",
-    name: "Gedeón y los 300 del Cántaro",
-    category: "LÍDERES",
-    rarity: "ÉPICA",
-    badgeColor: "bg-purple-500 text-white",
-    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
-    border: "border-purple-400",
-    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
-    icon: "🏺",
-    pasaje: "Jueces 7:20",
-    clanXP: 75,
-    quote: "«¡Por la espada de Yahveh y de Gedeón!»",
-    power: "Teas de Harod: Desarma ejércitos de confusión con solo 300 vigilantes disciplinados.",
-    desc: "Redujo su tropa de 32,000 a 300 hombres despiertos, demostrando que la fidelidad de pocos vence a multitudes descuidadas."
+    name: "Jacob y la Lucha de Peniel",
+    category: "PATRIARCAS",
+    rarity: "SECRETA RARA",
+    stars: 10,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[TRANSFORMADOR / LUCHADOR / EFECTO]",
+    atk: 3300,
+    def: 2900,
+    frameStyle: "effect",
+    badgeColor: "bg-emerald-400 text-black font-black",
+    gradient: "from-emerald-600 via-teal-700 to-emerald-950",
+    border: "border-emerald-300",
+    glow: "shadow-[0_0_35px_rgba(52,211,153,0.7)]",
+    icon: "🤼",
+    pasaje: "Génesis 32:26",
+    clanXP: 260,
+    quote: "«No te dejaré, si no me bendices... No se dirá más tu nombre Jacob, sino Israel.»",
+    effectName: "[VENCEDOR DEL VADO]",
+    power: "Perseverancia ante la adversidad. Cambia identidades derrotadas por linaje de príncipes.",
+    serialCode: "ODISEA-ES003"
   },
   {
     id: "card_04",
-    name: "Sansón y la Fuerza del Espíritu",
-    category: "LÍDERES",
-    rarity: "RARA",
-    badgeColor: "bg-blue-500 text-white",
-    gradient: "from-blue-600 via-cyan-700 to-blue-950",
-    border: "border-blue-400",
-    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
-    icon: "🦁",
-    pasaje: "Jueces 15:14",
-    clanXP: 45,
-    quote: "«Las cuerdas se cayeron de sus brazos como lino quemado al fuego.»",
-    power: "Poder del Nazareo: Fortaleza física sobrenatural que exige dominio propio y lealtad.",
-    desc: "Juez dotado de fuerza prodigiosa. Su historia nos enseña que el mayor combate es vencer al propio ego antes de que destruya tu llamado."
+    name: "José el Soñador y Señor de Egipto",
+    category: "PATRIARCAS",
+    rarity: "SECRETA RARA",
+    stars: 9,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[ESTRATEGA / PERDÓN / EFECTO]",
+    atk: 3100,
+    def: 3400,
+    frameStyle: "effect",
+    badgeColor: "bg-cyan-400 text-black font-black",
+    gradient: "from-cyan-600 via-blue-700 to-cyan-950",
+    border: "border-cyan-300",
+    glow: "shadow-[0_0_35px_rgba(34,211,238,0.7)]",
+    icon: "🌾",
+    pasaje: "Génesis 50:20",
+    clanXP: 250,
+    quote: "«Vosotros pensasteis mal contra mí, mas Dios lo encaminó a bien, para salvar a mucho pueblo.»",
+    effectName: "[RECONCILIACIÓN DEL NILO]",
+    power: "Supera la envidia y el resentimiento, convirtiendo traiciones en salvación colectiva.",
+    serialCode: "ODISEA-ES004"
   },
   {
     id: "card_05",
-    name: "David el Vencedor de Gigantes",
-    category: "LÍDERES",
-    rarity: "LEGENDARIA",
-    badgeColor: "bg-yellow-500 text-black",
-    gradient: "from-amber-500 via-yellow-600 to-amber-900",
-    border: "border-yellow-400",
-    glow: "shadow-[0_0_35px_rgba(234,179,8,0.7)]",
-    icon: "👑",
-    pasaje: "1 Samuel 17:45",
-    clanXP: 120,
-    quote: "«Tú vienes a mí con espada y lanza; mas yo vengo a ti en el nombre de Yahveh.»",
-    power: "Golpe Certero en la Frente: Derriba al opresor más intimidante sin usar armaduras prestadas.",
-    desc: "Pastor humilde que se convirtió en rey según el corazón de Dios, venciendo a Goliat con una honda y fe inquebrantable."
+    name: "Melquisedec, Rey de Salem y Sacerdote",
+    category: "PATRIARCAS",
+    rarity: "MÍTICA DIVINA",
+    stars: 12,
+    attribute: "DIVINO",
+    attributeIcon: "🌟",
+    cardType: "DIVINIDAD ANCESTRAL",
+    monsterType: "[SUMO SACERDOTE / ETERNO / EFECTO]",
+    atk: 4200,
+    def: 4200,
+    frameStyle: "divine",
+    badgeColor: "bg-amber-300 text-black font-black",
+    gradient: "from-amber-400 via-yellow-600 to-amber-950",
+    border: "border-yellow-200",
+    glow: "shadow-[0_0_50px_rgba(253,224,71,0.9)]",
+    icon: "🍞",
+    pasaje: "Génesis 14:18",
+    clanXP: 380,
+    quote: "«Melquisedec rey de Salem sacó pan y vino; y era sacerdote del Dios Altísimo.»",
+    effectName: "[ORDEN DE LA PAZ ETERNA]",
+    power: "Bendición del Altísimo. Neutraliza todo conflicto y restablece el orden sacerdotal cósmico.",
+    serialCode: "ODISEA-ES005"
   },
   {
     id: "card_06",
-    name: "Salomón y el Juicio de la Espada",
-    category: "LÍDERES",
-    rarity: "ÉPICA",
-    badgeColor: "bg-purple-500 text-white",
-    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
-    border: "border-purple-400",
-    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
-    icon: "⚖️",
-    pasaje: "1 Reyes 3:28",
-    clanXP: 75,
-    quote: "«Todo Israel oyó el juicio del rey y temieron, viendo que había en él sabiduría de Dios.»",
-    power: "Discernimiento Divino: Revela la verdad oculta y desenmascara la falsedad a través del amor.",
-    desc: "El monarca más sabio de la antigüedad, constructor del Gran Templo de Jerusalén y autor de Proverbios."
+    name: "Enoc, El que Caminó con Dios",
+    category: "PATRIARCAS",
+    rarity: "ULTRA RARA",
+    stars: 8,
+    attribute: "VIENTO",
+    attributeIcon: "🌪️",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[MÍSTICO / INMORTAL / EFECTO]",
+    atk: 2500,
+    def: 3500,
+    frameStyle: "effect",
+    badgeColor: "bg-sky-400 text-black font-black",
+    gradient: "from-sky-600 via-indigo-700 to-sky-950",
+    border: "border-sky-300",
+    glow: "shadow-[0_0_30px_rgba(56,189,248,0.7)]",
+    icon: "☁️",
+    pasaje: "Génesis 5:24",
+    clanXP: 190,
+    quote: "«Caminó, pues, Enoc con Dios, y desapareció, porque le llevó Dios.»",
+    effectName: "[ARREBATO DE INTIMIDAD]",
+    power: "Comunión espiritual total. Evita derrotas críticas protegiendo el alma del clan.",
+    serialCode: "ODISEA-ES006"
   },
   {
     id: "card_07",
-    name: "Elías el Profeta del Fuego",
-    category: "PROFETAS",
-    rarity: "LEGENDARIA",
-    badgeColor: "bg-yellow-500 text-black",
-    gradient: "from-amber-500 via-yellow-600 to-amber-900",
-    border: "border-yellow-400",
-    glow: "shadow-[0_0_35px_rgba(234,179,8,0.7)]",
-    icon: "🔥",
-    pasaje: "1 Reyes 18:38",
+    name: "Judá y la Promesa del Cetro",
+    category: "PATRIARCAS",
+    rarity: "SÚPER RARA",
+    stars: 7,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[LEÓN / PROTECTOR / EFECTO]",
+    atk: 2700,
+    def: 2300,
+    frameStyle: "effect",
+    badgeColor: "bg-red-500 text-white font-black",
+    gradient: "from-red-600 via-amber-700 to-red-950",
+    border: "border-red-400",
+    glow: "shadow-[0_0_25px_rgba(239,68,68,0.6)]",
+    icon: "🦁",
+    pasaje: "Génesis 49:10",
     clanXP: 120,
-    quote: "«Cayó fuego de Yahveh y consumió el holocausto, la leña y las aguas.»",
-    power: "Fuego del Carmelo: Desciende sobre la verdad y avergüenza a 450 falsos profetas en público.",
-    desc: "Voz indomable del desierto que no dobló sus rodillas ante la idolatría de Acab y Jezabel."
+    quote: "«No será quitado el cetro de Judá, ni el legislador de entre sus pies, hasta que venga Siloh.»",
+    effectName: "[RUGIDO DE LA TRIBU REAL]",
+    power: "Se ofrece a sí mismo como garantía por el hermano débil (intercesión de liderazgo).",
+    serialCode: "ODISEA-ES007"
   },
+
+  // ── EL ÉXODO Y EL TABERNÁCULO (MISIÓN 1) ──
   {
     id: "card_08",
-    name: "Eliseo y la Doble Porción",
-    category: "PROFETAS",
-    rarity: "ÉPICA",
-    badgeColor: "bg-purple-500 text-white",
-    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
-    border: "border-purple-400",
-    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
-    icon: "✨",
-    pasaje: "2 Reyes 2:9",
-    clanXP: 75,
-    quote: "«Te ruego que una doble porción de tu espíritu sea sobre mí.»",
-    power: "Manto Multiplicador: Comparte talentos y multiplica provisiones para los más necesitados.",
-    desc: "Discípulo leal de Elías que realizó milagros de compasión y salvó a viudas y ejércitos con generosidad divina."
+    name: "Moisés y las Tablas del Sinaí",
+    category: "LÍDERES",
+    rarity: "MÍTICA DIVINA",
+    stars: 12,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[LEGISLADOR / LIBERTADOR / EFECTO]",
+    atk: 3900,
+    def: 3800,
+    frameStyle: "divine",
+    badgeColor: "bg-yellow-400 text-black font-black",
+    gradient: "from-amber-500 via-yellow-600 to-amber-950",
+    border: "border-yellow-300",
+    glow: "shadow-[0_0_45px_rgba(250,204,21,0.8)]",
+    icon: "📜",
+    pasaje: "Éxodo 20:1-3",
+    clanXP: 360,
+    quote: "«Habló Dios todas estas palabras... No tendrás dioses ajenos delante de mí.»",
+    effectName: "[DIEZ PALABRAS DE FUEGO]",
+    power: "Autoridad moral inquebrantable. Disuelve cualquier injusticia o rebelión en el aula.",
+    serialCode: "ODISEA-ES008"
   },
   {
     id: "card_09",
-    name: "Daniel en el Foso de los Leones",
-    category: "PROFETAS",
-    rarity: "LEGENDARIA",
-    badgeColor: "bg-yellow-500 text-black",
-    gradient: "from-amber-500 via-yellow-600 to-amber-900",
-    border: "border-yellow-400",
-    glow: "shadow-[0_0_35px_rgba(234,179,8,0.7)]",
-    icon: "🦁",
-    pasaje: "Daniel 6:22",
-    clanXP: 120,
-    quote: "«Mi Dios envió su ángel, el cual cerró la boca de los leones, para que no me hiciesen daño.»",
-    power: "Ventanas Abiertas a Sion: Integridad inquebrantable que no se apaga ante amenazas ni burlas.",
-    desc: "Estadista en Babilonia que prefirió la muerte antes que violar sus oraciones diarias y principios sagrados."
+    name: "Aarón con el Pectoral del Juicio",
+    category: "LÍDERES",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[SUMO SACERDOTE / MEDIADOR / EFECTO]",
+    atk: 2900,
+    def: 3600,
+    frameStyle: "effect",
+    badgeColor: "bg-purple-400 text-black font-black",
+    gradient: "from-purple-600 via-indigo-700 to-purple-950",
+    border: "border-purple-300",
+    glow: "shadow-[0_0_35px_rgba(192,132,252,0.7)]",
+    icon: "💎",
+    pasaje: "Éxodo 28:29",
+    clanXP: 210,
+    quote: "«Llevará Aarón los nombres de los hijos de Israel en el pectoral del juicio sobre su corazón.»",
+    effectName: "[INTERCESIÓN DE LAS 12 GEMAS]",
+    power: "Lleva sobre su pecho a todo el salón. Impide que un compañero sea marginado.",
+    serialCode: "ODISEA-ES009"
   },
   {
     id: "card_10",
-    name: "Nehemías el Constructor del Muro",
-    category: "LÍDERES",
-    rarity: "RARA",
-    badgeColor: "bg-blue-500 text-white",
-    gradient: "from-blue-600 via-cyan-700 to-blue-950",
-    border: "border-blue-400",
-    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
-    icon: "🧱",
-    pasaje: "Nehemías 4:17",
-    clanXP: 45,
-    quote: "«Con una mano trabajaban en la obra, y en la otra tenían la espada.»",
-    power: "Vigilancia en la Brecha: Reconstruye muros caídos trabajando en equipo con disciplina estricta.",
-    desc: "Estratega y copero real que lideró la restauración de los muros de Jerusalén en solo 52 días contra enemigos burlones."
+    name: "Miriam y el Cántico del Mar Rojo",
+    category: "HEROÍNAS",
+    rarity: "SÚPER RARA",
+    stars: 7,
+    attribute: "AGUA",
+    attributeIcon: "💧",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[PROFETISA / ALABANZA / EFECTO]",
+    atk: 2400,
+    def: 2600,
+    frameStyle: "effect",
+    badgeColor: "bg-teal-400 text-black font-black",
+    gradient: "from-teal-600 via-cyan-700 to-teal-950",
+    border: "border-teal-300",
+    glow: "shadow-[0_0_25px_rgba(45,212,191,0.6)]",
+    icon: "🪘",
+    pasaje: "Éxodo 15:20-21",
+    clanXP: 130,
+    quote: "«Cantad a Yahveh, porque en extremo se ha engrandecido; caballo y jinete echó en el mar.»",
+    effectName: "[PANDERO DE LA LIBERTAD]",
+    power: "Infunde ánimo y entusiasmo cuando el equipo siente fatiga o desaliento.",
+    serialCode: "ODISEA-ES010"
   },
-  // ── HEROÍNAS SAGRADAS ──
   {
     id: "card_11",
-    name: "Débora la Jueza de la Palmera",
-    category: "HEROÍNAS",
-    rarity: "ÉPICA",
-    badgeColor: "bg-purple-500 text-white",
-    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
-    border: "border-purple-400",
-    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
-    icon: "🌴",
-    pasaje: "Jueces 5:7",
-    clanXP: 75,
-    quote: "«Las aldeas quedaron abandonadas en Israel, hasta que yo, Débora, me levanté como madre.»",
-    power: "Voz de la Tormenta: Inspira a capitanes con valentía divina e inmoviliza 900 carros de hierro.",
-    desc: "Profetisa y jueza que impartió justicia con rectitud y convocó al pueblo a liberarse de la opresión cananea."
+    name: "Bezaleel, Maestro Artífice del Santuario",
+    category: "LÍDERES",
+    rarity: "SÚPER RARA",
+    stars: 7,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[ARTESANO / SABIDURÍA / EFECTO]",
+    atk: 2200,
+    def: 2800,
+    frameStyle: "effect",
+    badgeColor: "bg-amber-500 text-black font-black",
+    gradient: "from-amber-600 via-orange-700 to-amber-950",
+    border: "border-amber-400",
+    glow: "shadow-[0_0_25px_rgba(245,158,11,0.6)]",
+    icon: "🔨",
+    pasaje: "Éxodo 31:3",
+    clanXP: 125,
+    quote: "«Lo he llenado del Espíritu de Dios, en sabiduría, inteligencia y en todo arte.»",
+    effectName: "[FORJA DEL TABERNÁCULO]",
+    power: "Excelencia y creatividad en trabajos prácticos, cuadernos y representaciones.",
+    serialCode: "ODISEA-ES011"
   },
   {
     id: "card_12",
-    name: "Reina Ester 'Si Perezco, Que Perezca'",
-    category: "HEROÍNAS",
-    rarity: "LEGENDARIA",
-    badgeColor: "bg-yellow-500 text-black",
-    gradient: "from-amber-500 via-yellow-600 to-amber-900",
-    border: "border-yellow-400",
-    glow: "shadow-[0_0_35px_rgba(234,179,8,0.7)]",
-    icon: "👑",
-    pasaje: "Ester 4:16",
-    clanXP: 120,
-    quote: "«Y si perezco, que perezca... entraré a ver al rey, aunque no sea conforme a la ley.»",
-    power: "Cetro de Oro y Ayuno: Desarma planes de exterminio y salva a toda su nación de la muerte.",
-    desc: "Joven huérfana judía que arriesgó su propia vida presentándose ante el emperador Asuero para defender a los perseguidos."
+    name: "Hur y Aarón Sosteniendo los Brazos",
+    category: "LÍDERES",
+    rarity: "RARA",
+    stars: 6,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[COMPAÑEROS / SOPORTE / EFECTO]",
+    atk: 1800,
+    def: 3200,
+    frameStyle: "effect",
+    badgeColor: "bg-blue-400 text-black font-black",
+    gradient: "from-blue-600 via-indigo-700 to-blue-950",
+    border: "border-blue-300",
+    glow: "shadow-[0_0_20px_rgba(96,165,250,0.5)]",
+    icon: "🤝",
+    pasaje: "Éxodo 17:12",
+    clanXP: 90,
+    quote: "«Y Aarón y Hur sostenían sus manos, el uno de un lado y el otro del otro; así hubo firmeza.»",
+    effectName: "[BASTIÓN DE APOYO SOLIDARIO]",
+    power: "Sostiene al líder cuando flaquea, asegurando la victoria grupal en Refidim.",
+    serialCode: "ODISEA-ES012"
   },
+
+  // ── LA ERA DE LOS JUECES Y LA CONQUISTA (MISIÓN 2) ──
   {
     id: "card_13",
-    name: "Rut la Leal de Moab",
-    category: "HEROÍNAS",
-    rarity: "ÉPICA",
-    badgeColor: "bg-purple-500 text-white",
-    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
-    border: "border-purple-400",
-    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
-    icon: "🌾",
-    pasaje: "Rut 1:16",
-    clanXP: 75,
-    quote: "«Tu pueblo será mi pueblo, y tu Dios mi Dios.»",
-    power: "Fidelidad del Espigueo: Transforma la precariedad en bendición eterna y redención generacional.",
-    desc: "Mujer extranjera cuya lealtad incondicional hacia Noemí la llevó a ser la bisabuela del Rey David."
+    name: "Josué, Comandante del Jordán",
+    category: "JUECES",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[GUERRERO / GENERAL / EFECTO]",
+    atk: 3400,
+    def: 2800,
+    frameStyle: "effect",
+    badgeColor: "bg-orange-400 text-black font-black",
+    gradient: "from-orange-600 via-amber-700 to-orange-950",
+    border: "border-orange-300",
+    glow: "shadow-[0_0_35px_rgba(251,146,60,0.7)]",
+    icon: "⚔️",
+    pasaje: "Josué 1:9",
+    clanXP: 220,
+    quote: "«Mira que te mando que te esfuerces y seas valiente; no temas ni desmayes.»",
+    effectName: "[DERRIBO DE JERICÓ]",
+    power: "Valentía estratégica sin miedo a los gigantes de Canaán.",
+    serialCode: "ODISEA-ES013"
   },
   {
     id: "card_14",
-    name: "Abigail la Pacificadora Sabia",
-    category: "HEROÍNAS",
-    rarity: "RARA",
-    badgeColor: "bg-blue-500 text-white",
-    gradient: "from-blue-600 via-cyan-700 to-blue-950",
-    border: "border-blue-400",
-    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
-    icon: "🕊️",
-    pasaje: "1 Samuel 25:28",
-    clanXP: 45,
-    quote: "«Te ruego que perdones la ofensa de tu sierva... Yahveh hará a mi señor casa firme.»",
-    power: "Palabra de Mansedumbre: Apaga la ira de 400 guerreros armados antes de una tragedia sangrienta.",
-    desc: "Mujer prudente que evitó que David cometiera una masacre por la necedad de su esposo Nabal."
+    name: "Caleb, El Guerrero de 85 Años",
+    category: "JUECES",
+    rarity: "SÚPER RARA",
+    stars: 8,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[VETERANO / FE / EFECTO]",
+    atk: 2900,
+    def: 2700,
+    frameStyle: "effect",
+    badgeColor: "bg-lime-400 text-black font-black",
+    gradient: "from-lime-600 via-emerald-700 to-lime-950",
+    border: "border-lime-300",
+    glow: "shadow-[0_0_25px_rgba(163,230,53,0.6)]",
+    icon: "🏔️",
+    pasaje: "Josué 14:12",
+    clanXP: 140,
+    quote: "«Dame, pues, ahora este monte... aunque haya allí anaceos y ciudades grandes y fuertes.»",
+    effectName: "[CONQUISTA DE HEBRÓN]",
+    power: "Pide el reto más difícil sin quejarse y lo conquista con paciencia y fe.",
+    serialCode: "ODISEA-ES014"
   },
-  // ── RELIQUIAS SAGRADAS ──
   {
     id: "card_15",
-    name: "El Arca de la Alianza y la Shekinah",
-    category: "RELIQUIAS",
-    rarity: "LEGENDARIA",
-    badgeColor: "bg-yellow-500 text-black",
-    gradient: "from-amber-500 via-yellow-600 to-amber-900",
-    border: "border-yellow-400",
-    glow: "shadow-[0_0_40px_rgba(234,179,8,0.8)]",
-    icon: "⛩️",
-    pasaje: "Éxodo 25:22",
-    clanXP: 130,
-    quote: "«Y de allí me declararé a ti, y hablaré contigo de sobre el propiciatorio.»",
-    power: "Presencia Inviolable: La santidad pura de Dios habita entre los querubines de oro.",
-    desc: "El objeto más sagrado del Antiguo Testamento, conteniendo las Tablas de la Ley, la Vara de Aarón y el Maná."
+    name: "Débora, Jueza y Madre de Israel",
+    category: "HEROÍNAS",
+    rarity: "SECRETA RARA",
+    stars: 10,
+    attribute: "JUSTICIA",
+    attributeIcon: "⚖️",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[JUEZA / ESTRATEGA / EFECTO]",
+    atk: 3200,
+    def: 3300,
+    frameStyle: "effect",
+    badgeColor: "bg-fuchsia-400 text-black font-black",
+    gradient: "from-fuchsia-600 via-pink-700 to-fuchsia-950",
+    border: "border-fuchsia-300",
+    glow: "shadow-[0_0_35px_rgba(232,121,249,0.7)]",
+    icon: "⚖️",
+    pasaje: "Jueces 5:7",
+    clanXP: 270,
+    quote: "«Las aldeas quedaron abandonadas, hasta que yo Débora me levanté como madre en Israel.»",
+    effectName: "[JUICIO BAJO LA PALMERA]",
+    power: "Sabiduría para dirimir disputas y audacia militar en la batalla del monte Tabor.",
+    serialCode: "ODISEA-ES015"
   },
   {
     id: "card_16",
-    name: "El Pectoral de las 12 Piedras",
-    category: "RELIQUIAS",
-    rarity: "ÉPICA",
-    badgeColor: "bg-purple-500 text-white",
-    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
-    border: "border-purple-400",
-    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
-    icon: "💎",
-    pasaje: "Éxodo 28:29",
-    clanXP: 80,
-    quote: "«Llevará Aarón los nombres de los hijos de Israel en el pectoral del juicio sobre su corazón.»",
-    power: "Intercesión Perpetua: Lleva en el pecho a todo el clan para que nadie quede excluido ni abandonado.",
-    desc: "Vestidura del Sumo Sacerdote con 12 gemas preciosas grabadas con los nombres de las tribus de Israel."
+    name: "Gedeón y los 300 con Cántaros",
+    category: "JUECES",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[GUERRERO / DISCIPLINA / EFECTO]",
+    atk: 3100,
+    def: 2600,
+    frameStyle: "effect",
+    badgeColor: "bg-amber-400 text-black font-black",
+    gradient: "from-amber-600 via-red-700 to-amber-950",
+    border: "border-amber-300",
+    glow: "shadow-[0_0_30px_rgba(251,191,36,0.7)]",
+    icon: "🏺",
+    pasaje: "Jueces 7:20",
+    clanXP: 200,
+    quote: "«Tocaron las trompetas, quebraron los cántaros y gritaron: ¡Por Yahveh y por Gedeón!»",
+    effectName: "[TEAS DE LA FUENTE DE HAROD]",
+    power: "Demuestra que la lealtad de un grupo pequeño y disciplinado vence a multitudes caóticas.",
+    serialCode: "ODISEA-ES016"
   },
   {
     id: "card_17",
-    name: "La Menorá de Oro Puro",
-    category: "RELIQUIAS",
-    rarity: "RARA",
-    badgeColor: "bg-blue-500 text-white",
-    gradient: "from-blue-600 via-cyan-700 to-blue-950",
-    border: "border-blue-400",
-    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
-    icon: "🕎",
-    pasaje: "Éxodo 25:31",
-    clanXP: 45,
-    quote: "«Harás además un candelero de oro puro; labrado a martillo se hará.»",
-    power: "Luz Inextinguible: Disipa las tinieblas de la mentira con testimonio constante y puro.",
-    desc: "Candelero de 7 brazos de oro macizo que iluminaba el Lugar Santo del Tabernáculo día y noche."
+    name: "Sansón, Fuerza del Espíritu",
+    category: "JUECES",
+    rarity: "SÚPER RARA",
+    stars: 8,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[NAZAREO / FUERZA / EFECTO]",
+    atk: 3600,
+    def: 1800,
+    frameStyle: "effect",
+    badgeColor: "bg-red-400 text-white font-black",
+    gradient: "from-red-600 via-rose-700 to-red-950",
+    border: "border-red-300",
+    glow: "shadow-[0_0_30px_rgba(248,113,113,0.7)]",
+    icon: "🦁",
+    pasaje: "Jueces 15:14",
+    clanXP: 150,
+    quote: "«El Espíritu de Yahveh vino sobre él, y las cuerdas se cayeron de sus brazos como lino.»",
+    effectName: "[DERRIBO DE COLUMNAS]",
+    power: "Poder colosal en momentos críticos, advirtiendo sobre el peligro del ego sin dominio propio.",
+    serialCode: "ODISEA-ES017"
   },
   {
     id: "card_18",
-    name: "La Honda y las 5 Piedras Lisas",
-    category: "RELIQUIAS",
-    rarity: "COMÚN",
-    badgeColor: "bg-slate-300 text-black",
-    gradient: "from-slate-600 via-slate-700 to-slate-900",
-    border: "border-slate-400",
-    glow: "shadow-[0_0_15px_rgba(148,163,184,0.3)]",
-    icon: "🎯",
-    pasaje: "1 Samuel 17:40",
-    clanXP: 25,
-    quote: "«Tomó su cayado en su mano, y escogió cinco piedras lisas del arroyo.»",
-    power: "Piedra del Arroyo: Precisión humilde que vence a la soberbia del gigante armado.",
-    desc: "El instrumento de pastor con el que David demostró que lo que el mundo menosprecia, Dios lo enaltece para vencer gigantes."
+    name: "Samuel, El Profeta que Escuchó",
+    category: "JUECES",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[JUEZ / PROFETA / EFECTO]",
+    atk: 2700,
+    def: 3300,
+    frameStyle: "effect",
+    badgeColor: "bg-indigo-400 text-white font-black",
+    gradient: "from-indigo-600 via-blue-700 to-indigo-950",
+    border: "border-indigo-300",
+    glow: "shadow-[0_0_35px_rgba(129,140,248,0.7)]",
+    icon: "🕯️",
+    pasaje: "1 Samuel 3:10",
+    clanXP: 215,
+    quote: "«Habló, pues, Samuel: Habla, porque tu siervo oye.»",
+    effectName: "[VOZ EN EL SANTUARIO DE SILO]",
+    power: "Atención y obediencia inmediata. Transición impecable del caos de los jueces al orden real.",
+    serialCode: "ODISEA-ES018"
   },
+
+  // ── REYES DE ISRAEL Y GUERREROS (MISIÓN 3) ──
   {
     id: "card_19",
-    name: "El Manto Caído de Elías",
-    category: "RELIQUIAS",
-    rarity: "ÉPICA",
-    badgeColor: "bg-purple-500 text-white",
-    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
-    border: "border-purple-400",
-    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
-    icon: "🧥",
-    pasaje: "2 Reyes 2:13",
-    clanXP: 75,
-    quote: "«Alzó luego el manto de Elías que se le había caído, y volvió, y se paró a la orilla del Jordán.»",
-    power: "Apertura del Jordán: Golpea las aguas de la adversidad para que el equipo cruce en seco.",
-    desc: "El manto profético dejado en el torbellino de fuego, símbolo de unción y sucesión de liderazgo espiritual."
+    name: "David, Vencedor de Goliat",
+    category: "REYES",
+    rarity: "MÍTICA DIVINA",
+    stars: 11,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[REY UNGIDO / PASTOR / EFECTO]",
+    atk: 3800,
+    def: 3500,
+    frameStyle: "divine",
+    badgeColor: "bg-yellow-400 text-black font-black",
+    gradient: "from-amber-500 via-yellow-600 to-amber-950",
+    border: "border-yellow-300",
+    glow: "shadow-[0_0_45px_rgba(250,204,21,0.8)]",
+    icon: "👑",
+    pasaje: "1 Samuel 17:45",
+    clanXP: 340,
+    quote: "«Tú vienes a mí con espada y lanza; mas yo vengo a ti en el nombre de Yahveh de los ejércitos.»",
+    effectName: "[HONDA DEL VALLE DE ELA]",
+    power: "Vence al opresor arrogante confiando únicamente en el respaldo del Todopoderoso.",
+    serialCode: "ODISEA-ES019"
   },
   {
     id: "card_20",
-    name: "El Incensario Sagrado de Aarón",
-    category: "RELIQUIAS",
-    rarity: "COMÚN",
-    badgeColor: "bg-slate-300 text-black",
-    gradient: "from-slate-600 via-slate-700 to-slate-900",
-    border: "border-slate-400",
-    glow: "shadow-[0_0_15px_rgba(148,163,184,0.3)]",
-    icon: "💨",
-    pasaje: "Números 16:47",
-    clanXP: 25,
-    quote: "«Puso incienso en él, e hizo expiación por el pueblo... y cesó la mortandad.»",
-    power: "Perfume de Paz: Se para entre los vivos y los muertos para detener plagas morales en el aula.",
-    desc: "Instrumento sacerdotal de bronce y oro que elevaba las oraciones del pueblo como perfume agradable ante Dios."
+    name: "David y el Arpa que Calma Demonios",
+    category: "REYES",
+    rarity: "SÚPER RARA",
+    stars: 7,
+    attribute: "AGUA",
+    attributeIcon: "💧",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[SALMISTA / ADORADOR / EFECTO]",
+    atk: 2100,
+    def: 2900,
+    frameStyle: "effect",
+    badgeColor: "bg-sky-400 text-black font-black",
+    gradient: "from-sky-600 via-blue-700 to-sky-950",
+    border: "border-sky-300",
+    glow: "shadow-[0_0_25px_rgba(56,189,248,0.6)]",
+    icon: "🎵",
+    pasaje: "1 Samuel 16:23",
+    clanXP: 135,
+    quote: "«David tomaba el arpa y tocaba con su mano; y Saúl tenía alivio y estaba mejor.»",
+    effectName: "[SALMO DE LA PAZ PROFUNDA]",
+    power: "Calma la ira, el estrés del aula y restaura la armonía en momentos de conflicto.",
+    serialCode: "ODISEA-ES020"
   },
-  // ── PROFETAS & VOCES DE JUSTICIA ──
   {
     id: "card_21",
-    name: "Isaías y el Carbón Encendido",
-    category: "PROFETAS",
-    rarity: "ÉPICA",
-    badgeColor: "bg-purple-500 text-white",
-    gradient: "from-purple-600 via-fuchsia-700 to-purple-950",
-    border: "border-purple-400",
-    glow: "shadow-[0_0_30px_rgba(168,85,247,0.6)]",
-    icon: "🦅",
-    pasaje: "Isaías 6:6-8",
-    clanXP: 75,
-    quote: "«Tocó con él mi boca y dijo: He aquí que esto tocó tus labios... Heme aquí, envíame a mí.»",
-    power: "Purificación de Labios: Elimina el chisme y el insulto del aula para anunciar visión divina.",
-    desc: "Profeta mesiánico de noble visión que vio al Señor sentado en su trono y purificó su voz para servir."
+    name: "Salomón y el Juicio de Sabiduría",
+    category: "REYES",
+    rarity: "SECRETA RARA",
+    stars: 10,
+    attribute: "JUSTICIA",
+    attributeIcon: "⚖️",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[MONARCA / SABIDURÍA / EFECTO]",
+    atk: 3000,
+    def: 3700,
+    frameStyle: "effect",
+    badgeColor: "bg-amber-300 text-black font-black",
+    gradient: "from-amber-500 via-yellow-600 to-amber-950",
+    border: "border-amber-200",
+    glow: "shadow-[0_0_40px_rgba(252,211,77,0.8)]",
+    icon: "🏛️",
+    pasaje: "1 Reyes 3:28",
+    clanXP: 280,
+    quote: "«Y todo Israel oyó aquel juicio que había dado el rey; y temieron al rey, porque vieron que había en él sabiduría de Dios.»",
+    effectName: "[CORAZÓN ENTENDIDO]",
+    power: "Resuelve dilemas éticos complejos identificando siempre la verdad oculta tras el egoísmo.",
+    serialCode: "ODISEA-ES021"
   },
   {
     id: "card_22",
-    name: "Jeremías el Vaso del Alfarero",
-    category: "PROFETAS",
-    rarity: "RARA",
-    badgeColor: "bg-blue-500 text-white",
-    gradient: "from-blue-600 via-cyan-700 to-blue-950",
-    border: "border-blue-400",
-    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
-    icon: "🏺",
-    pasaje: "Jeremías 18:4",
-    clanXP: 45,
-    quote: "«Y la vasija de barro que él hacía se echó a perder en su mano; y volvió y la hizo otra vasija.»",
-    power: "Resiliencia del Barro: Si tropiezas en una falta, Dios te reconstruye con honor y propósito nuevo.",
-    desc: "Profeta que predicó la verdad en tiempos de ruina con inquebrantable ternura y fidelidad."
+    name: "Jonatán y el Pacto del Alma",
+    category: "REYES",
+    rarity: "SÚPER RARA",
+    stars: 8,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[PRÍNCIPE / LEALTAD / EFECTO]",
+    atk: 2800,
+    def: 2600,
+    frameStyle: "effect",
+    badgeColor: "bg-violet-400 text-black font-black",
+    gradient: "from-violet-600 via-purple-700 to-violet-950",
+    border: "border-violet-300",
+    glow: "shadow-[0_0_25px_rgba(167,139,250,0.6)]",
+    icon: "🏹",
+    pasaje: "1 Samuel 18:3",
+    clanXP: 145,
+    quote: "«E hicieron pacto Jonatán y David, porque él le amaba como a su propia alma.»",
+    effectName: "[FLECHAS DEL DESPRENDIMIENTO]",
+    power: "Lealtad por encima de la ambición. Entrega su manto y arco para proteger al amigo legítimo.",
+    serialCode: "ODISEA-ES022"
   },
   {
     id: "card_23",
-    name: "Amós el Clamor de la Justicia",
-    category: "PROFETAS",
-    rarity: "RARA",
-    badgeColor: "bg-blue-500 text-white",
+    name: "Josafat y el Ejército que Alababa",
+    category: "REYES",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[REY / CÁNTICO / EFECTO]",
+    atk: 2900,
+    def: 3300,
+    frameStyle: "effect",
+    badgeColor: "bg-blue-300 text-black font-black",
     gradient: "from-blue-600 via-cyan-700 to-blue-950",
-    border: "border-blue-400",
-    glow: "shadow-[0_0_25px_rgba(59,130,246,0.5)]",
-    icon: "🌊",
-    pasaje: "Amós 5:24",
-    clanXP: 45,
-    quote: "«Pero corra el juicio como las aguas, y la justicia como impetuoso arroyo.»",
-    power: "Torrente Incontenible: Cero tolerancia ante el abuso, la burla y la explotación del más débil.",
-    desc: "Pastor humilde de Técoa que no toleró la hipocresía religiosa frente a la opresión de los pobres."
+    border: "border-blue-200",
+    glow: "shadow-[0_0_30px_rgba(147,197,253,0.7)]",
+    icon: "🎺",
+    pasaje: "2 Crónicas 20:21",
+    clanXP: 210,
+    quote: "«Puso a algunos que cantasen y alabasen a Yahveh vestidos de ornamentos sagrados... y el enemigo se destruyó entre sí.»",
+    effectName: "[BATALLA DEL VALLE DE BERACA]",
+    power: "Gana batallas colocando la adoración y la gratitud por delante de las armas materiales.",
+    serialCode: "ODISEA-ES023"
   },
   {
     id: "card_24",
-    name: "Miqueas y el Requisito Divino",
+    name: "Ezequías y la Oración en el Templo",
+    category: "REYES",
+    rarity: "SÚPER RARA",
+    stars: 8,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[REFORMADOR / ORACIÓN / EFECTO]",
+    atk: 2600,
+    def: 3100,
+    frameStyle: "effect",
+    badgeColor: "bg-emerald-400 text-black font-black",
+    gradient: "from-emerald-600 via-teal-700 to-emerald-950",
+    border: "border-emerald-300",
+    glow: "shadow-[0_0_25px_rgba(52,211,153,0.6)]",
+    icon: "✉️",
+    pasaje: "2 Reyes 19:14",
+    clanXP: 155,
+    quote: "«Tomó Ezequías las cartas de mano de los mensajeros... y las extendió delante de Yahveh.»",
+    effectName: "[EXPANSIÓN DE LAS CARTAS ASIRIAS]",
+    power: "Lleva las cartas intimidantes del enemigo directamente ante Dios para anular amenazas.",
+    serialCode: "ODISEA-ES024"
+  },
+  {
+    id: "card_25",
+    name: "Josías y el Hallazgo de la Ley",
+    category: "REYES",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "JUSTICIA",
+    attributeIcon: "⚖️",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[JOVEN REY / REFORMA / EFECTO]",
+    atk: 3000,
+    def: 3000,
+    frameStyle: "effect",
+    badgeColor: "bg-rose-400 text-black font-black",
+    gradient: "from-rose-600 via-red-700 to-rose-950",
+    border: "border-rose-300",
+    glow: "shadow-[0_0_30px_rgba(251,113,133,0.7)]",
+    icon: "📜",
+    pasaje: "2 Reyes 22:11",
+    clanXP: 220,
+    quote: "«Cuando el rey oyó las palabras del libro de la ley, rasgó sus vestidos y limpió la tierra.»",
+    effectName: "[PURIFICACIÓN DE JERUSALÉN]",
+    power: "Sensibilidad espiritual pura. Lidera con valentía para limpiar la casa de toda hipocresía.",
+    serialCode: "ODISEA-ES025"
+  },
+  {
+    id: "card_26",
+    name: "Los Tres Valientes de Belén",
+    category: "REYES",
+    rarity: "SÚPER RARA",
+    stars: 8,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[GUERREROS / HONOR / EFECTO]",
+    atk: 3200,
+    def: 2500,
+    frameStyle: "effect",
+    badgeColor: "bg-stone-400 text-black font-black",
+    gradient: "from-stone-600 via-neutral-700 to-stone-950",
+    border: "border-stone-300",
+    glow: "shadow-[0_0_25px_rgba(168,162,158,0.6)]",
+    icon: "🏺",
+    pasaje: "2 Samuel 23:16",
+    clanXP: 160,
+    quote: "«Irrumpieron por el campamento de los filisteos y sacaron agua del pozo de Belén para David.»",
+    effectName: "[AGUA DE SACRIFICIO]",
+    power: "Hazaña de devoción desinteresada que convierte sacrificios en ofrenda santa.",
+    serialCode: "ODISEA-ES026"
+  },
+
+  // ── PROFETAS Y FUEGO DEL DESIERTO (MISIÓN 4) ──
+  {
+    id: "card_27",
+    name: "Elías en el Monte Carmelo",
     category: "PROFETAS",
-    rarity: "COMÚN",
-    badgeColor: "bg-slate-300 text-black",
-    gradient: "from-slate-600 via-slate-700 to-slate-900",
-    border: "border-slate-400",
-    glow: "shadow-[0_0_15px_rgba(148,163,184,0.3)]",
+    rarity: "MÍTICA DIVINA",
+    stars: 12,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[PROFETA DE FUEGO / CELO / EFECTO]",
+    atk: 4100,
+    def: 3600,
+    frameStyle: "divine",
+    badgeColor: "bg-red-400 text-black font-black",
+    gradient: "from-red-600 via-amber-600 to-red-950",
+    border: "border-red-300",
+    glow: "shadow-[0_0_45px_rgba(248,113,113,0.8)]",
+    icon: "🔥",
+    pasaje: "1 Reyes 18:38",
+    clanXP: 370,
+    quote: "«Entonces cayó fuego de Yahveh, y consumió el holocausto, la leña, las piedras y lamió el agua.»",
+    effectName: "[FUEGO QUE CONSUME LA DUDA]",
+    power: "Desafía en solitario a 450 falsos profetas y demuestra quién es el único Dios verdadero.",
+    serialCode: "ODISEA-ES027"
+  },
+  {
+    id: "card_28",
+    name: "El Carro de Fuego de Elías",
+    category: "RELIQUIAS",
+    rarity: "SECRETA RARA",
+    stars: 11,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "RELIQUIA ARCANA",
+    monsterType: "[CARRO CELESTIAL / GLORIA / EFECTO]",
+    atk: 3700,
+    def: 3300,
+    frameStyle: "divine",
+    badgeColor: "bg-amber-400 text-black font-black",
+    gradient: "from-amber-600 via-orange-600 to-amber-950",
+    border: "border-amber-300",
+    glow: "shadow-[0_0_40px_rgba(251,191,36,0.8)]",
+    icon: "🌪️",
+    pasaje: "2 Reyes 2:11",
+    clanXP: 290,
+    quote: "«Aconteció que... un carro de fuego con caballos de fuego apartó a los dos; y Elías subió al cielo en un torbellino.»",
+    effectName: "[TORBELLINO DE ASCENSIÓN]",
+    power: "Trasciende los límites humanos y transfiere doble porción de poder profético al sucesor.",
+    serialCode: "ODISEA-ES028"
+  },
+  {
+    id: "card_29",
+    name: "Eliseo y la Doble Porción",
+    category: "PROFETAS",
+    rarity: "ULTRA RARA",
+    stars: 10,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[PROFETA / MILAGROS / EFECTO]",
+    atk: 3300,
+    def: 3500,
+    frameStyle: "effect",
+    badgeColor: "bg-indigo-300 text-black font-black",
+    gradient: "from-indigo-600 via-violet-700 to-indigo-950",
+    border: "border-indigo-200",
+    glow: "shadow-[0_0_35px_rgba(165,180,252,0.7)]",
+    icon: "🧥",
+    pasaje: "2 Reyes 2:9",
+    clanXP: 230,
+    quote: "«Dijo Eliseo: Te ruego que una doble porción de tu espíritu sea sobre mí.»",
+    effectName: "[MANTO QUE ABRE LAS AGUAS]",
+    power: "Multiplica provisiones y purifica aguas amargas para bendecir a comunidades enteras.",
+    serialCode: "ODISEA-ES029"
+  },
+  {
+    id: "card_30",
+    name: "Isaías y el Trono Celestial",
+    category: "PROFETAS",
+    rarity: "SECRETA RARA",
+    stars: 10,
+    attribute: "DIVINO",
+    attributeIcon: "🌟",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[PROFETA MESIÁNICO / SANTIDAD / EFECTO]",
+    atk: 3500,
+    def: 3800,
+    frameStyle: "effect",
+    badgeColor: "bg-cyan-300 text-black font-black",
+    gradient: "from-cyan-600 via-sky-700 to-cyan-950",
+    border: "border-cyan-200",
+    glow: "shadow-[0_0_40px_rgba(103,232,249,0.8)]",
+    icon: "🦅",
+    pasaje: "Isaías 6:3-8",
+    clanXP: 300,
+    quote: "«Santo, Santo, Santo, Yahveh de los ejércitos; toda la tierra está llena de su gloria... Heme aquí, envíame a mí.»",
+    effectName: "[PURIFICACIÓN DEL CARBÓN ENCENDIDO]",
+    power: "Visión del trono santo. Borra la iniquidad de la lengua y capacita para hablar con verdad.",
+    serialCode: "ODISEA-ES030"
+  },
+  {
+    id: "card_31",
+    name: "Jeremías, El Vaso en Manos del Alfarero",
+    category: "PROFETAS",
+    rarity: "SÚPER RARA",
+    stars: 8,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[PROFETA LLORÓN / RESTAURACIÓN / EFECTO]",
+    atk: 2500,
+    def: 3200,
+    frameStyle: "effect",
+    badgeColor: "bg-amber-400 text-black font-black",
+    gradient: "from-amber-600 via-orange-700 to-amber-950",
+    border: "border-amber-300",
+    glow: "shadow-[0_0_25px_rgba(251,191,36,0.6)]",
+    icon: "🏺",
+    pasaje: "Jeremías 18:6",
+    clanXP: 165,
+    quote: "«Como el barro en la mano del alfarero, así sois vosotros en mi mano, oh casa de Israel.»",
+    effectName: "[RECONSTRUCCIÓN DESDE EL BARRO]",
+    power: "Toma fracasos y caídas del alumno y los moldea nuevamente en vasijas de honor.",
+    serialCode: "ODISEA-ES031"
+  },
+  {
+    id: "card_32",
+    name: "Ezequiel y el Valle de los Huesos Secos",
+    category: "PROFETAS",
+    rarity: "SECRETA RARA",
+    stars: 10,
+    attribute: "VIENTO",
+    attributeIcon: "🌪️",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[VISIONARIO / RESURRECCIÓN / EFECTO]",
+    atk: 3200,
+    def: 3600,
+    frameStyle: "effect",
+    badgeColor: "bg-emerald-300 text-black font-black",
+    gradient: "from-emerald-600 via-teal-700 to-emerald-950",
+    border: "border-emerald-200",
+    glow: "shadow-[0_0_40px_rgba(110,231,183,0.8)]",
+    icon: "🦴",
+    pasaje: "Ezequiel 37:9-10",
+    clanXP: 285,
+    quote: "«Ven de los cuatro vientos, oh espíritu, y sopla sobre estos muertos, y vivirán... y se pusieron en pie, un ejército grande en extremo.»",
+    effectName: "[SOPLO DE RESURRECCIÓN COLECTIVA]",
+    power: "Revive proyectos, materias y ánimos que se creían muertos y los convierte en un ejército firme.",
+    serialCode: "ODISEA-ES032"
+  },
+  {
+    id: "card_33",
+    name: "Daniel en el Foso de los Leones",
+    category: "PROFETAS",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "JUSTICIA",
+    attributeIcon: "⚖️",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[SABIO / INTEGRIDAD / EFECTO]",
+    atk: 3100,
+    def: 3700,
+    frameStyle: "effect",
+    badgeColor: "bg-yellow-300 text-black font-black",
+    gradient: "from-yellow-600 via-amber-700 to-yellow-950",
+    border: "border-yellow-200",
+    glow: "shadow-[0_0_35px_rgba(253,224,71,0.7)]",
+    icon: "🦁",
+    pasaje: "Daniel 6:22",
+    clanXP: 235,
+    quote: "«Mi Dios envió su ángel, el cual cerró la boca de los leones, para que no me hiciesen daño.»",
+    effectName: "[BOCA DE LEONES SELLADA]",
+    power: "Integridad ante presiones sociales. No cede a burlas ni modas destructivas.",
+    serialCode: "ODISEA-ES033"
+  },
+  {
+    id: "card_34",
+    name: "Los Tres Jóvenes en el Horno de Fuego",
+    category: "PROFETAS",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[MÁRTIRES DE FE / INVICTOS / EFECTO]",
+    atk: 3400,
+    def: 3400,
+    frameStyle: "effect",
+    badgeColor: "bg-red-300 text-black font-black",
+    gradient: "from-red-600 via-rose-700 to-red-950",
+    border: "border-red-200",
+    glow: "shadow-[0_0_35px_rgba(252,165,165,0.7)]",
+    icon: "🔥",
+    pasaje: "Daniel 3:25",
+    clanXP: 240,
+    quote: "«Veo cuatro varones sueltos, que se pasean en medio del fuego, y el aspecto del cuarto es semejante a hijo de los dioses.»",
+    effectName: "[EL CUARTO HOMBRE EN EL FUEGO]",
+    power: "Inmunidad ante pruebas abrasadoras. El compañerismo firme atrae la presencia divina.",
+    serialCode: "ODISEA-ES034"
+  },
+  {
+    id: "card_35",
+    name: "Amós, Clamor por la Justicia Social",
+    category: "PROFETAS",
+    rarity: "RARA",
+    stars: 6,
+    attribute: "AGUA",
+    attributeIcon: "💧",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[PASTOR / DENUNCIA / EFECTO]",
+    atk: 2200,
+    def: 2100,
+    frameStyle: "effect",
+    badgeColor: "bg-blue-300 text-black font-black",
+    gradient: "from-blue-600 via-indigo-700 to-blue-950",
+    border: "border-blue-200",
+    glow: "shadow-[0_0_20px_rgba(147,197,253,0.5)]",
+    icon: "🌊",
+    pasaje: "Amós 5:24",
+    clanXP: 85,
+    quote: "«Pero corra el juicio como las aguas, y la justicia como impetuoso arroyo.»",
+    effectName: "[TORRENTE DE EQUIDAD]",
+    power: "No tolera el bullying, la discriminación ni la opresión del compañero indefenso.",
+    serialCode: "ODISEA-ES035"
+  },
+  {
+    id: "card_36",
+    name: "Habacuc en la Torre de Vigía",
+    category: "PROFETAS",
+    rarity: "SÚPER RARA",
+    stars: 7,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[VIGILANTE / FE / EFECTO]",
+    atk: 2300,
+    def: 2700,
+    frameStyle: "effect",
+    badgeColor: "bg-teal-300 text-black font-black",
+    gradient: "from-teal-600 via-cyan-700 to-teal-950",
+    border: "border-teal-200",
+    glow: "shadow-[0_0_25px_rgba(94,234,212,0.6)]",
+    icon: "🏰",
+    pasaje: "Habacuc 2:4; 3:17-18",
+    clanXP: 130,
+    quote: "«El justo por su fe vivirá... Aunque la higuera no florezca, con todo yo me alegraré en Yahveh.»",
+    effectName: "[GOZO INQUEBRANTABLE]",
+    power: "Mantiene la alegría y la compostura aun cuando todo alrededor parezca salir mal.",
+    serialCode: "ODISEA-ES036"
+  },
+
+  // ── HEROÍNAS SAGRADAS Y MUJERES DE FE (MISIÓN 5) ──
+  {
+    id: "card_37",
+    name: "Rut la Moabita, Corona de Lealtad",
+    category: "HEROÍNAS",
+    rarity: "SECRETA RARA",
+    stars: 10,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[REDIMIDA / FIDELIDAD / EFECTO]",
+    atk: 3100,
+    def: 3500,
+    frameStyle: "effect",
+    badgeColor: "bg-rose-300 text-black font-black",
+    gradient: "from-rose-600 via-pink-700 to-rose-950",
+    border: "border-rose-200",
+    glow: "shadow-[0_0_35px_rgba(253,164,175,0.7)]",
+    icon: "🌾",
+    pasaje: "Rut 1:16",
+    clanXP: 275,
+    quote: "«Dondequiera que tú fueres, iré yo; tu pueblo será mi pueblo, y tu Dios mi Dios.»",
+    effectName: "[PACTO DE LAS ESPIGAS]",
+    power: "Fidelidad absoluta en la adversidad. Redime a la familia y entra en la genealogía real del Mesías.",
+    serialCode: "ODISEA-ES037"
+  },
+  {
+    id: "card_38",
+    name: "Ester, Corona de Valentía Real",
+    category: "HEROÍNAS",
+    rarity: "MÍTICA DIVINA",
+    stars: 11,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[REINA / LIBERTADORA / EFECTO]",
+    atk: 3700,
+    def: 3800,
+    frameStyle: "divine",
+    badgeColor: "bg-purple-300 text-black font-black",
+    gradient: "from-purple-500 via-fuchsia-600 to-purple-950",
+    border: "border-purple-200",
+    glow: "shadow-[0_0_45px_rgba(216,180,254,0.8)]",
+    icon: "👑",
+    pasaje: "Ester 4:14-16",
+    clanXP: 360,
+    quote: "«¿Quién sabe si para esta hora has llegado al reino? Y si perezco, que perezca.»",
+    effectName: "[CETRO DE GRACIA Y AYUNO]",
+    power: "Intercesión arriesgando la propia vida para desbaratar los planes del enemigo genocida.",
+    serialCode: "ODISEA-ES038"
+  },
+  {
+    id: "card_39",
+    name: "Abigail, Sabiduría que Detuvo la Espada",
+    category: "HEROÍNAS",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "JUSTICIA",
+    attributeIcon: "⚖️",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[MEDIADORA / PACIFICADORA / EFECTO]",
+    atk: 2600,
+    def: 3600,
+    frameStyle: "effect",
+    badgeColor: "bg-emerald-300 text-black font-black",
+    gradient: "from-emerald-600 via-teal-700 to-emerald-950",
+    border: "border-emerald-200",
+    glow: "shadow-[0_0_30px_rgba(110,231,183,0.7)]",
+    icon: "🧺",
+    pasaje: "1 Samuel 25:32-33",
+    clanXP: 205,
+    quote: "«Bendito sea tu razonamiento, y bendita tú, que me has estorbado hoy de ir a derramar sangre.»",
+    effectName: "[DIPLOMACIA PACIFICADORA]",
+    power: "Inteligencia emocional y prontitud para apagar fuegos de rencor y venganza violenta.",
+    serialCode: "ODISEA-ES039"
+  },
+  {
+    id: "card_40",
+    name: "Ana, La Oración del Silencio Profundo",
+    category: "HEROÍNAS",
+    rarity: "SÚPER RARA",
+    stars: 8,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[INTERCESORA / DEVOCIÓN / EFECTO]",
+    atk: 2200,
+    def: 3300,
+    frameStyle: "effect",
+    badgeColor: "bg-sky-300 text-black font-black",
+    gradient: "from-sky-600 via-indigo-700 to-sky-950",
+    border: "border-sky-200",
+    glow: "shadow-[0_0_25px_rgba(125,211,252,0.6)]",
+    icon: "🙏",
+    pasaje: "1 Samuel 1:15",
+    clanXP: 150,
+    quote: "«No he bebido vino ni sidra, sino que he derramado mi alma delante de Yahveh.»",
+    effectName: "[CLAMOR DEL SANTUARIO]",
+    power: "Oración ferviente del corazón que transforma la esterilidad en el nacimiento de profetas.",
+    serialCode: "ODISEA-ES040"
+  },
+  {
+    id: "card_41",
+    name: "Rajab y el Cordón de Grana",
+    category: "HEROÍNAS",
+    rarity: "SÚPER RARA",
+    stars: 8,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[VALIENTE / REFUGIO / EFECTO]",
+    atk: 2500,
+    def: 3000,
+    frameStyle: "effect",
+    badgeColor: "bg-red-400 text-white font-black",
+    gradient: "from-red-600 via-rose-700 to-red-950",
+    border: "border-red-300",
+    glow: "shadow-[0_0_25px_rgba(248,113,113,0.6)]",
+    icon: "🧶",
+    pasaje: "Josué 2:18",
+    clanXP: 145,
+    quote: "«Atarás este cordón de grana a la ventana... y reunirás en tu casa a tu familia.»",
+    effectName: "[SEÑAL DEL RESCATE]",
+    power: "Fe audaz que protege a toda su casa en medio del colapso de las murallas enemigas.",
+    serialCode: "ODISEA-ES041"
+  },
+
+  // ── RELIQUIAS Y MANIFESTACIONES SAGRADAS (ULTRA & SECRET RARE) ──
+  {
+    id: "card_42",
+    name: "El Arca de la Alianza y los Querubines",
+    category: "RELIQUIAS",
+    rarity: "MÍTICA DIVINA",
+    stars: 12,
+    attribute: "DIVINO",
+    attributeIcon: "🌟",
+    cardType: "RELIQUIA ARCANA",
+    monsterType: "[TRONO DE GLORIA / SHIKINAH / EFECTO]",
+    atk: 5000,
+    def: 5000,
+    frameStyle: "divine",
+    badgeColor: "bg-yellow-300 text-black font-black",
+    gradient: "from-yellow-400 via-amber-500 to-yellow-950",
+    border: "border-yellow-200",
+    glow: "shadow-[0_0_60px_rgba(253,224,71,1)]",
+    icon: "⚱️",
+    pasaje: "Éxodo 25:22",
+    clanXP: 400,
+    quote: "«Y de allí me declararé a ti, y hablaré contigo sobre el propiciatorio, de entre los dos querubines.»",
+    effectName: "[PRESENCIA DE LA SHEJINÁH]",
+    power: "La reliquia más sagrada del cosmos bíblico. Santifica todo el campamento y desbarata al mal.",
+    serialCode: "ODISEA-ES042"
+  },
+  {
+    id: "card_43",
+    name: "La Columna de Fuego y Nube",
+    category: "RELIQUIAS",
+    rarity: "SECRETA RARA",
+    stars: 11,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "RELIQUIA ARCANA",
+    monsterType: "[GUIADORA / PROTECCIÓN / EFECTO]",
+    atk: 3800,
+    def: 4200,
+    frameStyle: "divine",
+    badgeColor: "bg-orange-400 text-black font-black",
+    gradient: "from-orange-500 via-amber-600 to-orange-950",
+    border: "border-orange-300",
+    glow: "shadow-[0_0_40px_rgba(251,146,60,0.8)]",
+    icon: "🔥",
+    pasaje: "Éxodo 13:21",
+    clanXP: 310,
+    quote: "«Yahveh iba delante de ellos de día en una columna de nube para guiarlos, y de noche en columna de fuego para alumbrarles.»",
+    effectName: "[GUÍA DE LA TRAVESÍA]",
+    power: "Ilumina en la oscuridad más densa y confunde a los ejércitos perseguidores.",
+    serialCode: "ODISEA-ES043"
+  },
+  {
+    id: "card_44",
+    name: "La Zarza Ardiente que no se Consume",
+    category: "RELIQUIAS",
+    rarity: "SECRETA RARA",
+    stars: 10,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "RELIQUIA ARCANA",
+    monsterType: "[FUEGO SANTO / TEORÍA / EFECTO]",
+    atk: 3600,
+    def: 3900,
+    frameStyle: "divine",
+    badgeColor: "bg-rose-400 text-black font-black",
+    gradient: "from-rose-500 via-red-600 to-rose-950",
+    border: "border-rose-300",
+    glow: "shadow-[0_0_40px_rgba(251,113,133,0.8)]",
+    icon: "🌿",
+    pasaje: "Éxodo 3:2",
+    clanXP: 295,
+    quote: "«Y la zarza ardía en fuego, y la zarza no se consumía... Quita tu calzado, porque el lugar santo es.»",
+    effectName: "[LLAMADO DE HOREB]",
+    power: "Despierta vocaciones eternas e infunde respeto sagrado por el espacio de aprendizaje.",
+    serialCode: "ODISEA-ES044"
+  },
+  {
+    id: "card_45",
+    name: "La Vara de Almendro Florecida de Aarón",
+    category: "RELIQUIAS",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "RELIQUIA ARCANA",
+    monsterType: "[CONFIRMACIÓN / VIDA / EFECTO]",
+    atk: 2800,
+    def: 3500,
+    frameStyle: "effect",
+    badgeColor: "bg-emerald-300 text-black font-black",
+    gradient: "from-emerald-500 via-teal-600 to-emerald-950",
+    border: "border-emerald-200",
+    glow: "shadow-[0_0_35px_rgba(110,231,183,0.7)]",
     icon: "🌱",
-    pasaje: "Miqueas 6:8",
-    clanXP: 25,
-    quote: "«Solamente hacer justicia, amar misericordia, y humillarte ante tu Dios.»",
-    power: "Tríada de Vida: Resume la verdadera religión en justicia diaria, amor fraternal y sencillez de corazón.",
-    desc: "Profeta que enseñó que los rituales vacíos no valen nada sin justicia práctica y compasión con el prójimo."
+    pasaje: "Números 17:8",
+    clanXP: 225,
+    quote: "«La vara de Aarón de la casa de Leví había florecido, echado renuevos, flores y almendras.»",
+    effectName: "[VIDA EN MADERA SECA]",
+    power: "Confirma el liderazgo auténtico haciendo brotar vida y frutos donde solo había sequedad.",
+    serialCode: "ODISEA-ES045"
+  },
+  {
+    id: "card_46",
+    name: "La Menorá, Candelabro de Oro Puro",
+    category: "RELIQUIAS",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "RELIQUIA ARCANA",
+    monsterType: "[LUMBRERA / PERFECCIÓN / EFECTO]",
+    atk: 2900,
+    def: 3400,
+    frameStyle: "effect",
+    badgeColor: "bg-amber-300 text-black font-black",
+    gradient: "from-amber-400 via-yellow-600 to-amber-950",
+    border: "border-amber-200",
+    glow: "shadow-[0_0_35px_rgba(252,211,77,0.7)]",
+    icon: "🕎",
+    pasaje: "Éxodo 25:31",
+    clanXP: 215,
+    quote: "«Harás además un candelero de oro puro; labrado a martillo se hará el candelero con sus siete lámparas.»",
+    effectName: "[LUZ CONTINUA EN EL LUGAR SANTO]",
+    power: "Mantiene la claridad mental e inspiración durante evaluaciones y retos difíciles.",
+    serialCode: "ODISEA-ES046"
+  },
+  {
+    id: "card_47",
+    name: "La Serpiente de Bronce en el Desierto",
+    category: "RELIQUIAS",
+    rarity: "SÚPER RARA",
+    stars: 8,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "RELIQUIA ARCANA",
+    monsterType: "[SANIDAD / MIRADA / EFECTO]",
+    atk: 2400,
+    def: 3100,
+    frameStyle: "effect",
+    badgeColor: "bg-orange-300 text-black font-black",
+    gradient: "from-orange-600 via-amber-700 to-orange-950",
+    border: "border-orange-200",
+    glow: "shadow-[0_0_25px_rgba(253,186,116,0.6)]",
+    icon: "⚕️",
+    pasaje: "Números 21:9",
+    clanXP: 160,
+    quote: "«Cuando alguna serpiente mordía a alguno, miraba a la serpiente de bronce, y vivía.»",
+    effectName: "[MIRADA QUE SANA]",
+    power: "Basta mirar con fe para curar el veneno del desánimo o la amargura en el equipo.",
+    serialCode: "ODISEA-ES047"
+  },
+  {
+    id: "card_48",
+    name: "El Maná Celestial y la Tinaja de Oro",
+    category: "RELIQUIAS",
+    rarity: "RARA",
+    stars: 6,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "RELIQUIA ARCANA",
+    monsterType: "[PROVISIÓN / PAN DE ÁNGELES / EFECTO]",
+    atk: 1900,
+    def: 2500,
+    frameStyle: "effect",
+    badgeColor: "bg-slate-200 text-black font-black",
+    gradient: "from-slate-400 via-gray-600 to-slate-900",
+    border: "border-slate-300",
+    glow: "shadow-[0_0_20px_rgba(203,213,225,0.5)]",
+    icon: "🥣",
+    pasaje: "Éxodo 16:31",
+    clanXP: 95,
+    quote: "«Era como semilla de culantro, blanco, y su sabor como de hojuelas con miel.»",
+    effectName: "[SUSTENTO COTIDIANO]",
+    power: "Garantiza energía diaria y aprendizaje paso a paso, sin angustiarse por el mañana.",
+    serialCode: "ODISEA-ES048"
+  },
+  {
+    id: "card_49",
+    name: "Las Cinco Piedras Lisas del Arroyo",
+    category: "RELIQUIAS",
+    rarity: "RARA",
+    stars: 6,
+    attribute: "AGUA",
+    attributeIcon: "💧",
+    cardType: "RELIQUIA ARCANA",
+    monsterType: "[MUNICIÓN / PRECISIÓN / EFECTO]",
+    atk: 2500,
+    def: 1900,
+    frameStyle: "effect",
+    badgeColor: "bg-cyan-200 text-black font-black",
+    gradient: "from-cyan-600 via-sky-700 to-cyan-950",
+    border: "border-cyan-300",
+    glow: "shadow-[0_0_20px_rgba(165,243,252,0.5)]",
+    icon: "🪨",
+    pasaje: "1 Samuel 17:40",
+    clanXP: 90,
+    quote: "«Escogió cinco piedras lisas del arroyo, y las puso en el saco pastoril... y tomó su honda.»",
+    effectName: "[CERTERO EN LA FRENTE]",
+    power: "Simplicidad y preparación precisa que vence a la armadura pesada y arrogante.",
+    serialCode: "ODISEA-ES049"
+  },
+  {
+    id: "card_50",
+    name: "El Shofar de Jubileo y Conquista",
+    category: "RELIQUIAS",
+    rarity: "SÚPER RARA",
+    stars: 8,
+    attribute: "VIENTO",
+    attributeIcon: "🌪️",
+    cardType: "RELIQUIA ARCANA",
+    monsterType: "[TROMPETA / LIBERTAD / EFECTO]",
+    atk: 2600,
+    def: 2900,
+    frameStyle: "effect",
+    badgeColor: "bg-yellow-400 text-black font-black",
+    gradient: "from-yellow-600 via-amber-700 to-yellow-950",
+    border: "border-yellow-300",
+    glow: "shadow-[0_0_25px_rgba(250,204,21,0.6)]",
+    icon: "📯",
+    pasaje: "Levítico 25:9",
+    clanXP: 150,
+    quote: "«Harás tocar fuertemente la trompeta en el mes séptimo a los diez días del mes; el día de la expiación.»",
+    effectName: "[LLAMADO A LA ASAMBLEA]",
+    power: "Silencio táctico instantáneo en el aula y proclamación de libertad para todos los cautivos.",
+    serialCode: "ODISEA-ES050"
   }
 ];
 
-// ─── CATÁLOGO OFICIAL DE SOBRES DE LA TIENDA DEL TEMPLO ─────────────────────
+// ─── CATÁLOGO OFICIAL DE SOBRES Y CAJAS DE AVENTURA ─────────────────────────
 export const packStoreCatalog = [
+  // ── SOBRES CLÁSICOS DE LA ALIANZA ──
   {
     id: "pack_pacto",
     name: "Sobre del Pacto",
+    type: "sobre",
     tier: "BÁSICO",
     price: 100, // 100 Shekels
     icon: "📦",
@@ -568,13 +1446,14 @@ export const packStoreCatalog = [
     glow: "shadow-[0_0_30px_rgba(59,130,246,0.3)]",
     badge: "bg-blue-600 text-white",
     cardsCount: 3,
-    description: "Contiene 3 Cartas Sagradas. Garantiza al menos 1 Carta Rara o Común para iniciar tu colección sagrada.",
-    rates: "70% Común • 25% Rara • 5% Épica",
-    weights: { COMÚN: 0.70, RARA: 0.25, ÉPICA: 0.05, LEGENDARIA: 0.0 }
+    description: "Contiene 3 Cartas Yu-Gi-Oh! Bíblicas. Ideal para iniciar y asegurar cartas de soporte Comunes y Raras.",
+    rates: "60% Común • 30% Rara • 10% Súper Rara",
+    weights: { "COMÚN": 0.60, "RARA": 0.30, "SÚPER RARA": 0.10, "ULTRA RARA": 0.0, "SECRETA RARA": 0.0, "MÍTICA DIVINA": 0.0 }
   },
   {
     id: "pack_reyes",
     name: "Sobre de Jueces y Reyes",
+    type: "sobre",
     tier: "AVANZADO",
     price: 220, // 220 Shekels
     icon: "🛡️",
@@ -583,14 +1462,15 @@ export const packStoreCatalog = [
     glow: "shadow-[0_0_35px_rgba(168,85,247,0.4)]",
     badge: "bg-purple-600 text-white",
     cardsCount: 3,
-    description: "Contiene 3 Cartas Sagradas. Garantiza al menos 1 Carta Épica y alta probabilidad de Raras.",
-    rates: "20% Común • 55% Rara • 20% Épica • 5% Legendaria",
-    weights: { COMÚN: 0.20, RARA: 0.55, ÉPICA: 0.20, LEGENDARIA: 0.05 }
+    description: "Contiene 3 Cartas Yu-Gi-Oh! Bíblicas. Garantiza al menos 1 Carta Rara o Súper Rara de guerreros y líderes.",
+    rates: "25% Común • 45% Rara • 20% Súper Rara • 10% Ultra Rara",
+    weights: { "COMÚN": 0.25, "RARA": 0.45, "SÚPER RARA": 0.20, "ULTRA RARA": 0.10, "SECRETA RARA": 0.0, "MÍTICA DIVINA": 0.0 }
   },
   {
     id: "pack_sion",
     name: "Sobre de la Gloria de Sion",
-    tier: "LEGENDARIO",
+    type: "sobre",
+    tier: "PREMIUM",
     price: 450, // 450 Shekels
     icon: "👑",
     gradient: "from-amber-950 via-yellow-950 to-black",
@@ -598,12 +1478,77 @@ export const packStoreCatalog = [
     glow: "shadow-[0_0_45px_rgba(234,179,8,0.7)]",
     badge: "bg-yellow-500 text-black",
     cardsCount: 3,
-    description: "El sobre supremo del Templo. Garantiza al menos 1 Carta Legendaria o Épica con bendición masiva de XP al Clan.",
-    rates: "10% Rara • 55% Épica • 35% Legendaria",
-    weights: { COMÚN: 0.0, RARA: 0.10, ÉPICA: 0.55, LEGENDARIA: 0.35 }
+    description: "El sobre dorado del Monte Sion. Alta probabilidad de Cartas Ultra Raras y Secretas con enorme XP para el Clan.",
+    rates: "10% Rara • 45% Súper Rara • 35% Ultra Rara • 10% Secreta",
+    weights: { "COMÚN": 0.0, "RARA": 0.10, "SÚPER RARA": 0.45, "ULTRA RARA": 0.35, "SECRETA RARA": 0.10, "MÍTICA DIVINA": 0.0 }
+  },
+
+  // ── CAJAS DE AVENTURA & COFRES MÍSTICOS (MYSTERY BOXES) ──
+  {
+    id: "box_exodo",
+    name: "Cofre de Bronce del Éxodo",
+    type: "caja",
+    tier: "AVENTURA",
+    price: 280, // 280 Shekels
+    icon: "🧰",
+    gradient: "from-amber-900 via-stone-900 to-amber-950",
+    border: "border-amber-600",
+    glow: "shadow-[0_0_40px_rgba(217,119,6,0.5)]",
+    badge: "bg-amber-700 text-white",
+    cardsCount: 4,
+    description: "Cofre sellado del desierto del Sinaí. Contiene 4 Cartas Sagradas con foco en Patriarcas y el Éxodo.",
+    rates: "4 Cartas • 1 Súper Rara garantizada",
+    weights: { "COMÚN": 0.30, "RARA": 0.40, "SÚPER RARA": 0.25, "ULTRA RARA": 0.05, "SECRETA RARA": 0.0, "MÍTICA DIVINA": 0.0 }
+  },
+  {
+    id: "box_jueces_reyes",
+    name: "Cofre de Plata de los Reyes de Judá",
+    type: "caja",
+    tier: "HERÓICO",
+    price: 550, // 550 Shekels
+    icon: "⚔️",
+    gradient: "from-slate-800 via-indigo-950 to-slate-900",
+    border: "border-slate-300",
+    glow: "shadow-[0_0_45px_rgba(203,213,225,0.6)]",
+    badge: "bg-slate-300 text-black",
+    cardsCount: 4,
+    description: "Cofre forjado con los botines de guerra de David y Josafat. Contiene 4 Cartas con AL MENOS 1 ULTRA RARA O SECRETA.",
+    rates: "4 Cartas • 1 Ultra Rara asegurada • Probabilidad de Secreta",
+    weights: { "COMÚN": 0.10, "RARA": 0.30, "SÚPER RARA": 0.35, "ULTRA RARA": 0.20, "SECRETA RARA": 0.05, "MÍTICA DIVINA": 0.0 }
+  },
+  {
+    id: "box_salomon",
+    name: "Cofre de Oro del Templo de Salomón",
+    type: "caja",
+    tier: "ÉPICO TEMPLO",
+    price: 900, // 900 Shekels
+    icon: "🏛️",
+    gradient: "from-yellow-900 via-amber-950 to-black",
+    border: "border-yellow-400",
+    glow: "shadow-[0_0_55px_rgba(250,204,21,0.8)]",
+    badge: "bg-gradient-to-r from-amber-400 to-yellow-300 text-black",
+    cardsCount: 5,
+    description: "Cofre de madera de cedro revestido de oro puro del rey Salomón. Contiene 5 Cartas de alto rango (Nivel 8 a 11).",
+    rates: "5 Cartas • 1 Ultra Rara + 1 Secreta Rara garantizadas",
+    weights: { "COMÚN": 0.0, "RARA": 0.15, "SÚPER RARA": 0.35, "ULTRA RARA": 0.35, "SECRETA RARA": 0.15, "MÍTICA DIVINA": 0.0 }
+  },
+  {
+    id: "box_arca_pacto",
+    name: "Arca del Pacto: Caja Mística Suprema",
+    type: "caja",
+    tier: "DIVINO SUPREMO",
+    price: 1500, // 1500 Shekels
+    icon: "✨",
+    gradient: "from-amber-500 via-purple-900 to-black",
+    border: "border-yellow-300",
+    glow: "shadow-[0_0_70px_rgba(253,224,71,1)]",
+    badge: "bg-gradient-to-r from-yellow-300 via-fuchsia-400 to-amber-300 text-black font-black animate-pulse",
+    cardsCount: 5,
+    description: "¡EL TESORO SUPREMO DEL SANTUARIO! 5 Cartas Sagradas con probabilidad de CARTAS MÍTICAS DIVINAS (Nivel 12: Moisés, David, Elías, Abraham, El Arca) con hasta +400 XP para el Clan.",
+    rates: "5 Cartas • GARANTIZA 1 CARTA SECRETA O MÍTICA DIVINA",
+    weights: { "COMÚN": 0.0, "RARA": 0.0, "SÚPER RARA": 0.20, "ULTRA RARA": 0.40, "SECRETA RARA": 0.25, "MÍTICA DIVINA": 0.15 }
   }
 ];
-
 
 const soloMissions = [
   {
@@ -2099,20 +3044,40 @@ export default function OdiseaBiblica() {
 
   // ── Helpers ──
   const updateScore = (clanId, points, aulaTarget = selectedClass) => {
-    if (!aulaTarget || !clanId) return;
+    if (!clanId) return;
     setScores(prev => {
-      const targetAulaScores = { ...(prev[aulaTarget] || {}) };
-      if (clanId === 'all') {
-        clansData.forEach(c => {
-          targetAulaScores[c.id] = (targetAulaScores[c.id] || 0) + points;
-        });
+      const isMasterUser = Boolean(studentAuth?.isGodMode || studentAuth?.clanId === 'all' || clanId === 'all');
+      
+      // Si el que suma puntos es el Maestro o clanId es 'all', aplicar a TODOS los salones del docente
+      let targetAulas = [];
+      if (isMasterUser || aulaTarget === 'all' || !aulaTarget) {
+        let customAulas = [];
+        try {
+          if (typeof getCurrentClassrooms === 'function') {
+            customAulas = getCurrentClassrooms().map(c => c.id);
+          }
+        } catch (e) {}
+        targetAulas = ['1A', '1B', '1C', ...customAulas];
       } else {
-        targetAulaScores[clanId] = (targetAulaScores[clanId] || 0) + points;
+        targetAulas = [aulaTarget];
       }
-      const newScores = {
-        ...prev,
-        [aulaTarget]: targetAulaScores
-      };
+
+      const uniqueAulas = [...new Set(targetAulas.filter(Boolean))];
+      const newScores = { ...prev };
+
+      uniqueAulas.forEach(aula => {
+        const targetAulaScores = { ...(newScores[aula] || {}) };
+        if (isMasterUser || clanId === 'all') {
+          // Aplica a los 7 clanes sagrados por igual
+          clansData.forEach(c => {
+            targetAulaScores[c.id] = (targetAulaScores[c.id] || 0) + points;
+          });
+        } else {
+          targetAulaScores[clanId] = (targetAulaScores[clanId] || 0) + points;
+        }
+        newScores[aula] = targetAulaScores;
+      });
+
       updateFirebase('scores', newScores);
       return newScores;
     });
@@ -2271,113 +3236,212 @@ export default function OdiseaBiblica() {
     try {
       const canvas = document.createElement('canvas');
       canvas.width = 800;
-      canvas.height = 1200;
+      canvas.height = 1160; // Proporción áurea clásica Yu-Gi-Oh! (59x86 mm)
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      const bgGrad = ctx.createLinearGradient(0, 0, 0, 1200);
-      bgGrad.addColorStop(0, '#0a0d20');
-      bgGrad.addColorStop(0.5, '#16193b');
-      bgGrad.addColorStop(1, '#050711');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, 800, 1200);
+      // ── MARCO YU-GI-OH! SEGÚN ATRIBUTO Y TIPO ──
+      let frameColor = '#8c4a1e'; // Naranja/Cobre Efecto
+      let innerFrameColor = '#c27638';
 
-      ctx.strokeStyle = '#f59e0b';
+      if (card.rarity === 'MÍTICA DIVINA' || card.frameStyle === 'divine') {
+        frameColor = '#946c0d'; // Oro Dios Celestial
+        innerFrameColor = '#f5c038';
+      } else if (card.category === 'RELIQUIAS' || card.cardType === 'RELIQUIA ARCANA') {
+        frameColor = '#134e4a'; // Mágica / Reliquia Verde
+        innerFrameColor = '#14b8a6';
+      } else if (card.rarity === 'SECRETA RARA') {
+        frameColor = '#4c1d95'; // Violeta Secreto / Fusión
+        innerFrameColor = '#8b5cf6';
+      }
+
+      ctx.fillStyle = frameColor;
+      ctx.fillRect(0, 0, 800, 1160);
+
+      ctx.strokeStyle = '#000000';
       ctx.lineWidth = 14;
-      ctx.strokeRect(20, 20, 760, 1160);
+      ctx.strokeRect(10, 10, 780, 1140);
 
-      ctx.strokeStyle = '#38bdf8';
+      ctx.strokeStyle = innerFrameColor;
+      ctx.lineWidth = 6;
+      ctx.strokeRect(20, 20, 760, 1120);
+
+      // Barra de Título
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+      ctx.fillRect(36, 36, 728, 80);
+      ctx.strokeStyle = '#fef08a';
       ctx.lineWidth = 3;
-      ctx.strokeRect(36, 36, 728, 1128);
-
-      ctx.fillStyle = '#f59e0b';
-      ctx.font = 'bold 28px sans-serif';
-      ctx.textAlign = 'left';
-      ctx.fillText(`★ ${(card.rarity || 'SAGRADA').toUpperCase()} ★`, 60, 95);
-
-      ctx.textAlign = 'right';
-      ctx.fillStyle = '#10b981';
-      ctx.font = 'bold 28px sans-serif';
-      ctx.fillText(`+${card.clanXP || 50} XP AL CLAN`, 740, 95);
-
-      ctx.textAlign = 'center';
-      ctx.font = '130px sans-serif';
-      ctx.fillText(card.icon || '⚔️', 400, 310);
+      ctx.strokeRect(36, 36, 728, 80);
 
       ctx.fillStyle = '#ffffff';
-      ctx.font = '900 48px sans-serif';
-      ctx.fillText((card.name || 'HÉROE').toUpperCase(), 400, 420);
+      ctx.font = '900 36px serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(card.name?.toUpperCase() || 'HÉROE SAGRADO', 52, 90, 560);
 
-      ctx.fillStyle = '#38bdf8';
-      ctx.font = 'italic bold 26px sans-serif';
-      ctx.fillText(`« ${card.pasaje || ''} »`, 400, 480);
-
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
-      ctx.fillRect(60, 530, 680, 240);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-      ctx.lineWidth = 2;
-      ctx.strokeRect(60, 530, 680, 240);
-
-      ctx.fillStyle = '#fef08a';
-      ctx.font = 'italic 23px serif';
-      const words = (card.quote || '').split(' ');
-      let line = '';
-      let curY = 590;
-      for (let w of words) {
-        const test = line + w + ' ';
-        if (ctx.measureText(test).width > 620 && line) {
-          ctx.fillText(line.trim(), 400, curY);
-          line = w + ' ';
-          curY += 36;
-        } else {
-          line = test;
-        }
-      }
-      if (line) {
-        ctx.fillText(line.trim(), 400, curY);
-      }
-
-      ctx.fillStyle = '#a78bfa';
-      ctx.font = 'bold 26px sans-serif';
-      ctx.fillText(`⚡ PODER TÁCTICO: ${card.effect || 'Bendición Divina'}`, 400, 840);
-
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
-      ctx.fillRect(60, 890, 680, 240);
+      // Orbe de Atributo
+      const orbX = 716;
+      const orbY = 76;
+      ctx.beginPath();
+      ctx.arc(orbX, orbY, 32, 0, 2 * Math.PI);
+      ctx.fillStyle = '#0f172a';
+      ctx.fill();
       ctx.strokeStyle = '#f59e0b';
       ctx.lineWidth = 3;
-      ctx.strokeRect(60, 890, 680, 240);
+      ctx.stroke();
 
-      ctx.fillStyle = '#f59e0b';
+      ctx.font = '28px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(card.attributeIcon || '🌟', orbX, orbY + 10);
+
+      // Estrellas de Nivel (Level Stars)
+      const starsCount = Math.min(12, Math.max(1, card.stars || 8));
+      const starSpacing = 42;
+      const startStarX = 720;
+      const starY = 145;
+
+      for (let s = 0; s < starsCount; s++) {
+        const sx = startStarX - (s * starSpacing);
+        ctx.beginPath();
+        ctx.arc(sx, starY, 17, 0, 2 * Math.PI);
+        ctx.fillStyle = '#ea580c';
+        ctx.fill();
+        ctx.strokeStyle = '#fef08a';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.font = '22px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('⭐', sx, starY + 7);
+      }
+
+      // Cuadro de Arte Central Metálico
+      ctx.fillStyle = '#030712';
+      ctx.fillRect(56, 180, 688, 480);
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(56, 180, 688, 480);
+
+      const radialGrad = ctx.createRadialGradient(400, 420, 20, 400, 420, 320);
+      radialGrad.addColorStop(0, card.rarity === 'MÍTICA DIVINA' ? '#f59e0b' : '#38bdf8');
+      radialGrad.addColorStop(0.5, '#1e1b4b');
+      radialGrad.addColorStop(1, '#050314');
+      ctx.fillStyle = radialGrad;
+      ctx.fillRect(60, 184, 680, 472);
+
+      ctx.font = '160px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(card.icon || '⚔️', 400, 470);
+
+      // Caja de Texto y Efecto (Pergamino Yu-Gi-Oh!)
+      ctx.fillStyle = 'rgba(254, 243, 199, 0.95)';
+      ctx.fillRect(48, 680, 704, 390);
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(48, 680, 704, 390);
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '900 24px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(card.monsterType || '[GUERRERO / PROFETA / EFECTO]', 64, 715);
+
+      ctx.fillStyle = '#78350f';
+      ctx.font = 'italic bold 21px serif';
+      const quoteWords = (card.quote || '').split(' ');
+      let qLine = '';
+      let curY = 750;
+      for (let w of quoteWords) {
+        const testLine = qLine + w + ' ';
+        if (ctx.measureText(testLine).width > 660 && qLine) {
+          ctx.fillText(qLine.trim(), 64, curY);
+          qLine = w + ' ';
+          curY += 28;
+        } else {
+          qLine = testLine;
+        }
+      }
+      if (qLine) {
+        ctx.fillText(qLine.trim(), 64, curY);
+        curY += 30;
+      }
+
+      ctx.fillStyle = '#0369a1';
+      ctx.font = 'bold 20px monospace';
+      ctx.fillText(`« ${card.pasaje || ''} »`, 64, curY);
+      curY += 34;
+
+      ctx.fillStyle = '#1e1b4b';
+      ctx.font = 'bold 20px sans-serif';
+      const effWords = (`${card.effectName || '[EFECTO DEL PACTO]'} ${card.power || ''}`).split(' ');
+      let effLine = '';
+      for (let ew of effWords) {
+        const testEff = effLine + ew + ' ';
+        if (ctx.measureText(testEff).width > 660 && effLine) {
+          ctx.fillText(effLine.trim(), 64, curY);
+          effLine = ew + ' ';
+          curY += 26;
+        } else {
+          effLine = testEff;
+        }
+      }
+      if (effLine) {
+        ctx.fillText(effLine.trim(), 64, curY);
+      }
+
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(56, 1025);
+      ctx.lineTo(744, 1025);
+      ctx.stroke();
+
+      ctx.fillStyle = '#059669';
       ctx.font = '900 24px monospace';
-      ctx.fillText('CERTIFICADO OFICIAL DE ADQUISICIÓN', 400, 940);
+      ctx.textAlign = 'left';
+      ctx.fillText(`VALOR CLAN: +${card.clanXP || 50} XP`, 64, 1055);
+
+      ctx.fillStyle = '#000000';
+      ctx.font = '900 28px sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText(`ATK / ${card.atk || 2800}   DEF / ${card.def || 2400}`, 736, 1055);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '16px monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(`${card.serialCode || 'ODISEA-ES001'} • 1ra Edición`, 48, 1100);
 
       const rName = studentAuth?.name ? studentAuth.name.toUpperCase() : 'RECLUTA SAGRADO';
       const rAula = studentAuth?.aula || '1A';
-      const rClan = clansData.find(c => c.id === studentAuth?.clanId)?.name || 'CLAN SAGRADO';
+      const rClan = studentAuth?.isGodMode ? 'TODOS LOS CLANES (MODO MAESTRO)' : (clansData.find(c => c.id === studentAuth?.clanId)?.name || 'CLAN SAGRADO');
+      
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 15px sans-serif';
+      ctx.fillText(`CERTIFICADO: ${rName} • ${rClan} (${rAula}) • PROF. EDER CARRASCO © 2026`, 48, 1130);
 
-      ctx.fillStyle = '#ffffff';
-      ctx.font = 'bold 26px sans-serif';
-      ctx.fillText(`RECLUTA: ${rName}`, 400, 990);
+      // Holograma Dorado Yu-Gi-Oh!
+      const holoX = 720;
+      const holoY = 1088;
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillRect(holoX, holoY, 36, 36);
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(holoX, holoY, 36, 36);
 
-      ctx.fillStyle = '#cbd5e1';
-      ctx.font = '22px sans-serif';
-      ctx.fillText(`SALÓN: ${rAula}  •  ${rClan.toUpperCase()}`, 400, 1035);
-
-      ctx.fillStyle = '#94a3b8';
-      ctx.font = '18px monospace';
-      ctx.fillText('ODISEA BÍBLICA • PROF. EDER CARRASCO © 2026', 400, 1090);
+      ctx.fillStyle = '#000000';
+      ctx.font = 'bold 9px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('SEAL', holoX + 18, holoY + 22);
 
       const a = document.createElement('a');
-      a.download = `CARTA_${(card.name || 'TARJETA').replace(/\s+/g, '_')}_${rName.replace(/\s+/g, '_')}.png`;
+      a.download = `YUGIOH_${(card.name || 'CARTA').replace(/\s+/g, '_')}_${rName.replace(/\s+/g, '_')}.png`;
       a.href = canvas.toDataURL('image/png');
       a.click();
     } catch (err) {
-      console.error('Error al generar imagen:', err);
+      console.error('Error al generar tarjeta Yu-Gi-Oh!:', err);
       alert('Descarga no compatible directamente en este navegador. Usa el botón "Pantalla Completa" para tomar captura.');
     }
   }, [studentAuth]);
-  
-  const isEderUser = (user) => {
+
+    const isEderUser = (user) => {
     if (!user) return false;
     const clean = user.toLowerCase().trim();
     return ['edercarrasco', 'eder carrasco', 'eder', 'ederinovadorpro', 'maestro', 'profesor', 'prof. eder'].includes(clean);
@@ -3655,142 +4719,277 @@ export default function OdiseaBiblica() {
             <div className="relative z-10 w-full max-w-6xl mx-auto pb-20 animate-in fade-in duration-300">
               <div className="text-center md:text-left mb-8 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-indigo-900/40 pb-6">
                 <div>
-                  <h3 className="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-amber-500 uppercase tracking-tight flex items-center gap-3">
-                    🛍️ MERCADO DEL TEMPLO (SOBRES DE CARTAS)
+                  <h3 className="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-500 uppercase tracking-tight flex items-center gap-3">
+                    🛍️ MERCADO SAGRADO DEL TEMPLO & CAJAS DE AVENTURA
                   </h3>
                   <p className="text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
-                    Usa las Monedas 🪙 conseguidas en las misiones para abrir sobres de cartas bíblicas sagradas. <strong>Cada carta nueva que desbloquees suma puntos directos e inmediatos al Clan de tu salón.</strong> ¡Las cartas solo se pueden conseguir una sola vez!
+                    Canjea tus Monedas del Templo 🪙 para abrir <strong>Sobres Bíblicos</strong> y <strong>Cajas Místicas de Aventura</strong> estilo Yu-Gi-Oh!. Cada carta nueva desbloqueada otorga <strong>puntos de XP inmediatos y directos a tu Clan</strong> (¡o a todos los clanes si juegas como Maestro!).
                   </p>
                 </div>
                 <div className="bg-[#121528] border-2 border-yellow-500/60 p-4 rounded-2xl text-center shadow-lg">
                   <p className="text-yellow-400/80 text-[10px] font-black uppercase tracking-widest">TU SALDO DE SHEKELS</p>
                   <p className="text-2xl sm:text-3xl font-black text-yellow-400">🪙 {studentProgress.shekels || 0} MONEDAS</p>
+                  {studentAuth?.isGodMode && (
+                    <span className="text-[9px] bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded-full font-bold uppercase mt-1 inline-block border border-amber-500/40">
+                      👑 MODO MAESTRO: PUNTOS A TODOS LOS CLANES
+                    </span>
+                  )}
                 </div>
               </div>
 
-              {/* Catálogo de 3 Sobres */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                {packStoreCatalog.map((pack) => {
-                  const canAfford = (studentProgress.shekels || 0) >= pack.price;
-                  return (
-                    <div key={pack.id} className={`bg-gradient-to-b ${pack.gradient} border-2 ${pack.border} rounded-3xl p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.02]`}>
-                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-2xl pointer-events-none"></div>
+              {/* ── SECCIÓN 1: SOBRES CLÁSICOS DE LA ALIANZA ── */}
+              <div className="mb-10">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-2xl">📦</span>
+                  <div>
+                    <h4 className="text-xl font-black text-white uppercase tracking-wider">SOBRES DE CARTAS BÍBLICAS (3 CARTAS)</h4>
+                    <p className="text-slate-400 text-xs">Aperturas tácticas para expandir la base de tu colección sagrada.</p>
+                  </div>
+                </div>
 
-                      <div>
-                        <div className="flex justify-between items-start mb-4">
-                          <span className={`${pack.badge} px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest`}>
-                            {pack.tier}
-                          </span>
-                          <span className="text-4xl">{pack.icon}</span>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {packStoreCatalog.filter(p => p.type === 'sobre').map((pack) => {
+                    const canAfford = (studentProgress.shekels || 0) >= pack.price;
+                    return (
+                      <div key={pack.id} className={`bg-gradient-to-b ${pack.gradient} border-2 ${pack.border} rounded-3xl p-6 sm:p-7 flex flex-col justify-between relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.02]`}>
+                        <div>
+                          <div className="flex justify-between items-start mb-4">
+                            <span className={`${pack.badge} px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow`}>
+                              {pack.tier}
+                            </span>
+                            <span className="text-4xl group-hover:scale-110 transition-transform">{pack.icon}</span>
+                          </div>
+
+                          <h4 className="text-2xl font-black text-white uppercase tracking-tight mb-2">{pack.name}</h4>
+                          <p className="text-slate-300 text-xs leading-relaxed mb-4">{pack.description}</p>
+                          
+                          <div className="bg-black/60 p-3 rounded-xl border border-white/10 mb-6 text-[11px] font-mono text-amber-300">
+                            <p className="font-bold mb-1">PROBABILIDADES:</p>
+                            <p>{pack.rates}</p>
+                          </div>
                         </div>
 
-                        <h4 className="text-2xl font-black text-white uppercase tracking-tight mb-2">{pack.name}</h4>
-                        <p className="text-slate-300 text-xs leading-relaxed mb-4">{pack.description}</p>
-                        
-                        <div className="bg-black/60 p-3 rounded-xl border border-white/10 mb-6 text-[11px] font-mono text-amber-300">
-                          <p className="font-bold mb-1">PROBABILIDADES:</p>
-                          <p>{pack.rates}</p>
-                        </div>
-                      </div>
+                        <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+                          <div className="flex justify-between items-center">
+                            <span className="text-slate-400 text-xs font-bold uppercase">PRECIO:</span>
+                            <span className="text-2xl font-black text-yellow-400">🪙 {pack.price} Shekels</span>
+                          </div>
 
-                      <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-slate-400 text-xs font-bold uppercase">PRECIO:</span>
-                          <span className="text-2xl font-black text-yellow-400">🪙 {pack.price} Shekels</span>
-                        </div>
-
-                        <button
-                          disabled={!canAfford}
-                          onClick={() => {
-                            if (!canAfford) {
-                              alert("No tienes suficientes monedas del Templo 🪙. Juega las misiones de Bomberman & Mario para conseguir más monedas.");
-                              return;
-                            }
-
-                            // Deducir monedas
-                            updateStudentProgress(prev => ({
-                              ...prev,
-                              shekels: prev.shekels - pack.price,
-                              packsOpened: (prev.packsOpened || 0) + 1
-                            }));
-
-                            // Seleccionar 3 cartas
-                            const alreadyOwnedIds = studentProgress.unlockedCards || [];
-                            const unownedCards = biblicalCardsDB.filter(c => !alreadyOwnedIds.includes(c.id));
-
-                            const drawn = [];
-                            for (let i = 0; i < 3; i++) {
-                              let pool = unownedCards.filter(c => !drawn.some(d => d.id === c.id));
-                              if (pool.length === 0) {
-                                pool = biblicalCardsDB.filter(c => !drawn.some(d => d.id === c.id));
-                              }
-                              if (pool.length === 0) pool = biblicalCardsDB;
-
-                              const rand = Math.random();
-                              let targetRarity = 'COMÚN';
-                              if (pack.id === 'pack_sion') {
-                                targetRarity = rand < 0.40 ? 'LEGENDARIA' : (rand < 0.90 ? 'ÉPICA' : 'RARA');
-                              } else if (pack.id === 'pack_reyes') {
-                                targetRarity = rand < 0.10 ? 'LEGENDARIA' : (rand < 0.35 ? 'ÉPICA' : (rand < 0.85 ? 'RARA' : 'COMÚN'));
-                              } else {
-                                targetRarity = rand < 0.08 ? 'ÉPICA' : (rand < 0.35 ? 'RARA' : 'COMÚN');
+                          <button
+                            disabled={!canAfford}
+                            onClick={() => {
+                              if (!canAfford) {
+                                alert("No tienes suficientes monedas del Templo 🪙. Juega las misiones de Bomberman & Mario para conseguir más monedas.");
+                                return;
                               }
 
-                              const rarityPool = pool.filter(c => c.rarity === targetRarity);
-                              const finalPool = rarityPool.length > 0 ? rarityPool : pool;
-                              drawn.push(finalPool[Math.floor(Math.random() * finalPool.length)]);
-                            }
+                              updateStudentProgress(prev => ({
+                                ...prev,
+                                shekels: (prev.shekels || 0) - pack.price,
+                                packsOpened: (prev.packsOpened || 0) + 1
+                              }));
 
-                            setRevealedPackCards(drawn);
-                            setFlippedIndices([]);
-                            setPackStage('sealed');
-                            setOpeningPack(pack);
-                            playRetroSound('secret');
-                          }}
-                          className={`w-full py-4 rounded-2xl font-black uppercase tracking-wider text-sm transition-all cursor-pointer shadow-lg flex items-center justify-center gap-2 ${
-                            canAfford 
-                              ? 'bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-black hover:scale-105' 
-                              : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
-                          }`}>
-                          {canAfford ? '⚡ COMPRAR Y ABRIR SOBRE' : '🔒 MONEDAS INSUFICIENTES'}
-                        </button>
+                              const drawCount = pack.cardsCount || 3;
+                              const alreadyOwnedIds = studentProgress.unlockedCards || [];
+                              const drawn = [];
+
+                              for (let i = 0; i < drawCount; i++) {
+                                let pool = biblicalCardsDB.filter(c => !alreadyOwnedIds.includes(c.id) && !drawn.some(d => d.id === c.id));
+                                if (pool.length === 0) {
+                                  pool = biblicalCardsDB.filter(c => !drawn.some(d => d.id === c.id));
+                                }
+                                if (pool.length === 0) pool = biblicalCardsDB;
+
+                                let selected = null;
+                                if (pack.weights) {
+                                  const r = Math.random();
+                                  let cumulative = 0;
+                                  let chosenRarity = 'COMÚN';
+                                  for (const [rarity, weight] of Object.entries(pack.weights)) {
+                                    cumulative += weight;
+                                    if (r <= cumulative) {
+                                      chosenRarity = rarity;
+                                      break;
+                                    }
+                                  }
+                                  const rarityPool = pool.filter(c => c.rarity === chosenRarity);
+                                  if (rarityPool.length > 0) {
+                                    selected = rarityPool[Math.floor(Math.random() * rarityPool.length)];
+                                  }
+                                }
+
+                                if (!selected) {
+                                  selected = pool[Math.floor(Math.random() * pool.length)];
+                                }
+
+                                drawn.push(selected);
+                              }
+
+                              setRevealedPackCards(drawn);
+                              setFlippedIndices([]);
+                              setPackStage('sealed');
+                              setOpeningPack(pack);
+                              playRetroSound('secret');
+                            }}
+                            className={`w-full py-4 rounded-2xl font-black uppercase tracking-wider text-sm transition-all cursor-pointer shadow-lg flex items-center justify-center gap-2 ${
+                              canAfford 
+                                ? 'bg-gradient-to-r from-yellow-500 to-amber-600 hover:from-yellow-400 hover:to-amber-500 text-black hover:scale-105' 
+                                : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                            }`}>
+                            {canAfford ? '⚡ COMPRAR Y ABRIR SOBRE' : '🔒 MONEDAS INSUFICIENTES'}
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* ── SECCIÓN 2: CAJAS DE AVENTURA & COFRES MÍSTICOS (MYSTERY BOXES) ── */}
+              <div className="mb-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="text-3xl animate-bounce">🧰</span>
+                  <div>
+                    <h4 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-yellow-300 uppercase tracking-wider">
+                      CAJAS DE AVENTURA & COFRES MÍSTICOS (4 - 5 CARTAS)
+                    </h4>
+                    <p className="text-slate-400 text-xs">Cofres del Santuario con mayor cantidad de cartas, reliquias arcanas y cartas ultra raras garantizadas.</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {packStoreCatalog.filter(p => p.type === 'caja').map((box) => {
+                    const canAfford = (studentProgress.shekels || 0) >= box.price;
+                    return (
+                      <div key={box.id} className={`bg-gradient-to-b ${box.gradient} border-2 ${box.border} rounded-3xl p-6 flex flex-col justify-between relative overflow-hidden group shadow-2xl transition-all hover:scale-[1.03]`}>
+                        <div className="absolute -top-10 -right-10 w-28 h-28 bg-yellow-400/10 rounded-full blur-xl pointer-events-none"></div>
+
+                        <div>
+                          <div className="flex justify-between items-start mb-4">
+                            <span className={`${box.badge} px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest shadow`}>
+                              {box.tier}
+                            </span>
+                            <span className="text-4xl group-hover:scale-125 transition-transform">{box.icon}</span>
+                          </div>
+
+                          <h4 className="text-xl font-black text-white uppercase tracking-tight mb-2 leading-tight">{box.name}</h4>
+                          <p className="text-slate-300 text-xs leading-relaxed mb-4">{box.description}</p>
+                          
+                          <div className="bg-black/60 p-3 rounded-xl border border-white/10 mb-6 text-[10px] font-mono text-amber-300">
+                            <p className="font-bold mb-1">CONTENIDO:</p>
+                            <p>{box.rates}</p>
+                          </div>
+                        </div>
+
+                        <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+                          <div className="flex justify-between items-center">
+                            <span className="text-slate-400 text-xs font-bold uppercase">PRECIO:</span>
+                            <span className="text-xl font-black text-yellow-400">🪙 {box.price} Shekels</span>
+                          </div>
+
+                          <button
+                            disabled={!canAfford}
+                            onClick={() => {
+                              if (!canAfford) {
+                                alert("No tienes suficientes monedas del Templo 🪙. Juega las misiones de Bomberman & Mario para conseguir más monedas.");
+                                return;
+                              }
+
+                              updateStudentProgress(prev => ({
+                                ...prev,
+                                shekels: (prev.shekels || 0) - box.price,
+                                packsOpened: (prev.packsOpened || 0) + 1
+                              }));
+
+                              const drawCount = box.cardsCount || 4;
+                              const alreadyOwnedIds = studentProgress.unlockedCards || [];
+                              const drawn = [];
+
+                              for (let i = 0; i < drawCount; i++) {
+                                let pool = biblicalCardsDB.filter(c => !alreadyOwnedIds.includes(c.id) && !drawn.some(d => d.id === c.id));
+                                if (pool.length === 0) {
+                                  pool = biblicalCardsDB.filter(c => !drawn.some(d => d.id === c.id));
+                                }
+                                if (pool.length === 0) pool = biblicalCardsDB;
+
+                                let selected = null;
+                                if (box.weights) {
+                                  const r = Math.random();
+                                  let cumulative = 0;
+                                  let chosenRarity = 'COMÚN';
+                                  for (const [rarity, weight] of Object.entries(box.weights)) {
+                                    cumulative += weight;
+                                    if (r <= cumulative) {
+                                      chosenRarity = rarity;
+                                      break;
+                                    }
+                                  }
+                                  const rarityPool = pool.filter(c => c.rarity === chosenRarity);
+                                  if (rarityPool.length > 0) {
+                                    selected = rarityPool[Math.floor(Math.random() * rarityPool.length)];
+                                  }
+                                }
+
+                                if (!selected) {
+                                  selected = pool[Math.floor(Math.random() * pool.length)];
+                                }
+
+                                drawn.push(selected);
+                              }
+
+                              setRevealedPackCards(drawn);
+                              setFlippedIndices([]);
+                              setPackStage('sealed');
+                              setOpeningPack(box);
+                              playRetroSound('secret');
+                            }}
+                            className={`w-full py-3.5 rounded-2xl font-black uppercase tracking-wider text-xs transition-all cursor-pointer shadow-lg flex items-center justify-center gap-2 ${
+                              canAfford 
+                                ? 'bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-black font-black hover:scale-105' 
+                                : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                            }`}>
+                            {canAfford ? '✨ ABRIR COFRE SAGRADO' : '🔒 MONEDAS INSUFICIENTES'}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           )}
 
           {/* ════════════════════════════════════════════════════════════ */}
-          {/* ── PESTAÑA 3: MI ÁLBUM SAGRADO (24 CARTAS & CAPTURA) ────── */}
+          {/* ── PESTAÑA 3: MI ÁLBUM SAGRADO (50 CARTAS ESTILO YU-GI-OH) ─ */}
           {/* ════════════════════════════════════════════════════════════ */}
           {studentTab === 'album' && (
             <div className="relative z-10 w-full max-w-6xl mx-auto pb-20 animate-in fade-in duration-300">
               <div className="text-center md:text-left mb-6 flex flex-col md:flex-row justify-between items-center gap-4 border-b border-indigo-900/40 pb-4">
                 <div>
                   <h3 className="text-2xl sm:text-4xl font-black text-white uppercase tracking-tight flex items-center gap-3">
-                    🃏 CÓDICE DE CARTAS DEL ANTIGUO TESTAMENTO
+                    🃏 CÓDICE YU-GI-OH! DEL ANTIGUO TESTAMENTO
                   </h3>
                   <p className="text-slate-400 text-xs sm:text-sm mt-1">
-                    Colecciona las 24 cartas sagradas. Haz clic en cualquier carta desbloqueada para <strong>descargarla en alta calidad o verla en pantalla completa para captura de pantalla</strong> y presentarla a tu profesor Eder.
+                    Colección oficial de 50 Cartas Sagradas. Toca cualquier carta desbloqueada para abrir el visor holográfico Yu-Gi-Oh! y <strong>descargarla en alta definición o tomarle captura</strong> para mostrarle al profesor Eder Carrasco.
                   </p>
                 </div>
-                <div className="bg-[#101426] border border-purple-500/50 px-5 py-3 rounded-2xl text-center">
-                  <p className="text-purple-300 text-xs font-black uppercase">PROGRESO TOTAL</p>
-                  <p className="text-2xl font-black text-white">{studentProgress.unlockedCards?.length || 0} / 24 <span className="text-xs text-purple-400 font-bold">CARTAS</span></p>
+                <div className="bg-[#101426] border-2 border-amber-500/60 px-6 py-3 rounded-2xl text-center shadow-lg">
+                  <p className="text-amber-400 text-[10px] font-black uppercase tracking-widest">COLECCIÓN TOTAL</p>
+                  <p className="text-2xl font-black text-white">
+                    {studentProgress.unlockedCards?.length || 0} / 50 <span className="text-xs text-yellow-400">({Math.round(((studentProgress.unlockedCards?.length || 0) / 50) * 100)}%)</span>
+                  </p>
                 </div>
               </div>
 
-              {/* Filtros de Categoría */}
-              <div className="flex flex-wrap gap-2 mb-6 justify-center sm:justify-start">
-                {['TODAS', 'LÍDERES', 'HEROÍNAS', 'RELIQUIAS', 'PROFETAS'].map(cat => (
+              {/* Filtro por Categorías */}
+              <div className="flex flex-wrap gap-2 mb-8 justify-center md:justify-start">
+                {['TODAS', 'PATRIARCAS', 'LÍDERES', 'JUECES', 'REYES', 'PROFETAS', 'HEROÍNAS', 'RELIQUIAS'].map(cat => (
                   <button
                     key={cat}
                     onClick={() => setCardFilterCategory(cat)}
                     className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer ${
                       cardFilterCategory === cat 
-                        ? 'bg-purple-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]' 
+                        ? 'bg-gradient-to-r from-amber-500 to-yellow-500 text-black shadow-[0_0_20px_rgba(245,158,11,0.6)] scale-105' 
                         : 'bg-[#101426] text-slate-400 hover:text-white border border-slate-800'
                     }`}>
                     {cat}
@@ -3798,8 +4997,8 @@ export default function OdiseaBiblica() {
                 ))}
               </div>
 
-              {/* Grid de 24 Cartas */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {/* Grid de 50 Cartas Yu-Gi-Oh! */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {biblicalCardsDB.filter(c => cardFilterCategory === 'TODAS' || c.category === cardFilterCategory).map(card => {
                   const isOwned = (studentProgress.unlockedCards || []).includes(card.id);
                   return (
@@ -3811,39 +5010,58 @@ export default function OdiseaBiblica() {
                           playRetroSound('secret');
                         }
                       }}
-                      className={`relative aspect-[5/7] rounded-2xl p-3 flex flex-col justify-between transition-all duration-300 border-2 select-none ${
+                      className={`relative aspect-[5/7] rounded-2xl p-2.5 flex flex-col justify-between transition-all duration-300 border-2 select-none ${
                         isOwned 
-                          ? `bg-gradient-to-b ${card.gradient} ${card.border} cursor-pointer hover:scale-105 hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] shadow-xl` 
-                          : 'bg-[#090b14] border-slate-800 opacity-50 cursor-not-allowed'
+                          ? `bg-gradient-to-b ${card.gradient} ${card.border} cursor-pointer hover:scale-105 hover:shadow-[0_0_30px_rgba(250,204,21,0.5)] shadow-xl ring-1 ring-white/20` 
+                          : 'bg-[#090b14] border-slate-800 opacity-40 cursor-not-allowed'
                       }`}>
                       
-                      {/* Cabecera de la Tarjeta */}
-                      <div className="flex justify-between items-start">
-                        <span className={`text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase ${isOwned ? card.badgeColor : 'bg-slate-800 text-slate-500'}`}>
-                          {card.rarity.substring(0, 3)}
+                      {/* Cabecera Yu-Gi-Oh! */}
+                      <div className="flex justify-between items-center bg-black/50 px-2 py-1 rounded-lg border border-white/10">
+                        <span className={`text-[8px] font-black uppercase tracking-wider ${isOwned ? card.badgeColor : 'text-slate-500'}`}>
+                          {card.rarity.substring(0, 4)}
                         </span>
-                        <span className="text-xl">{isOwned ? card.icon : '❓'}</span>
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs">{isOwned ? card.attributeIcon : '❓'}</span>
+                        </div>
                       </div>
 
-                      {/* Cuerpo de la Tarjeta */}
-                      <div className="text-center my-auto">
-                        <p className={`font-black uppercase tracking-tight line-clamp-2 text-xs leading-tight ${isOwned ? 'text-white drop-shadow' : 'text-slate-600'}`}>
+                      {/* Estrellas Mini */}
+                      {isOwned && (
+                        <div className="flex justify-end gap-0.5 my-0.5 pr-1">
+                          {Array.from({ length: Math.min(10, card.stars || 8) }).map((_, si) => (
+                            <span key={si} className="text-[8px] text-yellow-300">★</span>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Cuerpo de la Carta (Ilustración Central) */}
+                      <div className="text-center my-auto bg-black/40 p-2 rounded-xl border border-white/5">
+                        <span className="text-3xl sm:text-4xl block mb-1">{isOwned ? card.icon : '🔒'}</span>
+                        <p className={`font-black uppercase tracking-tight line-clamp-1 text-[11px] leading-tight ${isOwned ? 'text-white drop-shadow' : 'text-slate-600'}`}>
                           {isOwned ? card.name : 'BLOQUEADA'}
                         </p>
                         {isOwned ? (
-                          <p className="text-[8px] text-cyan-300 font-mono mt-1 truncate">{card.pasaje}</p>
+                          <p className="text-[8px] text-cyan-300 font-mono truncate">{card.pasaje}</p>
                         ) : (
-                          <p className="text-[8px] text-slate-600 font-bold mt-1">Abre sobres 📦</p>
+                          <p className="text-[8px] text-slate-500 font-bold">Abre sobres/cajas</p>
                         )}
                       </div>
 
-                      {/* Pie de la Tarjeta */}
-                      <div className="pt-2 border-t border-white/10 flex justify-between items-center text-[9px] font-black">
-                        <span className={isOwned ? 'text-amber-300' : 'text-slate-600'}>
-                          {isOwned ? `+${card.clanXP} XP` : '???'}
-                        </span>
+                      {/* Pie de Estadísticas ATK / DEF y XP */}
+                      <div className="pt-1.5 border-t border-black/40 bg-black/60 px-2 py-1 rounded-lg text-[9px] font-mono flex flex-col gap-0.5">
+                        <div className="flex justify-between items-center font-black">
+                          <span className={isOwned ? 'text-amber-400' : 'text-slate-600'}>
+                            {isOwned ? `+${card.clanXP} XP` : '???'}
+                          </span>
+                          <span className={isOwned ? 'text-emerald-400' : 'text-slate-600'}>
+                            {isOwned ? `ATK ${card.atk}` : '---'}
+                          </span>
+                        </div>
                         {isOwned && (
-                          <span className="text-[8px] bg-black/50 px-1 py-0.5 rounded text-white">📸 VER</span>
+                          <div className="text-[8px] text-center text-slate-300 font-sans font-bold bg-white/10 rounded py-0.5 hover:bg-white/20 transition-colors">
+                            🔍 ABRIR YU-GI-OH!
+                          </div>
                         )}
                       </div>
                     </div>
@@ -3877,36 +5095,57 @@ export default function OdiseaBiblica() {
                     <h4 className="text-2xl font-black text-white uppercase tracking-tight mt-3 mb-2">
                       LA ODISEA BÍBLICA: EL DESPERTAR
                     </h4>
-                    <p className="text-slate-300 text-xs leading-relaxed italic font-serif">
-                      "El tiempo y el espacio se han fracturado... Siete linajes se levantarán del polvo en el desierto para forjar líderes en la fe."
+                    <p className="text-slate-400 text-xs leading-relaxed mb-4">
+                      "El tiempo y el espacio se han fracturado. El aula ha desaparecido. Siete linajes se levantarán del polvo: La Odisea Bíblica comienza."
                     </p>
                   </div>
-                  <button 
-                    onClick={() => { setStartGlobalCinematic(true); setView('intro_master'); }} 
-                    className="mt-6 w-full bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
-                    <Play className="w-4 h-4"/> REPRODUCIR CINEMÁTICA GLOBAL
-                  </button>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => {
+                        setActiveCinematicModal({
+                          id: 0,
+                          title: "LA ODISEA BÍBLICA: EL DESPERTAR",
+                          videoUrl: "https://www.canva.com/design/DAHRVWYddvQ/QXO9us7EGIsOpJtL_MmRsA/watch?embed",
+                          lore: "El tiempo y el espacio se han fracturado. El aula ha desaparecido. La Odisea Bíblica forjará líderes eternos en el desierto."
+                        });
+                      }}
+                      className="w-full bg-gradient-to-r from-amber-600 to-amber-500 text-black font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer flex items-center justify-center gap-2">
+                      <Play className="w-4 h-4 fill-black"/> VER CINEMÁTICA CON BSO
+                    </button>
+                  </div>
                 </div>
 
-                {/* 5 Misiones */}
-                {soloMissions.map((m) => (
-                  <div key={m.id} className="bg-gradient-to-br from-[#0c0f1f] to-[#060812] border-2 border-indigo-900/60 rounded-3xl p-6 shadow-2xl flex flex-col justify-between">
+                {/* Misiones 1 a 5 */}
+                {soloMissions.map(m => (
+                  <div key={m.id} className="bg-[#0b0e1e] border-2 border-indigo-900/60 rounded-3xl p-6 shadow-2xl flex flex-col justify-between group hover:border-amber-500/60 transition-colors">
                     <div>
-                      <span className="bg-indigo-900/60 text-indigo-300 text-[10px] font-black px-3 py-1 rounded-full uppercase border border-indigo-500/40">
-                        {m.worldNum} • {m.theme}
-                      </span>
-                      <h4 className="text-2xl font-black text-white uppercase tracking-tight mt-3 mb-2">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="bg-indigo-950 text-indigo-300 text-[10px] font-black px-3 py-1 rounded-full uppercase border border-indigo-800">
+                          {m.worldNum} • {m.theme}
+                        </span>
+                        <span className="text-xs text-amber-400 font-mono font-bold">BSO OFICIAL</span>
+                      </div>
+                      <h4 className="text-xl font-black text-white uppercase tracking-tight mt-2 mb-2 group-hover:text-amber-400 transition-colors">
                         {m.title}
                       </h4>
-                      <p className="text-slate-300 text-xs leading-relaxed italic font-serif">
+                      <p className="text-slate-400 text-xs leading-relaxed mb-4 italic">
                         "{m.lore}"
                       </p>
                     </div>
-                    <button 
-                      onClick={() => setActiveCinematicModal(m)} 
-                      className="mt-6 w-full bg-indigo-700 hover:bg-indigo-600 text-white font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
-                      <Play className="w-4 h-4 text-yellow-300"/> VER INTRO CON BSO ({m.worldNum})
-                    </button>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => {
+                          setActiveCinematicModal({
+                            id: m.id,
+                            title: m.title,
+                            videoUrl: m.videoUrl,
+                            lore: m.lore
+                          });
+                        }}
+                        className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer flex items-center justify-center gap-2">
+                        <Play className="w-4 h-4 fill-black"/> VER INTRO CON BSO
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -3919,38 +5158,39 @@ export default function OdiseaBiblica() {
           </button>
 
           {/* ════════════════════════════════════════════════════════════ */}
-          {/* ── MODAL 1: APERTURA DE SOBRES EN 3D (PACK OPENING) ──────── */}
+          {/* ── MODAL 1: APERTURA DE SOBRES Y CAJAS DE AVENTURA 3D ───── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {openingPack && (
-            <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 animate-in fade-in">
-              <div className="max-w-4xl w-full bg-[#0d1022] border-2 border-yellow-500/70 rounded-3xl p-6 sm:p-10 text-center relative shadow-[0_0_100px_rgba(234,179,8,0.4)] flex flex-col items-center">
+            <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 animate-in fade-in overflow-y-auto">
+              <div className="max-w-5xl w-full bg-[#0d1022] border-2 border-yellow-500/70 rounded-3xl p-6 sm:p-10 text-center relative shadow-[0_0_100px_rgba(234,179,8,0.4)] flex flex-col items-center my-auto">
                 
                 <h3 className="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-white to-amber-400 uppercase tracking-tight mb-1">
-                  📦 {openingPack.name}
+                  {openingPack.type === 'caja' ? '🧰' : '📦'} {openingPack.name}
                 </h3>
                 <p className="text-amber-400 text-xs sm:text-sm font-bold uppercase tracking-widest mb-6">
-                  {packStage === 'sealed' ? 'SOBRE SELLADO • TOCA EL SOBRE PARA RASGARLO' : '¡TOCA CADA CARTA PARA REVELARLA Y SUMAR XP A TU CLAN!'}
+                  {packStage === 'sealed' ? '✨ TOCA EL COFRE/SOBRE PARA ABRIRLO Y REVELAR TUS CARTAS ✨' : '🎴 TOCA CADA CARTA PARA REVELAR SU PODER YU-GI-OH!'}
                 </p>
 
                 {packStage === 'sealed' ? (
-                  <div className="flex flex-col items-center my-8 animate-in zoom-in">
+                  <div className="my-10 flex flex-col items-center justify-center">
                     <div 
                       onClick={() => { setPackStage('opened'); playRetroSound('powerup'); }}
-                      className="w-48 h-64 sm:w-56 sm:h-76 bg-gradient-to-b from-amber-600 via-yellow-500 to-amber-800 rounded-3xl border-4 border-yellow-300 p-6 flex flex-col items-center justify-between shadow-[0_0_50px_rgba(245,158,11,0.8)] cursor-pointer hover:scale-110 transition-transform animate-pulse">
-                      <span className="text-xs font-black uppercase text-black bg-white/80 px-3 py-1 rounded-full">
+                      className="w-56 h-72 sm:w-64 sm:h-80 bg-gradient-to-b from-amber-500 via-yellow-500 to-amber-800 rounded-3xl border-4 border-yellow-200 p-6 flex flex-col items-center justify-between shadow-[0_0_60px_rgba(245,158,11,0.9)] cursor-pointer hover:scale-110 transition-transform animate-pulse select-none">
+                      <span className="text-xs font-black uppercase text-black bg-white/90 px-4 py-1 rounded-full shadow">
                         {openingPack.tier}
                       </span>
-                      <span className="text-6xl sm:text-7xl">📦</span>
-                      <span className="text-xs font-black uppercase text-black tracking-widest">
+                      <span className="text-7xl sm:text-8xl">{openingPack.icon}</span>
+                      <span className="text-xs font-black uppercase text-black tracking-widest bg-amber-300 px-3 py-1 rounded-lg">
                         ¡TOCA PARA ABRIR!
                       </span>
                     </div>
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 my-6 w-full max-w-3xl animate-in zoom-in">
+                  <div className={`grid grid-cols-1 sm:grid-cols-${Math.min(5, revealedPackCards.length)} gap-4 my-6 w-full max-w-5xl animate-in zoom-in`}>
                     {revealedPackCards.map((card, cIdx) => {
                       const isFlipped = flippedIndices.includes(cIdx);
                       const isAlreadyOwned = (studentProgress.unlockedCards || []).includes(card.id);
+                      const isMasterUser = Boolean(studentAuth?.isGodMode || studentAuth?.clanId === 'all');
 
                       return (
                         <div 
@@ -3961,61 +5201,74 @@ export default function OdiseaBiblica() {
                               playRetroSound('powerup');
 
                               if (!isAlreadyOwned) {
-                                // Agregar a colección
                                 updateStudentProgress(prev => ({
                                   ...prev,
                                   unlockedCards: [...(prev.unlockedCards || []), card.id]
                                 }));
 
-                                // SUMAR PUNTOS DIRECTOS AL CLAN!
-                                if (studentAuth?.clanId) {
+                                // APLICAR PUNTOS DIRECTOS (SI ES MAESTRO, A TODOS LOS CLANES DE TODOS LOS SALONES!)
+                                if (isMasterUser) {
+                                  updateScore('all', card.clanXP, 'all');
+                                } else if (studentAuth?.clanId) {
                                   updateScore(studentAuth.clanId, card.clanXP, studentAuth.aula);
                                 }
                               } else {
-                                // Bendición de carta duplicada (+15 XP)
-                                if (studentAuth?.clanId) {
-                                  updateScore(studentAuth.clanId, 15, studentAuth.aula);
+                                // BENDICIÓN DE CARTA DUPLICADA (+20 XP)
+                                if (isMasterUser) {
+                                  updateScore('all', 20, 'all');
+                                } else if (studentAuth?.clanId) {
+                                  updateScore(studentAuth.clanId, 20, studentAuth.aula);
                                 }
                               }
                             }
                           }}
-                          className={`aspect-[5/7] rounded-3xl p-4 flex flex-col justify-between border-2 transition-all cursor-pointer shadow-2xl relative select-none ${
+                          className={`aspect-[5/7] rounded-2xl p-3 flex flex-col justify-between border-2 transition-all cursor-pointer shadow-2xl relative select-none ${
                             !isFlipped 
                               ? 'bg-gradient-to-b from-[#1c1833] to-[#0a0717] border-amber-500/80 hover:scale-105 shadow-[0_0_20px_rgba(245,158,11,0.3)] animate-pulse' 
-                              : `bg-gradient-to-b ${card.gradient} ${card.border} shadow-[0_0_35px_rgba(255,255,255,0.4)] animate-in zoom-in`
+                              : `bg-gradient-to-b ${card.gradient} ${card.border} shadow-[0_0_35px_rgba(255,255,255,0.4)] animate-in zoom-in ring-1 ring-white/30`
                           }`}>
 
                           {!isFlipped ? (
                             <div className="w-full h-full flex flex-col items-center justify-center text-center">
-                              <span className="text-4xl sm:text-5xl mb-3">🎴</span>
+                              <span className="text-4xl sm:text-5xl mb-2">🎴</span>
                               <span className="text-xs font-black uppercase text-amber-300 tracking-wider">
-                                TOCA PARA REVELAR
+                                REVELAR CARTA
                               </span>
                             </div>
                           ) : (
                             <>
-                              <div className="flex justify-between items-start">
-                                <span className={`${card.badgeColor} text-[9px] font-black px-2 py-0.5 rounded-full uppercase`}>
-                                  {card.rarity}
+                              <div className="flex justify-between items-center bg-black/60 px-2 py-0.5 rounded-lg border border-white/10">
+                                <span className={`${card.badgeColor} text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase`}>
+                                  {card.rarity.substring(0, 4)}
                                 </span>
-                                <span className="text-2xl">{card.icon}</span>
+                                <span className="text-sm">{card.attributeIcon}</span>
                               </div>
 
-                              <div className="text-center my-auto">
-                                <h5 className="font-black text-white text-sm uppercase leading-tight line-clamp-2 drop-shadow">
+                              <div className="flex justify-end gap-0.5 pr-1">
+                                {Array.from({ length: Math.min(8, card.stars || 8) }).map((_, si) => (
+                                  <span key={si} className="text-[7px] text-yellow-300">★</span>
+                                ))}
+                              </div>
+
+                              <div className="text-center my-auto bg-black/40 p-2 rounded-xl">
+                                <span className="text-3xl block mb-1">{card.icon}</span>
+                                <h5 className="font-black text-white text-xs uppercase leading-tight line-clamp-1 drop-shadow">
                                   {card.name}
                                 </h5>
-                                <p className="text-[10px] text-cyan-300 font-mono mt-1">{card.pasaje}</p>
+                                <p className="text-[8px] text-cyan-300 font-mono mt-0.5">{card.pasaje}</p>
                               </div>
 
-                              <div className="pt-2 border-t border-white/20 text-center">
+                              <div className="pt-1.5 border-t border-black/40 bg-black/70 px-2 py-1 rounded-lg text-center">
+                                <div className="text-[8px] font-mono font-bold text-slate-300 mb-0.5">
+                                  ATK {card.atk} / DEF {card.def}
+                                </div>
                                 {!isAlreadyOwned ? (
-                                  <span className="bg-emerald-500 text-black text-[9px] font-black px-2 py-1 rounded-full uppercase tracking-wider block">
-                                    ✨ ¡NUEVA! +{card.clanXP} XP AL CLAN
+                                  <span className="bg-emerald-500 text-black text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider block">
+                                    ✨ +{card.clanXP} XP AL CLAN
                                   </span>
                                 ) : (
-                                  <span className="bg-purple-900 text-purple-200 text-[9px] font-bold px-2 py-1 rounded-full uppercase block">
-                                    REPETIDA (+15 XP BENDICIÓN)
+                                  <span className="bg-purple-900 text-purple-200 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase block">
+                                    REPETIDA (+20 XP)
                                   </span>
                                 )}
                               </div>
@@ -4028,17 +5281,17 @@ export default function OdiseaBiblica() {
                 )}
 
                 {/* Botones de Cierre */}
-                {packStage === 'opened' && flippedIndices.length === 3 && (
+                {packStage === 'opened' && flippedIndices.length === revealedPackCards.length && (
                   <div className="flex flex-wrap gap-4 justify-center mt-6 animate-in slide-in-from-bottom-4">
                     <button 
                       onClick={() => { setOpeningPack(null); setStudentTab('album'); }}
-                      className="bg-purple-700 hover:bg-purple-600 text-white font-black uppercase tracking-wider px-8 py-3.5 rounded-2xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer">
-                      🃏 VER MI COLECCIÓN EN EL ÁLBUM
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider px-8 py-3.5 rounded-2xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer">
+                      🃏 IR A MI ÁLBUM SAGRADO
                     </button>
                     <button 
                       onClick={() => setOpeningPack(null)} 
                       className="bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-wider px-8 py-3.5 rounded-2xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer">
-                      📦 ABRIR OTRO SOBRE
+                      🛍️ ABRIR OTRA CAJA / SOBRE
                     </button>
                   </div>
                 )}
@@ -4048,18 +5301,18 @@ export default function OdiseaBiblica() {
           )}
 
           {/* ════════════════════════════════════════════════════════════ */}
-          {/* ── MODAL 2: VISOR HOLOGRÁFICO & CAPTURA DE PANTALLA ─────── */}
+          {/* ── MODAL 2: VISOR HOLOGRÁFICO YU-GI-OH! & CAPTURA ───────── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {inspectingCard && (
-            <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 animate-in zoom-in duration-300">
+            <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-3 sm:p-6 animate-in zoom-in duration-300 overflow-y-auto">
               
               {!fullScreenCaptureMode ? (
-                <div className="max-w-xl w-full bg-[#0a0c16] border-2 border-amber-500/80 rounded-3xl p-6 sm:p-8 flex flex-col items-center relative shadow-[0_0_80px_rgba(245,158,11,0.5)]">
+                <div className="max-w-2xl w-full bg-[#0a0c16] border-2 border-amber-500/80 rounded-3xl p-4 sm:p-8 flex flex-col items-center relative shadow-[0_0_80px_rgba(245,158,11,0.5)] my-auto">
                   
                   {/* Encabezado con Botón Cerrar */}
-                  <div className="w-full flex justify-between items-center border-b border-white/10 pb-4 mb-6">
+                  <div className="w-full flex justify-between items-center border-b border-white/10 pb-3 mb-4">
                     <span className="text-amber-400 text-xs font-black uppercase tracking-widest flex items-center gap-2">
-                      <Sparkles className="w-4 h-4"/> TARJETA COLECCIONABLE OFICIAL
+                      <Sparkles className="w-4 h-4"/> CARTA OFICIAL YU-GI-OH! • COLECCIÓN SAGRADA
                     </span>
                     <button 
                       onClick={() => setInspectingCard(null)} 
@@ -4068,37 +5321,66 @@ export default function OdiseaBiblica() {
                     </button>
                   </div>
 
-                  {/* Tarjeta Enmarcada */}
-                  <div className={`w-72 sm:w-80 aspect-[5/7] rounded-3xl p-6 flex flex-col justify-between border-4 ${inspectingCard.border} bg-gradient-to-b ${inspectingCard.gradient} shadow-[0_0_40px_rgba(255,255,255,0.4)] relative mb-6 select-none`}>
-                    <div className="flex justify-between items-start">
-                      <span className={`${inspectingCard.badgeColor} text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider`}>
-                        {inspectingCard.rarity}
-                      </span>
-                      <span className="text-4xl">{inspectingCard.icon}</span>
-                    </div>
-
-                    <div className="text-center my-auto">
-                      <h4 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight drop-shadow-md">
+                  {/* ── CARTA YU-GI-OH! FÍSICA AUTÉNTICA EN PANTALLA ── */}
+                  <div className="w-72 sm:w-84 aspect-[5/7.2] rounded-2xl p-3 sm:p-4 flex flex-col justify-between border-8 border-[#26170d] bg-gradient-to-b from-[#8c4a1e] via-[#6d3916] to-[#42220b] shadow-[0_0_50px_rgba(245,158,11,0.6)] relative mb-6 select-none ring-2 ring-yellow-400/60">
+                    
+                    {/* Barra de Título Yu-Gi-Oh! */}
+                    <div className="bg-black/60 border-2 border-yellow-300/80 px-2 py-1.5 rounded-lg flex justify-between items-center shadow-inner">
+                      <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-tight truncate max-w-[210px] font-serif">
                         {inspectingCard.name}
                       </h4>
-                      <p className="text-xs text-cyan-300 font-mono mt-1 font-bold">« {inspectingCard.pasaje} »</p>
-                      <p className="text-xs text-yellow-200 italic mt-3 font-serif line-clamp-3 bg-black/40 p-2.5 rounded-xl border border-white/10">
-                        {inspectingCard.quote}
-                      </p>
+                      <div className="w-6 h-6 rounded-full bg-slate-900 border border-amber-400 flex items-center justify-center text-xs shrink-0 shadow">
+                        {inspectingCard.attributeIcon || '🌟'}
+                      </div>
                     </div>
 
-                    {/* Sello de Identidad del Recluta */}
-                    <div className="bg-black/70 p-2.5 rounded-xl border border-white/20 text-center">
-                      <p className="text-[10px] font-black text-amber-400 uppercase tracking-widest">
-                        RECLUTA: {studentAuth.name.toUpperCase()}
-                      </p>
-                      <p className="text-[9px] text-slate-300 font-bold uppercase">
-                        CLAN: {clansData.find(c=>c.id===studentAuth.clanId)?.name || 'SAGRADO'} • SALÓN: {studentAuth.aula}
-                      </p>
-                      <p className="text-[8px] text-emerald-400 font-black mt-0.5">
-                        VALOR: +{inspectingCard.clanXP} XP AL CLAN
-                      </p>
+                    {/* Fila de Estrellas de Nivel (Level Stars) */}
+                    <div className="flex justify-end gap-1 px-1 my-1">
+                      {Array.from({ length: Math.min(12, inspectingCard.stars || 8) }).map((_, si) => (
+                        <div key={si} className="w-4 h-4 rounded-full bg-orange-600 border border-yellow-300 flex items-center justify-center text-[10px] shadow-sm">
+                          ⭐
+                        </div>
+                      ))}
                     </div>
+
+                    {/* Marco de Arte Metálico Central */}
+                    <div className="w-full aspect-[4/3] bg-gradient-to-b from-slate-950 via-indigo-950 to-black rounded-lg border-4 border-slate-400 p-2 flex items-center justify-center shadow-inner relative overflow-hidden my-1">
+                      <span className="text-6xl sm:text-7xl drop-shadow-[0_0_20px_rgba(255,255,255,0.8)] animate-pulse">
+                        {inspectingCard.icon}
+                      </span>
+                      <span className="absolute bottom-1 right-1 text-[8px] font-mono text-yellow-300 bg-black/70 px-1 rounded">
+                        {inspectingCard.serialCode || 'ODISEA-ES001'}
+                      </span>
+                    </div>
+
+                    {/* Caja de Efecto Yu-Gi-Oh! (Pergamino Dorado) */}
+                    <div className="bg-[#fef3c7] border-2 border-black p-2 rounded-lg text-black text-left flex flex-col justify-between shadow-inner">
+                      <div className="text-[10px] font-black uppercase text-slate-900 font-sans border-b border-black/30 pb-0.5">
+                        {inspectingCard.monsterType || '[GUERRERO / PROFETA / EFECTO]'}
+                      </div>
+                      <p className="text-[9px] text-amber-900 italic font-serif my-1 leading-tight line-clamp-2">
+                        "{inspectingCard.quote}" <span className="font-bold text-sky-800 not-italic">«{inspectingCard.pasaje}»</span>
+                      </p>
+                      <p className="text-[9px] font-sans font-bold text-slate-950 leading-tight line-clamp-2">
+                        <span className="text-indigo-950 font-black">{inspectingCard.effectName || '[EFECTO DEL PACTO]'}</span> {inspectingCard.power}
+                      </p>
+
+                      <div className="border-t border-black/40 pt-1 mt-1 flex justify-between items-center text-[10px] font-black font-mono">
+                        <span className="text-emerald-800">XP: +{inspectingCard.clanXP}</span>
+                        <span>ATK / {inspectingCard.atk || 2800}   DEF / {inspectingCard.def || 2400}</span>
+                      </div>
+                    </div>
+
+                    {/* Pie de Firma del Recluta y Holograma */}
+                    <div className="flex justify-between items-center mt-1 px-1">
+                      <span className="text-[8px] text-yellow-200 font-bold uppercase truncate max-w-[220px]">
+                        RECLUTA: {studentAuth?.name?.toUpperCase()} • {studentAuth?.isGodMode ? 'MODO MAESTRO' : 'CLAN ' + (clansData.find(c=>c.id===studentAuth?.clanId)?.name || 'SAGRADO')}
+                      </span>
+                      <div className="w-4 h-4 bg-yellow-400 border border-white text-[6px] text-black font-black flex items-center justify-center shadow">
+                        SEAL
+                      </div>
+                    </div>
+
                   </div>
 
                   {/* Botones de Captura y Descarga */}
@@ -4106,7 +5388,7 @@ export default function OdiseaBiblica() {
                     <button 
                       onClick={() => downloadCardImage(inspectingCard)} 
                       className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
-                      📸 DESCARGAR TARJETA (PNG)
+                      📸 DESCARGAR YU-GI-OH! (PNG)
                     </button>
                     <button 
                       onClick={() => setFullScreenCaptureMode(true)} 
@@ -4118,56 +5400,83 @@ export default function OdiseaBiblica() {
                 </div>
               ) : (
                 /* Modo Enfoque Limpio para Captura de Pantalla en Celular o PC */
-                <div className="flex flex-col items-center justify-center text-center animate-in zoom-in">
-                  <div className={`w-80 sm:w-96 aspect-[5/7] rounded-3xl p-6 sm:p-8 flex flex-col justify-between border-4 ${inspectingCard.border} bg-gradient-to-b ${inspectingCard.gradient} shadow-[0_0_80px_rgba(255,255,255,0.6)] mb-6 select-none`}>
-                    <div className="flex justify-between items-start">
-                      <span className={`${inspectingCard.badgeColor} text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider`}>
-                        ★ {inspectingCard.rarity} ★
-                      </span>
-                      <span className="text-5xl">{inspectingCard.icon}</span>
-                    </div>
-
-                    <div className="text-center my-auto">
-                      <h4 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight drop-shadow-md">
+                <div className="flex flex-col items-center justify-center text-center animate-in zoom-in select-none my-auto">
+                  <div className="w-80 sm:w-96 aspect-[5/7.2] rounded-3xl p-5 flex flex-col justify-between border-8 border-[#26170d] bg-gradient-to-b from-[#8c4a1e] via-[#6d3916] to-[#42220b] shadow-[0_0_80px_rgba(250,204,21,0.8)] mb-4 ring-4 ring-yellow-400/80">
+                    
+                    {/* Barra de Título */}
+                    <div className="bg-black/60 border-2 border-yellow-300 px-3 py-2 rounded-xl flex justify-between items-center shadow-inner">
+                      <h4 className="text-sm sm:text-base font-black text-white uppercase tracking-tight font-serif truncate max-w-[260px]">
                         {inspectingCard.name}
                       </h4>
-                      <p className="text-sm text-cyan-300 font-mono mt-1 font-bold">« {inspectingCard.pasaje} »</p>
-                      <p className="text-sm text-yellow-200 italic mt-4 font-serif bg-black/50 p-3 rounded-2xl border border-white/20">
-                        {inspectingCard.quote}
-                      </p>
-                      <p className="text-xs text-slate-200 mt-2 font-sans font-bold">
-                        {inspectingCard.power}
-                      </p>
+                      <div className="w-8 h-8 rounded-full bg-slate-900 border-2 border-amber-400 flex items-center justify-center text-sm shrink-0">
+                        {inspectingCard.attributeIcon || '🌟'}
+                      </div>
                     </div>
 
-                    <div className="bg-black/80 p-3 rounded-2xl border border-white/30 text-center">
-                      <p className="text-xs font-black text-amber-400 uppercase tracking-widest">
-                        RECLUTA OFICIAL: {studentAuth.name.toUpperCase()}
-                      </p>
-                      <p className="text-[10px] text-slate-300 font-bold uppercase mt-0.5">
-                        CLAN: {clansData.find(c=>c.id===studentAuth.clanId)?.name || 'SAGRADO'} • SALÓN {studentAuth.aula}
-                      </p>
-                      <p className="text-[9px] text-slate-400 mt-1 font-mono">
-                        CERTIFICADO OFICIAL LA ODISEA BÍBLICA 2026 - PROF. EDER CARRASCO
-                      </p>
+                    {/* Estrellas de Nivel */}
+                    <div className="flex justify-end gap-1 px-1 my-1">
+                      {Array.from({ length: Math.min(12, inspectingCard.stars || 8) }).map((_, si) => (
+                        <div key={si} className="w-5 h-5 rounded-full bg-orange-600 border border-yellow-300 flex items-center justify-center text-xs shadow">
+                          ⭐
+                        </div>
+                      ))}
                     </div>
+
+                    {/* Marco de Arte Central */}
+                    <div className="w-full aspect-[4/3] bg-gradient-to-b from-slate-950 via-indigo-950 to-black rounded-xl border-4 border-slate-300 p-4 flex items-center justify-center shadow-2xl relative overflow-hidden my-2">
+                      <span className="text-7xl sm:text-8xl drop-shadow-[0_0_30px_rgba(255,255,255,0.9)] animate-pulse">
+                        {inspectingCard.icon}
+                      </span>
+                      <span className="absolute bottom-1 right-2 text-[10px] font-mono text-yellow-300 bg-black/80 px-2 py-0.5 rounded">
+                        {inspectingCard.serialCode || 'ODISEA-ES001'}
+                      </span>
+                    </div>
+
+                    {/* Caja de Efecto */}
+                    <div className="bg-[#fef3c7] border-2 border-black p-3 rounded-xl text-black text-left flex flex-col justify-between shadow-2xl">
+                      <div className="text-xs font-black uppercase text-slate-900 font-sans border-b border-black/30 pb-1">
+                        {inspectingCard.monsterType || '[GUERRERO / PROFETA / EFECTO]'}
+                      </div>
+                      <p className="text-[11px] text-amber-950 italic font-serif my-1.5 leading-snug">
+                        "{inspectingCard.quote}" <span className="font-bold text-sky-800 not-italic">«{inspectingCard.pasaje}»</span>
+                      </p>
+                      <p className="text-[10px] font-sans font-bold text-slate-950 leading-snug">
+                        <span className="text-indigo-950 font-black">{inspectingCard.effectName || '[EFECTO DEL PACTO]'}</span> {inspectingCard.power}
+                      </p>
+
+                      <div className="border-t border-black/40 pt-1.5 mt-1.5 flex justify-between items-center text-xs font-black font-mono">
+                        <span className="text-emerald-800">VALOR CLAN: +{inspectingCard.clanXP} XP</span>
+                        <span>ATK / {inspectingCard.atk || 2800}   DEF / {inspectingCard.def || 2400}</span>
+                      </div>
+                    </div>
+
+                    {/* Pie de Certificación y Holograma */}
+                    <div className="flex justify-between items-center mt-2 px-1">
+                      <span className="text-[9px] text-yellow-200 font-bold uppercase truncate max-w-[260px]">
+                        CERTIFICADO: {studentAuth?.name?.toUpperCase()} • {studentAuth?.isGodMode ? 'MODO MAESTRO' : 'CLAN ' + (clansData.find(c=>c.id===studentAuth?.clanId)?.name || 'SAGRADO')} • SALÓN {studentAuth?.aula}
+                      </span>
+                      <div className="w-5 h-5 bg-yellow-400 border border-white text-[7px] text-black font-black flex items-center justify-center shadow">
+                        SEAL
+                      </div>
+                    </div>
+
                   </div>
+
+                  <p className="text-slate-400 text-xs mb-4">
+                    📸 Toma tu captura de pantalla ahora (Power + Vol Abajo en celular, o Win+Shift+S en PC)
+                  </p>
 
                   <button 
                     onClick={() => setFullScreenCaptureMode(false)} 
-                    className="bg-white/20 hover:bg-white/40 text-white font-black uppercase tracking-wider px-8 py-3 rounded-xl text-xs transition-colors cursor-pointer">
-                    ⬅️ VOLVER AL PANEL
+                    className="bg-slate-800 hover:bg-slate-700 text-white font-bold uppercase tracking-wider px-8 py-3 rounded-xl text-xs transition-colors cursor-pointer border border-slate-600">
+                    VOLVER AL MENÚ
                   </button>
-                  <p className="text-slate-400 text-xs mt-3">
-                    📸 Toma una captura de pantalla ahora (Power + Vol Abajo en celular, o Win+Shift+S en PC)
-                  </p>
                 </div>
               )}
 
             </div>
           )}
 
-          {/* ════════════════════════════════════════════════════════════ */}
           {/* ── MODAL 3: REPRODUCTOR DE CINEMÁTICA CON BSO ───────────── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {activeCinematicModal && (
