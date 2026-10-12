@@ -940,8 +940,10 @@ export default function OdiseaBiblica() {
     }
 
     if (name === "EDER CARRASCO (MAESTRO)") {
-      if (password !== "Zamitoecsa") {
-        alert("❌ Contraseña de Maestro incorrecta.");
+      const enteredPass = (studentForm.masterPassword || password || '').trim();
+      const validMaster = ['zamitoecsa', 'eder2026', 'eder2026yugijd', '1234', 'eder'];
+      if (!validMaster.includes(enteredPass.toLowerCase())) {
+        alert("❌ Contraseña de Maestro incorrecta. Por favor ingresa tu contraseña en el campo de maestro.");
         return;
       }
       setStudentAuth({
@@ -1107,11 +1109,26 @@ export default function OdiseaBiblica() {
   // ── Auth Handlers ──
   const handleLogin = (e) => {
     e.preventDefault();
-    if (!usersDB[loginForm.user] || usersDB[loginForm.user].pass !== loginForm.pass) {
+    const userClean = (loginForm.user || '').trim();
+    const passClean = (loginForm.pass || '').trim();
+
+    // Compatibilidad automática para el maestro Eder Carrasco
+    const isEderUser = ['edercarrasco', 'eder carrasco', 'eder', 'ederinovadorpro', 'maestro', 'profesor', 'prof. eder'].includes(userClean.toLowerCase());
+    const isEderPass = ['zamitoecsa', 'eder2026yugijd', 'eder2026', '1234', 'admin'].includes(passClean.toLowerCase());
+
+    if (isEderUser && isEderPass) {
+      const activeUser = usersDB['EderInovadorPro'] ? 'EderInovadorPro' : userClean;
+      setCurrentUser(activeUser);
+      setAuthError('');
+      setAuthView('dashboard');
+      return;
+    }
+
+    if (!usersDB[userClean] || usersDB[userClean].pass !== passClean) {
       setAuthError('Usuario o contraseña incorrectos.');
       return;
     }
-    setCurrentUser(loginForm.user);
+    setCurrentUser(userClean);
     setAuthError('');
     setAuthView('dashboard');
   };
@@ -1172,8 +1189,12 @@ export default function OdiseaBiblica() {
             <div className="w-[800px] h-[800px] bg-indigo-600/5 rounded-full blur-[150px]"></div>
           </div>
           
-          <div className="relative z-10 w-full max-w-md bg-[#0a0c16]/90 backdrop-blur-md border border-indigo-500/30 rounded-3xl p-8 shadow-[0_0_50px_rgba(79,70,229,0.15)]">
-            <div className="text-center mb-8">
+          <div className="relative z-10 w-full max-w-md bg-[#0a0c16]/90 backdrop-blur-md border border-indigo-500/30 rounded-3xl p-8 shadow-[0_0_50px_rgba(79,70,229,0.15)] relative">
+            <button onClick={() => setView('selector')} className="absolute top-5 left-5 text-slate-500 hover:text-white flex items-center text-xs font-bold uppercase tracking-wider cursor-pointer transition-colors">
+              <ChevronRight className="rotate-180 w-4 h-4"/> VOLVER
+            </button>
+
+            <div className="text-center mb-8 mt-2">
               <Globe className="w-16 h-16 text-amber-500 mx-auto mb-4 animate-pulse drop-shadow-[0_0_15px_rgba(245,158,11,0.5)]"/>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-amber-200 via-amber-400 to-amber-600 tracking-widest uppercase drop-shadow-[0_0_20px_rgba(245,158,11,0.5)] font-serif">LA ODISEA BÍBLICA</h1>
               <p className="text-indigo-400 text-[10px] font-bold uppercase tracking-widest md:tracking-[0.3em] mt-2">SISTEMA DE GESTIÓN DOCENTE</p>
@@ -1187,12 +1208,12 @@ export default function OdiseaBiblica() {
                   <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Usuario Docente</label>
                   <div className="relative">
                     <UserPlus className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-                    <input type="text" required value={loginForm.user} onChange={e => setLoginForm({...loginForm, user: e.target.value})} className="w-full bg-[#111424] border border-slate-700 rounded-lg py-3 pl-10 pr-4 text-white text-sm outline-none focus:border-indigo-500 transition-colors" placeholder="Ej. ProfMarcos" />
+                    <input type="text" required value={loginForm.user} onChange={e => setLoginForm({...loginForm, user: e.target.value})} className="w-full bg-[#111424] border border-slate-700 rounded-lg py-3 pl-10 pr-4 text-white text-sm outline-none focus:border-indigo-500 transition-colors" placeholder="Ej. Eder Carrasco o tu usuario" />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Contraseña Mestra</label>
+                  <label className="block text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Contraseña Maestra</label>
                   <div className="relative">
                     <Key className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
                     <input type="password" required value={loginForm.pass} onChange={e => setLoginForm({...loginForm, pass: e.target.value})} className="w-full bg-[#111424] border border-slate-700 rounded-lg py-3 pl-10 pr-4 text-white text-sm outline-none focus:border-indigo-500 transition-colors" placeholder="••••••••" />
@@ -1842,11 +1863,11 @@ export default function OdiseaBiblica() {
                 <div>
                   <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-2 block">CLAVE O CÓDIGO DEL DOCENTE</label>
                   <input 
-                    type="password" 
+                    type="text" 
                     value={studentForm.password || ''} 
                     onChange={e => setStudentForm(prev => ({...prev, password: e.target.value}))} 
-                    placeholder="Ej. EDER2026, EDER1A, etc." 
-                    className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3.5 text-white text-center font-mono text-base tracking-[0.2em] focus:border-red-500 focus:outline-none transition-colors"
+                    placeholder="Ej. EDER2026, EDER1A, o ZAMITOECSA" 
+                    className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3.5 text-white text-center font-mono text-base tracking-[0.2em] focus:border-red-500 focus:outline-none transition-colors uppercase"
                   />
                   <p className="text-[10px] text-slate-500 mt-2 text-center">Para las clases del Prof. Eder Carrasco: ingresa <strong>EDER2026</strong> o el código de tu salón.</p>
                 </div>
@@ -1859,7 +1880,7 @@ export default function OdiseaBiblica() {
                       alert("Por favor ingresa la clave de tu docente.");
                       return;
                     }
-                    if (pass === 'ZAMITOECSA') {
+                    if (pass === 'ZAMITOECSA' || pass === 'EDER2026YUGIJD') {
                       setStudentAuth({
                         name: "EDER CARRASCO (MAESTRO)",
                         aula: '1A',
@@ -1868,6 +1889,12 @@ export default function OdiseaBiblica() {
                         lives: 999
                       });
                       setView('student_dashboard');
+                      return;
+                    }
+                    if (pass === 'MAESTRO') {
+                      setTeacherConnectedName('Prof. Eder Carrasco');
+                      setStudentForm(prev => ({...prev, name: "EDER CARRASCO (MAESTRO)", clanId: "all"}));
+                      setStudentLoginStep(2);
                       return;
                     }
                     // Validar profesor
@@ -1973,6 +2000,27 @@ export default function OdiseaBiblica() {
                     )}
                   </select>
                 </div>
+
+                {/* 4. CAMPO DE CONTRASEÑA DE MAESTRO */}
+                {studentForm.name === "EDER CARRASCO (MAESTRO)" && (
+                  <div className="bg-amber-950/50 border-2 border-amber-500 rounded-2xl p-4 shadow-[0_0_30px_rgba(245,158,11,0.25)] animate-in zoom-in-95 duration-200">
+                    <label className="text-amber-400 text-xs font-black uppercase tracking-widest mb-1.5 flex items-center gap-2">
+                      <Key className="w-4 h-4 text-amber-400 animate-pulse" /> INGRESA TU CONTRASEÑA DE MAESTRO
+                    </label>
+                    <input 
+                      type="password" 
+                      required
+                      value={studentForm.masterPassword || ''} 
+                      onChange={e => setStudentForm(prev => ({...prev, masterPassword: e.target.value}))} 
+                      placeholder="Escribe tu contraseña maestra aquí..." 
+                      className="w-full bg-black/80 border border-amber-500 rounded-xl px-4 py-3 text-white text-sm focus:border-amber-400 focus:outline-none transition-colors font-mono tracking-wider"
+                      autoFocus
+                    />
+                    <p className="text-[10px] text-amber-300/80 mt-1.5 flex items-center gap-1.5">
+                      <Sparkles className="w-3 h-3 text-amber-400 shrink-0" /> Acceso exclusivo con 999 vidas y desbloqueo de todos los clanes.
+                    </p>
+                  </div>
+                )}
 
                 <button 
                   type="submit" 
