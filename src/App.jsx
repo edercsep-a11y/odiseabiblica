@@ -1065,6 +1065,14 @@ export default function OdiseaBiblica() {
     localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(newDb));
   };
 
+  // ── Protección de Navegación: Evitar pantallas negras en Campamento Base ──
+  useEffect(() => {
+    if (view === 'campamento_base' && !selectedClass) {
+      const defaultRoom = currentClassrooms[0]?.id || '1A';
+      setSelectedClass(defaultRoom);
+    }
+  }, [view, selectedClass, currentClassrooms]);
+
   const isMissionActive = (view === 'mision1' && m1Fase > 0) || (view === 'mision2' && m2Fase > 0) || (view === 'mision3' && m3Fase > 0) || (view === 'mision4' && m4Fase > 0);
 
   // ── Helper Component for A4 Pages ──
@@ -1717,13 +1725,33 @@ export default function OdiseaBiblica() {
           </div>
 
           {!startGlobalCinematic ? (
-            <div className="relative z-10 text-center flex flex-col items-center animate-in fade-in duration-1000">
+            <div className="relative z-10 text-center flex flex-col items-center animate-in fade-in duration-1000 px-4">
               <Globe className="w-16 h-16 text-amber-500 mb-6 drop-shadow-[0_0_15px_rgba(245,158,11,0.5)] animate-pulse"/>
-              <p className="text-amber-500 text-xs md:text-sm tracking-widest md:tracking-[0.2em] font-bold uppercase text-center leading-relaxed mb-8">INSTRUCCIÓN GM: 1) ACTIVA EL AUDIO EN LA ESQUINA SUPERIOR. <br/>2) LUEGO INICIA LA SECUENCIA.</p>
-              <button onClick={() => setStartGlobalCinematic(true)} className="bg-transparent border border-slate-600 text-white hover:bg-slate-900 px-8 py-3 rounded-full font-bold uppercase tracking-widest md:tracking-[0.2em] transition-all cursor-pointer shadow-[0_0_20px_rgba(245,158,11,0.2)] hover:shadow-[0_0_30px_rgba(245,158,11,0.4)]">INICIAR SECUENCIA ÉPICA</button>
+              <p className="text-amber-500 text-xs md:text-sm tracking-widest md:tracking-[0.2em] font-bold uppercase text-center leading-relaxed mb-8">
+                INSTRUCCIÓN GM: 1) ACTIVA EL AUDIO EN LA ESQUINA SUPERIOR. <br/>2) LUEGO INICIA LA SECUENCIA O ENTRA DIRECTAMENTE AL PORTAL.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+                <button 
+                  onClick={() => setStartGlobalCinematic(true)} 
+                  className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black px-8 py-4 rounded-full font-black uppercase tracking-widest md:tracking-[0.2em] text-sm md:text-base transition-all cursor-pointer shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:scale-105 flex items-center gap-2">
+                  <Play className="w-5 h-5 fill-black"/> INICIAR SECUENCIA ÉPICA
+                </button>
+                <button 
+                  onClick={() => { setStartGlobalCinematic(false); setView('selector'); }} 
+                  className="bg-black/60 border border-slate-600 text-slate-300 hover:text-white hover:bg-slate-900 hover:border-amber-500 px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs md:text-sm transition-all cursor-pointer flex items-center gap-2">
+                  ENTRAR DIRECTAMENTE AL PORTAL <ChevronRight className="w-5 h-5"/>
+                </button>
+              </div>
             </div>
           ) : (
             <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none bg-black overflow-hidden">
+              {/* Botón para saltar intro en cualquier momento */}
+              <button 
+                onClick={() => { setStartGlobalCinematic(false); setView('selector'); }} 
+                className="absolute top-4 left-4 z-[300] pointer-events-auto bg-black/80 hover:bg-amber-950/80 border border-amber-600/50 text-amber-300 hover:text-white px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest flex items-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all backdrop-blur-md">
+                OMITIR INTRODUCCIÓN ⏭️
+              </button>
+
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1542401886-65d6c61db217?q=80&w=2000')] bg-cover bg-center opacity-40 animate-[slowZoom_35s_linear_forwards]"></div>
               <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?q=80&w=2000')] bg-cover bg-center opacity-30 mix-blend-screen animate-[slowZoom_20s_linear_infinite_alternate]"></div>
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80 z-10"></div>
@@ -1737,7 +1765,7 @@ export default function OdiseaBiblica() {
                 <p className="text-amber-500 mt-6 text-xl md:text-3xl tracking-widest md:tracking-[0.6em] font-bold uppercase drop-shadow-md">FORJANDO LÍDERES EN EL DESIERTO</p>
               </div>
               <div className="absolute bottom-8 left-0 right-0 flex justify-center z-[200] pointer-events-auto" style={{ opacity: 0, animation: 'cinematicTextStay 2s ease-out forwards 35s' }}>
-                <button onClick={() => { setStartGlobalCinematic(false); setView('campamento_base'); }} className="bg-[#0f0a06]/80 border-2 border-amber-500 text-amber-300 px-12 py-6 font-black uppercase tracking-widest md:tracking-[0.5em] text-xl transition-all shadow-[0_0_50px_rgba(245,158,11,0.8)] hover:scale-110 hover:shadow-[0_0_80px_rgba(245,158,11,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL CAMPAMENTO <ChevronRight className="w-8 h-8"/></button>
+                <button onClick={() => { setStartGlobalCinematic(false); setView('selector'); }} className="bg-[#0f0a06]/80 border-2 border-amber-500 text-amber-300 px-12 py-6 font-black uppercase tracking-widest md:tracking-[0.5em] text-xl transition-all shadow-[0_0_50px_rgba(245,158,11,0.8)] hover:scale-110 hover:shadow-[0_0_80px_rgba(245,158,11,1)] flex items-center gap-4 cursor-pointer rounded-full backdrop-blur-md">ENTRAR AL PORTAL <ChevronRight className="w-8 h-8"/></button>
               </div>
             </div>
           )}
@@ -2136,7 +2164,7 @@ export default function OdiseaBiblica() {
       {/* ════════════════════════════════════════════════════════════ */}
       {/* ── CAMPAMENTO BASE ─────────────────────────────────────── */}
       {/* ════════════════════════════════════════════════════════════ */}
-      {view === 'campamento_base' && selectedClass && (
+      {view === 'campamento_base' && (
         <div className="flex-grow flex flex-col relative dot-grid bg-[#06080e]">
           <header className="bg-[#0a0b12]/90 backdrop-blur-md border-b border-[#1e293b] p-4 sticky top-0 z-50 flex justify-between items-center shadow-lg">
             <div className="flex items-center gap-4">
