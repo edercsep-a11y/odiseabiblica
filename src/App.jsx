@@ -192,6 +192,17 @@ const playRetroSound = (type) => {
   }
 };
 
+// ─── RESOLVEDOR UNIVERSAL DE RUTAS DE IMÁGENES (COMPATIBLE CON GITHUB PAGES, HOSTING Y LOCAL) ───
+export const getCardImageUrl = (imgPath) => {
+  if (!imgPath) return '';
+  if (imgPath.startsWith('http://') || imgPath.startsWith('https://') || imgPath.startsWith('data:') || imgPath.startsWith('blob:')) {
+    return imgPath;
+  }
+  const clean = imgPath.replace(/^\/+/, '');
+  const base = import.meta.env.BASE_URL || './';
+  return base.endsWith('/') ? `${base}${clean}` : `${base}/${clean}`;
+};
+
 // ─── COLECCIÓN OFICIAL DE CARTAS DEL ANTIGUO TESTAMENTO (TCG BÍBLICO) ────────
 // ─── 50 CARTAS BÍBLICAS DE COLECCIÓN DEL ANTIGUO TESTAMENTO ───────────────────────
 export const biblicalCardsDB = [
@@ -1081,6 +1092,89 @@ export const biblicalCardsDB = [
     effectName: "[CETRO DE GRACIA Y SALVACIÓN]",
     power: "«¿Y quién sabe si para esta hora has llegado al reino?» Intervención diplomática que anula decretos de opresión.",
     serialCode: "ODISEA-JUEZ012"
+  },
+
+  // ── 4. LOS 3 REYES PRINCIPALES DE ISRAEL (MISIÓN 3 - MONARQUÍA SAGRADA) ──
+  {
+    id: "card_rey_01",
+    name: "Saúl, Primer Rey de Israel",
+    englishName: "SAUL, FIRST KING OF ISRAEL",
+    category: "REYES",
+    rarity: "SÚPER RARA",
+    stars: 7,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[PRIMER MONARCA / ADVERTENCIA / EFECTO]",
+    atk: 2600,
+    def: 2200,
+    frameStyle: "effect",
+    badgeColor: "bg-red-500 text-white font-black",
+    gradient: "from-red-950 via-stone-900 to-black",
+    border: "border-red-400",
+    glow: "shadow-[0_0_35px_rgba(239,68,68,0.8)]",
+    icon: "👑",
+    image: "/cards/card_rey_saul.jpg",
+    pasaje: "1 Samuel 10:1; 15:22",
+    clanXP: 250,
+    quote: "«El ungido que perdió la corona por el orgullo. Ciertamente el obedecer es mejor que los sacrificios.»",
+    effectName: "[CORONA DEL SINAÍ AL DESIERTO]",
+    power: "Gran estatura y poder bélico inicial, pero advierte sobre la soberbia y la pérdida de la unción.",
+    serialCode: "ODISEA-REY001"
+  },
+  {
+    id: "card_rey_02",
+    name: "David, Rey Conforme al Corazón de Dios",
+    englishName: "DAVID, THE BELOVED KING",
+    category: "REYES",
+    rarity: "SECRETA RARA",
+    stars: 10,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[REY PASTOR / ADORADOR / PACTO / EFECTO]",
+    atk: 3500,
+    def: 3200,
+    frameStyle: "effect",
+    badgeColor: "bg-yellow-400 text-black font-black",
+    gradient: "from-amber-600 via-yellow-600 to-black",
+    border: "border-yellow-300",
+    glow: "shadow-[0_0_50px_rgba(250,204,21,1)]",
+    icon: "👑",
+    image: "/cards/card_rey_david.jpg",
+    pasaje: "1 Samuel 16:7; 2 Samuel 7:16",
+    clanXP: 380,
+    quote: "«Yahveh no mira lo que mira el hombre... Yahveh mira el corazón. Tu trono será establecido para siempre.»",
+    effectName: "[PACTO DAVÍDICO ETERNO]",
+    power: "La honda del pastor vence gigantes. Otorga perdón, restauración moral y multiplica el honor del clan.",
+    serialCode: "ODISEA-REY002"
+  },
+  {
+    id: "card_rey_03",
+    name: "Salomón, Sabiduría y Templo del Altísimo",
+    englishName: "SOLOMON, GLORY AND WISDOM",
+    category: "REYES",
+    rarity: "ULTRA RARA",
+    stars: 9,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[REY SABIO / EDIFICADOR / EFECTO]",
+    atk: 3100,
+    def: 3500,
+    frameStyle: "effect",
+    badgeColor: "bg-purple-400 text-black font-black",
+    gradient: "from-purple-900 via-amber-950 to-black",
+    border: "border-purple-300",
+    glow: "shadow-[0_0_40px_rgba(192,132,252,0.9)]",
+    icon: "🏛️",
+    image: "/cards/card_rey_salomon.jpg",
+    pasaje: "1 Reyes 3:9-12; 6:1",
+    clanXP: 320,
+    quote: "«Da, pues, a tu siervo corazón con entendimiento para juzgar a tu pueblo y discernir entre lo bueno y lo malo.»",
+    effectName: "[SABIDURÍA DE JERUSALÉN]",
+    power: "Edifica el Santo Templo y otorga discernimiento supremo para resolver cualquier dilema del aula.",
+    serialCode: "ODISEA-REY003"
   }
 ];
 
@@ -1205,23 +1299,27 @@ export const packStoreCatalog = [
     isEmpty: false
   },
 
-  // ── CAJAS VACÍAS (EN FORJA - ESPERANDO CARTAS DEL PROFESOR) ──
+  // ── 7. COFRE DE LOS REYES DE ISRAEL (MISIÓN 3) ──
   {
     id: "box_reyes",
-    name: "Cofre de los Reyes de Judá",
+    name: "Cofre de los Reyes de Israel y Judá",
     type: "caja",
-    tier: "PRÓXIMAMENTE",
-    price: 450,
-    icon: "📭",
-    gradient: "from-stone-900 via-neutral-950 to-black",
-    border: "border-stone-800",
-    glow: "shadow-none opacity-60",
-    badge: "bg-stone-800 text-stone-400 font-bold",
-    cardsCount: 0,
-    description: "Caja vacía por ahora. Esperando los nuevos diseños de cartas que el profesor está forjando.",
-    rates: "0 Cartas disponibles • Caja Vacía",
-    isEmpty: true
+    tier: "COFRE MONARQUÍA",
+    price: 350,
+    icon: "👑",
+    targetCategory: "REYES",
+    gradient: "from-amber-950 via-yellow-950 to-black",
+    border: "border-amber-400",
+    glow: "shadow-[0_0_45px_rgba(245,158,11,0.7)]",
+    badge: "bg-gradient-to-r from-amber-400 to-yellow-300 text-black font-black",
+    cardsCount: 3,
+    description: "3 Cartas de la monarquía sagrada: Saúl, David y Salomón. ¡David Secreta Rara y Salomón Ultra Rara son el mayor tesoro del reino!",
+    rates: "3 Cartas • 50% Súper Rara • 35% Ultra Rara • 15% SECRETA RARA",
+    weights: { "COMÚN": 0.0, "RARA": 0.0, "SÚPER RARA": 0.50, "ULTRA RARA": 0.35, "SECRETA RARA": 0.15, "MÍTICA DIVINA": 0.0 },
+    isEmpty: false
   },
+
+  // ── CAJAS VACÍAS (EN FORJA - ESPERANDO CARTAS DEL PROFESOR) ──
   {
     id: "box_profetas",
     name: "Cofre de los Profetas del Fuego",
@@ -3140,12 +3238,85 @@ export default function OdiseaBiblica() {
       const a = document.createElement('a');
       a.download = `CARTA_SAGRADA_${(card.name || 'CARTA').replace(/\s+/g, '_')}_${rName.replace(/\s+/g, '_')}.png`;
       a.href = canvas.toDataURL('image/png');
+      a.style.display = 'none';
+      document.body.appendChild(a);
       a.click();
+      setTimeout(() => {
+        if (document.body.contains(a)) document.body.removeChild(a);
+      }, 1500);
     } catch (err) {
       console.error('Error al generar carta sagrada:', err);
       alert('Descarga no compatible directamente en este navegador. Usa el botón "Pantalla Completa" para tomar captura.');
     }
   }, [studentAuth]);
+
+  // ── DESCARGA ROBUSTA UNIVERSAL DE CARTAS SAGRADAS (OFICIALES Y PROCEDIMENTALES) ──
+  const handleDownloadCard = useCallback(async (card) => {
+    if (!card) return;
+    const cleanName = (card.name || 'CARTA_SAGRADA').replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ_]/g, '_');
+    const fileName = `CARTA_SAGRADA_${cleanName}.jpg`;
+
+    if (card.image) {
+      const fullUrl = getCardImageUrl(card.image);
+      try {
+        const res = await fetch(fullUrl);
+        if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+        const blob = await res.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = blobUrl;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => {
+          if (document.body.contains(a)) document.body.removeChild(a);
+          URL.revokeObjectURL(blobUrl);
+        }, 1500);
+        return;
+      } catch (err) {
+        console.warn('Descarga directa por fetch falló, intentando render vía Canvas/Image:', err);
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => {
+          try {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth || 764;
+            canvas.height = img.naturalHeight || 1024;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            canvas.toBlob((blob) => {
+              if (blob) {
+                const blobUrl = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = blobUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => {
+                  if (document.body.contains(a)) document.body.removeChild(a);
+                  URL.revokeObjectURL(blobUrl);
+                }, 1500);
+              } else {
+                downloadCardImage(card);
+              }
+            }, 'image/jpeg', 0.95);
+          } catch (e) {
+            downloadCardImage(card);
+          }
+        };
+        img.onerror = () => {
+          downloadCardImage(card);
+        };
+        img.src = fullUrl;
+        return;
+      }
+    }
+
+    // Si es procedimental sin imagen oficial, dibuja el certificado sagrado
+    downloadCardImage(card);
+  }, [downloadCardImage]);
 
     const isEderUser = (user) => {
     if (!user) return false;
@@ -4641,7 +4812,7 @@ export default function OdiseaBiblica() {
                   { id: 'SACERDOTES', label: 'SACERDOTES (DISEÑOS OFICIALES)' },
                   { id: 'PATRIARCAS', label: 'PATRIARCAS (GÉNESIS)' },
                   { id: 'JUECES', label: 'JUECES DE ISRAEL (MISIÓN 2)' },
-                  { id: 'REYES', label: 'REYES (VACÍA)' },
+                  { id: 'REYES', label: 'LOS 3 REYES (SAÚL, DAVID, SALOMÓN)' },
                   { id: 'PROFETAS', label: 'PROFETAS (VACÍA)' },
                   { id: 'HEROÍNAS', label: 'HEROÍNAS (VACÍA)' }
                 ].map(cat => (
@@ -4695,7 +4866,7 @@ export default function OdiseaBiblica() {
                           {isUnlocked ? (
                             card.image ? (
                               <div className="w-full h-full relative rounded-xl overflow-hidden flex flex-col justify-between">
-                                <img src={card.image} alt={card.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                <img src={getCardImageUrl(card.image)} alt={card.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy" />
                                 <div className="absolute top-1.5 right-1.5 z-10 bg-black/80 px-1.5 py-0.5 rounded text-[8px] font-black text-yellow-300 border border-yellow-400/40">
                                   <span>+{card.clanXP} XP</span>
                                 </div>
@@ -4741,7 +4912,7 @@ export default function OdiseaBiblica() {
                             <div className="w-full h-full relative rounded-xl overflow-hidden flex flex-col justify-between">
                               {card.image ? (
                                 <img 
-                                  src={card.image} 
+                                  src={getCardImageUrl(card.image)} 
                                   alt={card.name} 
                                   className="absolute inset-0 w-full h-full object-cover filter blur-[3.5px] brightness-[0.65] contrast-[1.1] scale-105 group-hover:blur-[2.5px] group-hover:brightness-[0.75] transition-all duration-300" 
                                 />
@@ -4985,7 +5156,7 @@ export default function OdiseaBiblica() {
                               <div className="w-full h-full relative rounded-xl overflow-hidden bg-black flex flex-col justify-between">
                                 {/* Imagen auténtica en proporción exacta (Edge-to-Edge) */}
                                 <img 
-                                  src={card.image} 
+                                  src={getCardImageUrl(card.image)} 
                                   alt={card.name} 
                                   className="w-full h-full object-contain" 
                                   loading="eager"
@@ -5176,7 +5347,7 @@ export default function OdiseaBiblica() {
                       </div>
 
                       <img 
-                        src={cinematicCard.image} 
+                        src={getCardImageUrl(cinematicCard.image)} 
                         alt={cinematicCard.name} 
                         className="w-72 sm:w-96 max-h-[62vh] aspect-[764/1024] object-contain" 
                         loading="eager"
@@ -5230,6 +5401,14 @@ export default function OdiseaBiblica() {
                 <div className="mt-3 flex flex-wrap gap-3 justify-center animate-in slide-in-from-bottom-6 duration-500">
                   <button 
                     onClick={() => {
+                      handleDownloadCard(cinematicCard);
+                      playRetroSound('coin');
+                    }}
+                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider text-xs sm:text-sm px-6 py-4 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.7)] hover:scale-105 transition-all cursor-pointer border-2 border-emerald-300 flex items-center gap-2">
+                    📸 DESCARGAR CARTA HD
+                  </button>
+                  <button 
+                    onClick={() => {
                       const c = cinematicCard;
                       setCinematicCard(null);
                       setInspectingCard(c);
@@ -5259,14 +5438,23 @@ export default function OdiseaBiblica() {
               {!fullScreenCaptureMode ? (
                 <div className="max-w-2xl w-full bg-[#0a0c16] border-2 border-amber-500/80 rounded-3xl p-4 sm:p-8 flex flex-col items-center relative shadow-[0_0_80px_rgba(245,158,11,0.5)] my-auto">
                   
-                  {/* Encabezado con Botón Cerrar */}
-                  <div className="w-full flex justify-between items-center border-b border-white/10 pb-3 mb-4">
-                    <span className="text-amber-400 text-xs font-black uppercase tracking-widest flex items-center gap-2">
-                      <Sparkles className="w-4 h-4"/> CARTA SAGRADA OFICIAL • LA ODISEA BÍBLICA
-                    </span>
+                  {/* Encabezado con Rango, Rareza y Botón Cerrar */}
+                  <div className="w-full flex justify-between items-center border-b border-white/10 pb-3 mb-4 gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-amber-400 shrink-0"/>
+                      <span className="text-amber-300 text-xs sm:text-sm font-black uppercase tracking-wider">
+                        CARTA SAGRADA • RANGO: <span className="text-yellow-400 font-extrabold">{inspectingCard.rarity}</span>
+                      </span>
+                      <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider">
+                        {inspectingCard.category}
+                      </span>
+                      <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full text-[10px] font-mono font-black">
+                        +{inspectingCard.clanXP} XP
+                      </span>
+                    </div>
                     <button 
                       onClick={() => setInspectingCard(null)} 
-                      className="text-slate-400 hover:text-white bg-black/60 p-2 rounded-full cursor-pointer">
+                      className="text-slate-400 hover:text-white bg-black/60 p-2 rounded-full cursor-pointer shrink-0">
                       <X className="w-5 h-5"/>
                     </button>
                   </div>
@@ -5274,7 +5462,7 @@ export default function OdiseaBiblica() {
                   {/* ── CARTA FÍSICA AUTÉNTICA DEL PACTO EN PANTALLA ── */}
                   {inspectingCard.image ? (
                     <div className="w-72 sm:w-96 max-h-[70vh] aspect-[764/1024] rounded-2xl overflow-hidden border-4 border-yellow-400 shadow-[0_0_60px_rgba(245,158,11,0.8)] relative mb-6 select-none ring-2 ring-white/40 bg-black/80 flex items-center justify-center">
-                      <img src={inspectingCard.image} alt={inspectingCard.name} className="w-full h-full object-contain" loading="eager" />
+                      <img src={getCardImageUrl(inspectingCard.image)} alt={inspectingCard.name} className="w-full h-full object-contain" loading="eager" />
                     </div>
                   ) : (
                     <div className="w-72 sm:w-84 aspect-[5/7.2] rounded-2xl p-3 sm:p-4 flex flex-col justify-between border-8 border-[#26170d] bg-gradient-to-b from-[#8c4a1e] via-[#6d3916] to-[#42220b] shadow-[0_0_50px_rgba(245,158,11,0.6)] relative mb-6 select-none ring-2 ring-yellow-400/60">
@@ -5342,18 +5530,9 @@ export default function OdiseaBiblica() {
                   {/* Botones de Captura y Descarga */}
                   <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button 
-                      onClick={() => {
-                        if (inspectingCard.image) {
-                          const a = document.createElement('a');
-                          a.download = `CARTA_SAGRADA_${(inspectingCard.name || 'CARTA').replace(/\s+/g, '_')}.jpg`;
-                          a.href = inspectingCard.image;
-                          a.click();
-                        } else {
-                          downloadCardImage(inspectingCard);
-                        }
-                      }} 
+                      onClick={() => handleDownloadCard(inspectingCard)} 
                       className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
-                      📸 DESCARGAR CARTA OFICIAL (PNG)
+                      📸 DESCARGAR CARTA OFICIAL (HD)
                     </button>
                     <button 
                       onClick={() => setFullScreenCaptureMode(true)} 
@@ -5368,7 +5547,7 @@ export default function OdiseaBiblica() {
                 <div className="flex flex-col items-center justify-center text-center animate-in zoom-in select-none my-auto">
                   {inspectingCard.image ? (
                     <div className="w-80 sm:w-[420px] max-h-[82vh] aspect-[764/1024] rounded-3xl overflow-hidden border-8 border-yellow-400 shadow-[0_0_90px_rgba(250,204,21,1)] mb-4 ring-4 ring-yellow-200 bg-black/90 flex items-center justify-center">
-                      <img src={inspectingCard.image} alt={inspectingCard.name} className="w-full h-full object-contain" loading="eager" />
+                      <img src={getCardImageUrl(inspectingCard.image)} alt={inspectingCard.name} className="w-full h-full object-contain" loading="eager" />
                     </div>
                   ) : (
                     <div className="w-80 sm:w-96 aspect-[5/7.2] rounded-3xl p-5 flex flex-col justify-between border-8 border-[#26170d] bg-gradient-to-b from-[#8c4a1e] via-[#6d3916] to-[#42220b] shadow-[0_0_80px_rgba(250,204,21,0.8)] mb-4 ring-4 ring-yellow-400/80">
@@ -5432,11 +5611,18 @@ export default function OdiseaBiblica() {
                     </div>
                   )}
 
-                  <button 
-                    onClick={() => setFullScreenCaptureMode(false)} 
-                    className="bg-white/20 hover:bg-white/30 text-white border border-white/40 font-black uppercase text-xs px-8 py-3 rounded-xl cursor-pointer transition-all">
-                    ← SALIR DEL MODO FOTO
-                  </button>
+                  <div className="flex flex-wrap gap-3 justify-center">
+                    <button 
+                      onClick={() => handleDownloadCard(inspectingCard)} 
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase text-xs px-8 py-3 rounded-xl cursor-pointer transition-all shadow-[0_0_20px_rgba(16,185,129,0.5)] border border-emerald-400 flex items-center gap-2">
+                      📸 DESCARGAR CARTA (HD)
+                    </button>
+                    <button 
+                      onClick={() => setFullScreenCaptureMode(false)} 
+                      className="bg-white/20 hover:bg-white/30 text-white border border-white/40 font-black uppercase text-xs px-8 py-3 rounded-xl cursor-pointer transition-all">
+                      ← SALIR DEL MODO FOTO
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -7060,7 +7246,7 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
                         <div className="md:w-1/2 flex justify-center md:justify-end md:pr-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('saul')} className="relative w-64 h-64 md:w-96 md:h-96 rounded-full border-4 md:border-8 border-red-900/80 shadow-[0_0_80px_rgba(220,38,38,0.5)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_120px_rgba(220,38,38,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-red-900/60 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['saul'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
-                            <img src="/images/saul.jpg" alt="Saúl" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['saul'] ? 'scale-100' : 'scale-125'}`}/>
+                            <img src={getCardImageUrl("/images/saul.jpg")} alt="Saúl" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['saul'] ? 'scale-100' : 'scale-125'}`}/>
                             <div className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-700 ${expandedNodes['saul'] ? 'opacity-0' : 'opacity-100'}`}>
                               <span className="bg-black/80 text-white font-black uppercase tracking-widest px-8 py-3 rounded-full border-2 border-red-500/50 shadow-2xl backdrop-blur-md text-lg">REVELAR MISTERIO</span>
                             </div>
@@ -7142,7 +7328,7 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
                         <div className="md:w-1/2 flex justify-center md:justify-start md:pl-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('david')} className="relative w-72 h-72 md:w-[400px] md:h-[400px] rounded-full border-4 md:border-8 border-emerald-600/80 shadow-[0_0_100px_rgba(16,185,129,0.5)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_150px_rgba(16,185,129,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-emerald-900/50 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['david'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
-                            <img src="/images/david.jpg" alt="David" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['david'] ? 'scale-100' : 'scale-125'}`}/>
+                            <img src={getCardImageUrl("/images/david.jpg")} alt="David" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['david'] ? 'scale-100' : 'scale-125'}`}/>
                             <div className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-700 ${expandedNodes['david'] ? 'opacity-0' : 'opacity-100'}`}>
                               <span className="bg-black/80 text-white font-black uppercase tracking-widest px-8 py-3 rounded-full border-2 border-emerald-500/50 shadow-2xl backdrop-blur-md text-lg">REVELAR MISTERIO</span>
                             </div>
@@ -7223,7 +7409,7 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
                         <div className="md:w-1/2 flex justify-center md:justify-end md:pr-24 mb-10 md:mb-0">
                           <div onClick={() => toggleNode('salomon')} className="relative w-72 h-72 md:w-[450px] md:h-[450px] rounded-full border-4 md:border-8 border-blue-600/80 shadow-[0_0_120px_rgba(59,130,246,0.6)] overflow-hidden cursor-pointer group-hover:shadow-[0_0_180px_rgba(59,130,246,0.8)] transition-all duration-700">
                             <div className={`absolute inset-0 bg-blue-900/50 mix-blend-multiply z-10 transition-opacity duration-1000 ${expandedNodes['salomon'] ? 'opacity-0' : 'opacity-100 group-hover:opacity-30'}`}></div>
-                            <img src="/images/salomon.jpg" alt="Salomón" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['salomon'] ? 'scale-100' : 'scale-125'}`}/>
+                            <img src={getCardImageUrl("/images/salomon.jpg")} alt="Salomón" className={`w-full h-full object-cover transition-transform duration-[2s] ${expandedNodes['salomon'] ? 'scale-100' : 'scale-125'}`}/>
                             <div className={`absolute inset-0 z-20 flex items-center justify-center pointer-events-none transition-opacity duration-700 ${expandedNodes['salomon'] ? 'opacity-0' : 'opacity-100'}`}>
                               <span className="bg-black/80 text-white font-black uppercase tracking-widest px-8 py-3 rounded-full border-2 border-blue-500/50 shadow-2xl backdrop-blur-md text-lg">REVELAR MISTERIO</span>
                             </div>
@@ -7510,7 +7696,7 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
                         <div className="relative z-10 text-center flex flex-col items-center">
                           <div className={`relative w-64 h-64 md:w-96 md:h-96 mb-16 flex items-center justify-center transition-transform duration-1000 ${expandedNodes['promesa'] ? 'scale-75' : 'scale-100'}`}>
                              <div className="absolute inset-0 bg-yellow-500 blur-[80px] opacity-80 rounded-full animate-pulse"></div>
-                             <img src="/images/jesus.jpg" alt="Jesús de Nazaret" className="w-full h-full object-cover rounded-full border-8 border-yellow-500 shadow-[0_0_80px_rgba(250,204,21,1)] relative z-10" />
+                             <img src={getCardImageUrl("/images/jesus.jpg")} alt="Jesús de Nazaret" className="w-full h-full object-cover rounded-full border-8 border-yellow-500 shadow-[0_0_80px_rgba(250,204,21,1)] relative z-10" />
                           </div>
                           
                           <p className="text-yellow-500 font-black uppercase tracking-widest md:tracking-[1em] text-lg md:text-2xl mb-8"><Key className="w-8 h-8 inline-block mr-4"/> EL HILO CONDUCTOR DIVINO</p>
