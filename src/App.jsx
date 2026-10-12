@@ -1886,11 +1886,29 @@ export default function OdiseaBiblica() {
 
 
   // ── Student Auth & Solo Mode ──
-  const [studentAuth, setStudentAuth] = useState(null);
+  const [studentAuth, setStudentAuth] = useState(() => loadFromStorage('odisea_student_auth_session', null));
   const [activeSoloMission, setActiveSoloMission] = useState(0);
   const [studentLoginStep, setStudentLoginStep] = useState(1);
   const [teacherConnectedName, setTeacherConnectedName] = useState('Prof. Eder Carrasco');
   const [studentForm, setStudentForm] = useState({ name: '', aula: '1A', clanId: 'c1', password: '' });
+  
+  // ── Student Dashboard & TCG States ──
+  const [studentTab, setStudentTab] = useState('misiones');
+  const [openingPack, setOpeningPack] = useState(null);
+  const [packStage, setPackStage] = useState('sealed');
+  const [revealedPackCards, setRevealedPackCards] = useState([]);
+  const [flippedIndices, setFlippedIndices] = useState([]);
+  const [cardFilterCategory, setCardFilterCategory] = useState('all');
+  const [inspectingCard, setInspectingCard] = useState(null);
+  const [fullScreenCaptureMode, setFullScreenCaptureMode] = useState(false);
+  const [activeCinematicModal, setActiveCinematicModal] = useState(null);
+
+  const [studentProgress, setStudentProgress] = useState({
+    shekels: 100,
+    unlockedCards: [],
+    completedMissions: {},
+    packsOpened: 0
+  });
   // ── Core Data (Loaded dynamically per save) ──
   const [roster, setRoster] = useState(defaultRoster);
   const [scores, setScores] = useState(defaultScores);
@@ -2211,6 +2229,153 @@ export default function OdiseaBiblica() {
     setView('student_dashboard');
   };
 
+  // ── PERSISTENCIA Y SINCRONIZACIÓN DEL ESTUDIANTE ──
+  useEffect(() => {
+    if (studentAuth) {
+      try {
+        localStorage.setItem('odisea_student_auth_session', JSON.stringify(studentAuth));
+      } catch (e) {}
+      const key = `odisea_progress_v3_${studentAuth.aula || '1A'}_${studentAuth.name || 'default'}`;
+      const saved = loadFromStorage(key, {
+        shekels: 100,
+        unlockedCards: [],
+        completedMissions: {},
+        packsOpened: 0
+      });
+      setStudentProgress(saved);
+    } else {
+      try {
+        localStorage.removeItem('odisea_student_auth_session');
+      } catch (e) {}
+    }
+  }, [studentAuth]);
+
+  const updateStudentProgress = useCallback((updater) => {
+    setStudentProgress(prev => {
+      const current = prev || { shekels: 100, unlockedCards: [], completedMissions: {}, packsOpened: 0 };
+      const next = typeof updater === 'function' ? updater(current) : { ...current, ...updater };
+      if (studentAuth) {
+        try {
+          const key = `odisea_progress_v3_${studentAuth.aula || '1A'}_${studentAuth.name || 'default'}`;
+          localStorage.setItem(key, JSON.stringify(next));
+        } catch (e) {
+          console.error('Error guardando progreso:', e);
+        }
+      }
+      return next;
+    });
+  }, [studentAuth]);
+
+  const downloadCardImage = useCallback((card) => {
+    if (!card) return;
+    try {
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 1200;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const bgGrad = ctx.createLinearGradient(0, 0, 0, 1200);
+      bgGrad.addColorStop(0, '#0a0d20');
+      bgGrad.addColorStop(0.5, '#16193b');
+      bgGrad.addColorStop(1, '#050711');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, 800, 1200);
+
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 14;
+      ctx.strokeRect(20, 20, 760, 1160);
+
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(36, 36, 728, 1128);
+
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 28px sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText(`★ ${(card.rarity || 'SAGRADA').toUpperCase()} ★`, 60, 95);
+
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#10b981';
+      ctx.font = 'bold 28px sans-serif';
+      ctx.fillText(`+${card.clanXP || 50} XP AL CLAN`, 740, 95);
+
+      ctx.textAlign = 'center';
+      ctx.font = '130px sans-serif';
+      ctx.fillText(card.icon || '⚔️', 400, 310);
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 48px sans-serif';
+      ctx.fillText((card.name || 'HÉROE').toUpperCase(), 400, 420);
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'italic bold 26px sans-serif';
+      ctx.fillText(`« ${card.pasaje || ''} »`, 400, 480);
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.65)';
+      ctx.fillRect(60, 530, 680, 240);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(60, 530, 680, 240);
+
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'italic 23px serif';
+      const words = (card.quote || '').split(' ');
+      let line = '';
+      let curY = 590;
+      for (let w of words) {
+        const test = line + w + ' ';
+        if (ctx.measureText(test).width > 620 && line) {
+          ctx.fillText(line.trim(), 400, curY);
+          line = w + ' ';
+          curY += 36;
+        } else {
+          line = test;
+        }
+      }
+      if (line) {
+        ctx.fillText(line.trim(), 400, curY);
+      }
+
+      ctx.fillStyle = '#a78bfa';
+      ctx.font = 'bold 26px sans-serif';
+      ctx.fillText(`⚡ PODER TÁCTICO: ${card.effect || 'Bendición Divina'}`, 400, 840);
+
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
+      ctx.fillRect(60, 890, 680, 240);
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(60, 890, 680, 240);
+
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = '900 24px monospace';
+      ctx.fillText('CERTIFICADO OFICIAL DE ADQUISICIÓN', 400, 940);
+
+      const rName = studentAuth?.name ? studentAuth.name.toUpperCase() : 'RECLUTA SAGRADO';
+      const rAula = studentAuth?.aula || '1A';
+      const rClan = clansData.find(c => c.id === studentAuth?.clanId)?.name || 'CLAN SAGRADO';
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 26px sans-serif';
+      ctx.fillText(`RECLUTA: ${rName}`, 400, 990);
+
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '22px sans-serif';
+      ctx.fillText(`SALÓN: ${rAula}  •  ${rClan.toUpperCase()}`, 400, 1035);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '18px monospace';
+      ctx.fillText('ODISEA BÍBLICA • PROF. EDER CARRASCO © 2026', 400, 1090);
+
+      const a = document.createElement('a');
+      a.download = `CARTA_${(card.name || 'TARJETA').replace(/\s+/g, '_')}_${rName.replace(/\s+/g, '_')}.png`;
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    } catch (err) {
+      console.error('Error al generar imagen:', err);
+      alert('Descarga no compatible directamente en este navegador. Usa el botón "Pantalla Completa" para tomar captura.');
+    }
+  }, [studentAuth]);
   
   const isEderUser = (user) => {
     if (!user) return false;
@@ -3305,7 +3470,23 @@ export default function OdiseaBiblica() {
           </div>
         </div>
       )}
-{view === 'student_dashboard' && studentAuth && (
+{view === 'student_dashboard' && (
+        !studentAuth ? (
+          <div className="flex-grow flex flex-col items-center justify-center p-6 bg-[#050711] min-h-screen text-center">
+            <div className="bg-[#0e1224] border-2 border-amber-500/60 rounded-3xl p-8 max-w-md w-full shadow-[0_0_50px_rgba(245,158,11,0.3)]">
+              <ShieldAlert className="w-16 h-16 text-amber-500 mx-auto mb-4 animate-pulse" />
+              <h3 className="text-2xl font-black text-white uppercase tracking-wider mb-2">IDENTIFICACIÓN REQUERIDA</h3>
+              <p className="text-slate-400 text-xs sm:text-sm mb-6 leading-relaxed">
+                Para acceder a las misiones, tu álbum y la tienda de sobres, debes ingresar con tu nombre y clan.
+              </p>
+              <button 
+                onClick={() => setView('student_login')} 
+                className="w-full bg-red-600 hover:bg-red-500 text-white py-4 rounded-xl font-black uppercase tracking-widest text-sm shadow-lg transition-transform hover:scale-105 cursor-pointer">
+                ENTRAR CON MI RECLUTA
+              </button>
+            </div>
+          </div>
+        ) : (
         <div className="flex-grow flex flex-col p-3 sm:p-6 md:p-8 bg-[#050711] min-h-screen relative overflow-hidden select-none">
           {/* Fondo estético celestial */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-950/20 via-[#070913] to-[#030408] pointer-events-none"></div>
@@ -4045,9 +4226,8 @@ export default function OdiseaBiblica() {
           )}
 
         </div>
-      )}
-
-      {/* ── MINIJUEGO MARIO BROS & BOMBERMAN EN EJECUCIÓN ── */}
+        )
+      )}{/* ── MINIJUEGO MARIO BROS & BOMBERMAN EN EJECUCIÓN ── */}
       {view === 'student_mario_game' && (
         <MarioBrosSoloGame 
           missionIndex={activeSoloMission}
