@@ -764,7 +764,7 @@ export const biblicalCardsDB = [
     name: "Otoniel",
     englishName: "OTONIEL",
     category: "JUECES",
-    rarity: "SECRETA RARA",
+    rarity: "RARA",
     stars: 4,
     attribute: "TIERRA",
     attributeIcon: "🌍",
@@ -791,7 +791,7 @@ export const biblicalCardsDB = [
     name: "Aod",
     englishName: "AOD",
     category: "JUECES",
-    rarity: "SECRETA RARA",
+    rarity: "SÚPER RARA",
     stars: 4,
     attribute: "FUEGO",
     attributeIcon: "🔥",
@@ -818,7 +818,7 @@ export const biblicalCardsDB = [
     name: "Samgar",
     englishName: "SAMGAR",
     category: "JUECES",
-    rarity: "SECRETA RARA",
+    rarity: "RARA",
     stars: 4,
     attribute: "FUEGO",
     attributeIcon: "🔥",
@@ -898,7 +898,7 @@ export const biblicalCardsDB = [
     name: "Gedeón",
     englishName: "GEDEÓN",
     category: "JUECES",
-    rarity: "SECRETA RARA",
+    rarity: "ULTRA RARA",
     stars: 4,
     attribute: "FUEGO",
     attributeIcon: "🔥",
@@ -979,7 +979,7 @@ export const biblicalCardsDB = [
     name: "Jefté",
     englishName: "JEPHTHAH",
     category: "JUECES",
-    rarity: "SECRETA RARA",
+    rarity: "SÚPER RARA",
     stars: 4,
     attribute: "FUEGO",
     attributeIcon: "🔥",
@@ -1006,7 +1006,7 @@ export const biblicalCardsDB = [
     name: "Ibzán, Elón y Abdón",
     englishName: "IBZÁN, ELÓN Y ABDÓN",
     category: "JUECES",
-    rarity: "SECRETA RARA",
+    rarity: "COMÚN",
     stars: 4,
     attribute: "LUZ",
     attributeIcon: "⚡",
@@ -1033,7 +1033,7 @@ export const biblicalCardsDB = [
     name: "Tola y Jair",
     englishName: "TOLA Y JAIR",
     category: "JUECES",
-    rarity: "SECRETA RARA",
+    rarity: "COMÚN",
     stars: 4,
     attribute: "FUEGO",
     attributeIcon: "🔥",
@@ -1086,10 +1086,29 @@ export const biblicalCardsDB = [
 
 // ─── CATÁLOGO OFICIAL DE SOBRES Y CAJAS DE AVENTURA ─────────────────────────
 export const packStoreCatalog = [
-  // ── CAJAS Y SOBRES ACTIVOS ──
+  // ── 1. SOBRE BÁSICO DE RECLUTA (INICIACIÓN) ──
+  {
+    id: "pack_iniciacion",
+    name: "Sobre de Iniciación de Recluta",
+    type: "sobre",
+    tier: "MINI-SOBRE",
+    price: 120,
+    icon: "⚡",
+    gradient: "from-blue-900 via-slate-900 to-black",
+    border: "border-blue-500",
+    glow: "shadow-[0_0_30px_rgba(59,130,246,0.5)]",
+    badge: "bg-blue-600 text-white font-black",
+    cardsCount: 2,
+    description: "Sobre económico de 2 cartas para nuevos reclutas. Ideal para empezar tu colección y sumar tus primeros puntos de XP.",
+    rates: "2 Cartas • 76% Común • 20% Rara • 3.7% Súper Rara • 0.3% Ultra Rara • 0.0% Secreta",
+    weights: { "COMÚN": 0.76, "RARA": 0.20, "SÚPER RARA": 0.037, "ULTRA RARA": 0.003, "SECRETA RARA": 0.0, "MÍTICA DIVINA": 0.0 },
+    isEmpty: false
+  },
+
+  // ── 2. CAJA SAGRADA DE LOS PATRIARCAS ──
   {
     id: "box_patriarcas",
-    name: "Caja Sagrada de los Patriarcas del Pacto",
+    name: "Caja Sagrada de los Patriarcas del Génesis",
     type: "caja",
     tier: "COFRE SAGRADO",
     price: 300,
@@ -1097,14 +1116,16 @@ export const packStoreCatalog = [
     targetCategory: "PATRIARCAS",
     gradient: "from-amber-900 via-yellow-950 to-black",
     border: "border-yellow-400",
-    glow: "shadow-[0_0_50px_rgba(250,204,21,0.8)]",
+    glow: "shadow-[0_0_45px_rgba(250,204,21,0.7)]",
     badge: "bg-gradient-to-r from-amber-400 to-yellow-300 text-black font-black",
     cardsCount: 4,
-    description: "¡LA GRAN CAJA DE LOS PATRIARCAS! 4 Cartas del Génesis. Las cartas raras como Abraham (12★ Mítica) o Jacob (Secreta) son muy difíciles de sacar, pero desatan una bendición cinematográfica.",
-    rates: "4 Cartas • 65% Común • 24% Rara • 8.5% Súper Rara • 2.0% Ultra Rara • 0.5% MÍTICA DIVINA",
-    weights: { "COMÚN": 0.65, "RARA": 0.24, "SÚPER RARA": 0.085, "ULTRA RARA": 0.02, "SECRETA RARA": 0.004, "MÍTICA DIVINA": 0.001 },
+    description: "4 Cartas del linaje de la promesa (Abraham, Isaac, Jacob, José, Enoc, Noé). ¡Abraham 12★ Mítica Divina y Jacob Secreta son tesoros ultra difíciles!",
+    rates: "4 Cartas • 68% Común • 23% Rara • 7.5% Súper Rara • 1.3% Ultra Rara • 0.18% SECRETA RARA • 0.02% MÍTICA DIVINA",
+    weights: { "COMÚN": 0.68, "RARA": 0.23, "SÚPER RARA": 0.075, "ULTRA RARA": 0.013, "SECRETA RARA": 0.0018, "MÍTICA DIVINA": 0.0002 },
     isEmpty: false
   },
+
+  // ── 3. COFRE DEL SANTUARIO: SACERDOTES ──
   {
     id: "box_sacerdotes",
     name: "Cofre del Santuario: Sacerdotes de Israel",
@@ -1115,14 +1136,16 @@ export const packStoreCatalog = [
     targetCategory: "SACERDOTES",
     gradient: "from-blue-950 via-indigo-950 to-black",
     border: "border-cyan-400",
-    glow: "shadow-[0_0_50px_rgba(34,211,238,0.8)]",
+    glow: "shadow-[0_0_45px_rgba(34,211,238,0.7)]",
     badge: "bg-gradient-to-r from-cyan-400 to-blue-300 text-black font-black",
     cardsCount: 4,
-    description: "Contiene 4 Cartas con los DISEÑOS SAGRADOS OFICIALES del profesor. Aarón, Nadab y Abiú, y Melquisedec son extremadamente difíciles de conseguir.",
-    rates: "4 Cartas • 60% Común • 25% Rara • 10% Súper Rara • 3.5% Ultra Rara • 1.5% SECRETA RARA",
-    weights: { "COMÚN": 0.60, "RARA": 0.25, "SÚPER RARA": 0.10, "ULTRA RARA": 0.035, "SECRETA RARA": 0.015, "MÍTICA DIVINA": 0.0 },
+    description: "4 Cartas con los ministros del altar (Aarón, Nadab y Abiú, Melquisedec, Finees, Eleazar, Esdras). ¡Aarón y Melquisedec tienen tasas reducidas!",
+    rates: "4 Cartas • 67% Común • 24% Rara • 7.5% Súper Rara • 1.3% Ultra Rara • 0.2% SECRETA RARA",
+    weights: { "COMÚN": 0.67, "RARA": 0.24, "SÚPER RARA": 0.075, "ULTRA RARA": 0.013, "SECRETA RARA": 0.002, "MÍTICA DIVINA": 0.0 },
     isEmpty: false
   },
+
+  // ── 4. COFRE DE LOS JUECES DE ISRAEL ──
   {
     id: "box_jueces",
     name: "Cofre de los Jueces de Israel",
@@ -1133,12 +1156,52 @@ export const packStoreCatalog = [
     targetCategory: "JUECES",
     gradient: "from-stone-900 via-amber-950 to-black",
     border: "border-amber-500",
-    glow: "shadow-[0_0_50px_rgba(245,158,11,0.8)]",
+    glow: "shadow-[0_0_45px_rgba(245,158,11,0.7)]",
     badge: "bg-gradient-to-r from-amber-500 to-orange-400 text-black font-black",
     cardsCount: 4,
-    description: "Contiene 4 Cartas con los GUERREROS Y JUECES DE ISRAEL (Otoniel, Aod, Samgar, Elí, Gedeón, Jefté, Ibzán/Elón/Abdón, Tola y Jair, Ester, Débora, Sansón y Samuel). ¡Desata la fuerza de la era de los jueces!",
-    rates: "4 Cartas • 55% Común • 25% Rara • 12% Súper Rara • 6% Ultra Rara • 2% SECRETA RARA",
-    weights: { "COMÚN": 0.55, "RARA": 0.25, "SÚPER RARA": 0.12, "ULTRA RARA": 0.06, "SECRETA RARA": 0.02, "MÍTICA DIVINA": 0.0 },
+    description: "4 Cartas con los libertadores (Otoniel, Aod, Samgar, Elí, Gedeón, Sansón, Samuel, Jefté, Ibzán, Tola y Ester). ¡Sansón y Samuel son el premio mayor!",
+    rates: "4 Cartas • 66% Común • 25% Rara • 7.5% Súper Rara • 1.3% Ultra Rara • 0.2% SECRETA RARA",
+    weights: { "COMÚN": 0.66, "RARA": 0.25, "SÚPER RARA": 0.075, "ULTRA RARA": 0.013, "SECRETA RARA": 0.002, "MÍTICA DIVINA": 0.0 },
+    isEmpty: false
+  },
+
+  // ── 5. COFRE DE GUERRA: CAMPEONES DE LA FE (NUEVO) ──
+  {
+    id: "box_guerreros",
+    name: "Cofre de Guerra: Campeones de la Fe",
+    type: "caja",
+    tier: "COFRE COMBATE",
+    price: 420,
+    icon: "🛡️",
+    filterType: "combatientes",
+    gradient: "from-red-950 via-stone-950 to-black",
+    border: "border-red-500",
+    glow: "shadow-[0_0_50px_rgba(239,68,68,0.7)]",
+    badge: "bg-gradient-to-r from-red-500 to-amber-500 text-white font-black",
+    cardsCount: 4,
+    description: "¡Edición de Batalla! Reúne a los grandes combatientes de la fe (Sansón, Gedeón, Jefté, Aod, Samgar, Finees, Otoniel). ¡Alta concentración de cartas de combate!",
+    rates: "4 Cartas • 61% Común • 27% Rara • 9.8% Súper Rara • 2.0% Ultra Rara • 0.2% SECRETA RARA",
+    weights: { "COMÚN": 0.61, "RARA": 0.27, "SÚPER RARA": 0.098, "ULTRA RARA": 0.02, "SECRETA RARA": 0.002, "MÍTICA DIVINA": 0.0 },
+    isEmpty: false
+  },
+
+  // ── 6. GRAN ARCA DE LA ALIANZA: EDICIÓN COLECCIONISTA (NUEVO) ──
+  {
+    id: "box_arca_alianza",
+    name: "Gran Arca del Pacto: Mega Caja Multiversal",
+    type: "caja",
+    tier: "EDICIÓN SUPREMA",
+    price: 600,
+    icon: "👑",
+    filterType: "multiverso",
+    gradient: "from-yellow-950 via-amber-950 to-purple-950",
+    border: "border-yellow-300",
+    glow: "shadow-[0_0_60px_rgba(250,204,21,0.9)]",
+    badge: "bg-gradient-to-r from-yellow-300 via-amber-400 to-yellow-200 text-black font-black",
+    cardsCount: 5,
+    description: "¡EL COFRE DEFINITIVO! 5 Cartas de todo el Antiguo Testamento. 1 Carta Rara garantizada. Si sacas una Secreta Rara o Mítica Divina, estremecerás todo el simulador.",
+    rates: "5 Cartas • 58% Común • 28% Rara • 11.5% Súper Rara • 2.2% Ultra Rara • 0.28% SECRETA RARA • 0.02% MÍTICA DIVINA",
+    weights: { "COMÚN": 0.58, "RARA": 0.28, "SÚPER RARA": 0.115, "ULTRA RARA": 0.022, "SECRETA RARA": 0.0028, "MÍTICA DIVINA": 0.0002 },
     isEmpty: false
   },
 
@@ -4438,12 +4501,14 @@ export default function OdiseaBiblica() {
                               }));
 
                               const drawCount = pack.cardsCount || 4;
-                              let basePool = pack.targetCategory 
-                                ? biblicalCardsDB.filter(c => c.category === pack.targetCategory) 
-                                : biblicalCardsDB;
+                              let basePool = biblicalCardsDB;
+                              if (pack.targetCategory) {
+                                basePool = biblicalCardsDB.filter(c => c.category === pack.targetCategory);
+                              } else if (pack.filterType === 'combatientes') {
+                                basePool = biblicalCardsDB.filter(c => (c.atk >= 1900) || c.category === 'JUECES');
+                              }
                               if (basePool.length === 0) basePool = biblicalCardsDB;
 
-                              const alreadyOwnedIds = studentProgress.unlockedCards || [];
                               const drawn = [];
 
                               for (let i = 0; i < drawCount; i++) {
@@ -4465,11 +4530,19 @@ export default function OdiseaBiblica() {
                                   const rarityPool = pool.filter(c => c.rarity === chosenRarity);
                                   if (rarityPool.length > 0) {
                                     selected = rarityPool[Math.floor(Math.random() * rarityPool.length)];
+                                  } else {
+                                    // Fallback seguro: buscar Común o Rara, NUNCA otorgar Secreta o Mítica por error
+                                    const fallbackPool = pool.filter(c => c.rarity === 'COMÚN' || c.rarity === 'RARA');
+                                    if (fallbackPool.length > 0) {
+                                      selected = fallbackPool[Math.floor(Math.random() * fallbackPool.length)];
+                                    }
                                   }
                                 }
 
                                 if (!selected) {
-                                  selected = pool[Math.floor(Math.random() * pool.length)];
+                                  const safePool = pool.filter(c => c.rarity !== 'SECRETA RARA' && c.rarity !== 'MÍTICA DIVINA');
+                                  const activePool = safePool.length > 0 ? safePool : pool;
+                                  selected = activePool[Math.floor(Math.random() * activePool.length)];
                                 }
 
                                 drawn.push(selected);
@@ -4613,21 +4686,20 @@ export default function OdiseaBiblica() {
                             setInspectingCard(card);
                             playRetroSound('coin');
                           }}
-                          className={`group aspect-[5/7.2] rounded-2xl p-2.5 sm:p-3 flex flex-col justify-between border-2 transition-all relative overflow-hidden select-none cursor-pointer ${
+                          className={`group aspect-[764/1024] rounded-2xl transition-all relative overflow-hidden select-none cursor-pointer ${
                             isUnlocked
-                              ? `bg-gradient-to-b ${card.gradient} ${card.border} hover:scale-105 shadow-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] ring-1 ring-white/20`
-                              : 'bg-black/80 border-amber-500/40 hover:border-amber-400 hover:scale-[1.02] shadow-[0_0_15px_rgba(245,158,11,0.15)] ring-1 ring-amber-500/20'
+                              ? `border-2 ${card.border} hover:scale-105 shadow-lg hover:shadow-[0_0_30px_rgba(255,255,255,0.3)] ring-1 ring-white/20 bg-black`
+                              : 'bg-black/80 border-2 border-amber-500/40 hover:border-amber-400 hover:scale-[1.02] shadow-[0_0_15px_rgba(245,158,11,0.15)] ring-1 ring-amber-500/20'
                           }`}>
 
                           {isUnlocked ? (
                             card.image ? (
                               <div className="w-full h-full relative rounded-xl overflow-hidden flex flex-col justify-between">
-                                <img src={card.image} alt={card.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                                <div className="relative z-10 flex justify-between items-center bg-black/70 px-1.5 py-0.5 rounded text-[8px] font-black text-white">
-                                  <span>{card.attributeIcon}</span>
-                                  <span className="text-yellow-300">+{card.clanXP} XP</span>
+                                <img src={card.image} alt={card.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                                <div className="absolute top-1.5 right-1.5 z-10 bg-black/80 px-1.5 py-0.5 rounded text-[8px] font-black text-yellow-300 border border-yellow-400/40">
+                                  <span>+{card.clanXP} XP</span>
                                 </div>
-                                <div className="relative z-10 bg-black/80 px-1.5 py-1 rounded text-center">
+                                <div className="absolute bottom-1.5 inset-x-1.5 z-10 bg-black/85 px-1.5 py-1 rounded text-center border border-white/10">
                                   <p className="text-[9px] font-black text-white uppercase truncate">{card.name}</p>
                                 </div>
                               </div>
@@ -4715,32 +4787,109 @@ export default function OdiseaBiblica() {
           {/* ── MODAL 1: APERTURA DE SOBRES Y CAJAS DE AVENTURA 3D ───── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {openingPack && (
-            <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 animate-in fade-in overflow-y-auto">
-              <div className="max-w-5xl w-full bg-[#0d1022] border-2 border-yellow-500/70 rounded-3xl p-6 sm:p-10 text-center relative shadow-[0_0_100px_rgba(234,179,8,0.4)] flex flex-col items-center my-auto">
+            <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-3 sm:p-6 animate-in fade-in overflow-y-auto">
+              <div className="max-w-6xl w-full bg-[#0a0d1d] border-2 border-yellow-500/80 rounded-3xl p-4 sm:p-8 text-center relative shadow-[0_0_120px_rgba(234,179,8,0.35)] flex flex-col items-center my-auto ring-1 ring-white/10">
                 
-                <h3 className="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-white to-amber-400 uppercase tracking-tight mb-1">
-                  {openingPack.icon} {openingPack.name}
-                </h3>
-                <p className="text-amber-400 text-xs sm:text-sm font-bold uppercase tracking-widest mb-6">
-                  {packStage === 'sealed' ? '✨ TOCA EL COFRE PARA ABRIRLO Y REVELAR TUS CARTAS ✨' : '🎴 TOCA CADA CARTA PARA REVELAR SU PODER'}
-                </p>
+                {/* Botón cerrar en la esquina superior derecha */}
+                <button 
+                  onClick={() => setOpeningPack(null)}
+                  className="absolute top-4 right-4 text-slate-400 hover:text-white bg-black/60 hover:bg-red-900/60 p-2.5 rounded-full transition-colors cursor-pointer border border-white/10 z-20">
+                  <X className="w-5 h-5"/>
+                </button>
+
+                {/* Encabezado Sagrado */}
+                <div className="flex flex-col items-center mb-4">
+                  <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 px-4 py-1 rounded-full text-[10px] font-black text-amber-300 uppercase tracking-widest mb-2">
+                    <Sparkles className="w-3.5 h-3.5 text-yellow-400 animate-spin" />
+                    RITUAL DE APERTURA • LA ODISEA BÍBLICA
+                    <Sparkles className="w-3.5 h-3.5 text-yellow-400 animate-spin" />
+                  </div>
+                  <h3 className="text-2xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-white to-amber-400 uppercase tracking-tight flex items-center justify-center gap-3">
+                    <span>{openingPack.icon}</span>
+                    <span>{openingPack.name}</span>
+                  </h3>
+                  <p className="text-amber-300 text-xs sm:text-sm font-bold uppercase tracking-wider mt-1">
+                    {packStage === 'sealed' 
+                      ? '✨ TOCA EL COFRE PARA ABRIRLO Y REVELAR TUS CARTAS SAGRADAS ✨' 
+                      : '🎴 TOCA CADA CARTA PARA REVELARLA • ¡TOCA LAS CARTAS REVELADAS PARA VERLAS EN PANTALLA COMPLETA!'}
+                  </p>
+
+                  {/* Botón de Revelar Todas (cuando ya está abierto el cofre y faltan cartas por voltear) */}
+                  {packStage === 'opened' && flippedIndices.length < revealedPackCards.length && (
+                    <button
+                      onClick={() => {
+                        const allIdx = revealedPackCards.map((_, i) => i);
+                        setFlippedIndices(allIdx);
+                        playRetroSound('legendary');
+
+                        const isMasterUser = Boolean(studentAuth?.isGodMode || studentAuth?.clanId === 'all');
+                        revealedPackCards.forEach((c, idx) => {
+                          if (!flippedIndices.includes(idx)) {
+                            const isOwned = (studentProgress.unlockedCards || []).includes(c.id);
+                            if (!isOwned) {
+                              updateStudentProgress(prev => ({
+                                ...prev,
+                                unlockedCards: [...(prev.unlockedCards || []), c.id]
+                              }));
+                              if (isMasterUser) {
+                                updateScore('all', c.clanXP, 'all');
+                              } else if (studentAuth?.clanId) {
+                                updateScore(studentAuth.clanId, c.clanXP, studentAuth.aula);
+                              }
+                            } else {
+                              if (isMasterUser) {
+                                updateScore('all', 20, 'all');
+                              } else if (studentAuth?.clanId) {
+                                updateScore(studentAuth.clanId, 20, studentAuth.aula);
+                              }
+                            }
+                          }
+                        });
+
+                        // Disparar cinemática si hay alguna épica
+                        const rarest = [...revealedPackCards].sort((a,b) => (b.stars || 4) - (a.stars || 4)).find(c => c.rarity === 'MÍTICA DIVINA' || c.rarity === 'SECRETA RARA' || c.rarity === 'ULTRA RARA');
+                        if (rarest) {
+                          setCinematicCard(rarest);
+                        }
+                      }}
+                      className="mt-3 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-black font-black uppercase tracking-wider text-xs px-6 py-2 rounded-full shadow-[0_0_25px_rgba(245,158,11,0.6)] hover:scale-105 transition-all cursor-pointer border border-white">
+                      ✨ REVELAR TODAS LAS CARTAS JUNTAS ✨
+                    </button>
+                  )}
+                </div>
 
                 {packStage === 'sealed' ? (
-                  <div className="my-10 flex flex-col items-center justify-center">
+                  <div className="my-8 flex flex-col items-center justify-center">
                     <div 
                       onClick={() => { setPackStage('opened'); playRetroSound('powerup'); }}
-                      className="w-56 h-72 sm:w-64 sm:h-80 bg-gradient-to-b from-amber-500 via-yellow-500 to-amber-800 rounded-3xl border-4 border-yellow-200 p-6 flex flex-col items-center justify-between shadow-[0_0_60px_rgba(245,158,11,0.9)] cursor-pointer hover:scale-110 transition-transform animate-pulse select-none">
-                      <span className="text-xs font-black uppercase text-black bg-white/90 px-4 py-1 rounded-full shadow">
+                      className="w-60 h-80 sm:w-72 sm:h-96 bg-gradient-to-b from-amber-500 via-yellow-500 to-amber-800 rounded-3xl border-4 border-yellow-200 p-6 flex flex-col items-center justify-between shadow-[0_0_70px_rgba(245,158,11,0.9)] cursor-pointer hover:scale-105 transition-all animate-pulse select-none ring-4 ring-yellow-400/40 group">
+                      <span className="text-xs font-black uppercase text-black bg-white/90 px-4 py-1.5 rounded-full shadow-md tracking-wider">
                         {openingPack.tier}
                       </span>
-                      <span className="text-7xl sm:text-8xl">{openingPack.icon}</span>
-                      <span className="text-xs font-black uppercase text-black tracking-widest bg-amber-300 px-3 py-1 rounded-lg">
-                        ¡TOCA PARA ABRIR!
+                      <div className="flex flex-col items-center">
+                        <span className="text-8xl sm:text-9xl group-hover:scale-110 transition-transform drop-shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+                          {openingPack.icon}
+                        </span>
+                        <span className="text-white text-xs font-serif italic mt-2 opacity-90">
+                          «Contiene {revealedPackCards.length} cartas bendecidas»
+                        </span>
+                      </div>
+                      <span className="text-xs font-black uppercase text-black tracking-widest bg-yellow-300 px-6 py-2.5 rounded-xl shadow-lg border border-white group-hover:bg-white group-hover:text-black transition-colors">
+                        ⚡ ¡TOCA PARA ABRIR! ⚡
                       </span>
                     </div>
                   </div>
                 ) : (
-                  <div className={`grid grid-cols-1 sm:grid-cols-${Math.min(5, revealedPackCards.length)} gap-4 my-6 w-full max-w-5xl animate-in zoom-in`}>
+                  <div 
+                    className="grid gap-4 sm:gap-6 my-4 w-full max-w-5xl animate-in zoom-in justify-center items-center"
+                    style={{
+                      gridTemplateColumns: revealedPackCards.length <= 2 
+                        ? 'repeat(2, minmax(180px, 240px))' 
+                        : revealedPackCards.length === 3
+                        ? 'repeat(auto-fit, minmax(200px, 250px))'
+                        : 'repeat(auto-fit, minmax(190px, 1fr))'
+                    }}
+                  >
                     {revealedPackCards.map((card, cIdx) => {
                       const isFlipped = flippedIndices.includes(cIdx);
                       const isAlreadyOwned = (studentProgress.unlockedCards || []).includes(card.id);
@@ -4780,76 +4929,156 @@ export default function OdiseaBiblica() {
                                   updateScore(studentAuth.clanId, 20, studentAuth.aula);
                                 }
                               }
+                            } else {
+                              // ¡SI YA ESTÁ VOLTEADA, AL TOCARLA SE ABRE EN GRANDE (VISOR HOLOGRÁFICO EN HD)!
+                              setInspectingCard(card);
+                              playRetroSound('powerup');
                             }
                           }}
-                          className={`aspect-[5/7.2] rounded-2xl p-2.5 sm:p-3 flex flex-col justify-between border-2 transition-all cursor-pointer shadow-2xl relative select-none overflow-hidden ${
+                          className={`aspect-[764/1024] rounded-2xl transition-all duration-300 cursor-pointer shadow-2xl relative select-none overflow-hidden group ${
                             !isFlipped 
-                              ? 'bg-gradient-to-b from-[#1c1833] to-[#0a0717] border-amber-500/80 hover:scale-105 shadow-[0_0_20px_rgba(245,158,11,0.3)] animate-pulse' 
-                              : `bg-gradient-to-b ${card.gradient} ${card.border} shadow-[0_0_35px_rgba(255,255,255,0.4)] animate-in zoom-in ring-1 ring-white/30`
-                          }`}>
+                              ? 'border-4 border-amber-400 bg-gradient-to-b from-[#14122b] via-[#1e1742] to-[#0a0717] hover:scale-105 shadow-[0_0_25px_rgba(245,158,11,0.4)] ring-2 ring-yellow-400/50 animate-pulse' 
+                              : 'border-4 border-yellow-400 hover:scale-105 shadow-[0_0_35px_rgba(250,204,21,0.6)] ring-2 ring-white/40 animate-in zoom-in'
+                          }`}
+                        >
 
+                          {/* ── ESTADO 1: DORSO SAGRADO (BOCA ABAJO) ── */}
                           {!isFlipped ? (
-                            <div className="w-full h-full flex flex-col items-center justify-center text-center">
-                              <span className="text-4xl sm:text-5xl mb-2">🎴</span>
-                              <span className="text-xs font-black uppercase text-amber-300 tracking-wider">
-                                REVELAR CARTA
-                              </span>
+                            <div className="w-full h-full p-3 sm:p-4 flex flex-col justify-between items-center text-center relative overflow-hidden bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-950 via-[#100d27] to-[#060411]">
+                              
+                              {/* Marco Geométrico Dorado Interior */}
+                              <div className="absolute inset-2 border-2 border-amber-400/60 rounded-xl pointer-events-none"></div>
+                              <div className="absolute inset-3 border border-yellow-300/30 rounded-lg pointer-events-none"></div>
+
+                              {/* Encabezado del Dorso */}
+                              <div className="relative z-10 pt-2">
+                                <span className="text-[9px] sm:text-[10px] font-black tracking-[0.25em] text-yellow-300 uppercase font-serif drop-shadow block">
+                                  LA ODISEA BÍBLICA
+                                </span>
+                                <span className="text-[7px] text-amber-400/70 tracking-widest uppercase block mt-0.5">
+                                  PACTO ETERNO
+                                </span>
+                              </div>
+
+                              {/* Medallón Sagrado Central Pulsante */}
+                              <div className="relative z-10 my-auto flex flex-col items-center">
+                                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-tr from-amber-600 via-yellow-400 to-amber-700 p-1 flex items-center justify-center shadow-[0_0_30px_rgba(245,158,11,0.8)] animate-pulse">
+                                  <div className="w-full h-full rounded-full bg-[#0a081a] flex items-center justify-center border border-yellow-300 text-3xl sm:text-4xl">
+                                    📜
+                                  </div>
+                                </div>
+                                <span className="text-[9px] text-amber-200 uppercase font-serif tracking-widest mt-2 opacity-80">
+                                  CARTA DEL PACTO
+                                </span>
+                              </div>
+
+                              {/* Pie del Dorso con Invitación */}
+                              <div className="relative z-10 pb-2 w-full px-2">
+                                <span className="bg-gradient-to-r from-amber-500 to-yellow-400 text-black px-3 py-1.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider block shadow-md group-hover:scale-105 transition-transform">
+                                  ✨ TOCAR PARA REVELAR ✨
+                                </span>
+                              </div>
                             </div>
                           ) : (
+                            /* ── ESTADO 2: CARTA REVELADA (BOCA ARRIBA) ── */
                             card.image ? (
-                              <div className="w-full h-full relative rounded-xl overflow-hidden flex flex-col justify-between">
-                                <img src={card.image} alt={card.name} className="absolute inset-0 w-full h-full object-cover" />
-                                <div className="relative z-10 flex justify-between items-center bg-black/75 px-1.5 py-0.5 rounded text-[8px] font-black text-white">
-                                  <span>{card.attributeIcon}</span>
-                                  <span className="text-yellow-300">+{card.clanXP} XP</span>
+                              <div className="w-full h-full relative rounded-xl overflow-hidden bg-black flex flex-col justify-between">
+                                {/* Imagen auténtica en proporción exacta (Edge-to-Edge) */}
+                                <img 
+                                  src={card.image} 
+                                  alt={card.name} 
+                                  className="w-full h-full object-contain" 
+                                  loading="eager"
+                                />
+
+                                {/* Insignia XP Superior Derecha */}
+                                <div className="absolute top-2 right-2 z-10 bg-black/80 backdrop-blur-md border border-yellow-400 px-2 py-0.5 rounded-full text-[9px] font-black text-yellow-300 shadow-lg flex items-center gap-1">
+                                  <span>⭐</span>
+                                  <span>+{card.clanXP} XP</span>
                                 </div>
-                                <div className="relative z-10 bg-black/80 px-1.5 py-1 rounded text-center">
-                                  <span className="text-[9px] font-black text-white uppercase truncate block">{card.name}</span>
-                                  <span className="text-[7px] text-emerald-400 font-bold block">
-                                    {!isAlreadyOwned ? '¡NUEVA!' : 'REPETIDA (+20 XP)'}
+
+                                {/* Insignia Atributo / Rareza Superior Izquierda */}
+                                <div className="absolute top-2 left-2 z-10 bg-black/80 backdrop-blur-md border border-white/20 px-2 py-0.5 rounded-full text-[8px] font-black text-white shadow-lg flex items-center gap-1">
+                                  <span>{card.attributeIcon || '🌟'}</span>
+                                  <span className="text-amber-300 uppercase tracking-wider">{card.rarity.substring(0, 5)}</span>
+                                </div>
+
+                                {/* Banner de Estado Inferior (Nueva / Repetida) */}
+                                <div className="absolute bottom-2 inset-x-2 z-10 flex flex-col gap-1 items-center">
+                                  <span className={`px-2.5 py-0.5 rounded-full text-[8px] sm:text-[9px] font-black uppercase tracking-wider shadow-lg ${
+                                    !isAlreadyOwned 
+                                      ? 'bg-gradient-to-r from-emerald-500 to-teal-400 text-black border border-white' 
+                                      : 'bg-purple-900/90 text-purple-200 border border-purple-400'
+                                  }`}>
+                                    {!isAlreadyOwned ? '🌟 ¡NUEVA CARTA!' : '🔄 REPETIDA (+20 XP)'}
+                                  </span>
+
+                                  {/* Prompt interactivo para ampliar en HD */}
+                                  <span className="bg-black/90 backdrop-blur-sm text-yellow-300 text-[8px] font-black uppercase px-2 py-0.5 rounded border border-yellow-400/60 shadow group-hover:bg-yellow-400 group-hover:text-black transition-colors flex items-center gap-1">
+                                    👁️ TOCA PARA AMPLIAR EN HD 🔍
                                   </span>
                                 </div>
                               </div>
                             ) : (
-                              <>
-                                <div className="flex justify-between items-center bg-black/60 px-2 py-0.5 rounded-lg border border-white/10">
-                                  <span className={`${card.badgeColor} text-[8px] font-black px-1.5 py-0.5 rounded-full uppercase`}>
-                                    {card.rarity.substring(0, 4)}
-                                  </span>
-                                  <span className="text-sm">{card.attributeIcon}</span>
+                              /* ── CARTA PROCEDIMENTAL COMPLETA (TIPO FÍSICA) ── */
+                              <div className="w-full h-full p-2.5 sm:p-3 flex flex-col justify-between border-4 border-[#26170d] bg-gradient-to-b from-[#8c4a1e] via-[#6d3916] to-[#42220b] relative select-none">
+                                
+                                {/* Barra de Título */}
+                                <div className="bg-black/70 border border-yellow-300 px-2 py-1 rounded-md flex justify-between items-center shadow-inner">
+                                  <h4 className="text-[10px] sm:text-xs font-black text-white uppercase tracking-tight truncate max-w-[130px] sm:max-w-[150px] font-serif">
+                                    {card.name}
+                                  </h4>
+                                  <div className="w-5 h-5 rounded-full bg-slate-900 border border-amber-400 flex items-center justify-center text-[10px] shrink-0">
+                                    {card.attributeIcon || '🌟'}
+                                  </div>
                                 </div>
 
-                                <div className="flex justify-end gap-0.5 pr-1">
-                                  {Array.from({ length: Math.min(8, card.stars || 8) }).map((_, si) => (
-                                    <span key={si} className="text-[7px] text-yellow-300">★</span>
+                                {/* Estrellas */}
+                                <div className="flex justify-end gap-0.5 px-0.5 my-0.5">
+                                  {Array.from({ length: Math.min(12, card.stars || 4) }).map((_, si) => (
+                                    <span key={si} className="text-[8px] text-yellow-300 drop-shadow">★</span>
                                   ))}
                                 </div>
 
-                                <div className="text-center my-auto bg-black/40 p-2 rounded-xl">
-                                  <span className="text-3xl block mb-1">{card.icon}</span>
-                                  <h5 className="font-black text-white text-xs uppercase leading-tight line-clamp-1 drop-shadow">
-                                    {card.name}
-                                  </h5>
-                                  <p className="text-[8px] text-cyan-300 font-mono mt-0.5">{card.pasaje}</p>
+                                {/* Arte Central */}
+                                <div className="w-full aspect-[4/3] bg-gradient-to-b from-slate-950 via-indigo-950 to-black rounded border-2 border-slate-300 flex items-center justify-center shadow-inner relative overflow-hidden my-0.5">
+                                  <span className="text-4xl sm:text-5xl drop-shadow-[0_0_15px_rgba(255,255,255,0.8)] animate-pulse">
+                                    {card.icon || '🎴'}
+                                  </span>
+                                  <span className="absolute bottom-1 right-1 text-[7px] font-mono text-yellow-300 bg-black/80 px-1 rounded">
+                                    {card.serialCode || 'ODISEA-001'}
+                                  </span>
                                 </div>
 
-                                <div className="pt-1.5 border-t border-black/40 bg-black/70 px-2 py-1 rounded-lg text-center">
-                                  <div className="text-[8px] font-mono font-bold text-slate-300 mb-0.5">
-                                    ATK {card.atk} / DEF {card.def}
+                                {/* Caja de Texto Pergamino */}
+                                <div className="bg-[#fef3c7] border border-black p-1.5 rounded text-black text-left flex flex-col justify-between shadow-inner">
+                                  <div className="text-[8px] font-black uppercase text-slate-900 font-sans border-b border-black/30 pb-0.5 truncate">
+                                    {card.monsterType || '[PATRIARCA / EFECTO]'}
                                   </div>
-                                  {!isAlreadyOwned ? (
-                                    <span className="bg-emerald-500 text-black text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider block">
-                                      ✨ +{card.clanXP} XP AL CLAN
-                                    </span>
-                                  ) : (
-                                    <span className="bg-purple-900 text-purple-200 text-[8px] font-bold px-2 py-0.5 rounded-full uppercase block">
-                                      REPETIDA (+20 XP)
-                                    </span>
-                                  )}
+                                  <p className="text-[7.5px] text-amber-950 italic font-serif my-0.5 leading-tight line-clamp-2">
+                                    "{card.quote}" <span className="font-bold text-sky-900 not-italic">«{card.pasaje}»</span>
+                                  </p>
+                                  <div className="border-t border-black/30 pt-0.5 mt-0.5 flex justify-between items-center text-[8px] font-black font-mono">
+                                    <span className="text-emerald-800">XP: +{card.clanXP}</span>
+                                    <span>ATK/{card.atk} DEF/{card.def}</span>
+                                  </div>
                                 </div>
-                              </>
+
+                                {/* Pie de Carta */}
+                                <div className="flex justify-between items-center mt-1 pt-0.5 border-t border-black/40">
+                                  <span className={`text-[7px] font-black uppercase px-1.5 py-0.5 rounded ${
+                                    !isAlreadyOwned ? 'bg-emerald-500 text-black' : 'bg-purple-900 text-purple-200'
+                                  }`}>
+                                    {!isAlreadyOwned ? '¡NUEVA!' : 'REPETIDA (+20 XP)'}
+                                  </span>
+                                  <span className="text-[7px] text-yellow-300 font-bold uppercase underline">
+                                    🔍 AMPLIAR
+                                  </span>
+                                </div>
+                              </div>
                             )
                           )}
+
                         </div>
                       );
                     })}
@@ -4861,12 +5090,12 @@ export default function OdiseaBiblica() {
                   <div className="flex flex-wrap gap-4 justify-center mt-6 animate-in slide-in-from-bottom-4">
                     <button 
                       onClick={() => { setOpeningPack(null); setStudentTab('album'); }}
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider px-8 py-3.5 rounded-2xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer">
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider px-8 py-3.5 rounded-2xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer flex items-center gap-2">
                       🃏 IR A MI ÁLBUM SAGRADO
                     </button>
                     <button 
                       onClick={() => setOpeningPack(null)} 
-                      className="bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-wider px-8 py-3.5 rounded-2xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer">
+                      className="bg-yellow-500 hover:bg-yellow-400 text-black font-black uppercase tracking-wider px-8 py-3.5 rounded-2xl text-xs transition-all shadow-lg hover:scale-105 cursor-pointer flex items-center gap-2">
                       🛍️ ABRIR OTRO COFRE
                     </button>
                   </div>
@@ -4877,94 +5106,152 @@ export default function OdiseaBiblica() {
           )}
 
           {/* ════════════════════════════════════════════════════════════ */}
-          {/* ── MODAL CINEMATOGRÁFICO DE APARICIÓN LEGENDARIA ────────── */}
-          {/* ════════════════════════════════════════════════════════════ */}
+          {/* ── MODAL CINEMATOGRÁFICO DE APARICIÓN LEGENDARIA ESPECTACULAR ────────── */}
+          {/* ═══════════════════════════════════════════════════════════════════════ */}
           {cinematicCard && (
             <div className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-center p-4 animate-in fade-in select-none overflow-hidden">
-              {/* Rayos celestiales y auras giratorias */}
+              
+              {/* Flash inicial celestial cegador */}
+              <div className="fixed inset-0 bg-white pointer-events-none z-[100000] animate-[divineFlash_0.7s_ease-out_forwards]"></div>
+
+              {/* Rayos celestiales, vórtice y auras giratorias */}
               <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
-                <div className="w-[800px] h-[800px] bg-gradient-to-tr from-amber-500/30 via-yellow-300/15 to-transparent rounded-full blur-[100px] animate-pulse"></div>
-                <div className="absolute w-[900px] h-[900px] border-[2px] border-amber-400/25 rounded-full animate-[spin_25s_linear_infinite]"></div>
-                <div className="absolute w-[1100px] h-[1100px] border-[1px] border-yellow-300/20 rounded-full animate-[spin_35s_linear_infinite_reverse]"></div>
-              </div>
-
-              {/* Banner Superior Épico */}
-              <div className="relative z-10 text-center mb-4 max-w-xl animate-in slide-in-from-top-6 duration-500">
-                <div className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500/30 via-yellow-400/40 to-amber-500/30 border-2 border-yellow-400 px-6 py-2 rounded-full mb-3 shadow-[0_0_30px_rgba(250,204,21,0.8)] animate-bounce">
-                  <Sparkles className="w-5 h-5 text-yellow-300" />
-                  <span className="text-yellow-200 font-black text-xs sm:text-sm tracking-[0.25em] uppercase">
-                    ¡¡APARICIÓN LEGENDARIA DE LA PROVIDENCIA!!
-                  </span>
-                  <Sparkles className="w-5 h-5 text-yellow-300" />
+                <div className="w-[850px] h-[850px] bg-gradient-to-tr from-amber-500/35 via-yellow-300/25 to-purple-600/20 rounded-full blur-[110px] animate-pulse"></div>
+                <div className="absolute w-[1000px] h-[1000px] border-[3px] border-dashed border-amber-400/40 rounded-full animate-[beam-spin_22s_linear_infinite]"></div>
+                <div className="absolute w-[1200px] h-[1200px] border-[2px] border-yellow-300/25 rounded-full animate-[beam-spin_30s_linear_infinite_reverse]"></div>
+                
+                {/* Lluvia de partículas sagradas flotantes */}
+                <div className="absolute inset-0 flex justify-around pointer-events-none opacity-60">
+                  <span className="text-2xl text-yellow-300 animate-bounce delay-100">✨</span>
+                  <span className="text-3xl text-amber-400 animate-ping delay-300">⭐</span>
+                  <span className="text-xl text-yellow-200 animate-pulse delay-500">⚡</span>
+                  <span className="text-2xl text-orange-400 animate-bounce delay-700">🔥</span>
+                  <span className="text-3xl text-yellow-300 animate-pulse delay-200">🌟</span>
                 </div>
-                <h2 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-200 to-amber-500 uppercase tracking-tight drop-shadow-[0_0_35px_rgba(250,204,21,0.9)]">
-                  {cinematicCard.rarity}
-                </h2>
-                <p className="text-slate-300 text-xs sm:text-sm font-serif italic mt-1">
-                  «El cielo se abre y revela un poder ancestral para tu Clan»
-                </p>
               </div>
 
-              {/* Carta Gigante Central con Resplandor */}
-              <div className="relative z-10 my-3 flex flex-col items-center animate-in zoom-in-95 duration-500">
-                {cinematicCard.image ? (
-                  <div className="relative group">
-                    <div className="absolute -inset-4 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 rounded-3xl blur-2xl opacity-80 group-hover:opacity-100 transition duration-1000 animate-pulse"></div>
-                    <img 
-                      src={cinematicCard.image} 
-                      alt={cinematicCard.name} 
-                      className="relative w-72 sm:w-84 aspect-[5/7] object-cover rounded-2xl border-4 border-yellow-300 shadow-[0_0_60px_rgba(250,204,21,0.9)]" 
-                    />
+              {/* Contenedor con Temblor de Pantalla (Screen Shake) */}
+              <div className="relative z-10 w-full max-w-xl flex flex-col items-center text-center animate-[screenShake_0.6s_ease-out]">
+                
+                {/* Banner Superior de Proclamación Divina */}
+                <div className="mb-3 animate-in slide-in-from-top-8 duration-500">
+                  <div className={`inline-flex items-center gap-2 border-2 px-6 py-2 rounded-full shadow-[0_0_40px_rgba(250,204,21,0.9)] animate-bounce ${
+                    cinematicCard.rarity === 'MÍTICA DIVINA'
+                      ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-500 border-white text-black'
+                      : cinematicCard.rarity === 'SECRETA RARA'
+                      ? 'bg-gradient-to-r from-red-600 via-amber-500 to-indigo-600 border-yellow-300 text-white'
+                      : 'bg-gradient-to-r from-indigo-700 via-purple-600 to-blue-700 border-cyan-300 text-white'
+                  }`}>
+                    <Sparkles className="w-5 h-5 text-yellow-300 animate-spin" />
+                    <span className="font-black text-xs sm:text-sm tracking-[0.25em] uppercase">
+                      {cinematicCard.rarity === 'MÍTICA DIVINA'
+                        ? '¡¡MANIFESTACIÓN DIVINA ANCESTRAL (0.02%)!!'
+                        : cinematicCard.rarity === 'SECRETA RARA'
+                        ? '¡¡APARICIÓN SECRETA RARA PRISMÁTICA!!'
+                        : '¡¡REVELACIÓN ULTRA RARA CELESTIAL!!'}
+                    </span>
+                    <Sparkles className="w-5 h-5 text-yellow-300 animate-spin" />
                   </div>
-                ) : (
-                  <div className="w-72 sm:w-84 aspect-[5/7.2] rounded-2xl p-4 flex flex-col justify-between border-8 border-yellow-400 bg-gradient-to-b from-amber-600 via-yellow-700 to-amber-950 shadow-[0_0_70px_rgba(250,204,21,0.95)] ring-4 ring-yellow-200">
-                    <div className="flex justify-between items-center bg-black/70 px-3 py-1.5 rounded-lg border border-yellow-300">
-                      <span className="text-sm font-black text-white uppercase font-serif truncate max-w-[200px]">{cinematicCard.name}</span>
-                      <span className="text-base">{cinematicCard.attributeIcon || '🌟'}</span>
+
+                  <h2 className="text-3xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-200 to-amber-500 uppercase tracking-tight drop-shadow-[0_0_40px_rgba(250,204,21,1)] mt-2">
+                    {cinematicCard.name}
+                  </h2>
+                  <p className="text-amber-200 text-xs sm:text-sm font-serif italic mt-1">
+                    «El cielo se abre en tu aula y concede esta reliquia a tu Clan»
+                  </p>
+                </div>
+
+                {/* ── CARTA GIGANTE EN 3D CON EFECTO HOLO-SHIMMER ── */}
+                <div className="relative my-2 animate-[cardEmerge_0.8s_ease-out]">
+                  
+                  {/* Aura brillante externa */}
+                  <div className="absolute -inset-6 bg-gradient-to-r from-amber-400 via-yellow-300 to-orange-500 rounded-3xl blur-3xl opacity-90 animate-pulse"></div>
+                  
+                  {cinematicCard.image ? (
+                    <div className="relative rounded-2xl overflow-hidden border-4 border-yellow-300 shadow-[0_0_90px_rgba(250,204,21,1)] ring-4 ring-white/50 animate-[float-3d_3.5s_ease-in-out_infinite] bg-black/80 flex items-center justify-center">
+                      
+                      {/* Efecto de destello holográfico diagonal (Holo Shimmer) */}
+                      <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+                        <div className="w-[200%] h-full bg-gradient-to-r from-transparent via-white/45 to-transparent animate-[shimmer_1.8s_infinite]"></div>
+                      </div>
+
+                      <img 
+                        src={cinematicCard.image} 
+                        alt={cinematicCard.name} 
+                        className="w-72 sm:w-96 max-h-[62vh] aspect-[764/1024] object-contain" 
+                        loading="eager"
+                      />
                     </div>
-                    <div className="flex justify-end gap-1 my-1">
-                      {Array.from({ length: Math.min(12, cinematicCard.stars || 8) }).map((_, si) => (
-                        <span key={si} className="text-xs text-yellow-300">⭐</span>
-                      ))}
-                    </div>
-                    <div className="w-full aspect-[4/3] bg-black/60 rounded-xl border-2 border-yellow-300 flex items-center justify-center my-1">
-                      <span className="text-7xl">{cinematicCard.icon || '🎴'}</span>
-                    </div>
-                    <div className="bg-[#fef3c7] text-black p-2.5 rounded-lg text-left shadow-inner">
-                      <p className="text-[10px] font-black uppercase">{cinematicCard.monsterType}</p>
-                      <p className="text-[9px] italic font-serif my-1 leading-tight line-clamp-2">"{cinematicCard.quote}"</p>
-                      <div className="flex justify-between font-mono font-black text-[10px] border-t border-black/30 pt-1 mt-1">
-                        <span className="text-emerald-800">+{cinematicCard.clanXP} XP</span>
-                        <span>ATK/{cinematicCard.atk} DEF/{cinematicCard.def}</span>
+                  ) : (
+                    <div className="relative w-72 sm:w-96 max-h-[62vh] aspect-[764/1024] rounded-2xl p-4 flex flex-col justify-between border-8 border-yellow-400 bg-gradient-to-b from-amber-600 via-yellow-700 to-amber-950 shadow-[0_0_80px_rgba(250,204,21,1)] ring-4 ring-yellow-200 animate-[float-3d_3.5s_ease-in-out_infinite] overflow-hidden">
+                      
+                      {/* Holo shimmer sobre procedimental */}
+                      <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
+                        <div className="w-[200%] h-full bg-gradient-to-r from-transparent via-white/45 to-transparent animate-[shimmer_1.8s_infinite]"></div>
+                      </div>
+
+                      <div className="flex justify-between items-center bg-black/70 px-3 py-1.5 rounded-lg border border-yellow-300">
+                        <span className="text-sm font-black text-white uppercase font-serif truncate max-w-[200px]">{cinematicCard.name}</span>
+                        <span className="text-base">{cinematicCard.attributeIcon || '🌟'}</span>
+                      </div>
+                      <div className="flex justify-end gap-1 my-1">
+                        {Array.from({ length: Math.min(12, cinematicCard.stars || 8) }).map((_, si) => (
+                          <span key={si} className="text-xs text-yellow-300">⭐</span>
+                        ))}
+                      </div>
+                      <div className="w-full aspect-[4/3] bg-black/60 rounded-xl border-2 border-yellow-300 flex items-center justify-center my-1">
+                        <span className="text-7xl">{cinematicCard.icon || '🎴'}</span>
+                      </div>
+                      <div className="bg-[#fef3c7] text-black p-2.5 rounded-lg text-left shadow-inner">
+                        <p className="text-[10px] font-black uppercase">{cinematicCard.monsterType}</p>
+                        <p className="text-[9px] italic font-serif my-1 leading-tight line-clamp-2">"{cinematicCard.quote}"</p>
+                        <div className="flex justify-between font-mono font-black text-[10px] border-t border-black/30 pt-1 mt-1">
+                          <span className="text-emerald-800">+{cinematicCard.clanXP} XP</span>
+                          <span>ATK/{cinematicCard.atk} DEF/{cinematicCard.def}</span>
+                        </div>
                       </div>
                     </div>
+                  )}
+
+                  {/* Panel de Puntuación al Clan */}
+                  <div className="mt-4 bg-black/90 border-2 border-yellow-400 px-6 py-3 rounded-2xl text-center shadow-[0_0_30px_rgba(250,204,21,0.6)]">
+                    <p className="text-yellow-300 font-black text-base sm:text-lg uppercase tracking-wider flex items-center justify-center gap-2">
+                      <Trophy className="w-5 h-5 text-yellow-400 animate-bounce" />
+                      +{cinematicCard.clanXP} XP PARA EL CLAN
+                      <Trophy className="w-5 h-5 text-yellow-400 animate-bounce" />
+                    </p>
+                    <p className="text-slate-300 text-xs font-mono mt-0.5">
+                      📖 {cinematicCard.pasaje} • RANGO {cinematicCard.rarity}
+                    </p>
                   </div>
-                )}
-
-                {/* Información de Bendición */}
-                <div className="mt-4 bg-black/80 border-2 border-yellow-400/80 px-6 py-2.5 rounded-2xl text-center shadow-lg">
-                  <p className="text-white font-black text-sm uppercase tracking-wider">
-                    {cinematicCard.name}
-                  </p>
-                  <p className="text-emerald-400 font-mono font-bold text-xs mt-0.5">
-                    ✨ +{cinematicCard.clanXP} XP PARA EL CLAN • {cinematicCard.pasaje}
-                  </p>
                 </div>
-              </div>
 
-              {/* Botón de Reclamar */}
-              <div className="relative z-10 mt-3 animate-in slide-in-from-bottom-6 duration-500">
-                <button 
-                  onClick={() => setCinematicCard(null)}
-                  className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-black font-black uppercase tracking-[0.2em] text-xs sm:text-sm px-10 py-4 rounded-2xl shadow-[0_0_40px_rgba(250,204,21,0.9)] hover:scale-105 transition-all cursor-pointer border-2 border-white">
-                  ✨ RECLAMAR ESTA BENDICIÓN Y CONTINUAR ✨
-                </button>
+                {/* Botones de Acción */}
+                <div className="mt-3 flex flex-wrap gap-3 justify-center animate-in slide-in-from-bottom-6 duration-500">
+                  <button 
+                    onClick={() => {
+                      const c = cinematicCard;
+                      setCinematicCard(null);
+                      setInspectingCard(c);
+                      playRetroSound('powerup');
+                    }}
+                    className="bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase tracking-wider text-xs sm:text-sm px-6 py-4 rounded-2xl shadow-[0_0_30px_rgba(79,70,229,0.7)] hover:scale-105 transition-all cursor-pointer border-2 border-indigo-300 flex items-center gap-2">
+                    🔍 EXAMINAR EN DETALLE (HD)
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setCinematicCard(null);
+                      playRetroSound('powerup');
+                    }}
+                    className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-black font-black uppercase tracking-[0.15em] text-xs sm:text-sm px-8 py-4 rounded-2xl shadow-[0_0_50px_rgba(250,204,21,1)] hover:scale-105 transition-all cursor-pointer border-2 border-white flex items-center gap-2">
+                    🏆 ¡RECLAMAR CON HONOR SAGRADO! 🏆
+                  </button>
+                </div>
+
               </div>
             </div>
           )}
-
-          {/* ════════════════════════════════════════════════════════════ */}
-          {/* ── MODAL 2: VISOR HOLOGRÁFICO DEL PACTO & CAPTURA ───────── */}
+{/* ── MODAL 2: VISOR HOLOGRÁFICO DEL PACTO & CAPTURA ───────── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {inspectingCard && (
             <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-3 sm:p-6 animate-in zoom-in duration-300 overflow-y-auto">
@@ -4986,8 +5273,8 @@ export default function OdiseaBiblica() {
 
                   {/* ── CARTA FÍSICA AUTÉNTICA DEL PACTO EN PANTALLA ── */}
                   {inspectingCard.image ? (
-                    <div className="w-72 sm:w-84 aspect-[5/7] rounded-2xl overflow-hidden border-4 border-yellow-400 shadow-[0_0_50px_rgba(245,158,11,0.7)] relative mb-6 select-none ring-2 ring-white/30">
-                      <img src={inspectingCard.image} alt={inspectingCard.name} className="w-full h-full object-cover" />
+                    <div className="w-72 sm:w-96 max-h-[70vh] aspect-[764/1024] rounded-2xl overflow-hidden border-4 border-yellow-400 shadow-[0_0_60px_rgba(245,158,11,0.8)] relative mb-6 select-none ring-2 ring-white/40 bg-black/80 flex items-center justify-center">
+                      <img src={inspectingCard.image} alt={inspectingCard.name} className="w-full h-full object-contain" loading="eager" />
                     </div>
                   ) : (
                     <div className="w-72 sm:w-84 aspect-[5/7.2] rounded-2xl p-3 sm:p-4 flex flex-col justify-between border-8 border-[#26170d] bg-gradient-to-b from-[#8c4a1e] via-[#6d3916] to-[#42220b] shadow-[0_0_50px_rgba(245,158,11,0.6)] relative mb-6 select-none ring-2 ring-yellow-400/60">
@@ -5080,8 +5367,8 @@ export default function OdiseaBiblica() {
                 /* Modo Enfoque Limpio para Captura de Pantalla en Celular o PC */
                 <div className="flex flex-col items-center justify-center text-center animate-in zoom-in select-none my-auto">
                   {inspectingCard.image ? (
-                    <div className="w-80 sm:w-96 aspect-[5/7] rounded-3xl overflow-hidden border-8 border-yellow-400 shadow-[0_0_80px_rgba(250,204,21,0.9)] mb-4 ring-4 ring-yellow-200">
-                      <img src={inspectingCard.image} alt={inspectingCard.name} className="w-full h-full object-cover" />
+                    <div className="w-80 sm:w-[420px] max-h-[82vh] aspect-[764/1024] rounded-3xl overflow-hidden border-8 border-yellow-400 shadow-[0_0_90px_rgba(250,204,21,1)] mb-4 ring-4 ring-yellow-200 bg-black/90 flex items-center justify-center">
+                      <img src={inspectingCard.image} alt={inspectingCard.name} className="w-full h-full object-contain" loading="eager" />
                     </div>
                   ) : (
                     <div className="w-80 sm:w-96 aspect-[5/7.2] rounded-3xl p-5 flex flex-col justify-between border-8 border-[#26170d] bg-gradient-to-b from-[#8c4a1e] via-[#6d3916] to-[#42220b] shadow-[0_0_80px_rgba(250,204,21,0.8)] mb-4 ring-4 ring-yellow-400/80">

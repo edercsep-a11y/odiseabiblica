@@ -86,6 +86,38 @@
   75% { transform: scale(1.1) rotate(5deg); filter: drop-shadow(0 0 40px rgba(245,158,11,0.8)); }
 }
 
+@keyframes shimmer {
+  0% { transform: translateX(-150%) skewX(-25deg); }
+  100% { transform: translateX(250%) skewX(-25deg); }
+}
+
+@keyframes screenShake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(-8px, 6px) rotate(-1.5deg); }
+  20% { transform: translate(8px, -6px) rotate(1.5deg); }
+  30% { transform: translate(-6px, -4px) rotate(-1deg); }
+  40% { transform: translate(6px, 4px) rotate(1deg); }
+  50% { transform: translate(-3px, 2px) rotate(-0.5deg); }
+  60% { transform: translate(3px, -2px) rotate(0.5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes divineFlash {
+  0% { opacity: 0.95; }
+  100% { opacity: 0; pointer-events: none; }
+}
+
+@keyframes beam-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes cardEmerge {
+  0% { transform: scale(0.3) translateY(80px) rotateY(180deg); opacity: 0; }
+  60% { transform: scale(1.1) translateY(-10px) rotateY(0deg); opacity: 1; }
+  100% { transform: scale(1) translateY(0) rotateY(0deg); opacity: 1; }
+}
+
 @media print {
   @page { margin: 0; size: A4; }
   body {
