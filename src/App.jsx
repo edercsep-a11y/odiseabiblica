@@ -1175,6 +1175,222 @@ export const biblicalCardsDB = [
     effectName: "[SABIDURÍA DE JERUSALÉN]",
     power: "Edifica el Santo Templo y otorga discernimiento supremo para resolver cualquier dilema del aula.",
     serialCode: "ODISEA-REY003"
+  },
+  {
+    id: "card_rey_04",
+    name: "Jeroboam I",
+    englishName: "JEROBOAM I",
+    category: "REYES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "TIERRA",
+    attributeIcon: "🌍",
+    cardType: "MONSTRUO NORMAL",
+    monsterType: "[REY DE ISRAEL / DIVISIÓN / BECERROS DE ORO]",
+    atk: 1900,
+    def: 1700,
+    frameStyle: "normal",
+    badgeColor: "bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300 text-black font-black",
+    gradient: "from-amber-800 via-yellow-950 to-black",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_35px_rgba(216,180,254,0.8)]",
+    icon: "🐂",
+    image: "/cards/card_rey_jeroboam_1.jpg",
+    pasaje: "1 Reyes 12:28-30",
+    clanXP: 270,
+    quote: "«Jeroboam I: Rey que dividió el reino, creando becerros de oro para que Israel pecara en Betel y Dan. Una advertencia sobre la idolatría.»",
+    effectName: "[LOS BECERROS DE BETEL Y DAN]",
+    power: "Dividió el reino tras Salomón y levantó altares idólatras. Advierte contra la manipulación de la fe por ambición de poder.",
+    serialCode: "ODISEA-REY004"
+  },
+  {
+    id: "card_rey_05",
+    name: "Ela",
+    englishName: "ELA",
+    category: "REYES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO NORMAL",
+    monsterType: "[REY DE ISRAEL / BANQUETE / TIRSA]",
+    atk: 1600,
+    def: 1200,
+    frameStyle: "normal",
+    badgeColor: "bg-slate-200 text-slate-900 font-black border border-white",
+    gradient: "from-slate-700 via-stone-800 to-black",
+    border: "border-cyan-200",
+    glow: "shadow-[0_0_35px_rgba(226,232,240,0.9)]",
+    icon: "🍷",
+    image: "/cards/card_rey_ela.jpg",
+    pasaje: "1 Reyes 16:8-10",
+    clanXP: 250,
+    quote: "«Ela: Asesinado por su comandante mientras estaba borracho en Tirsa. Advertencia contra los excesos y la negligencia en el liderazgo.»",
+    effectName: "[NEGLIGENCIA DE TIRSA]",
+    power: "La embriaguez y el descuido moral dejan indefenso el trono. Alerta sobre la pérdida de sobriedad y vigilancia espiritual.",
+    serialCode: "ODISEA-REY005"
+  },
+  {
+    id: "card_rey_06",
+    name: "Zimri",
+    englishName: "ZIMRI",
+    category: "REYES",
+    rarity: "SECRETA RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO NORMAL",
+    monsterType: "[REY DE SIETE DÍAS / CONSPIRADOR / JUICIO]",
+    atk: 1700,
+    def: 1100,
+    frameStyle: "normal",
+    badgeColor: "bg-slate-200 text-slate-900 font-black border border-white",
+    gradient: "from-red-800 via-stone-900 to-black",
+    border: "border-red-400",
+    glow: "shadow-[0_0_35px_rgba(239,68,68,0.9)]",
+    icon: "🔥",
+    image: "/cards/card_rey_zimri.jpg",
+    pasaje: "1 Reyes 16:15-18",
+    clanXP: 260,
+    quote: "«Zimri: Su reinado duró solo siete días; se suicidó incendiando el palacio al verse rodeado. La traición sin fundamento devora a su autor.»",
+    effectName: "[FUEGO EN EL PALACIO REAL]",
+    power: "Reinado relámpago de siete días consumido por las llamas. Ilustra el trágico destino del poder arrebatado mediante violencia.",
+    serialCode: "ODISEA-REY006"
+  },
+  {
+    id: "card_rey_07",
+    name: "Ocozías",
+    englishName: "OCOZÍAS",
+    category: "REYES",
+    rarity: "RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO DE EFECTO",
+    monsterType: "[ODISEA BÍBLICA / LINAJE DE ACAB / EFECTO]",
+    atk: 0,
+    def: 0,
+    frameStyle: "effect",
+    badgeColor: "bg-blue-500 text-white font-black",
+    gradient: "from-orange-900 via-amber-950 to-black",
+    border: "border-blue-400",
+    glow: "shadow-[0_0_20px_rgba(59,130,246,0.6)]",
+    icon: "🪟",
+    image: "/cards/card_rey_ocozias.jpg",
+    pasaje: "2 Reyes 1:2-4",
+    clanXP: 180,
+    quote: "«Hijo de Acab, murió tras una caída y por consultar a dioses extranjeros. Una advertencia solemne sobre la santidad.»",
+    effectName: "[LA CELOSÍA DE SAMARIA]",
+    power: "Caída irreparable por consultar a Baal-zebub en vez de acudir al Dios de Israel. Enseña a quién buscar en la prueba.",
+    serialCode: "ODISEA-REY007"
+  },
+  {
+    id: "card_rey_08",
+    name: "Hijo de Acab",
+    englishName: "HIJO DE ACAB",
+    category: "REYES",
+    rarity: "SÚPER RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO NORMAL",
+    monsterType: "[LINAJE DE OMRI / ÍDOLOS DESTRUIDOS]",
+    atk: 1500,
+    def: 1400,
+    frameStyle: "normal",
+    badgeColor: "bg-gradient-to-r from-red-500 to-amber-500 text-white font-black",
+    gradient: "from-red-900 via-stone-900 to-black",
+    border: "border-amber-400",
+    glow: "shadow-[0_0_30px_rgba(245,158,11,0.7)]",
+    icon: "⚡",
+    image: "/cards/card_rey_hijo_de_acab.jpg",
+    pasaje: "1 Reyes 22:51-53; 2 Reyes 1:2",
+    clanXP: 210,
+    quote: "«Hijo de Acab, murió tras una caída y por consultar a dioses extranjeros. La caída de los falsos ídolos ante el juicio divino.»",
+    effectName: "[CAÍDA DESDE LA TERRAZA]",
+    power: "Los ídolos caen hechos pedazos junto con el soberano. Recuerda que ningún dios falso puede sostener la vida del ser humano.",
+    serialCode: "ODISEA-REY008"
+  },
+  {
+    id: "card_rey_09",
+    name: "Baasa",
+    englishName: "BAASA",
+    category: "REYES",
+    rarity: "SECRETA RARA",
+    stars: 3,
+    attribute: "LUZ",
+    attributeIcon: "⚡",
+    cardType: "MONSTRUO NORMAL",
+    monsterType: "[REY DE ISRAEL / USURPADOR / JUICIO]",
+    atk: 1500,
+    def: 1300,
+    frameStyle: "normal",
+    badgeColor: "bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300 text-black font-black",
+    gradient: "from-amber-700 via-yellow-900 to-black",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_35px_rgba(216,180,254,0.8)]",
+    icon: "🗡️",
+    image: "/cards/card_rey_baasa.jpg",
+    pasaje: "1 Reyes 15:27-30; 16:1-4",
+    clanXP: 250,
+    quote: "«Baasa: Usurpó el trono exterminando a la familia de Jeroboam, pero continuó con la idolatría.»",
+    effectName: "[EXTERMINIO DE LA DINASTÍA DE JEROBOAM]",
+    power: "Derrocó la casa de Jeroboam pero tropezó en los mismos becerros. Advierte que cambiar de líder no sirve sin un cambio de corazón.",
+    serialCode: "ODISEA-REY009"
+  },
+  {
+    id: "card_rey_10",
+    name: "Jehú",
+    englishName: "JEHÚ",
+    category: "REYES",
+    rarity: "SÚPER RARA",
+    stars: 4,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO NORMAL",
+    monsterType: "[REY DE ISRAEL / PURGA DE BAAL / CARRO DE GUERRA]",
+    atk: 2000,
+    def: 1500,
+    frameStyle: "normal",
+    badgeColor: "bg-gradient-to-r from-red-500 to-amber-500 text-white font-black",
+    gradient: "from-red-900 via-orange-950 to-black",
+    border: "border-amber-400",
+    glow: "shadow-[0_0_30px_rgba(245,158,11,0.8)]",
+    icon: "🐎",
+    image: "/cards/card_rey_jehu.jpg",
+    pasaje: "2 Reyes 9:20; 10:18-28",
+    clanXP: 240,
+    quote: "«Jehú: Ungido para exterminar el linaje de Acab y el culto a Baal mediante una violenta purga.»",
+    effectName: "[EL ÍMPETU DEL CARRO DE GUERRA]",
+    power: "Conduce furiosamente erradicando los altares paganos de Baal en Samaria con determinación indomable.",
+    serialCode: "ODISEA-REY010"
+  },
+  {
+    id: "card_rey_11",
+    name: "Omri",
+    englishName: "OMRI",
+    category: "REYES",
+    rarity: "SECRETA RARA",
+    stars: 3,
+    attribute: "FUEGO",
+    attributeIcon: "🔥",
+    cardType: "MONSTRUO NORMAL",
+    monsterType: "[REY DE ISRAEL / ESTRATEGA / FUNDADOR DE SAMARIA]",
+    atk: 1650,
+    def: 1400,
+    frameStyle: "normal",
+    badgeColor: "bg-gradient-to-r from-purple-400 via-pink-400 to-amber-300 text-black font-black",
+    gradient: "from-amber-800 via-red-950 to-black",
+    border: "border-purple-400",
+    glow: "shadow-[0_0_35px_rgba(216,180,254,0.8)]",
+    icon: "🏛️",
+    image: "/cards/card_rey_omri.jpg",
+    pasaje: "1 Reyes 16:23-28",
+    clanXP: 260,
+    quote: "«Omri: Gran estratega militar que fundó Samaria como la nueva capital del reino.»",
+    effectName: "[FUNDACIÓN DE LA FORTALEZA DE SAMARIA]",
+    power: "Compró la colina de Semer y levantó Samaria. Figura militar de gran influencia que unificó el reino del norte.",
+    serialCode: "ODISEA-REY011"
   }
 ];
 
@@ -1312,10 +1528,10 @@ export const packStoreCatalog = [
     border: "border-amber-400",
     glow: "shadow-[0_0_45px_rgba(245,158,11,0.7)]",
     badge: "bg-gradient-to-r from-amber-400 to-yellow-300 text-black font-black",
-    cardsCount: 3,
-    description: "3 Cartas de la monarquía sagrada: Saúl, David y Salomón. ¡David Secreta Rara y Salomón Ultra Rara son el mayor tesoro del reino!",
-    rates: "3 Cartas • 50% Súper Rara • 35% Ultra Rara • 15% SECRETA RARA",
-    weights: { "COMÚN": 0.0, "RARA": 0.0, "SÚPER RARA": 0.50, "ULTRA RARA": 0.35, "SECRETA RARA": 0.15, "MÍTICA DIVINA": 0.0 },
+    cardsCount: 4,
+    description: "4 Cartas de la monarquía sagrada: David, Salomón, Saúl, Jeroboam I, Jehú, Omri, Baasa, Zimri, Ela, Ocozías e Hijo de Acab. ¡Colecciona a los 11 reyes bíblicos!",
+    rates: "4 Cartas • 25% Rara • 35% Súper Rara • 15% Ultra Rara • 25% SECRETA RARA",
+    weights: { "COMÚN": 0.0, "RARA": 0.25, "SÚPER RARA": 0.35, "ULTRA RARA": 0.15, "SECRETA RARA": 0.25, "MÍTICA DIVINA": 0.0 },
     isEmpty: false
   },
 
@@ -2658,6 +2874,11 @@ export default function OdiseaBiblica() {
     completedMissions: {},
     packsOpened: 0
   });
+  const [customStudentNameInput, setCustomStudentNameInput] = useState('');
+  const [isCustomStudentMode, setIsCustomStudentMode] = useState(false);
+  const [customStudentsDB, setCustomStudentsDB] = useState({});
+  const [cloudSyncStatus, setCloudSyncStatus] = useState('online'); // 'online' | 'connecting' | 'offline'
+
   // ── Core Data (Loaded dynamically per save) ──
   const [roster, setRoster] = useState(defaultRoster);
   const [scores, setScores] = useState(defaultScores);
@@ -2764,54 +2985,135 @@ export default function OdiseaBiblica() {
   }, [scores, roster, currentUser, currentSave]);
 
   
-    // ── FIREBASE REST REALTIME SYNC ──
-  const PROJECT_ID = "odisea-biblica";
-  const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/gamestate`;
-
+    // ── FIRESTORE SDK REALTIME CLOUD SYNC (MULTIDISPOSITIVO 100% EN VIVO) ──
   useEffect(() => {
-    let isSubscribed = true;
-    
-    const fetchDoc = async (docName) => {
-      // Use standard names unless a specific user/save is loaded
-      const userPrefix = currentUser ? `${currentUser}_${currentSave || 'master_base'}_` : '';
-      try {
-        const res = await fetch(`${FIRESTORE_URL}/${userPrefix}${docName}`);
-        if (!res.ok) return null;
-        const json = await res.json();
-        if (json.fields && json.fields.data) {
-          return JSON.parse(json.fields.data.stringValue);
-        }
-      } catch (e) {
-        console.error("Firebase Read Error:", e);
-      }
-      return null;
-    };
-
-    const syncFirebase = async () => {
-      const serverScores = await fetchDoc('scores');
-      if (serverScores && isSubscribed) setScores(serverScores);
-      
-      const serverRoster = await fetchDoc('roster');
-      if (serverRoster && isSubscribed) setRoster(serverRoster);
-    };
-
-    syncFirebase();
-    const interval = setInterval(syncFirebase, 3000); // Poll every 3 seconds
-    return () => { isSubscribed = false; clearInterval(interval); };
-  }, [currentUser, currentSave]);
-
-  const updateFirebase = async (docName, dataObj) => {
-    const userPrefix = currentUser ? `${currentUser}_${currentSave || 'master_base'}_` : '';
+    let unsubScores;
+    let unsubRoster;
     try {
-      await fetch(`${FIRESTORE_URL}/${userPrefix}${docName}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fields: {
-            data: { stringValue: JSON.stringify(dataObj) }
+      const scoresDocRef = doc(db, 'gamestate', 'scores');
+      unsubScores = onSnapshot(scoresDocRef, (snap) => {
+        if (snap.exists()) {
+          const raw = snap.data();
+          let parsed = null;
+          if (raw.scores && typeof raw.scores === 'object') {
+            parsed = raw.scores;
+          } else if (typeof raw.data === 'string') {
+            try { parsed = JSON.parse(raw.data); } catch (e) {}
+          } else if (raw.data && typeof raw.data === 'object') {
+            parsed = raw.data;
+          } else {
+            parsed = raw;
           }
-        })
+          if (parsed && typeof parsed === 'object') {
+            setScores(prev => ({ ...prev, ...parsed }));
+            setCloudSyncStatus('online');
+          }
+        } else {
+          setDoc(scoresDocRef, { scores: defaultScores, data: JSON.stringify(defaultScores) }, { merge: true }).catch(() => {});
+        }
+      }, (err) => {
+        console.warn("Firestore Scores listener:", err);
       });
+
+      const rosterDocRef = doc(db, 'gamestate', 'roster');
+      unsubRoster = onSnapshot(rosterDocRef, (snap) => {
+        if (snap.exists()) {
+          const raw = snap.data();
+          let parsed = null;
+          if (raw.roster && typeof raw.roster === 'object') {
+            parsed = raw.roster;
+          } else if (typeof raw.data === 'string') {
+            try { parsed = JSON.parse(raw.data); } catch (e) {}
+          } else if (raw.data && typeof raw.data === 'object') {
+            parsed = raw.data;
+          } else {
+            parsed = raw;
+          }
+          if (parsed && typeof parsed === 'object') {
+            setRoster(prev => ({ ...prev, ...parsed }));
+            setCloudSyncStatus('online');
+          }
+        } else {
+          setDoc(rosterDocRef, { roster: defaultRoster, data: JSON.stringify(defaultRoster) }, { merge: true }).catch(() => {});
+        }
+      }, (err) => {
+        console.warn("Firestore Roster listener:", err);
+      });
+    } catch (e) {
+      console.error("Error conectando Firestore listeners:", e);
+    }
+
+    return () => {
+      if (unsubScores) unsubScores();
+      if (unsubRoster) unsubRoster();
+    };
+  }, []);
+
+  // ── SINCRONIZACIÓN EN TIEMPO REAL: DOCENTES Y SALONES (FIRESTORE) ──
+  useEffect(() => {
+    let unsubTeachers;
+    try {
+      const teachersDocRef = doc(db, 'gamestate', 'users_database');
+      unsubTeachers = onSnapshot(teachersDocRef, (snap) => {
+        if (snap.exists()) {
+          const raw = snap.data();
+          let cloudUsers = null;
+          if (raw.users && typeof raw.users === 'object') cloudUsers = raw.users;
+          else if (typeof raw.data === 'string') {
+            try { cloudUsers = JSON.parse(raw.data); } catch (e) {}
+          }
+          if (cloudUsers && typeof cloudUsers === 'object') {
+            setUsersDB(prev => {
+              const merged = { ...prev, ...cloudUsers };
+              try { localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(merged)); } catch (e) {}
+              return merged;
+            });
+            setCloudSyncStatus('online');
+          }
+        } else {
+          setDoc(teachersDocRef, { users: usersDB, data: JSON.stringify(usersDB) }, { merge: true }).catch(() => {});
+        }
+      }, (err) => {
+        console.warn("Firestore Teachers listener:", err);
+      });
+    } catch (e) {}
+    return () => { if (unsubTeachers) unsubTeachers(); };
+  }, []);
+
+  // ── SINCRONIZACIÓN EN TIEMPO REAL: NUEVOS ESTUDIANTES REGISTRADOS ──
+  useEffect(() => {
+    let unsubCustomStudents;
+    try {
+      const studentsDocRef = doc(db, 'gamestate', 'custom_students');
+      unsubCustomStudents = onSnapshot(studentsDocRef, (snap) => {
+        if (snap.exists()) {
+          const raw = snap.data();
+          let parsed = raw.students || raw;
+          if (typeof parsed === 'string') {
+            try { parsed = JSON.parse(parsed); } catch (e) {}
+          }
+          if (parsed && typeof parsed === 'object') {
+            setCustomStudentsDB(parsed);
+            setCloudSyncStatus('online');
+          }
+        }
+      }, (err) => {
+        console.warn("Firestore Custom Students listener:", err);
+      });
+    } catch (e) {}
+    return () => { if (unsubCustomStudents) unsubCustomStudents(); };
+  }, []);
+
+  // ── ACTUALIZACIÓN UNIVERSAL EN FIRESTORE CON MERGE SEGURO ──
+  const updateFirebase = async (docName, dataObj) => {
+    try {
+      const targetRef = doc(db, 'gamestate', docName);
+      await setDoc(targetRef, {
+        [docName]: dataObj,
+        data: JSON.stringify(dataObj),
+        updatedAt: Date.now()
+      }, { merge: true });
+      setCloudSyncStatus('online');
     } catch (e) {
       console.error("Firebase Write Error:", e);
     }
@@ -2945,16 +3247,34 @@ export default function OdiseaBiblica() {
   const handleStudentAuth = (e) => {
     if (e && e.preventDefault) e.preventDefault();
     const { name, aula, clanId, password } = studentForm;
-    if (!name) {
-      alert("Por favor selecciona tu nombre de la lista.");
+    let finalStudentName = name;
+    if (isCustomStudentMode || name === '__CUSTOM_NEW__') {
+      if (!customStudentNameInput.trim()) {
+        alert("Por favor escribe tus apellidos y nombres completos.");
+        return;
+      }
+      finalStudentName = customStudentNameInput.trim().toUpperCase();
+      // Registrar al nuevo estudiante en Firestore para que aparezca en todos los dispositivos
+      const targetAula = aula || '1A';
+      const currentAulaList = customStudentsDB[targetAula] || [];
+      if (!currentAulaList.includes(finalStudentName)) {
+        const updatedList = [...currentAulaList, finalStudentName];
+        const updatedDB = { ...customStudentsDB, [targetAula]: updatedList };
+        setCustomStudentsDB(updatedDB);
+        updateFirebase('custom_students', { students: updatedDB });
+      }
+    }
+
+    if (!finalStudentName) {
+      alert("Por favor selecciona o escribe tu nombre de la lista.");
       return;
     }
-    if (!clanId && name !== "EDER CARRASCO (MAESTRO)") {
+    if (!clanId && finalStudentName !== "EDER CARRASCO (MAESTRO)") {
       alert("Por favor selecciona tu clan.");
       return;
     }
 
-    if (name === "EDER CARRASCO (MAESTRO)") {
+    if (finalStudentName === "EDER CARRASCO (MAESTRO)") {
       const enteredPass = (studentForm.masterPassword || password || '').trim();
       const validMaster = ['zamitoecsa', 'eder2026', 'eder2026master', 'eder2026yugijd', '1234', 'eder'];
       if (!validMaster.includes(enteredPass.toLowerCase())) {
@@ -2978,7 +3298,7 @@ export default function OdiseaBiblica() {
       return;
     }
 
-    const storageKey = `student_lives_${aula}_${name}`;
+    const storageKey = `student_lives_${aula}_${finalStudentName}`;
     const studentData = loadFromStorage(storageKey, { lives: 3, lockedUntil: 0 });
     
     if (studentData.lockedUntil && Date.now() < studentData.lockedUntil) {
@@ -2989,7 +3309,7 @@ export default function OdiseaBiblica() {
     }
 
     setStudentAuth({
-      name,
+      name: finalStudentName,
       aula: aula || '1A',
       clanId,
       isGodMode: false,
@@ -2998,35 +3318,96 @@ export default function OdiseaBiblica() {
     setView('student_dashboard');
   };
 
-  // ── PERSISTENCIA Y SINCRONIZACIÓN DEL ESTUDIANTE ──
+  // ── PERSISTENCIA Y SINCRONIZACIÓN DEL ESTUDIANTE EN FIRESTORE EN TIEMPO REAL ──
   useEffect(() => {
-    if (studentAuth) {
-      try {
-        localStorage.setItem('odisea_student_auth_session', JSON.stringify(studentAuth));
-      } catch (e) {}
-      const key = `odisea_progress_v3_${studentAuth.aula || '1A'}_${studentAuth.name || 'default'}`;
-      const saved = loadFromStorage(key, {
-        shekels: 100,
-        unlockedCards: [],
-        completedMissions: {},
-        packsOpened: 0
-      });
-      setStudentProgress(saved);
-    } else {
-      try {
-        localStorage.removeItem('odisea_student_auth_session');
-      } catch (e) {}
+    if (!studentAuth || !studentAuth.name) {
+      try { localStorage.removeItem('odisea_student_auth_session'); } catch (e) {}
+      return;
     }
+
+    try {
+      localStorage.setItem('odisea_student_auth_session', JSON.stringify(studentAuth));
+    } catch (e) {}
+
+    const cleanName = (studentAuth.name || 'default').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+    const cleanAula = (studentAuth.aula || '1A').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+    const progressDocId = `${cleanAula}_${cleanName}`;
+    const studentDocRef = doc(db, 'student_progress', progressDocId);
+
+    // Cargar caché local inmediato para fluidez instantánea
+    const localKey = `odisea_progress_v3_${studentAuth.aula || '1A'}_${studentAuth.name || 'default'}`;
+    const localSaved = loadFromStorage(localKey, null);
+    if (localSaved) {
+      setStudentProgress(localSaved);
+    }
+
+    // Escuchar cambios en la nube en tiempo real (móvil, tablet, PC)
+    let unsubProgress;
+    try {
+      unsubProgress = onSnapshot(studentDocRef, (snap) => {
+        if (snap.exists()) {
+          const cloudData = snap.data();
+          const cleanProgress = {
+            shekels: typeof cloudData.shekels === 'number' ? cloudData.shekels : 100,
+            unlockedCards: Array.isArray(cloudData.unlockedCards) ? cloudData.unlockedCards : [],
+            completedMissions: cloudData.completedMissions || {},
+            packsOpened: cloudData.packsOpened || 0
+          };
+          setStudentProgress(cleanProgress);
+          try { localStorage.setItem(localKey, JSON.stringify(cleanProgress)); } catch (e) {}
+          setCloudSyncStatus('online');
+        } else {
+          // Documento inicial en Firestore
+          const initial = localSaved || {
+            shekels: 100,
+            unlockedCards: [],
+            completedMissions: {},
+            packsOpened: 0
+          };
+          setDoc(studentDocRef, {
+            ...initial,
+            studentName: studentAuth.name,
+            aula: studentAuth.aula,
+            clanId: studentAuth.clanId,
+            createdAt: Date.now(),
+            updatedAt: Date.now()
+          }, { merge: true }).catch(() => {});
+          setStudentProgress(initial);
+        }
+      }, (err) => {
+        console.warn("Firestore Student listener error:", err);
+      });
+    } catch (e) {
+      console.error("Error conectando listener de estudiante:", e);
+    }
+
+    return () => {
+      if (unsubProgress) unsubProgress();
+    };
   }, [studentAuth]);
 
   const updateStudentProgress = useCallback((updater) => {
     setStudentProgress(prev => {
       const current = prev || { shekels: 100, unlockedCards: [], completedMissions: {}, packsOpened: 0 };
       const next = typeof updater === 'function' ? updater(current) : { ...current, ...updater };
-      if (studentAuth) {
+      if (studentAuth && studentAuth.name) {
         try {
-          const key = `odisea_progress_v3_${studentAuth.aula || '1A'}_${studentAuth.name || 'default'}`;
-          localStorage.setItem(key, JSON.stringify(next));
+          const cleanName = (studentAuth.name || 'default').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+          const cleanAula = (studentAuth.aula || '1A').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+          const progressDocId = `${cleanAula}_${cleanName}`;
+          
+          // 1. Guardar en Firestore en tiempo real
+          setDoc(doc(db, 'student_progress', progressDocId), {
+            ...next,
+            studentName: studentAuth.name,
+            aula: studentAuth.aula,
+            clanId: studentAuth.clanId,
+            updatedAt: Date.now()
+          }, { merge: true }).catch(err => console.error("Error guardando progreso en Firestore:", err));
+
+          // 2. Caché local en localStorage
+          const localKey = `odisea_progress_v3_${studentAuth.aula || '1A'}_${studentAuth.name || 'default'}`;
+          localStorage.setItem(localKey, JSON.stringify(next));
         } catch (e) {
           console.error('Error guardando progreso:', e);
         }
@@ -3373,15 +3754,24 @@ export default function OdiseaBiblica() {
     }
     setUsersDB(newDb);
     localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(newDb));
+    updateFirebase('users_database', { users: newDb });
 
-    setScores(prev => ({
-      ...prev,
-      [cleanId]: { c1: 0, c2: 0, c3: 0, c4: 0, c5: 0, c6: 0, c7: 0 }
-    }));
-    setRoster(prev => ({
-      ...prev,
-      [cleanId]: { c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] }
-    }));
+    setScores(prev => {
+      const nextScores = {
+        ...prev,
+        [cleanId]: { c1: 0, c2: 0, c3: 0, c4: 0, c5: 0, c6: 0, c7: 0 }
+      };
+      updateFirebase('scores', nextScores);
+      return nextScores;
+    });
+    setRoster(prev => {
+      const nextRoster = {
+        ...prev,
+        [cleanId]: { c1: [], c2: [], c3: [], c4: [], c5: [], c6: [], c7: [] }
+      };
+      updateFirebase('roster', nextRoster);
+      return nextRoster;
+    });
 
     setNewClassroomSection('');
     alert(`✅ ${cleanName} (${newClassroomGrade}) agregado con éxito.`);
@@ -3403,6 +3793,7 @@ export default function OdiseaBiblica() {
     }
     setUsersDB(newDb);
     localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(newDb));
+    updateFirebase('users_database', { users: newDb });
   };
 
   // ── Protección de Navegación: Evitar pantallas negras en Campamento Base ──
@@ -3500,6 +3891,7 @@ export default function OdiseaBiblica() {
     };
     setUsersDB(newDb);
     localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(newDb));
+    updateFirebase('users_database', { users: newDb });
     setCurrentUser(userClean);
     setCurrentSave(newSaveId);
     setScores({});
@@ -3518,6 +3910,8 @@ export default function OdiseaBiblica() {
     const newDb = { ...usersDB };
     newDb[currentUser].saves.push({ id: saveId, name: newSaveName });
     setUsersDB(newDb);
+    localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(newDb));
+    updateFirebase('users_database', { users: newDb });
     
     // Initialize fresh save
     localStorage.setItem(`odiseaData_${currentUser}_${saveId}`, JSON.stringify({ scores: defaultScores, roster: defaultRoster }));
@@ -4311,15 +4705,23 @@ export default function OdiseaBiblica() {
                   </button>
                 </div>
 
-                {/* 1. SELECCIÓN DE SALÓN (1A, 1B, 1C) */}
+                {/* 1. SELECCIÓN DE SALÓN (COMPATIBLE CON NUEVOS SALONES DE DOCENTES) */}
                 <div>
                   <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">1. SELECCIONA TU SALÓN</label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {['1A', '1B', '1C'].map(aula => (
+                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    {Array.from(new Set([
+                      '1A', '1B', '1C',
+                      ...(currentClassrooms.map(c => c.id)),
+                      ...(Object.keys(scores || {}))
+                    ])).filter(Boolean).map(aula => (
                       <button
                         type="button"
                         key={aula}
-                        onClick={() => setStudentForm(prev => ({ ...prev, aula, name: '' }))}
+                        onClick={() => {
+                          setStudentForm(prev => ({ ...prev, aula, name: '' }));
+                          setIsCustomStudentMode(false);
+                          setCustomStudentNameInput('');
+                        }}
                         className={`py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-all cursor-pointer border ${(studentForm.aula || '1A') === aula ? 'bg-red-600 border-red-400 text-white shadow-[0_0_15px_rgba(220,38,38,0.6)] scale-[1.02]' : 'bg-black/50 border-slate-700 text-slate-400 hover:border-slate-500 hover:text-white'}`}
                       >
                         SALÓN {aula}
@@ -4328,29 +4730,74 @@ export default function OdiseaBiblica() {
                   </div>
                 </div>
 
-                {/* 2. SELECCIÓN DE NOMBRE DE LA LISTA */}
+                {/* 2. SELECCIÓN O REGISTRO DE NOMBRE DE ESTUDIANTE */}
                 <div>
-                  <label className="text-slate-400 text-xs font-bold uppercase tracking-widest mb-1.5 block">2. TUS APELLIDOS Y NOMBRES</label>
+                  <div className="flex justify-between items-center mb-1.5">
+                    <label className="text-slate-400 text-xs font-bold uppercase tracking-widest">2. TUS APELLIDOS Y NOMBRES</label>
+                    {isCustomStudentMode && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsCustomStudentMode(false);
+                          setCustomStudentNameInput('');
+                          setStudentForm(prev => ({ ...prev, name: '' }));
+                        }}
+                        className="text-[10px] text-cyan-400 hover:underline uppercase font-bold cursor-pointer"
+                      >
+                        Volver a la lista
+                      </button>
+                    )}
+                  </div>
                   <select 
-                    value={studentForm.name} 
+                    value={isCustomStudentMode ? "__CUSTOM_NEW__" : studentForm.name} 
                     onChange={e => {
                       const val = e.target.value;
-                      if (val === "EDER CARRASCO (MAESTRO)") {
-                         setStudentForm(prev => ({...prev, name: val, clanId: "all"}));
+                      if (val === "__CUSTOM_NEW__") {
+                        setIsCustomStudentMode(true);
+                        setStudentForm(prev => ({...prev, name: '__CUSTOM_NEW__', clanId: prev.clanId === 'all' ? 'c1' : prev.clanId}));
+                      } else if (val === "EDER CARRASCO (MAESTRO)") {
+                        setIsCustomStudentMode(false);
+                        setCustomStudentNameInput('');
+                        setStudentForm(prev => ({...prev, name: val, clanId: "all"}));
                       } else {
-                         setStudentForm(prev => ({...prev, name: val, clanId: prev.clanId === 'all' ? '' : prev.clanId}));
+                        setIsCustomStudentMode(false);
+                        setCustomStudentNameInput('');
+                        setStudentForm(prev => ({...prev, name: val, clanId: prev.clanId === 'all' ? '' : prev.clanId}));
                       }
                     }} 
-                    required
+                    required={!isCustomStudentMode}
                     className="w-full bg-black/70 border border-slate-700 rounded-xl px-4 py-3 text-white text-sm focus:border-red-500 focus:outline-none transition-colors"
                   >
                     <option value="" disabled>Selecciona tu nombre de la lista...</option>
                     <option value="EDER CARRASCO (MAESTRO)" className="text-amber-400 font-bold bg-[#1a1202]">⭐ EDER CARRASCO (MAESTRO)</option>
-                    {(unassignedStudentsDB[studentForm.aula || '1A'] || []).map(name => (
+                    <option value="__CUSTOM_NEW__" className="text-cyan-400 font-bold bg-[#041d28]">➕ ESCRIBIR MI NOMBRE (NUEVO RECLUTA)...</option>
+                    {Array.from(new Set([
+                      ...(unassignedStudentsDB[studentForm.aula || '1A'] || []),
+                      ...(customStudentsDB[studentForm.aula || '1A'] || [])
+                    ])).map(name => (
                       <option key={name} value={name} className="bg-[#0a0c16]">{name}</option>
                     ))}
                   </select>
-                  <p className="text-[10px] text-slate-500 mt-1">Lista oficial de Siaweb cargada para {studentForm.aula || '1A'}.</p>
+
+                  {isCustomStudentMode && (
+                    <div className="mt-2.5 animate-in slide-in-from-top-2 duration-200">
+                      <input
+                        type="text"
+                        placeholder="Escribe tus Apellidos y Nombres completos..."
+                        value={customStudentNameInput}
+                        onChange={e => {
+                          setCustomStudentNameInput(e.target.value);
+                          setStudentForm(prev => ({ ...prev, name: '__CUSTOM_NEW__' }));
+                        }}
+                        required
+                        className="w-full bg-cyan-950/40 border border-cyan-500/60 rounded-xl px-4 py-3 text-white text-sm font-semibold focus:border-cyan-400 focus:outline-none transition-colors placeholder:text-cyan-300/40 shadow-[0_0_15px_rgba(6,182,212,0.15)]"
+                      />
+                      <p className="text-[10px] text-cyan-400/80 mt-1">✨ Tu nombre se registrará en la nube y se guardará para siempre en todos los dispositivos.</p>
+                    </div>
+                  )}
+                  {!isCustomStudentMode && (
+                    <p className="text-[10px] text-slate-500 mt-1">Lista oficial cargada para Salón {studentForm.aula || '1A'}. ¿No estás en la lista? Elige "➕ ESCRIBIR MI NOMBRE".</p>
+                  )}
                 </div>
 
                 {/* 3. SELECCIÓN DE CLAN */}
@@ -4446,6 +4893,10 @@ export default function OdiseaBiblica() {
                     <span className="bg-amber-950/60 text-amber-300 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full border border-amber-500/30">
                       SALÓN {studentAuth.aula}
                     </span>
+                    <span className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full border flex items-center gap-1.5 ${cloudSyncStatus === 'online' ? 'bg-emerald-950/80 text-emerald-400 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]' : 'bg-amber-950/80 text-amber-400 border-amber-500/50'}`}>
+                      <span className={`w-2 h-2 rounded-full ${cloudSyncStatus === 'online' ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`}></span>
+                      {cloudSyncStatus === 'online' ? 'NUBE ACTIVA' : 'CONECTANDO...'}
+                    </span>
                   </div>
                   <h2 className="text-xl sm:text-3xl font-black text-white uppercase tracking-tight mt-1">{studentAuth.name}</h2>
                   <p className="text-xs sm:text-sm font-black uppercase tracking-wider text-amber-400">
@@ -4466,7 +4917,7 @@ export default function OdiseaBiblica() {
                 </div>
                 <div className="bg-black/60 border border-purple-500/40 px-4 sm:px-6 py-2.5 rounded-2xl text-center shadow-lg">
                    <p className="text-purple-300/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em]">ÁLBUM SAGRADO</p>
-                   <p className="text-purple-300 text-xl sm:text-2xl font-black">🃏 {studentProgress.unlockedCards?.length || 0} / 24</p>
+                   <p className="text-purple-300 text-xl sm:text-2xl font-black">🃏 {studentProgress.unlockedCards?.length || 0} / {biblicalCardsDB.length}</p>
                 </div>
                 <div className="bg-black/60 border border-amber-500/40 px-4 sm:px-6 py-2.5 rounded-2xl text-center shadow-lg">
                    <p className="text-amber-500/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em]">XP CLAN ({studentAuth.aula})</p>
@@ -4812,7 +5263,7 @@ export default function OdiseaBiblica() {
                   { id: 'SACERDOTES', label: 'SACERDOTES (DISEÑOS OFICIALES)' },
                   { id: 'PATRIARCAS', label: 'PATRIARCAS (GÉNESIS)' },
                   { id: 'JUECES', label: 'JUECES DE ISRAEL (MISIÓN 2)' },
-                  { id: 'REYES', label: 'LOS 3 REYES (SAÚL, DAVID, SALOMÓN)' },
+                  { id: 'REYES', label: 'LOS REYES DE ISRAEL (MISIÓN 3)' },
                   { id: 'PROFETAS', label: 'PROFETAS (VACÍA)' },
                   { id: 'HEROÍNAS', label: 'HEROÍNAS (VACÍA)' }
                 ].map(cat => (
@@ -5834,6 +6285,10 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <span className={`text-[10px] font-black uppercase px-2.5 py-1.5 rounded-full border hidden sm:flex items-center gap-1.5 ${cloudSyncStatus === 'online' ? 'bg-emerald-950/80 text-emerald-400 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.3)]' : 'bg-amber-950/80 text-amber-400 border-amber-500/50'}`}>
+                <span className={`w-2 h-2 rounded-full ${cloudSyncStatus === 'online' ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`}></span>
+                {cloudSyncStatus === 'online' ? 'NUBE ACTIVA' : 'CONECTANDO...'}
+              </span>
               <button onClick={() => setShowInstructions(true)} className="hidden md:flex text-cyan-400 bg-cyan-900/30 hover:bg-cyan-800/50 border border-cyan-500/30 px-3 py-2 rounded-lg text-[10px] font-bold tracking-widest uppercase items-center gap-2 transition-colors cursor-pointer"><Hexagon className="w-4 h-4"/> MANUAL</button>
               <button onClick={() => setShowTeacherKeysModal(true)} className="bg-amber-600/20 hover:bg-amber-600 hover:text-black border border-amber-500/50 text-amber-400 px-3.5 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] cursor-pointer">
       <Key className="w-4 h-4 text-amber-400"/> CLAVES ESTUDIANTES
