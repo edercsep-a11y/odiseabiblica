@@ -5,11 +5,11 @@ import {
   Crown, MonitorPlay, ShieldAlert, Scroll, Shield, Flame,
   Wand2, Compass, CheckCircle2, Users, Settings, Plus, X, Sparkles, UserPlus, BookOpen, Globe,
   Music, Volume2, Eye, Zap, RefreshCw, Scale, Hourglass, Loader2, Gamepad2, GraduationCap, Hexagon, Layers,
-  Swords, Heart, Timer, Pause, RotateCcw, Lock
+  Swords, Heart, Timer, Pause, RotateCcw, Lock, BarChart3, Award, Search, Filter
 } from 'lucide-react';
 import { clansData, unassignedStudentsDB, defaultRoster, defaultScores, pectoralStones, casosTribunal } from './data.jsx';
 import { db } from './firebase.js';
-import { doc, onSnapshot, setDoc, getDoc, updateDoc, increment } from 'firebase/firestore';
+import { doc, onSnapshot, setDoc, getDoc, updateDoc, increment, collection } from 'firebase/firestore';
 
 // ─── CONSTANTES INTERNAS ULTRA-SEGURAS (PREVIENE PANTALLAS BLANCAS) ─────
 const INTERNAL_CLANS_DATA = [
@@ -193,6 +193,28 @@ const playRetroSound = (type) => {
 };
 
 // ─── RESOLVEDOR UNIVERSAL DE RUTAS DE IMÁGENES (COMPATIBLE CON GITHUB PAGES, HOSTING Y LOCAL) ───
+
+// ─── HELPER UNIVERSAL DE RANGO Y NIVEL DEL ESTUDIANTE ──────────────────────────
+export const getStudentLevel = (prog) => {
+  if (!prog) return { level: 0, title: 'Iniciado', rank: 'Recluta Iniciado', icon: '🌱', color: 'text-slate-400', badgeBg: 'bg-slate-900 border-slate-700 text-slate-300', completedCount: 0 };
+  const completedMissions = prog.completedMissions || {};
+  const completedCount = Object.keys(completedMissions).filter(k => completedMissions[k]).length;
+  
+  if (completedCount >= 5) {
+    return { level: 5, title: 'Héroe del Pacto', rank: 'Leyenda de Israel (100%)', icon: '👑', color: 'text-amber-400', badgeBg: 'bg-amber-950/80 border-amber-500/60 text-amber-300', completedCount };
+  } else if (completedCount === 4) {
+    return { level: 4, title: 'Voz Profética', rank: 'Profeta Ungido (80%)', icon: '📜', color: 'text-fuchsia-400', badgeBg: 'bg-fuchsia-950/80 border-fuchsia-500/60 text-fuchsia-300', completedCount };
+  } else if (completedCount === 3) {
+    return { level: 3, title: 'Capitán de Reyes', rank: 'Guerrero de la Corona (60%)', icon: '⚔️', color: 'text-purple-400', badgeBg: 'bg-purple-950/80 border-purple-500/60 text-purple-300', completedCount };
+  } else if (completedCount === 2) {
+    return { level: 2, title: 'Vigilante de Harod', rank: 'Juez Defensor (40%)', icon: '🛡️', color: 'text-blue-400', badgeBg: 'bg-blue-950/80 border-blue-500/60 text-blue-300', completedCount };
+  } else if (completedCount === 1) {
+    return { level: 1, title: 'Escudero Levita', rank: 'Custodio del Tabernáculo (20%)', icon: '🕊️', color: 'text-emerald-400', badgeBg: 'bg-emerald-950/80 border-emerald-500/60 text-emerald-300', completedCount };
+  } else {
+    return { level: 0, title: 'Recluta Iniciado', rank: 'En Entrenamiento (0%)', icon: '🌱', color: 'text-slate-400', badgeBg: 'bg-slate-900 border-slate-700 text-slate-300', completedCount: 0 };
+  }
+};
+
 export const getCardImageUrl = (imgPath) => {
   if (!imgPath) return '';
   if (imgPath.startsWith('http://') || imgPath.startsWith('https://') || imgPath.startsWith('data:') || imgPath.startsWith('blob:')) {
@@ -2877,6 +2899,14 @@ export default function OdiseaBiblica() {
   const [customStudentNameInput, setCustomStudentNameInput] = useState('');
   const [isCustomStudentMode, setIsCustomStudentMode] = useState(false);
   const [customStudentsDB, setCustomStudentsDB] = useState({});
+  // ── Monitor y Auditoría de Estudiantes en Tiempo Real (Nube Firestore) ──
+  const [allStudentsProgress, setAllStudentsProgress] = useState({});
+  const [showStudentMonitorModal, setShowStudentMonitorModal] = useState(false);
+  const [monitorSelectedAula, setMonitorSelectedAula] = useState('ALL');
+  const [monitorSearchQuery, setMonitorSearchQuery] = useState('');
+  const [monitorSortBy, setMonitorSortBy] = useState('level'); // 'level' | 'cards' | 'shekels' | 'name'
+  const [inspectingStudentCards, setInspectingStudentCards] = useState(null);
+  const [studentCardsFilterCat, setStudentCardsFilterCat] = useState('all');
   const [cloudSyncStatus, setCloudSyncStatus] = useState('online'); // 'online' | 'connecting' | 'offline'
 
   // ── Core Data (Loaded dynamically per save) ──
@@ -3079,6 +3109,50 @@ export default function OdiseaBiblica() {
     } catch (e) {}
     return () => { if (unsubTeachers) unsubTeachers(); };
   }, []);
+
+  // ── SINCRONIZACIÓN EN TIEMPO REAL: MONITOR DE PROGRESO DE TODOS LOS ESTUDIANTES ──
+  useEffect(() => {
+    let unsub;
+    try {
+      unsub = onSnapshot(collection(db, 'student_progress'), (snap) => {
+        const progressMap = {};
+        snap.forEach(docSnap => {
+          progressMap[docSnap.id] = docSnap.data();
+        });
+        setAllStudentsProgress(progressMap);
+      }, (err) => {
+        console.warn("Firestore Student Progress listener:", err);
+      });
+    } catch (e) {
+      console.error("Error conectando student_progress listener:", e);
+    }
+    return () => { if (unsub) unsub(); };
+  }, []);
+
+  const handleRewardStudentClan = (student) => {
+    if (!student || !student.clanId || !student.aula) {
+      alert("No se pudo identificar el clan del estudiante.");
+      return;
+    }
+    updateScore(student.clanId, 50, student.aula);
+    const clanName = clansData.find(c => c.id === student.clanId)?.name || student.clanId;
+    alert(`✨ ¡Se otorgaron +50 XP al Clan ${clanName} de ${student.studentName} (${student.aula})!`);
+  };
+
+  const handleGiftShekels = async (student) => {
+    if (!student || !student.docId) return;
+    try {
+      const studentRef = doc(db, 'student_progress', student.docId);
+      await updateDoc(studentRef, {
+        shekels: increment(50),
+        updatedAt: Date.now()
+      });
+      alert(`🪙 ¡Se enviaron +50 Shekels de regalo al recluta ${student.studentName}!`);
+    } catch (e) {
+      console.error("Error regalando shekels:", e);
+      alert("No se pudo enviar el regalo de monedas.");
+    }
+  };
 
   // ── SINCRONIZACIÓN EN TIEMPO REAL: NUEVOS ESTUDIANTES REGISTRADOS ──
   useEffect(() => {
@@ -4120,6 +4194,454 @@ export default function OdiseaBiblica() {
         </div>
       )}
 
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── MODAL: MONITOR Y AUDITORÍA DE ESTUDIANTES EN VIVO ─────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {showStudentMonitorModal && (() => {
+        const studentEntries = Object.entries(allStudentsProgress)
+          .map(([docId, data]) => ({ docId, ...data }))
+          .filter(student => {
+            if (!student.studentName || student.studentName === 'undefined') return false;
+            if (student.studentName.includes('(MAESTRO)')) return false;
+            return true;
+          });
+
+        const activeClassrooms = Array.from(new Set([
+          '1A', '1B', '1C',
+          ...(currentClassrooms ? currentClassrooms.map(c => c.id) : []),
+          ...(Object.keys(scores || {}))
+        ])).filter(Boolean);
+
+        const filteredList = studentEntries.filter(student => {
+          if (monitorSelectedAula !== 'ALL' && (student.aula || '1A') !== monitorSelectedAula) return false;
+          if (monitorSearchQuery.trim()) {
+            const q = monitorSearchQuery.toLowerCase();
+            const name = (student.studentName || '').toLowerCase();
+            const aula = (student.aula || '').toLowerCase();
+            return name.includes(q) || aula.includes(q);
+          }
+          return true;
+        }).sort((a, b) => {
+          if (monitorSortBy === 'level') {
+            const lvlA = getStudentLevel(a).completedCount;
+            const lvlB = getStudentLevel(b).completedCount;
+            if (lvlB !== lvlA) return lvlB - lvlA;
+            return (b.unlockedCards?.length || 0) - (a.unlockedCards?.length || 0);
+          } else if (monitorSortBy === 'cards') {
+            return (b.unlockedCards?.length || 0) - (a.unlockedCards?.length || 0);
+          } else if (monitorSortBy === 'shekels') {
+            return (b.shekels || 0) - (a.shekels || 0);
+          } else if (monitorSortBy === 'name') {
+            return (a.studentName || '').localeCompare(b.studentName || '');
+          } else {
+            return (b.updatedAt || 0) - (a.updatedAt || 0);
+          }
+        });
+
+        // Métricas rápidas del aula seleccionada
+        const currentScopeStudents = monitorSelectedAula === 'ALL' 
+          ? studentEntries 
+          : studentEntries.filter(s => (s.aula || '1A') === monitorSelectedAula);
+        
+        const totalCardsInScope = currentScopeStudents.reduce((acc, s) => acc + (s.unlockedCards?.length || 0), 0);
+        const totalMissionsInScope = currentScopeStudents.reduce((acc, s) => acc + (getStudentLevel(s).completedCount || 0), 0);
+        const heroesCount = currentScopeStudents.filter(s => getStudentLevel(s).level === 5).length;
+
+        return (
+          <div className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-2 sm:p-6 animate-in fade-in zoom-in-95 duration-300 select-none">
+            <div className="bg-[#070913] border-2 border-emerald-500/50 rounded-3xl p-4 sm:p-8 w-full max-w-6xl shadow-[0_0_100px_rgba(16,185,129,0.25)] relative max-h-[94vh] flex flex-col overflow-hidden">
+              
+              {/* Botón Cerrar */}
+              <button 
+                onClick={() => setShowStudentMonitorModal(false)} 
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 text-slate-400 hover:text-white bg-black/60 hover:bg-red-600/80 p-2.5 rounded-full border border-slate-700 cursor-pointer transition-colors z-20">
+                <X className="w-5 h-5"/>
+              </button>
+
+              {/* Header Principal */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-emerald-500/20 gap-4 shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-2xl bg-emerald-950/80 border border-emerald-500/50 flex items-center justify-center text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)] shrink-0">
+                    <BarChart3 className="w-7 h-7"/>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-xl sm:text-2xl font-black text-white uppercase tracking-wider">
+                        MONITOR DE ESTUDIANTES EN VIVO
+                      </h2>
+                      <span className="bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 text-[9px] font-black uppercase px-2 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_rgba(16,185,129,0.3)]">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        FIRESTORE NUBE ACTIVA
+                      </span>
+                    </div>
+                    <p className="text-slate-400 text-xs mt-0.5">
+                      Visualiza en tiempo real los niveles, misiones superadas y cartas coleccionadas por cada estudiante en casa.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Selector de Aula & Métricas */}
+              <div className="py-4 border-b border-slate-800 shrink-0 space-y-4">
+                {/* Pestañas de Aulas */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar">
+                  <button
+                    onClick={() => setMonitorSelectedAula('ALL')}
+                    className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer border ${
+                      monitorSelectedAula === 'ALL'
+                        ? 'bg-emerald-600 border-emerald-400 text-white shadow-[0_0_15px_rgba(16,185,129,0.5)] scale-[1.02]'
+                        : 'bg-black/40 border-slate-700 text-slate-400 hover:text-white hover:border-slate-500'
+                    }`}
+                  >
+                    🌐 TODOS LOS SALONES ({studentEntries.length})
+                  </button>
+                  {activeClassrooms.map(aula => {
+                    const countInAula = studentEntries.filter(s => (s.aula || '1A') === aula).length;
+                    return (
+                      <button
+                        key={aula}
+                        onClick={() => setMonitorSelectedAula(aula)}
+                        className={`px-4 py-2 rounded-xl text-xs font-black uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer border ${
+                          monitorSelectedAula === aula
+                            ? 'bg-indigo-600 border-indigo-400 text-white shadow-[0_0_15px_rgba(79,70,229,0.5)] scale-[1.02]'
+                            : 'bg-black/40 border-slate-700 text-slate-400 hover:text-white hover:border-slate-500'
+                        }`}
+                      >
+                        SALÓN {aula} ({countInAula})
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Métricas Resumen */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                  <div className="bg-[#0e1222] border border-slate-800 p-3 rounded-2xl text-center">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Estudiantes Conectados</span>
+                    <span className="text-xl sm:text-2xl font-black text-white">{currentScopeStudents.length}</span>
+                  </div>
+                  <div className="bg-[#0e1222] border border-amber-500/30 p-3 rounded-2xl text-center">
+                    <span className="text-[10px] font-bold text-amber-400/80 uppercase tracking-widest block">Héroes del Pacto (Nivel 5)</span>
+                    <span className="text-xl sm:text-2xl font-black text-amber-400">👑 {heroesCount}</span>
+                  </div>
+                  <div className="bg-[#0e1222] border border-purple-500/30 p-3 rounded-2xl text-center">
+                    <span className="text-[10px] font-bold text-purple-400/80 uppercase tracking-widest block">Cartas Desbloqueadas</span>
+                    <span className="text-xl sm:text-2xl font-black text-purple-300">🃏 {totalCardsInScope}</span>
+                  </div>
+                  <div className="bg-[#0e1222] border border-emerald-500/30 p-3 rounded-2xl text-center">
+                    <span className="text-[10px] font-bold text-emerald-400/80 uppercase tracking-widest block">Misiones Superadas</span>
+                    <span className="text-xl sm:text-2xl font-black text-emerald-400">⚔️ {totalMissionsInScope}</span>
+                  </div>
+                </div>
+
+                {/* Barra de Búsqueda y Orden */}
+                <div className="flex flex-col sm:flex-row items-center gap-3">
+                  <div className="relative w-full sm:flex-grow">
+                    <Search className="w-4 h-4 text-slate-500 absolute left-3.5 top-3.5"/>
+                    <input
+                      type="text"
+                      placeholder="Buscar estudiante por apellidos o nombres..."
+                      value={monitorSearchQuery}
+                      onChange={e => setMonitorSearchQuery(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-emerald-500 transition-colors"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <Filter className="w-4 h-4 text-slate-400 shrink-0"/>
+                    <select
+                      value={monitorSortBy}
+                      onChange={e => setMonitorSortBy(e.target.value)}
+                      className="bg-black/60 border border-slate-700 rounded-xl px-3 py-2.5 text-xs text-slate-300 focus:outline-none focus:border-emerald-500 cursor-pointer w-full sm:w-auto"
+                    >
+                      <option value="level">👑 Mayor Nivel / Misiones</option>
+                      <option value="cards">🃏 Más Cartas Desbloqueadas</option>
+                      <option value="shekels">🪙 Más Monedas (Shekels)</option>
+                      <option value="name">🔤 Nombre Alfabético</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Lista Principal de Estudiantes */}
+              <div className="flex-grow overflow-y-auto py-4 space-y-3.5 custom-scrollbar pr-1">
+                {filteredList.length === 0 ? (
+                  <div className="text-center py-16 bg-black/30 border border-dashed border-slate-800 rounded-3xl">
+                    <Users className="w-12 h-12 text-slate-600 mx-auto mb-3"/>
+                    <p className="text-white font-bold uppercase tracking-wider text-sm">No se encontraron estudiantes</p>
+                    <p className="text-slate-500 text-xs mt-1">Los estudiantes que ingresen a la aplicación aparecerán aquí automáticamente.</p>
+                  </div>
+                ) : (
+                  filteredList.map(student => {
+                    const lvlInfo = getStudentLevel(student);
+                    const clan = clansData.find(c => c.id === student.clanId) || { name: 'Sin Clan', icon: '🛡️', color: 'text-slate-400' };
+                    const unlockedCount = (student.unlockedCards || []).length;
+                    const cardPercent = Math.min(100, Math.round((unlockedCount / Math.max(1, biblicalCardsDB.length)) * 100));
+                    const completedMissions = student.completedMissions || {};
+
+                    return (
+                      <div 
+                        key={student.docId}
+                        className={`bg-[#0d1020]/90 border rounded-2xl p-4 sm:p-5 transition-all hover:border-emerald-500/50 shadow-lg ${
+                          lvlInfo.level === 5 ? 'border-amber-500/40 shadow-[0_0_20px_rgba(245,158,11,0.08)]' : 'border-slate-800'
+                        }`}
+                      >
+                        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4">
+                          
+                          {/* Datos del Alumno y Nivel */}
+                          <div className="flex items-start sm:items-center gap-3.5">
+                            <div className="w-12 h-12 rounded-2xl bg-black border border-slate-700 flex items-center justify-center text-2xl shrink-0 shadow-inner">
+                              {clan.icon || '🛡️'}
+                            </div>
+                            <div>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="bg-indigo-950/80 text-indigo-300 border border-indigo-500/40 text-[9px] font-black uppercase px-2 py-0.5 rounded-full">
+                                  SALÓN {student.aula || '1A'}
+                                </span>
+                                <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-full border ${lvlInfo.badgeBg} flex items-center gap-1 shadow-sm`}>
+                                  {lvlInfo.icon} NIVEL {lvlInfo.level}: {lvlInfo.title}
+                                </span>
+                                <span className="text-[10px] text-slate-400 font-bold uppercase">
+                                  • {clan.name}
+                                </span>
+                              </div>
+                              <h3 className="text-base sm:text-lg font-black text-white uppercase tracking-tight mt-1">
+                                {student.studentName}
+                              </h3>
+                              <p className="text-[10px] text-slate-400">
+                                Rango: <strong className={lvlInfo.color}>{lvlInfo.rank}</strong> • Monedas: <strong className="text-yellow-400 font-mono">🪙 {student.shekels || 0}</strong> • Sobres abiertos: <strong className="text-slate-300">{student.packsOpened || 0}</strong>
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Estado de las 5 Misiones (Niveles Superados) */}
+                          <div className="w-full lg:w-auto bg-black/40 border border-slate-800/80 p-3 rounded-xl flex flex-col gap-1.5 shrink-0">
+                            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-wider text-slate-400">
+                              <span>MISIONES SUPERADAS</span>
+                              <span className={lvlInfo.level === 5 ? 'text-amber-400' : 'text-slate-300'}>
+                                {lvlInfo.completedCount} / 5 ({lvlInfo.completedCount * 20}%)
+                              </span>
+                            </div>
+                            <div className="flex items-center gap-1.5">
+                              {[
+                                { id: '1', label: 'M1: Sacerdotes', short: 'M1' },
+                                { id: '2', label: 'M2: Jueces', short: 'M2' },
+                                { id: '3', label: 'M3: Reyes', short: 'M3' },
+                                { id: '4', label: 'M4: Profetas', short: 'M4' },
+                                { id: '5', label: 'M5: Heroínas', short: 'M5' }
+                              ].map(m => {
+                                const isDone = Boolean(completedMissions[m.id]);
+                                return (
+                                  <div
+                                    key={m.id}
+                                    title={`${m.label}: ${isDone ? 'Superada' : 'Pendiente'}`}
+                                    className={`px-2 py-1 rounded-lg text-[9px] font-black uppercase tracking-wider flex items-center gap-1 border transition-all ${
+                                      isDone
+                                        ? 'bg-emerald-950/80 text-emerald-300 border-emerald-500/50 shadow-[0_0_10px_rgba(16,185,129,0.2)]'
+                                        : 'bg-black/60 text-slate-600 border-slate-800'
+                                    }`}
+                                  >
+                                    <span>{isDone ? '✅' : '⏳'}</span>
+                                    <span>{m.short}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </div>
+
+                          {/* Cartas Coleccionadas & Botón de Inspección */}
+                          <div className="w-full lg:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                            <div className="bg-black/50 border border-purple-500/30 px-3.5 py-2 rounded-xl text-center">
+                              <span className="text-[9px] font-black uppercase tracking-wider text-purple-300/80 block">ÁLBUM DE CARTAS</span>
+                              <span className="text-sm font-black text-purple-200">🃏 {unlockedCount} / {biblicalCardsDB.length}</span>
+                              <div className="w-24 bg-slate-800 h-1 rounded-full mx-auto mt-1 overflow-hidden">
+                                <div className="bg-gradient-to-r from-purple-500 to-indigo-400 h-full rounded-full" style={{ width: `${cardPercent}%` }}></div>
+                              </div>
+                            </div>
+
+                            <button
+                              onClick={() => {
+                                setInspectingStudentCards(student);
+                                setStudentCardsFilterCat('all');
+                              }}
+                              className="bg-purple-900/30 hover:bg-purple-800/60 border border-purple-500/50 text-purple-300 px-3.5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-[0_0_15px_rgba(168,85,247,0.2)]"
+                            >
+                              <Eye className="w-3.5 h-3.5"/> VER CARTAS ({unlockedCount})
+                            </button>
+
+                            {/* Botones de Acción del Docente */}
+                            <div className="flex items-center gap-1.5">
+                              <button
+                                onClick={() => handleRewardStudentClan(student)}
+                                title="Otorgar +50 XP al Clan de este estudiante"
+                                className="bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/50 text-amber-300 px-2.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-1"
+                              >
+                                <Award className="w-3.5 h-3.5 text-amber-400"/> +50 XP
+                              </button>
+                              <button
+                                onClick={() => handleGiftShekels(student)}
+                                title="Enviar +50 Shekels de regalo a su cuenta móvil"
+                                className="bg-yellow-950/40 hover:bg-yellow-900/60 border border-yellow-500/50 text-yellow-300 px-2.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-1"
+                              >
+                                🪙 +50
+                              </button>
+                            </div>
+
+                          </div>
+
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* Footer con Indicaciones del Docente */}
+              <div className="pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between text-[11px] text-slate-400 gap-2 shrink-0">
+                <span className="flex items-center gap-1.5 text-emerald-400 font-bold">
+                  <CheckCircle2 className="w-4 h-4"/> Los datos se sincronizan automáticamente cada vez que un alumno juega.
+                </span>
+                <span className="text-slate-500 text-[10px]">
+                  Total de registros en base de datos: {studentEntries.length} reclutas
+                </span>
+              </div>
+
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ════════════════════════════════════════════════════════════ */}
+      {/* ── SUB-MODAL: VISOR DE CARTAS DE UN ESTUDIANTE ─────────── */}
+      {/* ════════════════════════════════════════════════════════════ */}
+      {inspectingStudentCards && (() => {
+        const student = inspectingStudentCards;
+        const unlockedIds = Array.isArray(student.unlockedCards) ? student.unlockedCards : [];
+        const clan = clansData.find(c => c.id === student.clanId) || { name: 'Sin Clan' };
+        const lvl = getStudentLevel(student);
+
+        const cardsPool = biblicalCardsDB.filter(c => {
+          if (studentCardsFilterCat === 'all') return true;
+          return c.category === studentCardsFilterCat;
+        });
+
+        const studentOwnedInPool = cardsPool.filter(c => unlockedIds.includes(c.id));
+
+        return (
+          <div className="fixed inset-0 z-[100000] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 animate-in fade-in zoom-in-95 duration-200 select-none">
+            <div className="bg-[#090b16] border-2 border-purple-500/50 rounded-3xl p-5 sm:p-8 w-full max-w-5xl shadow-[0_0_80px_rgba(168,85,247,0.3)] relative max-h-[92vh] flex flex-col overflow-hidden">
+              
+              <button 
+                onClick={() => setInspectingStudentCards(null)} 
+                className="absolute top-4 right-4 text-slate-400 hover:text-white bg-black/60 hover:bg-red-600/80 p-2.5 rounded-full border border-slate-700 cursor-pointer transition-colors z-20">
+                <X className="w-5 h-5"/>
+              </button>
+
+              {/* Encabezado del Alumno */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 border-b border-purple-500/20 gap-3 shrink-0">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="bg-indigo-950/80 text-indigo-300 border border-indigo-500/40 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full">
+                      SALÓN {student.aula}
+                    </span>
+                    <span className="bg-purple-950/80 text-purple-300 border border-purple-500/40 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full">
+                      {lvl.icon} {lvl.title}
+                    </span>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">
+                      • CLAN {clan.name}
+                    </span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-1">
+                    ÁLBUM SAGRADO: {student.studentName}
+                  </h3>
+                  <p className="text-xs text-purple-300 mt-0.5">
+                    Tiene desbloqueadas <strong>{unlockedIds.length}</strong> de las <strong>{biblicalCardsDB.length}</strong> cartas oficiales del Antiguo Testamento.
+                  </p>
+                </div>
+              </div>
+
+              {/* Filtros de Categoría */}
+              <div className="py-3 flex items-center gap-2 overflow-x-auto custom-scrollbar shrink-0 border-b border-slate-800">
+                {[
+                  { id: 'all', label: `TODAS (${unlockedIds.length})` },
+                  { id: 'SACERDOTES', label: 'SACERDOTES' },
+                  { id: 'JUECES', label: 'JUECES' },
+                  { id: 'REYES', label: 'REYES' },
+                  { id: 'PATRIARCAS', label: 'PATRIARCAS' }
+                ].map(cat => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setStudentCardsFilterCat(cat.id)}
+                    className={`px-3.5 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer border ${
+                      studentCardsFilterCat === cat.id
+                        ? 'bg-purple-600 border-purple-400 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)] scale-[1.02]'
+                        : 'bg-black/40 border-slate-700 text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Grid de Cartas */}
+              <div className="flex-grow overflow-y-auto py-5 custom-scrollbar pr-1">
+                {studentOwnedInPool.length === 0 ? (
+                  <div className="text-center py-16 bg-black/40 border border-dashed border-slate-800 rounded-3xl">
+                    <p className="text-slate-400 font-bold uppercase text-sm">Este alumno aún no posee cartas en esta categoría.</p>
+                    <p className="text-slate-600 text-xs mt-1">Gana monedas en las misiones para abrir sobres en la tienda.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+                    {studentOwnedInPool.map(card => {
+                      const imgUrl = getCardImageUrl(card.image);
+                      return (
+                        <div 
+                          key={card.id}
+                          className="bg-[#111424] border border-purple-500/40 rounded-2xl p-2.5 flex flex-col items-center text-center shadow-lg hover:border-purple-400 transition-all group"
+                        >
+                          <div className="w-full aspect-[59/86] bg-black rounded-xl overflow-hidden mb-2 border border-slate-700 relative shadow-inner">
+                            {imgUrl ? (
+                              <img 
+                                src={imgUrl} 
+                                alt={card.name} 
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" 
+                              />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center text-3xl">📜</div>
+                            )}
+                            <span className="absolute top-1.5 right-1.5 bg-black/80 text-amber-300 text-[8px] font-black px-1.5 py-0.5 rounded border border-amber-500/40 shadow">
+                              {'★'.repeat(card.stars || 3)}
+                            </span>
+                          </div>
+                          <span className="text-[8px] font-black uppercase tracking-wider text-purple-300 bg-purple-950/80 px-2 py-0.5 rounded-full border border-purple-500/30 mb-1 truncate max-w-full">
+                            {card.rarity || 'COMÚN'}
+                          </span>
+                          <h4 className="text-xs font-black text-white uppercase tracking-tight line-clamp-1">
+                            {card.name}
+                          </h4>
+                          <span className="text-[9px] text-slate-400 font-bold uppercase mt-0.5">
+                            {card.category}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              {/* Botón Volver */}
+              <div className="pt-3 border-t border-slate-800 flex justify-end shrink-0">
+                <button
+                  onClick={() => setInspectingStudentCards(null)}
+                  className="bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs uppercase px-6 py-2.5 rounded-xl cursor-pointer transition-colors"
+                >
+                  Volver al Monitor
+                </button>
+              </div>
+
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ── INSTRUCTIONS MODAL ──────────────────────────────────── */}
       {/* ════════════════════════════════════════════════════════════ */}
       {showInstructions && (
@@ -4600,6 +5122,9 @@ export default function OdiseaBiblica() {
             </div>
 
             <div className="flex flex-col md:flex-row gap-4 items-center justify-center mt-12 w-full">
+              <button onClick={() => { setMonitorSelectedAula('ALL'); setShowStudentMonitorModal(true); }} className="bg-gradient-to-r from-emerald-900 to-teal-800 border border-emerald-500/50 text-emerald-300 hover:text-white px-8 py-4 font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-3 rounded-full cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:scale-105">
+                <BarChart3 className="w-5 h-5 text-emerald-400"/> MONITOR DE ALUMNOS EN VIVO ({Object.keys(allStudentsProgress).length})
+              </button>
               <button onClick={() => setView('global_ranking')} className="bg-gradient-to-r from-orange-900 to-amber-700 text-white px-8 py-4 font-black uppercase tracking-[0.2em] text-xs md:text-sm transition-all shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.6)] rounded-full cursor-pointer border border-amber-500 flex items-center gap-2"><Globe className="w-5 h-5"/> CLASIFICACIÓN MULTIVERSO</button>
               <button onClick={() => setShowInstructions(true)} className="bg-[#05060b] border border-cyan-500/50 text-cyan-400 hover:text-white px-8 py-4 font-bold uppercase tracking-widest text-xs transition-all rounded-full cursor-pointer flex items-center gap-2"><Hexagon className="w-5 h-5"/> MANUAL TÁCTICO</button>
             </div>
@@ -6224,6 +6749,14 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
             </div>
             <button onClick={() => setShowClans(false)} className="text-red-400 bg-red-950/40 hover:bg-red-900/80 p-2 rounded-lg transition-colors border border-red-900/50 cursor-pointer"><X className="w-4 h-4"/></button>
           </div>
+          <div className="p-3 border-b border-[#1e293b] bg-[#0c0e18]">
+            <button 
+              onClick={() => { setShowClans(false); setMonitorSelectedAula(selectedClass || 'ALL'); setShowStudentMonitorModal(true); }}
+              className="w-full bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/50 text-emerald-300 py-2.5 px-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+            >
+              <BarChart3 className="w-4 h-4 text-emerald-400" /> VER PROGRESO DE ESTUDIANTES
+            </button>
+          </div>
           <div className="flex-grow overflow-y-auto p-4 space-y-4 custom-scrollbar">
             {[...clansData].sort((a,b) => (scores[selectedClass]?.[b.id] || 0) - (scores[selectedClass]?.[a.id] || 0)).map((clan) => (
               <div key={clan.id} className="p-4 rounded-xl border border-[#1e293b] bg-[#181c31] flex flex-col gap-3 relative overflow-hidden group hover:border-[#2d3748] transition-colors shadow-lg">
@@ -6292,6 +6825,9 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
               <button onClick={() => setShowInstructions(true)} className="hidden md:flex text-cyan-400 bg-cyan-900/30 hover:bg-cyan-800/50 border border-cyan-500/30 px-3 py-2 rounded-lg text-[10px] font-bold tracking-widest uppercase items-center gap-2 transition-colors cursor-pointer"><Hexagon className="w-4 h-4"/> MANUAL</button>
               <button onClick={() => setShowTeacherKeysModal(true)} className="bg-amber-600/20 hover:bg-amber-600 hover:text-black border border-amber-500/50 text-amber-400 px-3.5 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(245,158,11,0.2)] cursor-pointer">
       <Key className="w-4 h-4 text-amber-400"/> CLAVES ESTUDIANTES
+    </button>
+    <button onClick={() => { setMonitorSelectedAula(selectedClass || 'ALL'); setShowStudentMonitorModal(true); }} className="bg-emerald-600/20 hover:bg-emerald-600 hover:text-black border border-emerald-500/50 text-emerald-400 px-3.5 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(16,185,129,0.25)] cursor-pointer">
+      <BarChart3 className="w-4 h-4 text-emerald-400"/> MONITOR ALUMNOS ({Object.values(allStudentsProgress).filter(s => (selectedClass ? s.aula === selectedClass : true)).length})
     </button>
     <button onClick={() => setShowClans(!showClans)} className="bg-amber-500/10 border border-amber-500/30 text-amber-500 hover:bg-amber-500 hover:text-black px-4 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all cursor-pointer"><Trophy className="w-4 h-4"/> AUDITORÍA</button>
             </div>
