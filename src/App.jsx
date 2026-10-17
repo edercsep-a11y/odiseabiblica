@@ -3154,6 +3154,53 @@ export default function OdiseaBiblica() {
     }
   };
 
+  // ── CÁLCULO DINÁMICO DE PUNTOS DE ALUMNOS EN MODO SOLO (MISIONES + CARTAS) ──
+  const getClanStudentPoints = (aula, clanId) => {
+    if (!aula || !clanId) return 0;
+    const cleanAula = String(aula).toUpperCase().trim();
+    const cleanClan = String(clanId).toLowerCase().trim();
+    let totalXP = 0;
+    Object.values(allStudentsProgress || {}).forEach(s => {
+      if (!s || !s.studentName || s.studentName === 'undefined' || s.studentName.includes('(MAESTRO)') || s.clanId === 'all') return;
+      const sAula = String(s.aula || '1A').toUpperCase().trim();
+      const sClan = String(s.clanId || '').toLowerCase().trim();
+      if (sAula === cleanAula && sClan === cleanClan) {
+        const missionsCount = Object.keys(s.completedMissions || {}).length;
+        const cardsCount = (s.unlockedCards || []).length;
+        totalXP += (missionsCount * 100) + (cardsCount * 10);
+      }
+    });
+    return totalXP;
+  };
+
+  // Puntaje total efectivo = Puntaje base otorgado en aula + Puntos ganados por alumnos en casa
+  const getEffectiveScore = (aula, clanId) => {
+    const base = scores[aula]?.[clanId] || 0;
+    return base + getClanStudentPoints(aula, clanId);
+  };
+
+  // Estadísticas globales de estudiantes activos por salón
+  const getClassroomStudentStats = (aula) => {
+    const cleanAula = String(aula).toUpperCase().trim();
+    let activeStudents = 0;
+    let totalCards = 0;
+    let totalMissions = 0;
+    let totalXP = 0;
+    Object.values(allStudentsProgress || {}).forEach(s => {
+      if (!s || !s.studentName || s.studentName === 'undefined' || s.studentName.includes('(MAESTRO)') || s.clanId === 'all') return;
+      const sAula = String(s.aula || '1A').toUpperCase().trim();
+      if (sAula === cleanAula) {
+        activeStudents++;
+        const missions = Object.keys(s.completedMissions || {}).length;
+        const cards = (s.unlockedCards || []).length;
+        totalMissions += missions;
+        totalCards += cards;
+        totalXP += (missions * 100) + (cards * 10);
+      }
+    });
+    return { activeStudents, totalCards, totalMissions, totalXP };
+  };
+
   // ── SINCRONIZACIÓN EN TIEMPO REAL: NUEVOS ESTUDIANTES REGISTRADOS ──
   useEffect(() => {
     let unsubCustomStudents;
@@ -3783,7 +3830,8 @@ export default function OdiseaBiblica() {
   const getCurrentClassrooms = () => {
     if (!currentUser) return [];
     const isEder = isEderUser(currentUser);
-    const saveObj = usersDB[currentUser]?.saves?.find(s => s.id === currentSave);
+    const userObj = usersDB[currentUser];
+    const saveObj = userObj?.saves?.find(s => s.id === currentSave) || userObj?.saves?.[0];
     if (saveObj?.classrooms && saveObj.classrooms.length > 0) {
       return saveObj.classrooms;
     }
@@ -3917,21 +3965,27 @@ export default function OdiseaBiblica() {
 
     // Compatibilidad automática para el maestro Eder Carrasco
     const isEderUser = ['edercarrasco', 'eder carrasco', 'eder', 'ederinovadorpro', 'maestro', 'profesor', 'prof. eder'].includes(userClean.toLowerCase());
-    const isEderPass = ['zamitoecsa', 'eder2026master', 'eder2026', 'eder2026yugijd', '1234', 'admin'].includes(passClean.toLowerCase());
+    const isEderPass = ['zamitoecsa', 'eder2026master', 'eder2026', 'eder2026yugijd', '1234', 'admin', 'yugi'].includes(passClean.toLowerCase());
 
     if (isEderUser && isEderPass) {
-      const activeUser = usersDB['EderInovadorPro'] ? 'EderInovadorPro' : userClean;
+      const matchKey = Object.keys(usersDB).find(k => k.toLowerCase() === userClean.toLowerCase()) || (usersDB['Eder'] ? 'Eder' : (usersDB['EderInovadorPro'] ? 'EderInovadorPro' : userClean));
+      const activeUser = matchKey;
+      const defaultSave = usersDB[activeUser]?.saves?.[0]?.id || 'save_1';
       setCurrentUser(activeUser);
+      setCurrentSave(defaultSave);
       setAuthError('');
       setAuthView('dashboard');
       return;
     }
 
-    if (!usersDB[userClean] || usersDB[userClean].pass !== passClean) {
+    const matchedUserKey = Object.keys(usersDB).find(k => k.toLowerCase() === userClean.toLowerCase());
+    if (!matchedUserKey || usersDB[matchedUserKey].pass.toLowerCase() !== passClean.toLowerCase()) {
       setAuthError('Usuario o contraseña incorrectos.');
       return;
     }
-    setCurrentUser(userClean);
+    const defaultSave = usersDB[matchedUserKey]?.saves?.[0]?.id || 'save_1';
+    setCurrentUser(matchedUserKey);
+    setCurrentSave(defaultSave);
     setAuthError('');
     setAuthView('dashboard');
   };
@@ -4913,6 +4967,52 @@ export default function OdiseaBiblica() {
               </button>
             </div>
 
+            {/* Banner de Sincronización en Vivo y Métricas Globales de Estudiantes */}
+            {(() => {
+              const activeStudentsList = Object.values(allStudentsProgress || {}).filter(s => s && s.studentName && s.studentName !== 'undefined' && !s.studentName.includes('(MAESTRO)'));
+              const totalActiveStudents = activeStudentsList.length;
+              const totalCardsUnlocked = activeStudentsList.reduce((acc, s) => acc + (s?.unlockedCards?.length || 0), 0);
+              const totalSoloXP = activeStudentsList.reduce((acc, s) => {
+                const m = Object.keys(s.completedMissions || {}).length;
+                const c = (s.unlockedCards || []).length;
+                return acc + (m * 100) + (c * 10);
+              }, 0);
+
+              return (
+                <div className="bg-gradient-to-r from-emerald-950/70 via-[#0b171c]/80 to-indigo-950/70 border-2 border-emerald-500/40 rounded-2xl p-4 md:p-6 mb-8 shadow-[0_0_40px_rgba(16,185,129,0.15)] flex flex-col md:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-4 text-center md:text-left">
+                    <div className="w-14 h-14 rounded-2xl bg-emerald-950/80 border border-emerald-400/50 flex items-center justify-center text-emerald-400 shrink-0 shadow-[0_0_20px_rgba(16,185,129,0.3)]">
+                      <BarChart3 className="w-8 h-8 animate-pulse" />
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-center md:justify-start gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                        <span className="text-[10px] text-emerald-400 font-black uppercase tracking-widest">SINCRONIZACIÓN EN TIEMPO REAL CON ESTUDIANTES</span>
+                      </div>
+                      <h3 className="text-xl md:text-2xl font-black text-white uppercase tracking-tight mt-0.5">
+                        {totalActiveStudents} ESTUDIANTES ACTIVOS EN VIVO
+                      </h3>
+                      <p className="text-xs text-slate-300">
+                        <strong className="text-amber-400">{totalCardsUnlocked}</strong> cartas coleccionadas • <strong className="text-emerald-400">+{totalSoloXP} XP</strong> aportados a sus Clanes
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-2 w-full md:w-auto justify-center md:justify-end">
+                    <button 
+                      onClick={() => { setMonitorSelectedAula('ALL'); setShowStudentMonitorModal(true); }}
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.4)] cursor-pointer transition-all hover:scale-105">
+                      <BarChart3 className="w-4 h-4"/> MONITOR DE ALUMNOS ({totalActiveStudents})
+                    </button>
+                    <button 
+                      onClick={() => setView('global_ranking')}
+                      className="bg-amber-600 hover:bg-amber-500 text-white px-5 py-3 rounded-xl text-xs font-black uppercase tracking-wider flex items-center gap-2 shadow-[0_0_20px_rgba(245,158,11,0.4)] cursor-pointer transition-all hover:scale-105 border border-amber-400/50">
+                      <Globe className="w-4 h-4"/> MARCO GLOBAL ({totalSoloXP} XP)
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+
             {/* Grid de Salones del Docente */}
             <div className="mb-10">
               <h3 className="text-amber-400 text-xs font-black uppercase tracking-widest mb-4 flex items-center gap-2">
@@ -4934,7 +5034,9 @@ export default function OdiseaBiblica() {
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {currentClassrooms.map(aula => (
+                  {currentClassrooms.map(aula => {
+                    const stStats = getClassroomStudentStats(aula.id);
+                    return (
                     <div 
                       key={aula.id} 
                       className="group bg-[#111424] hover:bg-[#1a1e36] border-2 border-indigo-900/40 hover:border-indigo-400 rounded-2xl p-5 flex flex-col justify-between transition-all shadow-lg hover:shadow-[0_0_25px_rgba(79,70,229,0.3)] relative overflow-hidden">
@@ -4953,7 +5055,7 @@ export default function OdiseaBiblica() {
                         )}
                       </div>
 
-                      <div className="mb-6">
+                      <div className="mb-4">
                         <h4 className="text-2xl md:text-3xl font-black text-white uppercase tracking-wider group-hover:text-amber-400 transition-colors">
                           {aula.name || `SALÓN ${aula.id}`}
                         </h4>
@@ -4963,20 +5065,45 @@ export default function OdiseaBiblica() {
                             : (roster[aula.id] ? Object.values(roster[aula.id]).flat().length : 0)
                           } estudiantes en base de datos
                         </p>
+
+                        {/* Telemetría en vivo del salón */}
+                        <div className="bg-black/60 border border-emerald-900/50 rounded-xl p-3 mt-3">
+                          <div className="flex items-center justify-between text-xs mb-1">
+                            <span className="text-emerald-400 font-bold flex items-center gap-1.5">
+                              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                              {stStats.activeStudents} jugando en casa
+                            </span>
+                            <span className="text-amber-400 font-black">+{stStats.totalXP} XP</span>
+                          </div>
+                          <p className="text-[10px] text-slate-400">
+                            {stStats.totalCards} cartas • {stStats.totalMissions} misiones completadas
+                          </p>
+                        </div>
                       </div>
 
-                      <button 
-                        onClick={() => { 
-                          setSelectedClass(aula.id); 
-                          setView('campamento_base'); 
-                          setActiveTab(1); 
-                          setSorteoPaso('config');
-                        }} 
-                        className="w-full bg-gradient-to-r from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white py-3 rounded-xl font-black uppercase text-sm tracking-wider flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
-                        ENTRAR AL AULA <Play className="w-4 h-4" />
-                      </button>
+                      <div className="flex flex-col gap-2">
+                        <button 
+                          onClick={() => { 
+                            setSelectedClass(aula.id); 
+                            setView('campamento_base'); 
+                            setActiveTab(1); 
+                            setSorteoPaso('config');
+                          }} 
+                          className="w-full bg-gradient-to-r from-indigo-700 to-indigo-600 hover:from-indigo-600 hover:to-indigo-500 text-white py-3 rounded-xl font-black uppercase text-sm tracking-wider flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer">
+                          ENTRAR AL AULA <Play className="w-4 h-4" />
+                        </button>
+                        <button 
+                          onClick={() => {
+                            setMonitorSelectedAula(aula.id);
+                            setShowStudentMonitorModal(true);
+                          }}
+                          className="w-full bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/40 text-emerald-300 py-2 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer">
+                          <BarChart3 className="w-3.5 h-3.5 text-emerald-400"/> AUDITORÍA ALUMNOS ({stStats.activeStudents})
+                        </button>
+                      </div>
                     </div>
-                  ))}
+                  );
+                })}
                 </div>
               )}
             </div>
@@ -5447,7 +5574,7 @@ export default function OdiseaBiblica() {
                 <div className="bg-black/60 border border-amber-500/40 px-4 sm:px-6 py-2.5 rounded-2xl text-center shadow-lg">
                    <p className="text-amber-500/80 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em]">XP CLAN ({studentAuth.aula})</p>
                    <p className="text-amber-400 text-xl sm:text-2xl font-black">
-                     {studentAuth.isGodMode ? 'TODOS' : (scores[studentAuth.aula]?.[studentAuth.clanId] || 0)}
+                     {studentAuth.isGodMode ? 'TODOS' : getEffectiveScore(studentAuth.aula, studentAuth.clanId)}
                    </p>
                 </div>
              </div>
@@ -6709,25 +6836,36 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
 {view === 'global_ranking' && (
         <div className="flex-grow flex flex-col items-center p-8 relative overflow-hidden bg-[#06080e] dot-grid min-h-screen">
           <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center animate-in slide-in-from-bottom-8 duration-500 mt-10">
-            <button onClick={() => setView('selector')} className="absolute top-0 left-0 text-slate-500 hover:text-amber-500 bg-[#161827] border border-[#2a2e45] px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> VOLVER</button>
+            <button onClick={() => setView(currentUser ? 'class_selector' : 'selector')} className="absolute top-0 left-0 text-slate-500 hover:text-amber-500 bg-[#161827] border border-[#2a2e45] px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> VOLVER</button>
             <Globe className="w-16 h-16 text-amber-500 mb-4 drop-shadow-[0_0_30px_rgba(245,158,11,0.6)]"/>
             <h1 className="text-3xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter uppercase mb-4 drop-shadow-2xl">SALÓN DE LA FAMA</h1>
             <span className="border border-amber-900/50 text-amber-500 px-6 py-2 rounded-full text-[10px] font-bold tracking-widest md:tracking-[0.4em] uppercase mb-12 shadow-sm bg-[#18110b]">TORNEO UNIVERSAL • TODO 1RO DE SECUNDARIA</span>
             <div className="w-full space-y-4 pb-20">
               {(() => {
+                const globalAulas = ['1A', '1B', '1C'];
                 const globalTotals = clansData.map(clan => {
-                  const total = ['1A', '1B', '1C'].reduce((sum, aula) => sum + (scores[aula]?.[clan.id] || 0), 0);
-                  return { ...clan, total };
+                  const baseTotal = globalAulas.reduce((sum, aula) => sum + (scores[aula]?.[clan.id] || 0), 0);
+                  const studentTotal = globalAulas.reduce((sum, aula) => sum + getClanStudentPoints(aula, clan.id), 0);
+                  const total = baseTotal + studentTotal;
+                  return { ...clan, total, baseTotal, studentTotal };
                 }).sort((a, b) => b.total - a.total);
+
                 return globalTotals.map((clan, idx) => (
                   <div key={clan.id} className={`flex justify-between items-center px-4 md:px-8 py-3 md:py-5 rounded-xl md:rounded-2xl border-2 transition-all ${idx === 0 ? 'border-amber-400 bg-[#241e3a] shadow-[0_0_30px_rgba(245,158,11,0.2)]' : idx === 1 ? 'border-slate-400 bg-[#15192b]' : idx === 2 ? 'border-amber-700 bg-[#1e1710]' : 'border-[#1e293b] bg-[#0f111a]'}`}>
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-4 md:gap-6">
                       <span className={`text-2xl md:text-4xl font-black italic ${idx === 0 ? 'text-amber-400 drop-shadow-[0_0_15px_rgba(245,158,11,0.8)]' : idx === 1 ? 'text-slate-300' : idx === 2 ? 'text-amber-600' : 'text-slate-600'}`}>#{idx + 1}</span>
-                      <span className="text-white font-black text-sm md:text-2xl uppercase tracking-widest">{clan.name.toUpperCase()}</span>
+                      <div>
+                        <span className="text-white font-black text-sm md:text-2xl uppercase tracking-widest block">{clan.name.toUpperCase()}</span>
+                        <span className="text-[10px] text-slate-400 flex items-center gap-2 mt-0.5">
+                          <span>Base Aula: <strong className="text-slate-200">{clan.baseTotal}</strong></span>
+                          <span>•</span>
+                          <span className="text-emerald-400 font-bold">Alumnos en Casa: <strong>+{clan.studentTotal} XP</strong></span>
+                        </span>
+                      </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className={`text-4xl font-black ${idx === 0 ? 'text-amber-400' : idx === 1 ? 'text-indigo-300' : idx === 2 ? 'text-indigo-400' : 'text-indigo-500'}`}>{clan.total}</span>
-                      <span className="text-amber-500 font-bold text-lg">XP</span>
+                      <span className={`text-3xl md:text-4xl font-black ${idx === 0 ? 'text-amber-400' : idx === 1 ? 'text-indigo-300' : idx === 2 ? 'text-indigo-400' : 'text-indigo-500'}`}>{clan.total}</span>
+                      <span className="text-amber-500 font-bold text-base md:text-lg">XP</span>
                     </div>
                   </div>
                 ));
@@ -6758,11 +6896,17 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
             </button>
           </div>
           <div className="flex-grow overflow-y-auto p-4 space-y-4 custom-scrollbar">
-            {[...clansData].sort((a,b) => (scores[selectedClass]?.[b.id] || 0) - (scores[selectedClass]?.[a.id] || 0)).map((clan) => (
+            {[...clansData].sort((a,b) => getEffectiveScore(selectedClass, b.id) - getEffectiveScore(selectedClass, a.id)).map((clan) => {
+              const effScore = getEffectiveScore(selectedClass, clan.id);
+              const soloPts = getClanStudentPoints(selectedClass, clan.id);
+              return (
               <div key={clan.id} className="p-4 rounded-xl border border-[#1e293b] bg-[#181c31] flex flex-col gap-3 relative overflow-hidden group hover:border-[#2d3748] transition-colors shadow-lg">
                 <div className="flex justify-between items-center mb-1 px-1">
-                  <span className="font-black text-white text-sm uppercase tracking-widest truncate max-w-[170px]">{clan.name.toUpperCase()}</span>
-                  <span className="text-xl font-black text-indigo-300">{scores[selectedClass]?.[clan.id] || 0}</span>
+                  <div>
+                    <span className="font-black text-white text-sm uppercase tracking-widest truncate max-w-[170px] block">{clan.name.toUpperCase()}</span>
+                    {soloPts > 0 && <span className="text-[9px] text-emerald-400 font-bold">+{soloPts} XP en casa</span>}
+                  </div>
+                  <span className="text-xl font-black text-indigo-300">{effScore}</span>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <button onClick={() => updateScore(clan.id, 50)} className="bg-emerald-900/30 hover:bg-emerald-800/60 text-emerald-400 border border-emerald-500/50 py-2 rounded text-[11px] font-bold cursor-pointer transition-colors">+50 Magistral</button>
@@ -6787,7 +6931,7 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
                   </button>
                 </div>
               </div>
-            ))}
+            ); })}
           </div>
         </div>
       )}
@@ -7038,10 +7182,77 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
                       <div className={`w-32 h-32 rounded-3xl bg-[#0a0b12] border-2 ${clansData[clanSubTab].border} flex items-center justify-center text-6xl shadow-xl mb-6`}>{clansData[clanSubTab].icon}</div>
                       <h3 className={`text-3xl md:text-4xl font-black uppercase tracking-tighter ${clansData[clanSubTab].color} mb-1 leading-tight`}>{clansData[clanSubTab].name}</h3>
                       <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-6">VIRTUD: <span className="text-white">{clansData[clanSubTab].attribute}</span></p>
-                      <div className="bg-[#05060b] border border-[#1e293b] w-full p-6 rounded-xl mb-6">
-                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-2">LEMA OFICIAL</p>
-                        <p className={`font-black uppercase text-lg ${clansData[clanSubTab].color}`}>{clansData[clanSubTab].lema}</p>
+                      <div className="bg-[#05060b] border border-[#1e293b] w-full p-4 rounded-xl mb-4">
+                        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-1">LEMA OFICIAL</p>
+                        <p className={`font-black uppercase text-base ${clansData[clanSubTab].color}`}>{clansData[clanSubTab].lema}</p>
                       </div>
+
+                      {/* Puntaje Efectivo del Clan */}
+                      {(() => {
+                        const targetClanId = clansData[clanSubTab].id;
+                        const effScore = getEffectiveScore(selectedClass, targetClanId);
+                        const baseScore = scores[selectedClass]?.[targetClanId] || 0;
+                        const soloPoints = getClanStudentPoints(selectedClass, targetClanId);
+
+                        const soloStudents = Object.values(allStudentsProgress || {}).filter(s => {
+                          if (!s || !s.studentName || s.studentName === 'undefined' || s.studentName.includes('(MAESTRO)') || s.clanId === 'all') return false;
+                          return String(s.aula || '').toUpperCase().trim() === String(selectedClass || '').toUpperCase().trim() &&
+                                 String(s.clanId || '').toLowerCase().trim() === String(targetClanId).toLowerCase().trim();
+                        });
+
+                        return (
+                          <div className="w-full space-y-4 mb-6">
+                            <div className="bg-gradient-to-b from-[#131627] to-[#0a0c16] border-2 border-amber-500/50 w-full p-4 rounded-2xl text-center shadow-[0_0_25px_rgba(245,158,11,0.2)]">
+                              <p className="text-[10px] text-amber-400 font-black uppercase tracking-widest mb-1 flex items-center justify-center gap-1.5">
+                                <Trophy className="w-3.5 h-3.5" /> PUNTAJE TOTAL DEL CLAN
+                              </p>
+                              <p className="text-3xl md:text-4xl font-black text-white">
+                                {effScore} <span className="text-base font-bold text-amber-400">XP</span>
+                              </p>
+                              <div className="flex justify-center items-center gap-3 mt-2 text-[10px] text-slate-400 border-t border-slate-800 pt-2">
+                                <span>Aula: <strong className="text-white">{baseScore} XP</strong></span>
+                                <span>•</span>
+                                <span className="text-emerald-400 font-bold">En Casa: <strong>+{soloPoints} XP</strong></span>
+                              </div>
+                            </div>
+
+                            {/* Alumnos jugando en Casa en Modo Solo */}
+                            {soloStudents.length > 0 && (
+                              <div className="bg-[#0b141a]/90 border border-emerald-500/40 w-full p-3.5 rounded-xl text-left shadow-lg">
+                                <div className="flex items-center justify-between mb-2">
+                                  <p className="text-[10px] text-emerald-400 font-black uppercase tracking-widest flex items-center gap-1.5">
+                                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    ALUMNOS EN CASA ({soloStudents.length})
+                                  </p>
+                                  <span className="text-[9px] text-amber-400 font-bold">+{soloPoints} XP</span>
+                                </div>
+                                <div className="space-y-1.5 max-h-44 overflow-y-auto custom-scrollbar pr-1">
+                                  {soloStudents.map(st => {
+                                    const lvl = getStudentLevel(st);
+                                    const mCount = Object.keys(st.completedMissions || {}).length;
+                                    const cCount = (st.unlockedCards || []).length;
+                                    const stXP = (mCount * 100) + (cCount * 10);
+                                    return (
+                                      <div key={st.studentName} className="bg-[#111c24] border border-emerald-900/50 p-2 rounded-lg flex items-center justify-between text-left">
+                                        <div className="truncate mr-2">
+                                          <p className="text-white font-bold text-[11px] truncate flex items-center gap-1">
+                                            <span>{lvl.icon}</span> {st.studentName}
+                                          </p>
+                                          <p className="text-[9px] text-slate-400">
+                                            {lvl.rank} • {cCount} cartas • {mCount} misiones
+                                          </p>
+                                        </div>
+                                        <span className="text-emerald-400 font-black text-xs shrink-0">+{stXP} XP</span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
+
                       <div className="w-full text-left">
                         <div className="flex justify-between items-center mb-4">
                           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest flex items-center gap-2"><UserPlus className="w-3 h-3"/> RECLUTAS ASIGNADOS ({roster[selectedClass]?.[clansData[clanSubTab].id]?.length || 0})</p>
@@ -7209,14 +7420,36 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
                       <p className="text-slate-500 text-xs font-bold tracking-widest uppercase mt-2">CONOCE A LAS FACCIONES SAGRADAS</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      {clansData.map((c, i) => (
+                      {clansData.map((c, i) => {
+                        const effScore = getEffectiveScore(selectedClass, c.id);
+                        const baseScore = scores[selectedClass]?.[c.id] || 0;
+                        const soloPoints = getClanStudentPoints(selectedClass, c.id);
+
+                        const soloStudents = Object.values(allStudentsProgress || {}).filter(s => {
+                          if (!s || !s.studentName || s.studentName === 'undefined' || s.studentName.includes('(MAESTRO)') || s.clanId === 'all') return false;
+                          return String(s.aula || '').toUpperCase().trim() === String(selectedClass || '').toUpperCase().trim() &&
+                                 String(s.clanId || '').toLowerCase().trim() === String(c.id).toLowerCase().trim();
+                        });
+
+                        return (
                         <div key={c.id} className="bg-[#0b0c16] border border-[#1e293b] rounded-2xl p-6 relative overflow-hidden shadow-lg">
                           <div className="flex justify-between items-start mb-6">
                             <div className="flex gap-4 items-center">
                               <div className={`w-12 h-12 rounded-xl bg-[#0a0b12] border ${c.border} flex items-center justify-center font-black text-2xl ${c.color}`}>{i+1}</div>
-                              <div><h4 className={`text-2xl font-black uppercase tracking-widest ${c.color}`}>{c.name}</h4><p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">VIRTUD: {c.attribute}</p></div>
+                              <div>
+                                <h4 className={`text-2xl font-black uppercase tracking-widest ${c.color}`}>{c.name}</h4>
+                                <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">VIRTUD: {c.attribute}</p>
+                              </div>
                             </div>
-                            <div className="text-right"><p className="text-2xl font-black text-white">{scores[selectedClass]?.[c.id] || 0}</p><p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">PUNTOS XP</p></div>
+                            <div className="text-right">
+                              <p className="text-2xl font-black text-white">{effScore}</p>
+                              <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest">PUNTOS XP</p>
+                              {soloPoints > 0 && (
+                                <span className="text-[9px] text-emerald-400 font-bold block">
+                                  (+{soloPoints} en casa)
+                                </span>
+                              )}
+                            </div>
                           </div>
                           <div>
                             <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest flex items-center gap-2 mb-3"><Users className="w-3 h-3"/> RECLUTAS CONFIRMADOS ({roster[selectedClass]?.[c.id]?.length || 0})</p>
@@ -7227,9 +7460,35 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
                                 <div className="w-full bg-[#05060b] border border-dashed border-[#1e293b] p-4 text-center rounded"><p className="text-xs text-slate-600 font-bold tracking-widest uppercase">ESPERANDO LA ELECCIÓN DIVINA EN EL AULA.</p></div>
                               )}
                             </div>
+
+                            {/* Alumnos activos jugando en Modo Solo */}
+                            {soloStudents.length > 0 && (
+                              <div className="mt-4 pt-3 border-t border-[#1e293b]/70">
+                                <p className="text-[9px] text-emerald-400 font-bold uppercase tracking-widest flex items-center gap-1.5 mb-2">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                  JUGANDO EN CASA ({soloStudents.length} ALUMNOS • +{soloPoints} XP):
+                                </p>
+                                <div className="flex flex-wrap gap-1.5">
+                                  {soloStudents.map(st => {
+                                    const lvl = getStudentLevel(st);
+                                    const mCount = Object.keys(st.completedMissions || {}).length;
+                                    const cCount = (st.unlockedCards || []).length;
+                                    const pts = (mCount * 100) + (cCount * 10);
+                                    return (
+                                      <span key={st.studentName} className="bg-emerald-950/40 border border-emerald-600/40 text-emerald-300 px-2 py-1 rounded text-[9px] font-bold flex items-center gap-1" title={`${lvl.rank} • ${cCount} cartas • ${mCount} misiones • ${pts} XP aportados`}>
+                                        <span>{lvl.icon}</span>
+                                        <span className="truncate max-w-[120px]">{st.studentName.split(' ')[0]}</span>
+                                        <span className="text-amber-400 font-black">+{pts}</span>
+                                      </span>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      ))}
+                      );
+                      })}
                     </div>
                   </div>
                 )}
