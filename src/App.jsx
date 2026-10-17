@@ -2909,9 +2909,41 @@ export default function OdiseaBiblica() {
   const [studentCardsFilterCat, setStudentCardsFilterCat] = useState('all');
   const [cloudSyncStatus, setCloudSyncStatus] = useState('online'); // 'online' | 'connecting' | 'offline'
 
-  // ── Core Data (Loaded dynamically per save) ──
-  const [roster, setRoster] = useState(defaultRoster);
-  const [scores, setScores] = useState(defaultScores);
+  // ── Core Data (Loaded dynamically per save con recuperación de puntos base) ──
+  const [roster, setRoster] = useState(() => {
+    try {
+      const saved = loadFromStorage(LEGACY_KEY_ROSTER, null);
+      if (saved && typeof saved === 'object') return { ...defaultRoster, ...saved };
+    } catch (e) {}
+    return defaultRoster;
+  });
+
+  const [scores, setScores] = useState(() => {
+    const base = JSON.parse(JSON.stringify(defaultScores));
+    try {
+      const legacy = loadFromStorage(LEGACY_KEY_SCORES, null) || loadFromStorage('odiseaScores', null);
+      if (legacy && typeof legacy === 'object') {
+        Object.keys(legacy).forEach(aula => {
+          if (!base[aula]) base[aula] = {};
+          Object.keys(legacy[aula] || {}).forEach(cId => {
+            base[aula][cId] = Math.max(base[aula][cId] || 0, Number(legacy[aula][cId]) || 0);
+          });
+        });
+      }
+      const savedEder = loadFromStorage('odiseaData_EderInovadorPro_master_base', null)?.scores || 
+                        loadFromStorage('odiseaData_Eder_master_base', null)?.scores ||
+                        loadFromStorage('odiseaData_Eder_save_1', null)?.scores;
+      if (savedEder && typeof savedEder === 'object') {
+        Object.keys(savedEder).forEach(aula => {
+          if (!base[aula]) base[aula] = {};
+          Object.keys(savedEder[aula] || {}).forEach(cId => {
+            base[aula][cId] = Math.max(base[aula][cId] || 0, Number(savedEder[aula][cId]) || 0);
+          });
+        });
+      }
+    } catch (e) {}
+    return base;
+  });
   const [newClassName, setNewClassName] = useState('');
   const [showTeacherKeysModal, setShowTeacherKeysModal] = useState(false);
   const [newClassroomGrade, setNewClassroomGrade] = useState('1ro de Secundaria');
@@ -3035,7 +3067,31 @@ export default function OdiseaBiblica() {
             parsed = raw;
           }
           if (parsed && typeof parsed === 'object') {
-            setScores(prev => ({ ...prev, ...parsed }));
+            setScores(prev => {
+              const merged = { ...prev };
+              let needsCloudPush = false;
+              Object.keys(parsed).forEach(aula => {
+                if (!merged[aula]) merged[aula] = {};
+                Object.keys(parsed[aula] || {}).forEach(cId => {
+                  const val = Number(parsed[aula][cId]);
+                  if (!isNaN(val)) {
+                    merged[aula][cId] = Math.max(merged[aula][cId] || 0, val);
+                  }
+                });
+              });
+              // Verificar si en merged hay puntajes de aula mayores que lo que vino de Firestore
+              Object.keys(merged).forEach(aula => {
+                Object.keys(merged[aula] || {}).forEach(cId => {
+                  if ((merged[aula][cId] || 0) > (Number(parsed?.[aula]?.[cId]) || 0)) {
+                    needsCloudPush = true;
+                  }
+                });
+              });
+              if (needsCloudPush) {
+                setDoc(scoresDocRef, { scores: merged, data: JSON.stringify(merged), updatedAt: Date.now() }, { merge: true }).catch(() => {});
+              }
+              return merged;
+            });
             setCloudSyncStatus('online');
           }
         } else {
@@ -3159,12 +3215,21 @@ export default function OdiseaBiblica() {
     if (!aula || !clanId) return 0;
     const cleanAula = String(aula).toUpperCase().trim();
     const cleanClan = String(clanId).toLowerCase().trim();
+    const targetClanObj = clansData.find(c => c.id.toLowerCase() === cleanClan);
+    const targetClanName = targetClanObj ? targetClanObj.name.toLowerCase().trim() : '';
+
     let totalXP = 0;
     Object.values(allStudentsProgress || {}).forEach(s => {
       if (!s || !s.studentName || s.studentName === 'undefined' || s.studentName.includes('(MAESTRO)') || s.clanId === 'all') return;
       const sAula = String(s.aula || '1A').toUpperCase().trim();
       const sClan = String(s.clanId || '').toLowerCase().trim();
-      if (sAula === cleanAula && sClan === cleanClan) {
+      
+      const isClanMatch = sClan === cleanClan || 
+                          (targetClanName && sClan === targetClanName) || 
+                          (targetClanName && sClan.includes(targetClanName)) || 
+                          sClan.includes(cleanClan);
+
+      if (sAula === cleanAula && isClanMatch) {
         const missionsCount = Object.keys(s.completedMissions || {}).length;
         const cardsCount = (s.unlockedCards || []).length;
         totalXP += (missionsCount * 100) + (cardsCount * 10);
@@ -3958,6 +4023,48 @@ export default function OdiseaBiblica() {
 );
 
   // ── Auth Handlers ──
+  const loadSaveGame = (saveId, userOverride = null) => {
+    const targetUser = userOverride || currentUser;
+    const data = loadFromStorage(`odiseaData_${targetUser}_${saveId}`, null);
+    
+    // Iniciar siempre con los puntajes oficiales de los clanes
+    const mergedScores = JSON.parse(JSON.stringify(defaultScores));
+    
+    // Fusionar puntajes guardados en la partida (si existen) con Math.max para nunca borrar puntos
+    if (data?.scores && typeof data.scores === 'object') {
+      Object.keys(data.scores).forEach(aula => {
+        if (!mergedScores[aula]) mergedScores[aula] = {};
+        Object.keys(data.scores[aula] || {}).forEach(cId => {
+          const val = Number(data.scores[aula][cId]);
+          if (!isNaN(val)) {
+            mergedScores[aula][cId] = Math.max(mergedScores[aula][cId] || 0, val);
+          }
+        });
+      });
+    }
+
+    // Fusionar también con cualquier puntaje que ya estuviera en memoria
+    setScores(prev => {
+      const finalScores = { ...mergedScores };
+      Object.keys(prev || {}).forEach(aula => {
+        if (!finalScores[aula]) finalScores[aula] = {};
+        Object.keys(prev[aula] || {}).forEach(cId => {
+          const val = Number(prev[aula][cId]);
+          if (!isNaN(val)) {
+            finalScores[aula][cId] = Math.max(finalScores[aula][cId] || 0, val);
+          }
+        });
+      });
+      return finalScores;
+    });
+
+    if (data?.roster && typeof data.roster === 'object') {
+      setRoster(prev => ({ ...prev, ...data.roster }));
+    }
+    setCurrentSave(saveId);
+    setView('class_selector');
+  };
+
   const handleLogin = (e) => {
     e.preventDefault();
     const userClean = (loginForm.user || '').trim();
@@ -3974,7 +4081,7 @@ export default function OdiseaBiblica() {
       setCurrentUser(activeUser);
       setCurrentSave(defaultSave);
       setAuthError('');
-      setAuthView('dashboard');
+      loadSaveGame(defaultSave, activeUser);
       return;
     }
 
@@ -3987,7 +4094,7 @@ export default function OdiseaBiblica() {
     setCurrentUser(matchedUserKey);
     setCurrentSave(defaultSave);
     setAuthError('');
-    setAuthView('dashboard');
+    loadSaveGame(defaultSave, matchedUserKey);
   };
 
   const handleRegister = (e) => {
@@ -4022,13 +4129,13 @@ export default function OdiseaBiblica() {
     updateFirebase('users_database', { users: newDb });
     setCurrentUser(userClean);
     setCurrentSave(newSaveId);
-    setScores({});
-    setRoster({});
+    setScores(defaultScores);
+    setRoster(defaultRoster);
     try {
-      localStorage.setItem(`odiseaData_${userClean}_${newSaveId}`, JSON.stringify({ scores: {}, roster: {} }));
+      localStorage.setItem(`odiseaData_${userClean}_${newSaveId}`, JSON.stringify({ scores: defaultScores, roster: defaultRoster }));
     } catch (err) {}
     setAuthError('');
-    setAuthView('dashboard');
+    setView('class_selector');
   };
 
   const handleCreateSave = (e) => {
@@ -4044,14 +4151,6 @@ export default function OdiseaBiblica() {
     // Initialize fresh save
     localStorage.setItem(`odiseaData_${currentUser}_${saveId}`, JSON.stringify({ scores: defaultScores, roster: defaultRoster }));
     setNewSaveName('');
-  };
-
-  const loadSaveGame = (saveId) => {
-    const data = loadFromStorage(`odiseaData_${currentUser}_${saveId}`, { scores: defaultScores, roster: defaultRoster });
-    setScores(data.scores);
-    setRoster(data.roster);
-    setCurrentSave(saveId);
-    setView('class_selector');
   };
 
   // ═══════════════════════════════════════════════════════════════
@@ -7217,8 +7316,14 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
 
                         const soloStudents = Object.values(allStudentsProgress || {}).filter(s => {
                           if (!s || !s.studentName || s.studentName === 'undefined' || s.studentName.includes('(MAESTRO)') || s.clanId === 'all') return false;
-                          return String(s.aula || '').toUpperCase().trim() === String(selectedClass || '').toUpperCase().trim() &&
-                                 String(s.clanId || '').toLowerCase().trim() === String(targetClanId).toLowerCase().trim();
+                          const sAula = String(s.aula || '').toUpperCase().trim();
+                          const sClan = String(s.clanId || '').toLowerCase().trim();
+                          const targetClanName = clansData[clanSubTab]?.name?.toLowerCase()?.trim() || '';
+                          const isClanMatch = sClan === String(targetClanId).toLowerCase().trim() ||
+                                              (targetClanName && sClan === targetClanName) ||
+                                              (targetClanName && sClan.includes(targetClanName)) ||
+                                              sClan.includes(String(targetClanId).toLowerCase().trim());
+                          return sAula === String(selectedClass || '').toUpperCase().trim() && isClanMatch;
                         });
 
                         return (
@@ -7448,8 +7553,14 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
 
                         const soloStudents = Object.values(allStudentsProgress || {}).filter(s => {
                           if (!s || !s.studentName || s.studentName === 'undefined' || s.studentName.includes('(MAESTRO)') || s.clanId === 'all') return false;
-                          return String(s.aula || '').toUpperCase().trim() === String(selectedClass || '').toUpperCase().trim() &&
-                                 String(s.clanId || '').toLowerCase().trim() === String(c.id).toLowerCase().trim();
+                          const sAula = String(s.aula || '').toUpperCase().trim();
+                          const sClan = String(s.clanId || '').toLowerCase().trim();
+                          const targetClanName = c.name?.toLowerCase()?.trim() || '';
+                          const isClanMatch = sClan === String(c.id).toLowerCase().trim() ||
+                                              (targetClanName && sClan === targetClanName) ||
+                                              (targetClanName && sClan.includes(targetClanName)) ||
+                                              sClan.includes(String(c.id).toLowerCase().trim());
+                          return sAula === String(selectedClass || '').toUpperCase().trim() && isClanMatch;
                         });
 
                         return (
