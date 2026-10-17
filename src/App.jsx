@@ -4260,11 +4260,12 @@ export default function OdiseaBiblica() {
             return true;
           });
 
-        const activeClassrooms = Array.from(new Set([
-          '1A', '1B', '1C',
-          ...(currentClassrooms ? currentClassrooms.map(c => c.id) : []),
-          ...(Object.keys(scores || {}))
-        ])).filter(Boolean);
+        const teacherClassrooms = currentClassrooms ? currentClassrooms.map(c => c.id) : [];
+        const activeClassrooms = isEderUser(currentUser)
+          ? Array.from(new Set(['1A', '1B', '1C', ...teacherClassrooms, ...(Object.keys(scores || {}))])).filter(Boolean)
+          : (teacherClassrooms.length > 0
+              ? teacherClassrooms
+              : Array.from(new Set([...(Object.keys(scores || {}))])).filter(Boolean));
 
         const filteredList = studentEntries.filter(student => {
           if (monitorSelectedAula !== 'ALL' && (student.aula || '1A') !== monitorSelectedAula) return false;
@@ -5248,12 +5249,10 @@ export default function OdiseaBiblica() {
               </div>
             </div>
 
-            <div className="flex flex-col md:flex-row gap-4 items-center justify-center mt-12 w-full">
-              <button onClick={() => { setMonitorSelectedAula('ALL'); setShowStudentMonitorModal(true); }} className="bg-gradient-to-r from-emerald-900 to-teal-800 border border-emerald-500/50 text-emerald-300 hover:text-white px-8 py-4 font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center gap-3 rounded-full cursor-pointer shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:scale-105">
-                <BarChart3 className="w-5 h-5 text-emerald-400"/> MONITOR DE ALUMNOS EN VIVO ({Object.keys(allStudentsProgress).length})
+            <div className="flex justify-center mt-12 w-full">
+              <button onClick={() => setShowInstructions(true)} className="bg-[#05060b] border border-cyan-500/50 text-cyan-400 hover:text-white hover:bg-cyan-900/30 px-8 py-4 font-bold uppercase tracking-widest text-xs transition-all rounded-full cursor-pointer flex items-center gap-2 shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.5)]">
+                <Hexagon className="w-5 h-5"/> MANUAL TÁCTICO DEL JUEGO
               </button>
-              <button onClick={() => setView('global_ranking')} className="bg-gradient-to-r from-orange-900 to-amber-700 text-white px-8 py-4 font-black uppercase tracking-[0.2em] text-xs md:text-sm transition-all shadow-[0_0_30px_rgba(245,158,11,0.3)] hover:shadow-[0_0_50px_rgba(245,158,11,0.6)] rounded-full cursor-pointer border border-amber-500 flex items-center gap-2"><Globe className="w-5 h-5"/> CLASIFICACIÓN MULTIVERSO</button>
-              <button onClick={() => setShowInstructions(true)} className="bg-[#05060b] border border-cyan-500/50 text-cyan-400 hover:text-white px-8 py-4 font-bold uppercase tracking-widest text-xs transition-all rounded-full cursor-pointer flex items-center gap-2"><Hexagon className="w-5 h-5"/> MANUAL TÁCTICO</button>
             </div>
           </div>
         </div>
@@ -6836,13 +6835,32 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
 {view === 'global_ranking' && (
         <div className="flex-grow flex flex-col items-center p-8 relative overflow-hidden bg-[#06080e] dot-grid min-h-screen">
           <div className="relative z-10 w-full max-w-4xl mx-auto flex flex-col items-center animate-in slide-in-from-bottom-8 duration-500 mt-10">
-            <button onClick={() => setView(currentUser ? 'class_selector' : 'selector')} className="absolute top-0 left-0 text-slate-500 hover:text-amber-500 bg-[#161827] border border-[#2a2e45] px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> VOLVER</button>
+            <button onClick={() => {
+              if (selectedClass) {
+                setView('campamento_base');
+              } else if (currentUser) {
+                setView('class_selector');
+              } else if (studentAuth) {
+                setView('student_dashboard');
+              } else {
+                setView('selector');
+              }
+            }} className="absolute top-0 left-0 text-slate-500 hover:text-amber-500 bg-[#161827] border border-[#2a2e45] px-4 py-2 rounded-lg text-[10px] uppercase tracking-widest font-bold flex items-center gap-2 transition-colors cursor-pointer"><ChevronRight className="rotate-180 w-4 h-4"/> VOLVER</button>
             <Globe className="w-16 h-16 text-amber-500 mb-4 drop-shadow-[0_0_30px_rgba(245,158,11,0.6)]"/>
             <h1 className="text-3xl md:text-6xl lg:text-7xl font-black text-white tracking-tighter uppercase mb-4 drop-shadow-2xl">SALÓN DE LA FAMA</h1>
-            <span className="border border-amber-900/50 text-amber-500 px-6 py-2 rounded-full text-[10px] font-bold tracking-widest md:tracking-[0.4em] uppercase mb-12 shadow-sm bg-[#18110b]">TORNEO UNIVERSAL • TODO 1RO DE SECUNDARIA</span>
+            <span className="border border-amber-900/50 text-amber-500 px-6 py-2 rounded-full text-[10px] font-bold tracking-widest md:tracking-[0.4em] uppercase mb-12 shadow-sm bg-[#18110b]">
+              {isEderUser(currentUser) 
+                ? 'TORNEO UNIVERSAL • TODO 1RO DE SECUNDARIA (1A, 1B, 1C)' 
+                : (currentClassrooms.length > 0 
+                    ? `CLASIFICACIÓN DE DOCENTE: ${currentUser} • SALONES (${currentClassrooms.map(c=>c.id).join(', ')})`
+                    : 'TORNEO UNIVERSAL DE CLANES')}
+            </span>
             <div className="w-full space-y-4 pb-20">
               {(() => {
-                const globalAulas = ['1A', '1B', '1C'];
+                const teacherClassrooms = currentClassrooms ? currentClassrooms.map(c => c.id) : [];
+                const globalAulas = isEderUser(currentUser)
+                  ? Array.from(new Set(['1A', '1B', '1C', ...teacherClassrooms]))
+                  : (teacherClassrooms.length > 0 ? teacherClassrooms : ['1A', '1B', '1C']);
                 const globalTotals = clansData.map(clan => {
                   const baseTotal = globalAulas.reduce((sum, aula) => sum + (scores[aula]?.[clan.id] || 0), 0);
                   const studentTotal = globalAulas.reduce((sum, aula) => sum + getClanStudentPoints(aula, clan.id), 0);
@@ -6972,6 +6990,9 @@ Los puntos base de clan ya fueron otorgados la primera vez, pero has ganado +${p
     </button>
     <button onClick={() => { setMonitorSelectedAula(selectedClass || 'ALL'); setShowStudentMonitorModal(true); }} className="bg-emerald-600/20 hover:bg-emerald-600 hover:text-black border border-emerald-500/50 text-emerald-400 px-3.5 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(16,185,129,0.25)] cursor-pointer">
       <BarChart3 className="w-4 h-4 text-emerald-400"/> MONITOR ALUMNOS ({Object.values(allStudentsProgress).filter(s => (selectedClass ? s.aula === selectedClass : true)).length})
+    </button>
+    <button onClick={() => setView('global_ranking')} className="bg-amber-600/20 hover:bg-amber-500 hover:text-black border border-amber-500/50 text-amber-400 px-3.5 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(245,158,11,0.25)] cursor-pointer">
+      <Globe className="w-4 h-4 text-amber-400"/> CLASIFICACIÓN GLOBAL
     </button>
     <button onClick={() => setShowClans(!showClans)} className="bg-amber-500/10 border border-amber-500/30 text-amber-500 hover:bg-amber-500 hover:text-black px-4 py-2 rounded-lg text-[10px] md:text-xs font-black uppercase tracking-widest flex items-center gap-2 transition-all cursor-pointer"><Trophy className="w-4 h-4"/> AUDITORÍA</button>
             </div>
