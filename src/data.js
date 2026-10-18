@@ -101,10 +101,12 @@ export const defaultRoster = {
 };
 
 export const defaultScores = {
-  '1A': { c1: 0, c2: 0, c3: 0, c4: 0, c5: 0, c6: 0, c7: 0 },
-  '1B': { c1: 0, c2: 0, c3: 0, c4: 0, c5: 0, c6: 0, c7: 0 },
-  '1C': { c1: 0, c2: 0, c3: 0, c4: 0, c5: 0, c6: 0, c7: 0 }
+  '1A': { c1: 400, c2: 700, c3: 320, c4: 530, c5: 270, c6: 670, c7: 820 },
+  '1B': { c1: 860, c2: 850, c3: 250, c4: 360, c5: 290, c6: 250, c7: 530 },
+  '1C': { c1: 460, c2: 160, c3: 420, c4: 420, c5: 280, c6: 20, c7: 710 }
 };
+
+export const ederOfficialScores = defaultScores;
 
 export const pectoralStones = [
   { id: 'p1', tribu: 'JUDÁ', piedra: 'SARDO', color: 'bg-red-600', palabra: 'ALABANZA', pista: '"Brota de los labios cuando el corazón rebosa de gratitud a Dios."' },
