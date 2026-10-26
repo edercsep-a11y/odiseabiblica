@@ -22,6 +22,13 @@ const INTERNAL_CLANS_DATA = [
   { id: 'c7', name: 'Llamas de Elías', attribute: 'Celo y Fuego Divino', color: 'text-cyan-400', border: 'border-cyan-500/50', bg: 'bg-cyan-950/30', hero: 'Elías el Tesbita', symbol: 'El Altar en Fuego', lema: '"Que el fuego responda."', icon: <Flame className="w-8 h-8 text-cyan-400"/> }
 ];
 
+// Puntos oficiales históricos inmutables de las aulas base
+const INTERNAL_DEFAULT_SCORES = {
+  '1A': { c1: 400, c2: 700, c3: 320, c4: 530, c5: 270, c6: 670, c7: 820 },
+  '1B': { c1: 860, c2: 850, c3: 250, c4: 360, c5: 290, c6: 250, c7: 530 },
+  '1C': { c1: 460, c2: 160, c3: 420, c4: 420, c5: 280, c6: 20, c7: 710 }
+};
+
 const INTERNAL_PECTORAL_STONES = [
   { id: 'p1', tribu: 'JUDÁ', piedra: 'SARDO', color: 'bg-red-600', palabra: 'ALABANZA', pista: '"Brota de los labios cuando el corazón rebosa de gratitud a Dios."' },
   { id: 'p2', tribu: 'ISACAR', piedra: 'TOPACIO', color: 'bg-yellow-600', palabra: 'RECOMPENSA', pista: '"El fruto del esfuerzo, la paga del jornalero fiel."' },
@@ -2866,17 +2873,47 @@ export default function OdiseaBiblica() {
   const [newSaveName, setNewSaveName] = useState('');
   const [usersDB, setUsersDB] = useState(() => loadFromStorage(STORAGE_KEY_USERS, {}));
 
-  // ── Navigation ──
-  const [view, setView] = useState('intro_master'); // Starts at auth
+  // ── Navigation (Reanudar sesión de estudiante automáticamente si existe) ──
+  const [view, setView] = useState(() => {
+    try {
+      const savedStudent = loadFromStorage('odisea_student_auth_session', null);
+      if (savedStudent && savedStudent.name) {
+        return 'student_dashboard';
+      }
+    } catch (e) {}
+    return 'intro_master';
+  });
   const [selectedClass, setSelectedClass] = useState(null);
 
 
-  // ── Student Auth & Solo Mode ──
+  // ── Student Auth & Solo Mode con Persistencia Robusta ──
   const [studentAuth, setStudentAuth] = useState(() => loadFromStorage('odisea_student_auth_session', null));
   const [activeSoloMission, setActiveSoloMission] = useState(0);
-  const [studentLoginStep, setStudentLoginStep] = useState(1);
-  const [teacherConnectedName, setTeacherConnectedName] = useState('Prof. Eder Carrasco');
-  const [studentForm, setStudentForm] = useState({ name: '', aula: '1A', clanId: 'c1', password: '' });
+  const [studentLoginStep, setStudentLoginStep] = useState(() => {
+    try {
+      const savedPass = loadFromStorage('odisea_saved_teacher_pass', '');
+      return savedPass ? 2 : 1;
+    } catch (e) { return 1; }
+  });
+  const [teacherConnectedName, setTeacherConnectedName] = useState(() => {
+    try {
+      return loadFromStorage('odisea_saved_teacher_name', 'Prof. Eder Carrasco');
+    } catch (e) { return 'Prof. Eder Carrasco'; }
+  });
+  const [studentForm, setStudentForm] = useState(() => {
+    try {
+      const savedStudent = loadFromStorage('odisea_student_auth_session', null);
+      const savedPass = loadFromStorage('odisea_saved_teacher_pass', 'EDER2026');
+      return {
+        name: savedStudent?.name || '',
+        aula: savedStudent?.aula || '1A',
+        clanId: savedStudent?.clanId || 'c1',
+        password: savedPass
+      };
+    } catch (e) {
+      return { name: '', aula: '1A', clanId: 'c1', password: 'EDER2026' };
+    }
+  });
   
   // ── Student Dashboard & TCG States ──
   const [studentTab, setStudentTab] = useState('misiones');
@@ -2890,11 +2927,31 @@ export default function OdiseaBiblica() {
   const [activeCinematicModal, setActiveCinematicModal] = useState(null);
   const [cinematicCard, setCinematicCard] = useState(null);
 
-  const [studentProgress, setStudentProgress] = useState({
-    shekels: 100,
-    unlockedCards: [],
-    completedMissions: {},
-    packsOpened: 0
+  // ── Inicialización Segura e Instantánea de Progreso (0ms Latencia y Cero Reset) ──
+  const [studentProgress, setStudentProgress] = useState(() => {
+    try {
+      const sa = loadFromStorage('odisea_student_auth_session', null);
+      if (sa && sa.name) {
+        const localKey = `odisea_progress_v3_${sa.aula || '1A'}_${sa.name || 'default'}`;
+        const saved = loadFromStorage(localKey, null);
+        if (saved && typeof saved === 'object') {
+          return {
+            shekels: typeof saved.shekels === 'number' ? saved.shekels : 100,
+            unlockedCards: Array.isArray(saved.unlockedCards) ? saved.unlockedCards : [],
+            completedMissions: saved.completedMissions || {},
+            packsOpened: saved.packsOpened || 0,
+            clanXPEarned: Number(saved.clanXPEarned) || 0
+          };
+        }
+      }
+    } catch (e) {}
+    return {
+      shekels: 100,
+      unlockedCards: [],
+      completedMissions: {},
+      packsOpened: 0,
+      clanXPEarned: 0
+    };
   });
   const [customStudentNameInput, setCustomStudentNameInput] = useState('');
   const [isCustomStudentMode, setIsCustomStudentMode] = useState(false);
@@ -2919,7 +2976,7 @@ export default function OdiseaBiblica() {
   });
 
   const [scores, setScores] = useState(() => {
-    const base = JSON.parse(JSON.stringify(defaultScores));
+    const base = JSON.parse(JSON.stringify(INTERNAL_DEFAULT_SCORES));
     try {
       const legacy = loadFromStorage(LEGACY_KEY_SCORES, null) || loadFromStorage('odiseaScores', null);
       if (legacy && typeof legacy === 'object') {
@@ -3074,8 +3131,20 @@ export default function OdiseaBiblica() {
                 if (!merged[aula]) merged[aula] = {};
                 Object.keys(parsed[aula] || {}).forEach(cId => {
                   const val = Number(parsed[aula][cId]);
+                  const hist = INTERNAL_DEFAULT_SCORES[aula]?.[cId] || 0;
                   if (!isNaN(val)) {
-                    merged[aula][cId] = Math.max(merged[aula][cId] || 0, val);
+                    merged[aula][cId] = Math.max(hist, merged[aula][cId] || 0, val);
+                  }
+                });
+              });
+              // Asegurar que las aulas base tienen al menos su puntaje histórico
+              Object.keys(INTERNAL_DEFAULT_SCORES).forEach(aula => {
+                if (!merged[aula]) merged[aula] = {};
+                Object.keys(INTERNAL_DEFAULT_SCORES[aula]).forEach(cId => {
+                  const hist = INTERNAL_DEFAULT_SCORES[aula][cId];
+                  if ((merged[aula][cId] || 0) < hist) {
+                    merged[aula][cId] = hist;
+                    needsCloudPush = true;
                   }
                 });
               });
@@ -3210,7 +3279,7 @@ export default function OdiseaBiblica() {
     }
   };
 
-  // ── CÁLCULO DINÁMICO DE PUNTOS DE ALUMNOS EN MODO SOLO (MISIONES + CARTAS) ──
+  // ── CÁLCULO DINÁMICO DE PUNTOS DE ALUMNOS EN MODO SOLO (MISIONES + CARTAS REALES) ──
   const getClanStudentPoints = (aula, clanId) => {
     if (!aula || !clanId) return 0;
     const cleanAula = String(aula).toUpperCase().trim();
@@ -3218,8 +3287,23 @@ export default function OdiseaBiblica() {
     const targetClanObj = clansData.find(c => c.id.toLowerCase() === cleanClan);
     const targetClanName = targetClanObj ? targetClanObj.name.toLowerCase().trim() : '';
 
+    // Unificar lista de estudiantes con el progreso local del alumno activo para reflejo instantáneo (0ms de latencia)
+    const studentsMap = { ...(allStudentsProgress || {}) };
+    if (studentAuth && studentAuth.name && studentProgress) {
+      const cleanName = (studentAuth.name || 'default').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+      const currentDocId = `${(studentAuth.aula || '1A').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase()}_${cleanName}`;
+      studentsMap[currentDocId] = {
+        docId: currentDocId,
+        studentName: studentAuth.name,
+        aula: studentAuth.aula,
+        clanId: studentAuth.clanId,
+        ...(studentsMap[currentDocId] || {}),
+        ...studentProgress
+      };
+    }
+
     let totalXP = 0;
-    Object.values(allStudentsProgress || {}).forEach(s => {
+    Object.values(studentsMap).forEach(s => {
       if (!s || !s.studentName || s.studentName === 'undefined' || s.studentName.includes('(MAESTRO)') || s.clanId === 'all') return;
       const sAula = String(s.aula || '1A').toUpperCase().trim();
       const sClan = String(s.clanId || '').toLowerCase().trim();
@@ -3230,9 +3314,24 @@ export default function OdiseaBiblica() {
                           sClan.includes(cleanClan);
 
       if (sAula === cleanAula && isClanMatch) {
+        // 1. Puntos por misiones completadas (+100 XP por misión)
         const missionsCount = Object.keys(s.completedMissions || {}).length;
-        const cardsCount = (s.unlockedCards || []).length;
-        totalXP += (missionsCount * 100) + (cardsCount * 10);
+        const missionsXP = missionsCount * 100;
+
+        // 2. Puntos reales de cada carta desbloqueada según su clanXP oficial (ej. Rey Salomón = +320 XP)
+        let cardsXP = 0;
+        if (Array.isArray(s.unlockedCards)) {
+          s.unlockedCards.forEach(cId => {
+            const cardObj = biblicalCardsDB.find(c => c.id === cId);
+            cardsXP += (cardObj?.clanXP || 100);
+          });
+        }
+
+        // 3. Puntos adicionales acumulados por cartas repetidas u otros sobres (+20 XP cada una)
+        const extraXP = Number(s.clanXPEarned) || 0;
+        const totalCardsXP = Math.max(cardsXP, extraXP);
+
+        totalXP += missionsXP + totalCardsXP;
       }
     });
     return totalXP;
@@ -3240,7 +3339,8 @@ export default function OdiseaBiblica() {
 
   // Puntaje total efectivo = Puntaje base otorgado en aula + Puntos ganados por alumnos en casa
   const getEffectiveScore = (aula, clanId) => {
-    const base = scores[aula]?.[clanId] || 0;
+    const historical = INTERNAL_DEFAULT_SCORES[aula]?.[clanId] || 0;
+    const base = Math.max(historical, scores[aula]?.[clanId] || 0);
     return base + getClanStudentPoints(aula, clanId);
   };
 
@@ -3494,20 +3594,27 @@ export default function OdiseaBiblica() {
       return;
     }
 
-    setStudentAuth({
+    const authPayload = {
       name: finalStudentName,
       aula: aula || '1A',
       clanId,
       isGodMode: false,
       lives: studentData.lives || 3
-    });
+    };
+
+    try {
+      localStorage.setItem('odisea_student_auth_session', JSON.stringify(authPayload));
+      localStorage.setItem('odisea_saved_teacher_pass', password || 'EDER2026');
+      localStorage.setItem('odisea_saved_teacher_name', teacherConnectedName || 'Prof. Eder Carrasco');
+    } catch (e) {}
+
+    setStudentAuth(authPayload);
     setView('student_dashboard');
   };
 
-  // ── PERSISTENCIA Y SINCRONIZACIÓN DEL ESTUDIANTE EN FIRESTORE EN TIEMPO REAL ──
+  // ── PERSISTENCIA Y SINCRONIZACIÓN DEL ESTUDIANTE EN FIRESTORE EN TIEMPO REAL (INDESTRUCTIBLE) ──
   useEffect(() => {
     if (!studentAuth || !studentAuth.name) {
-      try { localStorage.removeItem('odisea_student_auth_session'); } catch (e) {}
       return;
     }
 
@@ -3520,35 +3627,91 @@ export default function OdiseaBiblica() {
     const progressDocId = `${cleanAula}_${cleanName}`;
     const studentDocRef = doc(db, 'student_progress', progressDocId);
 
-    // Cargar caché local inmediato para fluidez instantánea
+    // Cargar caché local inmediato para fluidez instantánea (sin esperar a Firestore)
     const localKey = `odisea_progress_v3_${studentAuth.aula || '1A'}_${studentAuth.name || 'default'}`;
     const localSaved = loadFromStorage(localKey, null);
-    if (localSaved) {
-      setStudentProgress(localSaved);
+    if (localSaved && typeof localSaved === 'object') {
+      setStudentProgress(prev => {
+        const mergedCards = Array.from(new Set([
+          ...(Array.isArray(prev?.unlockedCards) ? prev.unlockedCards : []),
+          ...(Array.isArray(localSaved.unlockedCards) ? localSaved.unlockedCards : [])
+        ]));
+        return {
+          ...localSaved,
+          unlockedCards: mergedCards,
+          shekels: Math.max(prev?.shekels || 0, localSaved.shekels || 0, 100),
+          completedMissions: { ...(prev?.completedMissions || {}), ...(localSaved.completedMissions || {}) },
+          packsOpened: Math.max(prev?.packsOpened || 0, localSaved.packsOpened || 0),
+          clanXPEarned: Math.max(Number(prev?.clanXPEarned) || 0, Number(localSaved.clanXPEarned) || 0)
+        };
+      });
     }
 
-    // Escuchar cambios en la nube en tiempo real (móvil, tablet, PC)
+    // Escuchar cambios en la nube en tiempo real (móvil, tablet, PC) con FUSIÓN INTELIGENTE (UNION)
     let unsubProgress;
     try {
       unsubProgress = onSnapshot(studentDocRef, (snap) => {
+        const currentLocal = loadFromStorage(localKey, null) || {};
         if (snap.exists()) {
           const cloudData = snap.data();
-          const cleanProgress = {
-            shekels: typeof cloudData.shekels === 'number' ? cloudData.shekels : 100,
-            unlockedCards: Array.isArray(cloudData.unlockedCards) ? cloudData.unlockedCards : [],
-            completedMissions: cloudData.completedMissions || {},
-            packsOpened: cloudData.packsOpened || 0
+          
+          // FUSIÓN SEGURA: NUNCA destruir cartas o monedas ya obtenidas en el dispositivo
+          const mergedCards = Array.from(new Set([
+            ...(Array.isArray(cloudData.unlockedCards) ? cloudData.unlockedCards : []),
+            ...(Array.isArray(currentLocal.unlockedCards) ? currentLocal.unlockedCards : [])
+          ]));
+
+          const mergedShekels = Math.max(
+            typeof cloudData.shekels === 'number' ? cloudData.shekels : 100,
+            typeof currentLocal.shekels === 'number' ? currentLocal.shekels : 100
+          );
+
+          const mergedMissions = {
+            ...(cloudData.completedMissions || {}),
+            ...(currentLocal.completedMissions || {})
           };
+
+          const mergedPacks = Math.max(
+            cloudData.packsOpened || 0,
+            currentLocal.packsOpened || 0
+          );
+
+          const mergedClanXP = Math.max(
+            Number(cloudData.clanXPEarned) || 0,
+            Number(currentLocal.clanXPEarned) || 0
+          );
+
+          const cleanProgress = {
+            shekels: mergedShekels,
+            unlockedCards: mergedCards,
+            completedMissions: mergedMissions,
+            packsOpened: mergedPacks,
+            clanXPEarned: mergedClanXP
+          };
+
           setStudentProgress(cleanProgress);
           try { localStorage.setItem(localKey, JSON.stringify(cleanProgress)); } catch (e) {}
           setCloudSyncStatus('online');
+
+          // Si el dispositivo local tenía más cartas o progreso que Firestore, subir la unión a Firestore
+          const cloudCardsCount = Array.isArray(cloudData.unlockedCards) ? cloudData.unlockedCards.length : 0;
+          if (mergedCards.length > cloudCardsCount || mergedShekels > (cloudData.shekels || 0)) {
+            setDoc(studentDocRef, {
+              ...cleanProgress,
+              studentName: studentAuth.name,
+              aula: studentAuth.aula,
+              clanId: studentAuth.clanId,
+              updatedAt: Date.now()
+            }, { merge: true }).catch(() => {});
+          }
         } else {
           // Documento inicial en Firestore
-          const initial = localSaved || {
-            shekels: 100,
-            unlockedCards: [],
-            completedMissions: {},
-            packsOpened: 0
+          const initial = (currentLocal && currentLocal.unlockedCards && currentLocal.unlockedCards.length > 0) ? currentLocal : {
+            shekels: Math.max(currentLocal?.shekels || 100, 100),
+            unlockedCards: currentLocal?.unlockedCards || [],
+            completedMissions: currentLocal?.completedMissions || {},
+            packsOpened: currentLocal?.packsOpened || 0,
+            clanXPEarned: Number(currentLocal?.clanXPEarned) || 0
           };
           setDoc(studentDocRef, {
             ...initial,
@@ -3559,6 +3722,7 @@ export default function OdiseaBiblica() {
             updatedAt: Date.now()
           }, { merge: true }).catch(() => {});
           setStudentProgress(initial);
+          try { localStorage.setItem(localKey, JSON.stringify(initial)); } catch (e) {}
         }
       }, (err) => {
         console.warn("Firestore Student listener error:", err);
@@ -3574,26 +3738,29 @@ export default function OdiseaBiblica() {
 
   const updateStudentProgress = useCallback((updater) => {
     setStudentProgress(prev => {
-      const current = prev || { shekels: 100, unlockedCards: [], completedMissions: {}, packsOpened: 0 };
+      const current = prev || { shekels: 100, unlockedCards: [], completedMissions: {}, packsOpened: 0, clanXPEarned: 0 };
       const next = typeof updater === 'function' ? updater(current) : { ...current, ...updater };
       if (studentAuth && studentAuth.name) {
         try {
+          // 1. Guardar en Caché local INMEDIATAMENTE (0ms latencia, sin pérdida si se apaga el móvil)
+          const localKey = `odisea_progress_v3_${studentAuth.aula || '1A'}_${studentAuth.name || 'default'}`;
+          localStorage.setItem(localKey, JSON.stringify(next));
+
+          // 2. Guardar en Firestore en tiempo real con merge seguro
           const cleanName = (studentAuth.name || 'default').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
           const cleanAula = (studentAuth.aula || '1A').replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
           const progressDocId = `${cleanAula}_${cleanName}`;
           
-          // 1. Guardar en Firestore en tiempo real
           setDoc(doc(db, 'student_progress', progressDocId), {
             ...next,
             studentName: studentAuth.name,
             aula: studentAuth.aula,
             clanId: studentAuth.clanId,
             updatedAt: Date.now()
-          }, { merge: true }).catch(err => console.error("Error guardando progreso en Firestore:", err));
-
-          // 2. Caché local en localStorage
-          const localKey = `odisea_progress_v3_${studentAuth.aula || '1A'}_${studentAuth.name || 'default'}`;
-          localStorage.setItem(localKey, JSON.stringify(next));
+          }, { merge: true }).catch(err => {
+            console.error("Error guardando progreso en Firestore:", err);
+            setCloudSyncStatus('offline');
+          });
         } catch (e) {
           console.error('Error guardando progreso:', e);
         }
@@ -4028,7 +4195,7 @@ export default function OdiseaBiblica() {
     const data = loadFromStorage(`odiseaData_${targetUser}_${saveId}`, null);
     
     // Iniciar siempre con los puntajes oficiales de los clanes
-    const mergedScores = JSON.parse(JSON.stringify(defaultScores));
+    const mergedScores = JSON.parse(JSON.stringify(INTERNAL_DEFAULT_SCORES));
     
     // Fusionar puntajes guardados en la partida (si existen) con Math.max para nunca borrar puntos
     if (data?.scores && typeof data.scores === 'object') {
@@ -4680,7 +4847,22 @@ export default function OdiseaBiblica() {
         const studentOwnedInPool = cardsPool.filter(c => unlockedIds.includes(c.id));
 
         return (
-          <div className="fixed inset-0 z-[100000] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 animate-in fade-in zoom-in-95 duration-200 select-none">
+          <div 
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setInspectingStudentCards(null);
+            }}
+            className="fixed inset-0 z-[100000] bg-black/95 backdrop-blur-2xl flex items-center justify-center p-3 sm:p-6 animate-in fade-in zoom-in-95 duration-200 select-none overflow-y-auto"
+          >
+            {/* BOTÓN FLOTANTE FIJO (X) */}
+            <button 
+              onClick={() => setInspectingStudentCards(null)} 
+              className="fixed top-4 right-4 z-[100010] bg-black/90 hover:bg-red-600 text-purple-300 hover:text-white p-3 sm:p-3.5 rounded-full border-2 border-purple-400 shadow-[0_0_30px_rgba(168,85,247,0.9)] cursor-pointer transition-all hover:scale-110 active:scale-95 flex items-center justify-center group"
+              aria-label="Cerrar visor"
+              title="Cerrar (X)"
+            >
+              <X className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-90 transition-transform duration-200" />
+            </button>
+
             <div className="bg-[#090b16] border-2 border-purple-500/50 rounded-3xl p-5 sm:p-8 w-full max-w-5xl shadow-[0_0_80px_rgba(168,85,247,0.3)] relative max-h-[92vh] flex flex-col overflow-hidden">
               
               <button 
@@ -5324,8 +5506,47 @@ export default function OdiseaBiblica() {
           
           <div className="relative z-10 w-full max-w-6xl flex flex-col items-center">
             <h1 className="text-4xl md:text-7xl lg:text-[100px] font-black text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-400 mb-4 tracking-tighter uppercase drop-shadow-xl text-center leading-none">LA ODISEA BÍBLICA</h1>
-            <p className="text-indigo-400 text-xs md:text-lg tracking-[0.4em] font-black uppercase mb-12 drop-shadow text-center">SELECCIONA TU PORTAL DE ACCESO</p>
+            <p className="text-indigo-400 text-xs md:text-lg tracking-[0.4em] font-black uppercase mb-8 drop-shadow text-center">SELECCIONA TU PORTAL DE ACCESO</p>
             
+            {/* BANNER DE REANUDAR SESIÓN DEL RECLUTA */}
+            {studentAuth && studentAuth.name && (
+              <div className="w-full bg-gradient-to-r from-red-950/80 via-black/90 to-amber-950/80 border-2 border-yellow-400/80 rounded-3xl p-5 sm:p-6 mb-8 shadow-[0_0_50px_rgba(245,158,11,0.3)] flex flex-col sm:flex-row items-center justify-between gap-4 animate-in slide-in-from-top duration-300 ring-1 ring-yellow-400/40">
+                <div className="flex items-center gap-4 text-center sm:text-left">
+                  <div className="w-14 h-14 rounded-2xl bg-amber-500/20 border-2 border-yellow-400 flex items-center justify-center text-3xl shrink-0 shadow-[0_0_20px_rgba(245,158,11,0.5)]">
+                    {studentAuth.isGodMode ? '👑' : (clansData.find(c => c.id === studentAuth.clanId)?.icon || '🛡️')}
+                  </div>
+                  <div>
+                    <span className="bg-amber-500/20 text-yellow-300 border border-yellow-400/50 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full inline-block">
+                      SESIÓN ACTIVA GUARDADA
+                    </span>
+                    <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mt-1">
+                      {studentAuth.name}
+                    </h3>
+                    <p className="text-xs text-amber-300 font-bold uppercase mt-0.5">
+                      SALÓN {studentAuth.aula} • CLAN {clansData.find(c => c.id === studentAuth.clanId)?.name || 'SAGRADO'} • 🪙 {studentProgress.shekels || 0} MONEDAS • 🃏 {studentProgress.unlockedCards?.length || 0} CARTAS
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2.5 shrink-0 justify-center">
+                  <button 
+                    onClick={() => setView('student_dashboard')} 
+                    className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-black font-black uppercase tracking-wider text-xs px-6 py-3.5 rounded-2xl shadow-[0_0_25px_rgba(245,158,11,0.7)] hover:scale-105 active:scale-95 transition-all cursor-pointer border border-white flex items-center gap-2">
+                    🎮 CONTINUAR MI PARTIDA <ChevronRight className="w-4 h-4"/>
+                  </button>
+                  <button 
+                    onClick={() => {
+                      if (confirm(`¿Cerrar sesión de ${studentAuth.name}? Tu progreso queda guardado y podrás reingresar con tu nombre.`)) {
+                        try { localStorage.removeItem('odisea_student_auth_session'); } catch (e) {}
+                        setStudentAuth(null);
+                      }
+                    }} 
+                    className="bg-black/60 hover:bg-red-900/60 text-slate-400 hover:text-white border border-slate-700 hover:border-red-500 px-4 py-3.5 rounded-2xl text-xs font-bold uppercase tracking-wider transition-colors cursor-pointer">
+                    Cambiar
+                  </button>
+                </div>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
               {/* PORTAL MAESTRO */}
               <div className="bg-[#0f111a]/90 backdrop-blur-xl rounded-[3rem] p-8 md:p-12 border-2 border-indigo-900/50 shadow-[0_0_50px_rgba(79,70,229,0.2)] hover:shadow-[0_0_80px_rgba(79,70,229,0.4)] transition-all duration-500 group flex flex-col items-center text-center">
@@ -5674,6 +5895,28 @@ export default function OdiseaBiblica() {
                    <p className="text-amber-400 text-xl sm:text-2xl font-black">
                      {studentAuth.isGodMode ? 'TODOS' : getEffectiveScore(studentAuth.aula, studentAuth.clanId)}
                    </p>
+                </div>
+
+                {/* Botones de Navegación y Cierre de Sesión Seguro */}
+                <div className="flex flex-row gap-2 shrink-0">
+                  <button 
+                    onClick={() => setView('selector')}
+                    className="bg-black/70 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-700 px-3.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    title="Salir al Portal">
+                    <ChevronRight className="rotate-180 w-3.5 h-3.5"/> SALIR AL PORTAL
+                  </button>
+                  <button 
+                    onClick={() => {
+                      if (confirm(`¿Cerrar sesión de ${studentAuth.name}? Tu progreso está 100% guardado en la nube y podrás reanudarlo cuando quieras.`)) {
+                        try { localStorage.removeItem('odisea_student_auth_session'); } catch (e) {}
+                        setStudentAuth(null);
+                        setView('student_login');
+                      }
+                    }}
+                    className="bg-red-950/60 hover:bg-red-800 text-red-300 hover:text-white border border-red-700/80 px-3.5 py-2 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    title="Cerrar sesión para otro estudiante">
+                    <X className="w-3.5 h-3.5"/> CERRAR SESIÓN
+                  </button>
                 </div>
              </div>
           </div>
@@ -6163,12 +6406,36 @@ export default function OdiseaBiblica() {
           {/* ── MODAL 1: APERTURA DE SOBRES Y CAJAS DE AVENTURA 3D ───── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {openingPack && (
-            <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-3 sm:p-6 animate-in fade-in overflow-y-auto">
+            <div 
+              onClick={(e) => {
+                if (e.target === e.currentTarget) {
+                  setOpeningPack(null);
+                  playRetroSound('powerup');
+                }
+              }}
+              className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-3 sm:p-6 animate-in fade-in overflow-y-auto custom-scrollbar select-none"
+            >
+              {/* BOTÓN FLOTANTE FIJO SUPERIOR DERECHO (X) - SIEMPRE VISIBLE EN CUALQUIER SCROLL */}
+              <button 
+                onClick={() => {
+                  setOpeningPack(null);
+                  playRetroSound('powerup');
+                }}
+                className="fixed top-4 right-4 z-[100010] bg-black/90 hover:bg-red-600 text-yellow-300 hover:text-white p-3.5 rounded-full border-2 border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.9)] cursor-pointer transition-all hover:scale-110 active:scale-95 flex items-center justify-center group"
+                aria-label="Cerrar sobre de cartas"
+                title="Cerrar sobre (X)"
+              >
+                <X className="w-7 h-7 group-hover:rotate-90 transition-transform duration-200" />
+              </button>
+
               <div className="max-w-6xl w-full bg-[#0a0d1d] border-2 border-yellow-500/80 rounded-3xl p-4 sm:p-8 text-center relative shadow-[0_0_120px_rgba(234,179,8,0.35)] flex flex-col items-center my-auto ring-1 ring-white/10">
                 
-                {/* Botón cerrar en la esquina superior derecha */}
+                {/* Botón cerrar en la esquina superior del panel */}
                 <button 
-                  onClick={() => setOpeningPack(null)}
+                  onClick={() => {
+                    setOpeningPack(null);
+                    playRetroSound('powerup');
+                  }}
                   className="absolute top-4 right-4 text-slate-400 hover:text-white bg-black/60 hover:bg-red-900/60 p-2.5 rounded-full transition-colors cursor-pointer border border-white/10 z-20">
                   <X className="w-5 h-5"/>
                 </button>
@@ -6199,28 +6466,34 @@ export default function OdiseaBiblica() {
                         playRetroSound('legendary');
 
                         const isMasterUser = Boolean(studentAuth?.isGodMode || studentAuth?.clanId === 'all');
+                        const newUnlockedCards = [];
+                        let totalBatchXP = 0;
+
                         revealedPackCards.forEach((c, idx) => {
                           if (!flippedIndices.includes(idx)) {
-                            const isOwned = (studentProgress.unlockedCards || []).includes(c.id);
+                            const isOwned = (studentProgress.unlockedCards || []).includes(c.id) || newUnlockedCards.includes(c.id);
                             if (!isOwned) {
-                              updateStudentProgress(prev => ({
-                                ...prev,
-                                unlockedCards: [...(prev.unlockedCards || []), c.id]
-                              }));
-                              if (isMasterUser) {
-                                updateScore('all', c.clanXP, 'all');
-                              } else if (studentAuth?.clanId) {
-                                updateScore(studentAuth.clanId, c.clanXP, studentAuth.aula);
-                              }
+                              newUnlockedCards.push(c.id);
+                              totalBatchXP += (c.clanXP || 100);
                             } else {
-                              if (isMasterUser) {
-                                updateScore('all', 20, 'all');
-                              } else if (studentAuth?.clanId) {
-                                updateScore(studentAuth.clanId, 20, studentAuth.aula);
-                              }
+                              totalBatchXP += 20;
                             }
                           }
                         });
+
+                        if (newUnlockedCards.length > 0 || totalBatchXP > 0) {
+                          updateStudentProgress(prev => ({
+                            ...prev,
+                            unlockedCards: [...(prev.unlockedCards || []), ...newUnlockedCards],
+                            clanXPEarned: (Number(prev.clanXPEarned) || 0) + totalBatchXP
+                          }));
+
+                          if (isMasterUser) {
+                            updateScore('all', totalBatchXP, 'all');
+                          } else if (studentAuth?.clanId) {
+                            updateScore(studentAuth.clanId, totalBatchXP, studentAuth.aula);
+                          }
+                        }
 
                         // Disparar cinemática si hay alguna épica
                         const rarest = [...revealedPackCards].sort((a,b) => (b.stars || 4) - (a.stars || 4)).find(c => c.rarity === 'MÍTICA DIVINA' || c.rarity === 'SECRETA RARA' || c.rarity === 'ULTRA RARA');
@@ -6290,15 +6563,20 @@ export default function OdiseaBiblica() {
                               if (!isAlreadyOwned) {
                                 updateStudentProgress(prev => ({
                                   ...prev,
-                                  unlockedCards: [...(prev.unlockedCards || []), card.id]
+                                  unlockedCards: [...(prev.unlockedCards || []), card.id],
+                                  clanXPEarned: (Number(prev.clanXPEarned) || 0) + (card.clanXP || 100)
                                 }));
 
                                 if (isMasterUser) {
-                                  updateScore('all', card.clanXP, 'all');
+                                  updateScore('all', card.clanXP || 100, 'all');
                                 } else if (studentAuth?.clanId) {
-                                  updateScore(studentAuth.clanId, card.clanXP, studentAuth.aula);
+                                  updateScore(studentAuth.clanId, card.clanXP || 100, studentAuth.aula);
                                 }
                               } else {
+                                updateStudentProgress(prev => ({
+                                  ...prev,
+                                  clanXPEarned: (Number(prev.clanXPEarned) || 0) + 20
+                                }));
                                 if (isMasterUser) {
                                   updateScore('all', 20, 'all');
                                 } else if (studentAuth?.clanId) {
@@ -6477,6 +6755,43 @@ export default function OdiseaBiblica() {
                   </div>
                 )}
 
+                {/* Botón de Salida Temprana Seguro (por si aún faltan cartas por voltear) */}
+                {packStage === 'opened' && flippedIndices.length < revealedPackCards.length && (
+                  <div className="flex justify-center mt-6">
+                    <button 
+                      onClick={() => {
+                        const isMasterUser = Boolean(studentAuth?.isGodMode || studentAuth?.clanId === 'all');
+                        const newCards = [];
+                        let batchXP = 0;
+                        revealedPackCards.forEach((c, idx) => {
+                          if (!flippedIndices.includes(idx)) {
+                            const isOwned = (studentProgress.unlockedCards || []).includes(c.id) || newCards.includes(c.id);
+                            if (!isOwned) {
+                              newCards.push(c.id);
+                              batchXP += (c.clanXP || 100);
+                            } else {
+                              batchXP += 20;
+                            }
+                          }
+                        });
+                        if (newCards.length > 0 || batchXP > 0) {
+                          updateStudentProgress(prev => ({
+                            ...prev,
+                            unlockedCards: [...(prev.unlockedCards || []), ...newCards],
+                            clanXPEarned: (Number(prev.clanXPEarned) || 0) + batchXP
+                          }));
+                          if (isMasterUser) updateScore('all', batchXP, 'all');
+                          else if (studentAuth?.clanId) updateScore(studentAuth.clanId, batchXP, studentAuth.aula);
+                        }
+                        setOpeningPack(null);
+                        playRetroSound('powerup');
+                      }}
+                      className="bg-black/80 hover:bg-red-800 text-slate-300 hover:text-white border border-slate-600 hover:border-red-400 font-black uppercase tracking-wider px-6 py-3 rounded-xl text-xs transition-all cursor-pointer flex items-center gap-2 shadow-lg">
+                      <X className="w-4 h-4"/> GUARDAR CARTAS RESTANTES Y SALIR (X)
+                    </button>
+                  </div>
+                )}
+
               </div>
             </div>
           )}
@@ -6485,8 +6800,29 @@ export default function OdiseaBiblica() {
           {/* ── MODAL CINEMATOGRÁFICO DE APARICIÓN LEGENDARIA ESPECTACULAR ────────── */}
           {/* ═══════════════════════════════════════════════════════════════════════ */}
           {cinematicCard && (
-            <div className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-3xl flex flex-col items-center justify-center p-4 animate-in fade-in select-none overflow-hidden">
+            <div 
+              onClick={(e) => {
+                if (e.target === e.currentTarget) {
+                  setCinematicCard(null);
+                  playRetroSound('powerup');
+                }
+              }}
+              className="fixed inset-0 z-[99999] bg-black/95 backdrop-blur-3xl flex flex-col items-center p-3 sm:p-6 animate-in fade-in select-none overflow-y-auto custom-scrollbar"
+            >
               
+              {/* BOTÓN FLOTANTE CERRAR / SALIR (X) ULTRA-ACCESIBLE */}
+              <button 
+                onClick={() => {
+                  setCinematicCard(null);
+                  playRetroSound('powerup');
+                }}
+                className="fixed top-4 right-4 z-[100005] bg-black/85 hover:bg-red-600 text-yellow-300 hover:text-white p-3.5 rounded-full border-2 border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.9)] cursor-pointer transition-all hover:scale-110 active:scale-95 flex items-center justify-center group"
+                aria-label="Cerrar revelación y continuar"
+                title="Cerrar y Reclamar (X)"
+              >
+                <X className="w-7 h-7 group-hover:rotate-90 transition-transform duration-200" />
+              </button>
+
               {/* Flash inicial celestial cegador */}
               <div className="fixed inset-0 bg-white pointer-events-none z-[100000] animate-[divineFlash_0.7s_ease-out_forwards]"></div>
 
@@ -6507,32 +6843,32 @@ export default function OdiseaBiblica() {
               </div>
 
               {/* Contenedor con Temblor de Pantalla (Screen Shake) */}
-              <div className="relative z-10 w-full max-w-xl flex flex-col items-center text-center animate-[screenShake_0.6s_ease-out]">
+              <div className="relative z-10 w-full max-w-xl flex flex-col items-center text-center my-auto py-4 sm:py-6 animate-[screenShake_0.6s_ease-out]">
                 
                 {/* Banner Superior de Proclamación Divina */}
-                <div className="mb-3 animate-in slide-in-from-top-8 duration-500">
-                  <div className={`inline-flex items-center gap-2 border-2 px-6 py-2 rounded-full shadow-[0_0_40px_rgba(250,204,21,0.9)] animate-bounce ${
+                <div className="mb-2 sm:mb-3 animate-in slide-in-from-top-8 duration-500">
+                  <div className={`inline-flex items-center gap-2 border-2 px-4 sm:px-6 py-1.5 sm:py-2 rounded-full shadow-[0_0_40px_rgba(250,204,21,0.9)] animate-bounce ${
                     cinematicCard.rarity === 'MÍTICA DIVINA'
                       ? 'bg-gradient-to-r from-yellow-500 via-amber-400 to-yellow-500 border-white text-black'
                       : cinematicCard.rarity === 'SECRETA RARA'
                       ? 'bg-gradient-to-r from-red-600 via-amber-500 to-indigo-600 border-yellow-300 text-white'
                       : 'bg-gradient-to-r from-indigo-700 via-purple-600 to-blue-700 border-cyan-300 text-white'
                   }`}>
-                    <Sparkles className="w-5 h-5 text-yellow-300 animate-spin" />
-                    <span className="font-black text-xs sm:text-sm tracking-[0.25em] uppercase">
+                    <Sparkles className="w-4 h-4 text-yellow-300 animate-spin" />
+                    <span className="font-black text-[11px] sm:text-sm tracking-[0.2em] uppercase">
                       {cinematicCard.rarity === 'MÍTICA DIVINA'
                         ? '¡¡MANIFESTACIÓN DIVINA ANCESTRAL (0.02%)!!'
                         : cinematicCard.rarity === 'SECRETA RARA'
                         ? '¡¡APARICIÓN SECRETA RARA PRISMÁTICA!!'
                         : '¡¡REVELACIÓN ULTRA RARA CELESTIAL!!'}
                     </span>
-                    <Sparkles className="w-5 h-5 text-yellow-300 animate-spin" />
+                    <Sparkles className="w-4 h-4 text-yellow-300 animate-spin" />
                   </div>
 
-                  <h2 className="text-3xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-200 to-amber-500 uppercase tracking-tight drop-shadow-[0_0_40px_rgba(250,204,21,1)] mt-2">
+                  <h2 className="text-2xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white via-yellow-200 to-amber-500 uppercase tracking-tight drop-shadow-[0_0_40px_rgba(250,204,21,1)] mt-2">
                     {cinematicCard.name}
                   </h2>
-                  <p className="text-amber-200 text-xs sm:text-sm font-serif italic mt-1">
+                  <p className="text-amber-200 text-xs sm:text-sm font-serif italic mt-0.5">
                     «El cielo se abre en tu aula y concede esta reliquia a tu Clan»
                   </p>
                 </div>
@@ -6554,12 +6890,12 @@ export default function OdiseaBiblica() {
                       <img 
                         src={getCardImageUrl(cinematicCard.image)} 
                         alt={cinematicCard.name} 
-                        className="w-72 sm:w-96 max-h-[62vh] aspect-[764/1024] object-contain" 
+                        className="w-56 sm:w-72 md:w-80 max-h-[44vh] sm:max-h-[52vh] aspect-[764/1024] object-contain" 
                         loading="eager"
                       />
                     </div>
                   ) : (
-                    <div className="relative w-72 sm:w-96 max-h-[62vh] aspect-[764/1024] rounded-2xl p-4 flex flex-col justify-between border-8 border-yellow-400 bg-gradient-to-b from-amber-600 via-yellow-700 to-amber-950 shadow-[0_0_80px_rgba(250,204,21,1)] ring-4 ring-yellow-200 animate-[float-3d_3.5s_ease-in-out_infinite] overflow-hidden">
+                    <div className="relative w-56 sm:w-72 md:w-80 max-h-[44vh] sm:max-h-[52vh] aspect-[764/1024] rounded-2xl p-3 sm:p-4 flex flex-col justify-between border-8 border-yellow-400 bg-gradient-to-b from-amber-600 via-yellow-700 to-amber-950 shadow-[0_0_80px_rgba(250,204,21,1)] ring-4 ring-yellow-200 animate-[float-3d_3.5s_ease-in-out_infinite] overflow-hidden">
                       
                       {/* Holo shimmer sobre procedimental */}
                       <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden">
@@ -6582,7 +6918,7 @@ export default function OdiseaBiblica() {
                         <p className="text-[10px] font-black uppercase">{cinematicCard.monsterType}</p>
                         <p className="text-[9px] italic font-serif my-1 leading-tight line-clamp-2">"{cinematicCard.quote}"</p>
                         <div className="flex justify-between font-mono font-black text-[10px] border-t border-black/30 pt-1 mt-1">
-                          <span className="text-emerald-800">+{cinematicCard.clanXP} XP</span>
+                          <span className="text-emerald-800">+{cinematicCard.clanXP || 100} XP</span>
                           <span>ATK/{cinematicCard.atk} DEF/{cinematicCard.def}</span>
                         </div>
                       </div>
@@ -6590,46 +6926,53 @@ export default function OdiseaBiblica() {
                   )}
 
                   {/* Panel de Puntuación al Clan */}
-                  <div className="mt-4 bg-black/90 border-2 border-yellow-400 px-6 py-3 rounded-2xl text-center shadow-[0_0_30px_rgba(250,204,21,0.6)]">
-                    <p className="text-yellow-300 font-black text-base sm:text-lg uppercase tracking-wider flex items-center justify-center gap-2">
-                      <Trophy className="w-5 h-5 text-yellow-400 animate-bounce" />
-                      +{cinematicCard.clanXP} XP PARA EL CLAN
-                      <Trophy className="w-5 h-5 text-yellow-400 animate-bounce" />
+                  <div className="mt-3 bg-black/90 border-2 border-yellow-400 px-4 sm:px-6 py-2.5 rounded-2xl text-center shadow-[0_0_30px_rgba(250,204,21,0.6)]">
+                    <p className="text-yellow-300 font-black text-sm sm:text-lg uppercase tracking-wider flex items-center justify-center gap-2">
+                      <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 animate-bounce" />
+                      +{cinematicCard.clanXP || 100} XP SUMADOS A TU CLAN
+                      <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-yellow-400 animate-bounce" />
                     </p>
-                    <p className="text-slate-300 text-xs font-mono mt-0.5">
+                    <p className="text-emerald-400 text-[11px] font-bold uppercase tracking-wider mt-0.5 flex items-center justify-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> ¡PUNTOS ACREDITADOS INMEDIATAMENTE!
+                    </p>
+                    <p className="text-slate-300 text-[10px] sm:text-xs font-mono mt-0.5">
                       📖 {cinematicCard.pasaje} • RANGO {cinematicCard.rarity}
                     </p>
                   </div>
                 </div>
 
                 {/* Botones de Acción */}
-                <div className="mt-3 flex flex-wrap gap-3 justify-center animate-in slide-in-from-bottom-6 duration-500">
-                  <button 
-                    onClick={() => {
-                      handleDownloadCard(cinematicCard);
-                      playRetroSound('coin');
-                    }}
-                    className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider text-xs sm:text-sm px-6 py-4 rounded-2xl shadow-[0_0_30px_rgba(16,185,129,0.7)] hover:scale-105 transition-all cursor-pointer border-2 border-emerald-300 flex items-center gap-2">
-                    📸 DESCARGAR CARTA HD
-                  </button>
-                  <button 
-                    onClick={() => {
-                      const c = cinematicCard;
-                      setCinematicCard(null);
-                      setInspectingCard(c);
-                      playRetroSound('powerup');
-                    }}
-                    className="bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase tracking-wider text-xs sm:text-sm px-6 py-4 rounded-2xl shadow-[0_0_30px_rgba(79,70,229,0.7)] hover:scale-105 transition-all cursor-pointer border-2 border-indigo-300 flex items-center gap-2">
-                    🔍 EXAMINAR EN DETALLE (HD)
-                  </button>
+                <div className="mt-4 flex flex-col gap-2.5 w-full max-w-md animate-in slide-in-from-bottom-6 duration-500 pb-6">
+                  {/* BOTÓN PRINCIPAL GIGANTE PARA RECLAMAR Y SALIR */}
                   <button 
                     onClick={() => {
                       setCinematicCard(null);
                       playRetroSound('powerup');
                     }}
-                    className="bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-black font-black uppercase tracking-[0.15em] text-xs sm:text-sm px-8 py-4 rounded-2xl shadow-[0_0_50px_rgba(250,204,21,1)] hover:scale-105 transition-all cursor-pointer border-2 border-white flex items-center gap-2">
-                    🏆 ¡RECLAMAR CON HONOR SAGRADO! 🏆
+                    className="w-full bg-gradient-to-r from-yellow-400 via-amber-500 to-yellow-400 hover:from-yellow-300 hover:to-amber-400 text-black font-black uppercase tracking-[0.15em] text-sm sm:text-base py-4 rounded-2xl shadow-[0_0_40px_rgba(250,204,21,1)] hover:scale-[1.02] active:scale-95 transition-all cursor-pointer border-2 border-white flex items-center justify-center gap-2">
+                    <X className="w-5 h-5 text-black" /> ¡RECLAMAR (+{cinematicCard.clanXP || 100} XP) Y SALIR! <CheckCircle2 className="w-5 h-5 text-black" />
                   </button>
+
+                  <div className="grid grid-cols-2 gap-2 w-full">
+                    <button 
+                      onClick={() => {
+                        handleDownloadCard(cinematicCard);
+                        playRetroSound('coin');
+                      }}
+                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider text-xs py-3 px-3 rounded-xl shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:scale-105 active:scale-95 transition-all cursor-pointer border border-emerald-300 flex items-center justify-center gap-1.5">
+                      📸 DESCARGAR HD
+                    </button>
+                    <button 
+                      onClick={() => {
+                        const c = cinematicCard;
+                        setCinematicCard(null);
+                        setInspectingCard(c);
+                        playRetroSound('powerup');
+                      }}
+                      className="bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase tracking-wider text-xs py-3 px-3 rounded-xl shadow-[0_0_20px_rgba(79,70,229,0.5)] hover:scale-105 active:scale-95 transition-all cursor-pointer border border-indigo-300 flex items-center justify-center gap-1.5">
+                      🔍 EXAMINAR (HD)
+                    </button>
+                  </div>
                 </div>
 
               </div>
@@ -6638,8 +6981,30 @@ export default function OdiseaBiblica() {
 {/* ── MODAL 2: VISOR HOLOGRÁFICO DEL PACTO & CAPTURA ───────── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {inspectingCard && (
-            <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-3 sm:p-6 animate-in zoom-in duration-300 overflow-y-auto">
-              
+            <div 
+              onClick={(e) => {
+                if (e.target === e.currentTarget) {
+                  setFullScreenCaptureMode(false);
+                  setInspectingCard(null);
+                  playRetroSound('coin');
+                }
+              }}
+              className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-3 sm:p-6 animate-in zoom-in duration-300 overflow-y-auto custom-scrollbar select-none"
+            >
+              {/* BOTÓN FLOTANTE FIJO SUPERIOR DERECHO (X) - SIEMPRE VISIBLE EN CUALQUIER MODO O SCROLL */}
+              <button 
+                onClick={() => {
+                  setFullScreenCaptureMode(false);
+                  setInspectingCard(null);
+                  playRetroSound('coin');
+                }}
+                className="fixed top-4 right-4 z-[100010] bg-black/90 hover:bg-red-600 text-yellow-300 hover:text-white p-3 sm:p-3.5 rounded-full border-2 border-yellow-400 shadow-[0_0_30px_rgba(250,204,21,0.9)] cursor-pointer transition-all hover:scale-110 active:scale-95 flex items-center justify-center group"
+                aria-label="Cerrar visor de carta"
+                title="Cerrar visor (X)"
+              >
+                <X className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-90 transition-transform duration-200" />
+              </button>
+
               {!fullScreenCaptureMode ? (
                 <div className="max-w-2xl w-full bg-[#0a0c16] border-2 border-amber-500/80 rounded-3xl p-4 sm:p-8 flex flex-col items-center relative shadow-[0_0_80px_rgba(245,158,11,0.5)] my-auto">
                   
@@ -6733,16 +7098,25 @@ export default function OdiseaBiblica() {
                   )}
 
                   {/* Botones de Captura y Descarga */}
-                  <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="w-full flex flex-col sm:flex-row gap-3">
                     <button 
                       onClick={() => handleDownloadCard(inspectingCard)} 
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
-                      📸 DESCARGAR CARTA OFICIAL (HD)
+                      className="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
+                      📸 DESCARGAR CARTA (HD)
                     </button>
                     <button 
                       onClick={() => setFullScreenCaptureMode(true)} 
-                      className="bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
-                      🔍 PANTALLA COMPLETA PARA FOTO
+                      className="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white font-black uppercase tracking-wider py-3.5 rounded-xl text-xs transition-all shadow-lg hover:scale-105 flex items-center justify-center gap-2 cursor-pointer">
+                      🔍 PANTALLA COMPLETA
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setFullScreenCaptureMode(false);
+                        setInspectingCard(null);
+                        playRetroSound('coin');
+                      }} 
+                      className="bg-black/80 hover:bg-red-700 text-yellow-300 hover:text-white border-2 border-yellow-400/80 font-black uppercase tracking-wider py-3.5 px-6 rounded-xl text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-lg">
+                      <X className="w-4 h-4"/> CERRAR CARTA
                     </button>
                   </div>
 
@@ -6827,6 +7201,15 @@ export default function OdiseaBiblica() {
                       className="bg-white/20 hover:bg-white/30 text-white border border-white/40 font-black uppercase text-xs px-8 py-3 rounded-xl cursor-pointer transition-all">
                       ← SALIR DEL MODO FOTO
                     </button>
+                    <button 
+                      onClick={() => {
+                        setFullScreenCaptureMode(false);
+                        setInspectingCard(null);
+                        playRetroSound('coin');
+                      }} 
+                      className="bg-red-700 hover:bg-red-600 text-white font-black uppercase text-xs px-8 py-3 rounded-xl cursor-pointer transition-all border border-red-400 flex items-center gap-2 shadow-lg">
+                      <X className="w-4 h-4"/> CERRAR CARTA (X)
+                    </button>
                   </div>
                 </div>
               )}
@@ -6837,8 +7220,23 @@ export default function OdiseaBiblica() {
 {/* ── MODAL 3: REPRODUCTOR DE CINEMÁTICA CON BSO ───────────── */}
           {/* ════════════════════════════════════════════════════════════ */}
           {activeCinematicModal && (
-            <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center p-4 animate-in fade-in">
-              <div className="max-w-4xl w-full bg-[#080914] border-2 border-amber-600/70 rounded-3xl p-6 sm:p-8 relative shadow-2xl flex flex-col items-center">
+            <div 
+              onClick={(e) => {
+                if (e.target === e.currentTarget) setActiveCinematicModal(null);
+              }}
+              className="fixed inset-0 z-50 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center p-4 animate-in fade-in overflow-y-auto"
+            >
+              {/* BOTÓN FLOTANTE FIJO (X) */}
+              <button 
+                onClick={() => setActiveCinematicModal(null)} 
+                className="fixed top-4 right-4 z-[100010] bg-black/90 hover:bg-red-600 text-amber-300 hover:text-white p-3 sm:p-3.5 rounded-full border-2 border-amber-400 shadow-[0_0_30px_rgba(245,158,11,0.9)] cursor-pointer transition-all hover:scale-110 active:scale-95 flex items-center justify-center group"
+                aria-label="Cerrar cinemática"
+                title="Cerrar (X)"
+              >
+                <X className="w-6 h-6 sm:w-7 sm:h-7 group-hover:rotate-90 transition-transform duration-200" />
+              </button>
+
+              <div className="max-w-4xl w-full bg-[#080914] border-2 border-amber-600/70 rounded-3xl p-6 sm:p-8 relative shadow-2xl flex flex-col items-center my-auto">
                 
                 <div className="w-full flex justify-between items-center border-b border-amber-900/40 pb-4 mb-4">
                   <div>
